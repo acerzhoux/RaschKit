@@ -1,0 +1,125 @@
+#' CCC_comments
+#'
+#' For dichotomous items, examine distractor CCC and add comments if curve is against theory. For polytomous items, add in comments from Function 'itn_poly_comment'. This is associated with test named 'test'.
+#'
+#' @param folder Folder that contains ConQuest output files associated with 'test'. Default is 'output' folder in working directory.
+#' @param test Name of test.
+#' @param dFallThr Ability on last bin above which falling distractor is flagged. Default is 0.5.
+#' @param dRiseThr Ability on last bin below which rising distractor is unflagged. Default is 0.1.
+#' @param ccc_data Data to draw CCC. One element of list output from Function 'CCC_Vernon'.
+#' @param iType Dataframe with columns of iNum and itype. One element of list output from Function 'CCC_Vernon'.
+#' @return Vector of comments based solely on CCC.
+#' @examples
+#' comments <- CCC_comments(test='racp', ccc_data=ccc_data, iType=iType)
+
+CCC_comments <- function(folder=here::here('output'), test,
+                         dFallThr=.5, dRiseThr=.1, ccc_data, iType){
+  q_oders <- sort(unique(ccc_data$iNum))
+  iType <- iType %>% mutate(Comment='')
+
+  # If there is any poly item, get comments
+  if ('poly' %in% iType$itype) {
+    comment_poly <- itn_poly_comment(folder=folder, test=test)
+  }
+
+  for(i in q_oders){
+    Q_vec <- NULL
+    kkk <- ccc_data %>% filter(iNum == i)
+
+    # dichotomous items
+    if (iType[i, ]$itype %in% c('dich', 'score')){
+      nBin <- max(as.numeric(kkk$group))
+      distrs <- kkk %>% filter(!str_detect(Option, '\\*')) %>%
+        pull(Option) %>% unique()
+
+      # check key curve
+      prop_key_last <- kkk %>%
+        filter(group == nBin, str_detect(Option, '\\*')) %>%
+        pull(prop)
+      key <- kkk %>%
+        filter(group == nBin, str_detect(Option, '\\*')) %>%
+        pull(Option) %>% str_sub(1,1)
+      prop_key_prev <- kkk %>%
+        filter(group == (nBin-1) & str_detect(Option, '\\*')) %>%
+        pull(prop)
+      key_incrm <- prop_key_last - prop_key_prev
+      if (key_incrm < -.01) {
+        Q_vec <- c(Q_vec, 'Key falls. Please check key.')
+      } else if (key_incrm < 0.01) {
+        if (prop_key_prev < .9) Q_vec <- c(Q_vec, 'Key is flat. Please check key.')
+      }
+
+      dis_ck <- NULL
+      miskey <- double_key <- FALSE
+      # check distractors
+      for (distr in setdiff(distrs, key)) {
+        a <- kkk %>%
+          filter(group == nBin, str_detect(Option, distr)) %>%
+          pull(prop)
+        b <- kkk %>%
+          filter(group == (nBin-1), str_detect(Option, distr)) %>%
+          pull(prop)
+        incrm <- a - b
+
+        if (a > dRiseThr) {
+          if (incrm > .01) {
+            Q_vec <- c(Q_vec, paste0('Distractor ', distr, ' rises.'))
+            dis_ck <- c(dis_ck, distr)
+            # check whether it's miskeyed or double key
+            if (a > prop_key_last) {
+              if (key_incrm <= 0)  miskey <- TRUE
+              if (key_incrm > .01) double_key <- TRUE}
+            }
+          if (abs(incrm) <= .01) {
+            Q_vec <- c(Q_vec, paste0('Distractor ', distr, ' is flat.'))
+            dis_ck <- c(dis_ck, distr)
+          }
+        }
+        if (a > dFallThr) {
+          if (incrm > -.1) {
+            if (incrm < -.01) {
+              if (a > prop_key_last) {
+                Q_vec <- c(Q_vec, paste0('More high-ability candidates selected Distractor ',
+                             distr, ' rather than key.'))
+                dis_ck <- c(dis_ck, distr)
+              } else {
+                Q_vec <- c(Q_vec, paste0('Reasonable proportion of high-ability candidates drawn to Distractor ',
+                             distr, '.'))
+                dis_ck <- c(dis_ck, distr)
+              }
+            }
+          }
+        }
+      }
+
+      dis_n <- length(dis_ck)
+      if (dis_n == 1){
+        Q_vec <- c(Q_vec, paste0('Please ensure ', dis_ck, ' is incorrect.'))
+      } else if (dis_n == 2) {
+        Q_vec <- c(Q_vec, paste0('Please ensure ', paste(dis_ck, collapse=' and '),
+                     ' are incorrect.'))
+      } else if (dis_n > 2){
+        Q_vec <- c(Q_vec, paste0('Please ensure ', paste(dis_ck[1:(dis_n-1)], collapse=', '), ', and ',
+                     dis_ck[[dis_n]], ' are incorrect.'))
+      }
+
+      # add 'miskey' into comments
+      if (miskey) Q_vec <- c('Miskey?', Q_vec)
+      # add 'double key'
+      if (double_key) Q_vec <- c('Double key?', Q_vec)
+
+      Q_comments <- paste(Q_vec, collapse=' ')
+      iType[i, 'Comment'] <- Q_comments
+    }
+
+    # polytomous items
+    if (iType[i, ]$itype %in% 'poly'){
+      if (i %in% comment_poly$qOrder){
+        iType[i, 'Comment'] <- comment_poly[i, ]$Comment
+      }
+    }
+  }
+
+  # return dataframe with 3rd column as comments
+  iType
+}
