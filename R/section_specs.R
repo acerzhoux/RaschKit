@@ -9,15 +9,25 @@
 #' @param test Name of the test.
 #' @param DIFVar Name of the DIF variable.
 #' @param poly_catgrs Vector of categories of the polytomous DIF variable 'DIFVar'.
+#' @param quick TRUE when testing.
 #' @return String of characters used in estimation section of 'test.cqc' file in 'input' folder.
 #' @examples
 #' section_specs()
+#' @export
 
-section_specs <- function(wd, anchor, test, DIFVar, poly_catgrs){
+section_specs <- function(wd, anchor, test, DIFVar, poly_catgrs, quick){
     if (anchor) anc_path <- file.path(wd, 'Input', paste0(test, '.anc'))
 
     c(paste0('set addextension=no, keeplastest=yes, iterlimit=1000, ',
-             if(anchor) paste0('constraints=none;\nimport anchor_parameters <<',
-                               anc_path, ';\n') else 'constraints=items;\n'),
+      if(anchor) {
+        paste0('constraints=none;\nimport anchor_parameters <<', anc_path, ';\n')
+      } else {
+        if (quick){
+          'lconstraints=cases;\n'
+        } else {
+          'constraints=items;\n'
+        }
+      }),
+
       if (!is.null(poly_catgrs)) paste0('Keepcases %', DIFVar, '%! ', DIFVar, ';\n'))
 }

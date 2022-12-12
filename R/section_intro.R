@@ -10,6 +10,7 @@
 #' @return String of characters used in introduction section of 'test.cqc' file in 'input' folder.
 #' @examples
 #' section_intro()
+#' @export
 
 section_intro <- function(test, run_ls, path_output, DIFVar, poly_catgrs){
     c(if (!is.null(poly_catgrs)) {c(paste('dofor', DIFVar, '=', paste0(poly_catgrs, collapse=','), ";\n"),

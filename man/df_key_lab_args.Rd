@@ -14,7 +14,8 @@ df_key_lab_args(
   DIFVar = NULL,
   regr_vec_char = NULL,
   section_extr = NULL,
-  labels = NULL
+  labels = NULL,
+  anchor = FALSE
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ df_key_lab_args(
 \item{section_extr}{Sections to be included in the .cqc file. Default is NULL.}
 
 \item{labels}{Item labels. Default is NULL.}
+
+\item{anchor}{TRUE when anchor is to be done. Default is FALSE.}
 }
 \value{
 A list of arguments with calculated elements.
@@ -45,5 +48,8 @@ A list of arguments with calculated elements.
 This function saves data, label, and keys into 'Data' folder in the working directory. It also prepares the arguments needed for calibration functions. This is associated with test named 'test'.
 }
 \examples{
-df_key_lab_args(data=cov_respns, test='randomData', DIFVar="age", keys=rep(1, 30), pid="pid", n_cov=6, n_resp=30, regr_vec_char=c('nation', 'language', 'grade')))
+# not run
+# df_key_lab_args(data=cov_respns, test='randomData', DIFVar="age",
+# keys=rep(1, 30), pid="pid", n_cov=6, n_resp=30,
+# regr_vec_char=c('nation', 'language', 'grade'))
 }

@@ -4,7 +4,10 @@
 \alias{DIF_steps_dich}
 \title{DIF_steps_dich}
 \usage{
-DIF_steps_dich()
+DIF_steps_dich(iterative = FALSE)
+}
+\arguments{
+\item{iterative}{TRUE to iteratively remove DIF items. Default is FALSE}
 }
 \value{
 Tibble of six steps to do DIF analyses on dichotomous variable.
@@ -13,5 +16,6 @@ Tibble of six steps to do DIF analyses on dichotomous variable.
 This function generates a tibble of steps to follow when performing DIF analysis on a dichotomous DIF variable.
 }
 \examples{
-DIF_steps_dich()
+# Not run
+# DIF_steps_dich()
 }

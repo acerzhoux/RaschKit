@@ -2,7 +2,7 @@
 #'
 #' This function creates folders in the working directory, and creates 'test.lab' file and 'test.cqc' file in 'input' folder.
 #'
-#' For DIF analysis on dichotomous variables, you need specify 'DIFVar', 'DIFVar_cols', and 'dich_code'.
+#' For DIF analysis on dichotomous variables, you need specify 'DIFVar', 'DIFVar_cols'.
 #' For DIF analysis on polytomous variables, there are two methods. Method 1 compares each category's delta estimates with the mean of all subgroups. Specified arguments are 'DIFVar', 'DIFVar_cols', 'DIFVar_cols'. Method 2 runs two models. The first model does calibrations on each subgroup separately where you need to specify arguments of 'DIFVar', 'DIFVar_cols', and 'poly_group'. The other model runs a facet model with an interaction term between group and item where you need to specify arguments of 'DIFVar', 'DIFVar_cols', and 'poly_facet'.
 #'
 #' @param wd Working directory. Default is the folder where .Rproj is located.
@@ -16,13 +16,12 @@
 #' @param delete Vector of item order number(s) to be removed from the test, e.g., c(2, 3, 45, 46). Default is NULL.
 #' @param anchor TRUE when anchor is to be done. Default is FALSE.
 #' @param section_extr Extra sections to be added to 'test.cqc' file in 'input' folder. Default is NULL.
-#' @param dbl_key TRUE if any item has polytomous scoring. Default is FALSE.
+#' @param dbl_key TRUE if any item has polytomous scoring. Default is NULL.
 #' @param poly_key TRUE if the key of any item has polytomous scoring. Default is FALSE.
 #' @param quick TRUE if quick estimation is preferred. Default is FALSE.
 #' @param step TRUE if any item in the test has polytomous scoring. Default is FALSE.
 #' @param DIFVar Name of DIF variable. Should be lowercase for ConQuest to run. Default is NULL.
 #' @param DIFVar_cols DIF variable's column number in data. Default is NULL.
-#' @param dich_code Vector of codes for dichotomous DIF variable, e.g., c('F', 'M'). Default is NULL.
 #' @param poly_catgrs Vector of polytomous DIF variable's categories. Default is NULL.
 #' @param poly_facet TRUE if facet model is to be run on a polytomous DIF variable. Default is FALSE.
 #' @param poly_group TRUE if model is run per group. Default is FALSE.
@@ -33,10 +32,10 @@
 
 lab_cqc <- function(wd=here::here(), test, run=NULL, run_ls=NULL,
                     codes, pid_cols=NULL, resps_cols, quick=FALSE, delete=NULL,
-                    dbl_key=FALSE, poly_key=FALSE, anchor=FALSE, section_extr=NULL,
+                    dbl_key=NULL, poly_key=FALSE, anchor=FALSE, section_extr=NULL,
                     step=FALSE, regr_ls=NULL,
                     DIFVar=NULL, DIFVar_cols=NULL, #dich & poly
-                    dich_code=NULL, poly_catgrs=NULL, #dich, poly
+                    poly_catgrs=NULL, #dich, poly
                     poly_facet=FALSE, poly_group=FALSE){ #poly: facet
     # create folders
     create_folders(wd=wd, DIFVar=DIFVar)
@@ -49,7 +48,6 @@ lab_cqc <- function(wd=here::here(), test, run=NULL, run_ls=NULL,
                run_ls=run_ls, anchor=anchor, section_extr=section_extr,
                regr_ls=regr_ls, codes=codes, delete=delete, dbl_key=dbl_key,
                poly_key=poly_key, quick=quick, step=step, DIFVar=DIFVar,
-               DIFVar_cols=DIFVar_cols,
-               dich_code=dich_code, poly_catgrs=poly_catgrs,
+               DIFVar_cols=DIFVar_cols, poly_catgrs=poly_catgrs,
                poly_facet=poly_facet, poly_group=poly_group)
 }

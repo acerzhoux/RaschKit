@@ -14,7 +14,7 @@ Equate_shw(
   DIF_cut = 0.5,
   DIF_adj_cut = 4,
   sav_results = TRUE,
-  steps = FALSE,
+  step = FALSE,
   long_label = FALSE
 )
 }
@@ -37,7 +37,7 @@ Equate_shw(
 
 \item{sav_results}{TRUE if an Excel file with chi-square test results and a plot are desired. Default is TRUE.}
 
-\item{steps}{TRUE if DIF analysis is performed on step parameters. Default is FALSE.}
+\item{step}{TRUE if DIF analysis is performed on step parameters. Default is FALSE.}
 
 \item{long_label}{Whether item labels are longer than 15 characters' fixed width. Default is FALSE.}
 }
@@ -50,7 +50,7 @@ This function extracts two tests' delta estimates and errors from corresponding 
 \examples{
 Equate_shw(test='elana_math', vars=c('NSW', 'VIC'))
 Equate_shw(test='elana_math', vars=c('NSW', 'VIC'), long_label=TRUE)
-Equate_shw(test='elana_math', vars=c('NSW', 'VIC'), steps=TRUE)
-Equate_shw(test='elana_math', vars=c('NSW', 'VIC'), steps=TRUE, long_label=TRUE)
+Equate_shw(test='elana_math', vars=c('NSW', 'VIC'), step=TRUE)
+Equate_shw(test='elana_math', vars=c('NSW', 'VIC'), step=TRUE, long_label=TRUE)
 Equate_shw(test='ArabicA', vars=c('3', '4'))
 }

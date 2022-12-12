@@ -1,0 +1,72 @@
+---
+output: bookdown::html_document2
+params:
+    test: 'test'
+    DIFVar: 'nation'
+    output: output
+title: DIF Analysis of `r toupper(DIFVar)` on `r toupper(test)`
+---
+
+```{r setup, include=FALSE}
+library(RaschKit)
+library(tidyverse)
+library(knitr)
+library(bookdown)
+
+knitr::opts_chunk$set(echo=FALSE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+options(knitr.table.format = "simple")
+```
+
+# Recommendation
+
+Table \@ref(tab:comments) shows the findings from the DIF analysis. At the end 
+is the recommendation on how to handle the DIF items.
+
+```{r comments, echo=FALSE}
+output[['comments']] %>% 
+    knitr::kable(caption = "Findings and recommendation")
+```
+
+# Procedures
+
+Table \@ref(tab:steps) shows the steps taken to do the DIF analysis.
+
+```{r steps, echo=FALSE}
+output[['step']] %>% 
+    knitr::kable(caption = "Steps used to detec DIF parameters")
+```
+
+# Statistics with Flags
+
+Table \@ref(tab:bfr-rvw) shows the Bonferroni test results between adjusted 
+item deltas estimated within each subgroup of the DIF variable and the item's 
+average delta across all categories. Any significance test result has been marked 
+with '*' in the 'sig_' column asscociated with each category.
+
+```{r bfr-rvw}
+output[['flags']] %>% 
+    knitr::kable(caption = "Item statistics with flags")
+```
+
+# Statistics Used to Flag Items
+
+Table \@ref(tab:afr-rvw) shows the item statistics used to do the Bonferroni tests. 
+This includes item deltas, errors, and standardised difference between 
+item deltas estimated within each DIF variable category and all categories' mean. 
+
+
+```{r afr-rvw}
+output[['stats']] %>% 
+    knitr::kable(caption = "Item statistics used to flag items") 
+```
+
+# Scatterplot of Difficulty Estimates
+
+Figure \@ref(fig:logit-scatter) shows the scatterplots of item logit difficulty 
+estimates within each DIF variable category and the mean. 
+
+```{r logit-scatter, fig.cap = "Scatterplot of logit difficulty estimates", fig.width=8, fig.height=12}
+output[['plot_DIF']]
+```
+

@@ -8,6 +8,7 @@
 #' @examples
 #' df_shw_Step(test='elana_poly_score')
 #' df_shw_Step(test='elana_poly_score', long_label=TRUE)
+#' @export
 
 df_shw_Step <- function(folder=here::here('output'), test, long_label=FALSE){
     steps_shw <- read_fwf(file_path_type(folder=folder, test=test, type='shw'),

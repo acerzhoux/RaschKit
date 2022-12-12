@@ -7,6 +7,7 @@
 #' @return Vector of item orders.
 #' @examples
 #' qid_its()
+#' @export
 
 qid_its <- function(folder, test){
     n_item <- N_item2(folder=folder, test=test)

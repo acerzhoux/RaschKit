@@ -11,6 +11,7 @@
 #' @return Plot of DIF analysis of test items (that had estimates for all subgroups) on one subgroup.
 #' @examples
 #' plot_DIF_poly()
+#' @export
 
 plot_DIF_poly <- function(DIFVar, subgrp, cats, item, delta_cat, Flag_dif) {
     df <- data.frame(item=item,

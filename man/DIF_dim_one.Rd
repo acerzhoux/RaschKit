@@ -18,9 +18,20 @@ DIF_dim_one(
   n_resp = NULL,
   regr_vec_char = NULL,
   labels = NULL,
-  quick = FALSE,
+  quick = TRUE,
   section_extr = NULL,
-  miss_code = c(".", "r", "R", "x", "X", "", " ")
+  miss_code = c(".", "r", "R", "x", "X", "", " "),
+  poly_key = FALSE,
+  prep_process = FALSE,
+  save_xlsx = TRUE,
+  p_cut = 0.05,
+  DIF_cut = 0.5,
+  DIF_adj_cut = 4,
+  chi_cut = 10,
+  facil_cut = 10,
+  iterative = FALSE,
+  step = FALSE,
+  desig_effect = 1
 )
 }
 \arguments{
@@ -50,11 +61,33 @@ DIF_dim_one(
 
 \item{labels}{Vector of item labels that correspond to order of item response columns in data.}
 
-\item{quick}{TRUE when testing. Default is FALSE.}
+\item{quick}{Whether quick error is needed. Default is TRUE for DIF analysis.}
 
 \item{section_extr}{Extra sections to be added to .cqc file in 'input' folder. Default is NULL.}
 
 \item{miss_code}{Code for missing data that should be converted to NA. Default is c('.', 'r', 'R', 'x', 'X', '', ' ').}
+
+\item{poly_key}{TRUE if the key of any item has polytomous scoring. Default is FALSE.}
+
+\item{prep_process}{TRUE if it is needed to remove items without data on some categories of DIF variable. Default is FALSE.}
+
+\item{save_xlsx}{Whether to save summary file and plots. Default is TRUE (one DIF variable).}
+
+\item{p_cut}{p value of chi-square test. Default is 0.05.}
+
+\item{DIF_cut}{Threshold of an item's delta estimate difference between two tests. Default is 0.5.}
+
+\item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference between two tests. Default is 4.}
+
+\item{chi_cut}{Threshold of chi-square difference between two tests. Default is 10.}
+
+\item{facil_cut}{Threshold of number of percent to flag an item with large facility difference between two groups of test takers. Default is 10.}
+
+\item{iterative}{TRUE to iteratively remove DIF items. Default is FALSE}
+
+\item{step}{TRUE if polytomous items are involved. Default is FALSE.}
+
+\item{desig_effect}{Value to adjust errors. Default is 1.}
 }
 \description{
 This function can perform DIF analysis on either dichotomous or polytomous variable. This is associated with test named 'test'.
@@ -63,10 +96,7 @@ This function can perform DIF analysis on either dichotomous or polytomous varia
 Should preprocess data in three ways. First, convert non-used categories and missing values to NA. Second, remove item responses with all missing values. Third, remove items that have all missing values or all correct/incorrect responses on any category of the DIF variable.
 }
 \examples{
-DIF_dim_one(method='chi_square', vars=c('Girls', 'Boys'), data=df_DIF, test='David', DIFVar="studGender", pid="studentId", n_cov=5, regr_vec_char=c('countryName', 'studAge'), quick=TRUE, miss_code='.')
-DIF_dim_one(method='Bonferroni', data=df_DIF[, 1:100], test='David', DIFVar="studAge", pid="studentId", n_cov=5, quick=TRUE, miss_code='.')
-DIF_dim_one(method='Facet', data=df_DIF[, 1:100], test='David', DIFVar="studAge", pid="studentId", n_cov=5, quick=TRUE, miss_code='.')
-DIF_dim_one(method='chi_square', vars=c('Girls', 'Boys'), data=elena, test='elena1', DIFVar="gender", pid="IDSTUD", n_cov=9, regr_vec_char=c('province', 'quintile'), quick=TRUE, miss_code=NULL)
-DIF_dim_one(method='Bonferroni', data=elena, test='Elena1', DIFVar="quintile", pid="IDSTUD", n_cov=9, regr_vec_char=c('province', 'gender'), quick=TRUE, miss_code=NULL)
-DIF_dim_one(method='Facet', data=elena, test='Elena1', DIFVar="quintile", pid="IDSTUD", n_cov=9, regr_vec_char=c('province', 'gender'), quick=TRUE, miss_code=NULL)
+DIF_dim_one(method='chi_square', vars=c('Girls', 'Boys'), data=elena, test='ELNA', DIFVar="gender", pid="IDSTUD", n_cov=9, regr_vec_char=c('province', 'quintile'), quick=TRUE, miss_code=NULL)
+DIF_dim_one(method='Bonferroni', data=elena, test='ELNA', DIFVar="quintile", pid="IDSTUD", n_cov=9, regr_vec_char=c('province', 'gender'), quick=TRUE, miss_code=NULL)
+DIF_dim_one(method='Facet', data=elena, test='ELNA', DIFVar="quintile", pid="IDSTUD", n_cov=9, regr_vec_char=c('province', 'gender'), quick=TRUE, miss_code=NULL)
 }

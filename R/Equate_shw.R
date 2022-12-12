@@ -11,20 +11,20 @@
 #' @param DIF_cut Threshold of an item's delta estimate difference between two tests. Default is 0.5.
 #' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference between two tests. Default is 10.
 #' @param sav_results TRUE if an Excel file with chi-square test results and a plot are desired. Default is TRUE.
-#' @param steps TRUE if DIF analysis is performed on step parameters. Default is FALSE.
+#' @param step TRUE if DIF analysis is performed on step parameters. Default is FALSE.
 #' @param long_label Whether item labels are longer than 15 characters' fixed width. Default is FALSE.
 #' @return Dataframe of chi-square test results for anchors between two tests.
 #' @examples
 #' Equate_shw(test='elana_math', vars=c('NSW', 'VIC'))
 #' Equate_shw(test='elana_math', vars=c('NSW', 'VIC'), long_label=TRUE)
-#' Equate_shw(test='elana_math', vars=c('NSW', 'VIC'), steps=TRUE)
-#' Equate_shw(test='elana_math', vars=c('NSW', 'VIC'), steps=TRUE, long_label=TRUE)
+#' Equate_shw(test='elana_math', vars=c('NSW', 'VIC'), step=TRUE)
+#' Equate_shw(test='elana_math', vars=c('NSW', 'VIC'), step=TRUE, long_label=TRUE)
 #' Equate_shw(test='ArabicA', vars=c('3', '4'))
 #' @export
 
 Equate_shw <- function(folder=here::here('output'), test, vars, var_name=NULL, p_cut=0.05,
                        chi_cut=10, DIF_cut=0.5, DIF_adj_cut=4,
-                       sav_results=TRUE, steps=FALSE, long_label=FALSE){
+                       sav_results=TRUE, step=FALSE, long_label=FALSE){
     if (!dir.exists(here::here('equating'))) dir.create(here::here('equating'))
 
     r1 <- vars[[1]]
@@ -32,7 +32,7 @@ Equate_shw <- function(folder=here::here('output'), test, vars, var_name=NULL, p
     if (!is.null(var_name)) vars <- str_c(var_name, vars)
 
     # merge data
-    if (steps){
+    if (step){
         df <- df_del_shw_Step(folder=folder, test=paste0(test, '_', r1),
                               long_label=long_label) %>%
             inner_join(
@@ -51,5 +51,5 @@ Equate_shw <- function(folder=here::here('output'), test, vars, var_name=NULL, p
 
     Equate(df=df, test=test, vars=vars, p_cut=p_cut, chi_cut=chi_cut,
            DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut, sav_results=sav_results,
-           steps=steps)
+           step=step)
 }

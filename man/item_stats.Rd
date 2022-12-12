@@ -15,5 +15,5 @@ item_stats(folder = here::here("output"), test)
 This function extracts item statistics such as item-rest correlation, facility, delta, and case number from 'test.its' file. This is associated with test named 'test'.
 }
 \examples{
-item_stats(test='elana_poly_score')
+item_stats(test='AHU')
 }

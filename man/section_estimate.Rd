@@ -4,10 +4,12 @@
 \alias{section_estimate}
 \title{section_estimate}
 \usage{
-section_estimate(quick)
+section_estimate(quick, poly_key = FALSE)
 }
 \arguments{
 \item{quick}{TRUE if quick estimation is preferred.}
+
+\item{poly_key}{TRUE if the key of any item has polytomous scoring. Default is FALSE.}
 }
 \value{
 String of characters used in estimation section of 'test.cqc' file in 'input' folder.

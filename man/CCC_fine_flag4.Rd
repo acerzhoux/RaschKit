@@ -17,6 +17,3 @@ Item statistics with four levels of priority.
 \description{
 This function adds comments by comparing flags of priorities 1 to 3 and comments only based on CCC. If item statistics show issues but CCC are fine, comments indicate so. Also, if CCC shows issues but item statistics are fine, comments indicated so.
 }
-\examples{
-CCC_fine_flag4()
-}

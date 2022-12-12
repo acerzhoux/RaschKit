@@ -14,7 +14,7 @@ lab_cqc(
   resps_cols,
   quick = FALSE,
   delete = NULL,
-  dbl_key = FALSE,
+  dbl_key = NULL,
   poly_key = FALSE,
   anchor = FALSE,
   section_extr = NULL,
@@ -22,7 +22,6 @@ lab_cqc(
   regr_ls = NULL,
   DIFVar = NULL,
   DIFVar_cols = NULL,
-  dich_code = NULL,
   poly_catgrs = NULL,
   poly_facet = FALSE,
   poly_group = FALSE
@@ -47,7 +46,7 @@ lab_cqc(
 
 \item{delete}{Vector of item order number(s) to be removed from the test, e.g., c(2, 3, 45, 46). Default is NULL.}
 
-\item{dbl_key}{TRUE if any item has polytomous scoring. Default is FALSE.}
+\item{dbl_key}{TRUE if any item has polytomous scoring. Default is NULL.}
 
 \item{poly_key}{TRUE if the key of any item has polytomous scoring. Default is FALSE.}
 
@@ -63,8 +62,6 @@ lab_cqc(
 
 \item{DIFVar_cols}{DIF variable's column number in data. Default is NULL.}
 
-\item{dich_code}{Vector of codes for dichotomous DIF variable, e.g., c('F', 'M'). Default is NULL.}
-
 \item{poly_catgrs}{Vector of polytomous DIF variable's categories. Default is NULL.}
 
 \item{poly_facet}{TRUE if facet model is to be run on a polytomous DIF variable. Default is FALSE.}
@@ -78,7 +75,7 @@ lab_cqc(
 This function creates folders in the working directory, and creates 'test.lab' file and 'test.cqc' file in 'input' folder.
 }
 \details{
-For DIF analysis on dichotomous variables, you need specify 'DIFVar', 'DIFVar_cols', and 'dich_code'.
+For DIF analysis on dichotomous variables, you need specify 'DIFVar', 'DIFVar_cols'.
 For DIF analysis on polytomous variables, there are two methods. Method 1 compares each category's delta estimates with the mean of all subgroups. Specified arguments are 'DIFVar', 'DIFVar_cols', 'DIFVar_cols'. Method 2 runs two models. The first model does calibrations on each subgroup separately where you need to specify arguments of 'DIFVar', 'DIFVar_cols', and 'poly_group'. The other model runs a facet model with an interaction term between group and item where you need to specify arguments of 'DIFVar', 'DIFVar_cols', and 'poly_facet'.
 }
 \examples{

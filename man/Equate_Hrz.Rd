@@ -13,7 +13,7 @@ Equate_Hrz(
   chi_cut = 10,
   DIF_cut = 0.5,
   DIF_adj_cut = 4,
-  steps = FALSE,
+  step = FALSE,
   long_label = FALSE
 )
 }
@@ -34,7 +34,7 @@ Equate_Hrz(
 
 \item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference between two tests. Default is 4.}
 
-\item{steps}{TRUE if DIF analysis is performed on step parameters. Default is FALSE.}
+\item{step}{TRUE if DIF analysis is performed on step parameters. Default is FALSE.}
 
 \item{long_label}{Whether item labels are longer than 15 characters' fixed width. Default is FALSE.}
 }

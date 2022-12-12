@@ -11,6 +11,7 @@
 #' @return Vector of comments based solely on CCC.
 #' @examples
 #' comments <- CCC_comments(test='racp', ccc_data=ccc_data, iType=iType)
+#' @export
 
 CCC_comments <- function(folder=here::here('output'), test,
                          dFallThr=.5, dRiseThr=.1, ccc_data, iType){
@@ -36,6 +37,7 @@ CCC_comments <- function(folder=here::here('output'), test,
       prop_key_last <- kkk %>%
         filter(group == nBin, str_detect(Option, '\\*')) %>%
         pull(prop)
+      if (length(prop_key_last) > 1) next #If double key, move on.
       key <- kkk %>%
         filter(group == nBin, str_detect(Option, '\\*')) %>%
         pull(Option) %>% str_sub(1,1)
@@ -52,7 +54,7 @@ CCC_comments <- function(folder=here::here('output'), test,
       dis_ck <- NULL
       miskey <- double_key <- FALSE
       # check distractors
-      for (distr in setdiff(distrs, key)) {
+      for (distr in setdiff(setdiff(distrs, key), c(9,'9'))) {
         a <- kkk %>%
           filter(group == nBin, str_detect(Option, distr)) %>%
           pull(prop)
@@ -112,12 +114,30 @@ CCC_comments <- function(folder=here::here('output'), test,
       iType[i, 'Comment'] <- Q_comments
     }
 
+    # MC items with all-wrong responses
+    if (iType[i, ]$itype %in% 'allwrong'){
+      nBin <- max(as.numeric(kkk$group))
+      opt_all_wrong <- unique(kkk$Option)
+      key_pobl <- NULL
+      if (length(opt_all_wrong)==1){
+        key_pobl <- opt_all_wrong
+      } else {
+        for (j in opt_all_wrong){
+          cond <- {kkk %>% filter(Option==j, group==nBin) %>% pull(prop)} -
+                  {kkk %>% filter(Option==j, group==nBin-1) %>% pull(prop)} > .05
+          if (cond) key_pobl <- c(key_pobl, j)
+        }
+      }
+      if (!is.null(key_pobl)) iType[i, 'Comment'] <- paste0('Miskey? Please ensure ', key_pobl, ' is incorrect.')
+    }
+
     # polytomous items
     if (iType[i, ]$itype %in% 'poly'){
       if (i %in% comment_poly$qOrder){
         iType[i, 'Comment'] <- comment_poly[i, ]$Comment
       }
     }
+
   }
 
   # return dataframe with 3rd column as comments

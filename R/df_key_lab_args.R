@@ -12,13 +12,18 @@
 #' @param regr_vec_char Vector of character regressors' names.
 #' @param section_extr Sections to be included in the .cqc file. Default is NULL.
 #' @param labels Item labels. Default is NULL.
+#' @param anchor TRUE when anchor is to be done. Default is FALSE.
 #' @return A list of arguments with calculated elements.
 #' @examples
-#' df_key_lab_args(data=cov_respns, test='randomData', DIFVar="age", keys=rep(1, 30), pid="pid", n_cov=6, n_resp=30, regr_vec_char=c('nation', 'language', 'grade')))
+#' # not run
+#' # df_key_lab_args(data=cov_respns, test='randomData', DIFVar="age",
+#' # keys=rep(1, 30), pid="pid", n_cov=6, n_resp=30,
+#' # regr_vec_char=c('nation', 'language', 'grade'))
+#' @export
 
 df_key_lab_args <- function(test, data, pid, n_cov, n_resp, keys,
                             DIFVar=NULL, regr_vec_char=NULL,
-                            section_extr=NULL, labels=NULL){
+                            section_extr=NULL, labels=NULL, anchor=FALSE){
     create_folders(DIFVar=DIFVar)
     if (!is.null(regr_vec_char)){
         section_extr <- map(regr_vec_char, ~data[[.]] %>%
@@ -34,7 +39,7 @@ df_key_lab_args <- function(test, data, pid, n_cov, n_resp, keys,
         modify_at(1:(n_cov+n_resp), ~as.character(.))
 
     # save data, label, keys
-    data_into_Data(test=test, data=data)
+    data_into_Data(test=test, data=data, DIFVar=DIFVar)
     if(!is.null(keys)) keys_into_Data(test=test, keys=keys)
     labels_into_Data(test=test, labels=labels)
 
@@ -49,9 +54,17 @@ df_key_lab_args <- function(test, data, pid, n_cov, n_resp, keys,
 
     codes <- map(data[, (n_cov+1):(n_cov+n_resp)], ~unique(.)) %>% #codes
         reduce(c) %>%
-        unique() %>%
-        .[!(. %in% c(NA, 'r', 'R', 'X', 'x', '', ' '))] %>%
-        sort()
+        unique()
+
+    if (anchor){
+        codes <- codes %>%
+            .[!(. %in% c(NA, 'X', 'x', '', ' '))] %>%
+            sort()
+    } else {
+        codes <- codes %>%
+            .[!(. %in% c(NA, 'r', 'R', 'X', 'x', '', ' '))] %>%
+            sort()
+    }
 
     list(codes=codes, pid_cols=prr$pid_cols,
          resps_cols=prr$resps_cols, regr_ls=prr$regr_ls,

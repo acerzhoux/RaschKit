@@ -17,24 +17,36 @@
 #' @param n_resp Number of items. Default is NULL.
 #' @param regr_vec_char Vector of character regressors' names.
 #' @param labels Vector of item labels that correspond to order of item response columns in data.
-#' @param quick TRUE when testing. Default is FALSE.
+#' @param quick Whether quick error is needed. Default is TRUE for DIF analysis.
 #' @param section_extr Extra sections to be added to .cqc file in 'input' folder. Default is NULL.
 #' @param miss_code Code for missing data that should be converted to NA. Default is c('.', 'r', 'R', 'x', 'X', '', ' ').
+#' @param poly_key TRUE if the key of any item has polytomous scoring. Default is FALSE.
+#' @param prep_process TRUE if it is needed to remove items without data on some categories of DIF variable. Default is FALSE.
+#' @param save_xlsx Whether to save summary file and plots. Default is TRUE (one DIF variable).
+#' @param p_cut p value of chi-square test. Default is 0.05.
+#' @param chi_cut Threshold of chi-square difference between two tests. Default is 10.
+#' @param DIF_cut Threshold of an item's delta estimate difference between two tests. Default is 0.5.
+#' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference between two tests. Default is 4.
+#' @param desig_effect Value to adjust errors. Default is 1.
+#' @param facil_cut Threshold of number of percent to flag an item with large facility difference between two groups of test takers. Default is 10.
+#' @param iterative TRUE to iteratively remove DIF items. Default is FALSE
+#' @param step TRUE if polytomous items are involved. Default is FALSE.
 #' @examples
-#' DIF_dim_one(method='chi_square', vars=c('Girls', 'Boys'), data=df_DIF, test='David', DIFVar="studGender", pid="studentId", n_cov=5, regr_vec_char=c('countryName', 'studAge'), quick=TRUE, miss_code='.')
-#' DIF_dim_one(method='Bonferroni', data=df_DIF[, 1:100], test='David', DIFVar="studAge", pid="studentId", n_cov=5, quick=TRUE, miss_code='.')
-#' DIF_dim_one(method='Facet', data=df_DIF[, 1:100], test='David', DIFVar="studAge", pid="studentId", n_cov=5, quick=TRUE, miss_code='.')
-#' DIF_dim_one(method='chi_square', vars=c('Girls', 'Boys'), data=elena, test='elena1', DIFVar="gender", pid="IDSTUD", n_cov=9, regr_vec_char=c('province', 'quintile'), quick=TRUE, miss_code=NULL)
-#' DIF_dim_one(method='Bonferroni', data=elena, test='Elena1', DIFVar="quintile", pid="IDSTUD", n_cov=9, regr_vec_char=c('province', 'gender'), quick=TRUE, miss_code=NULL)
-#' DIF_dim_one(method='Facet', data=elena, test='Elena1', DIFVar="quintile", pid="IDSTUD", n_cov=9, regr_vec_char=c('province', 'gender'), quick=TRUE, miss_code=NULL)
+#' DIF_dim_one(method='chi_square', vars=c('Girls', 'Boys'), data=elena, test='ELNA', DIFVar="gender", pid="IDSTUD", n_cov=9, regr_vec_char=c('province', 'quintile'), quick=TRUE, miss_code=NULL)
+#' DIF_dim_one(method='Bonferroni', data=elena, test='ELNA', DIFVar="quintile", pid="IDSTUD", n_cov=9, regr_vec_char=c('province', 'gender'), quick=TRUE, miss_code=NULL)
+#' DIF_dim_one(method='Facet', data=elena, test='ELNA', DIFVar="quintile", pid="IDSTUD", n_cov=9, regr_vec_char=c('province', 'gender'), quick=TRUE, miss_code=NULL)
 #' @export
 
 DIF_dim_one <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
                         test, pid, n_cov, DIFVar, data=NULL, keys=NULL,
                         wd=here::here(), vars=NULL, poly_facet=FALSE,
                         n_resp=NULL, regr_vec_char=NULL,
-                        labels=NULL, quick=FALSE, section_extr=NULL,
-                        miss_code=c('.', 'r', 'R', 'x', 'X', '', ' ')){
+                        labels=NULL, quick=TRUE, section_extr=NULL,
+                        miss_code=c('.', 'r', 'R', 'x', 'X', '', ' '),
+                        poly_key=FALSE, prep_process=FALSE, save_xlsx=TRUE,
+                        p_cut=0.05, DIF_cut=0.5,
+                        DIF_adj_cut=4, chi_cut=10, facil_cut=10, iterative=FALSE,
+                        step=FALSE, desig_effect=1){
     # ####### check inputs
     cat('Checking inputs...\n')
     if (length(method)!=1 || !(method %in% c('chi_square', 'Bonferroni', 'Facet'))) {
@@ -63,14 +75,16 @@ DIF_dim_one <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
     }
 
     # ####### preprocess data
-    cat('Checking and removing items without data on any category of DIF variable...\n')
-    processed <- sparse_data_process(test=test, data=data, keys=keys, labels=labels,
-                                     n_cov=n_cov, n_dims=n_resp, miss_code=miss_code,
-                                     DIFVar=DIFVar)
-    data <- processed[['data']]
-    n_resp <- processed[['n_dims']]
-    keys <- processed[['keys']]
-    labels <- processed[['labels']]
+    if (prep_process){
+        cat('Checking and removing items without data on any category of DIF variable...\n')
+        processed <- sparse_data_process(test=test, data=data, keys=keys, labels=labels,
+                                         n_cov=n_cov, n_dims=n_resp, miss_code=miss_code,
+                                         DIFVar=DIFVar)
+        data <- processed[['data']]
+        n_resp <- processed[['n_dims']]
+        keys <- processed[['keys']]
+        labels <- processed[['labels']]
+    }
 
     # ####### prepare arguments
     cat('Preparing ConQuest control file...\n')
@@ -80,12 +94,14 @@ DIF_dim_one <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
                     keys=keys, labels=labels)
 
     arg_DIF <- list(method=method, wd=wd, delete=NULL, anchor=FALSE, domain=NULL,
-                    section_extr=prep$section_extr, dbl_key=FALSE, poly_key=FALSE,
-                    quick=quick, steps=FALSE,
-                    p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4, chi_cut=10,
-                    facil_cut=10, desig_effect=1, test=test, DIFVar=DIFVar,
+                    section_extr=prep$section_extr, dbl_key=NULL, poly_key=poly_key,
+                    quick=quick, step=step,
+                    p_cut=p_cut, DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut,
+                    chi_cut=chi_cut,
+                    facil_cut=facil_cut, desig_effect=desig_effect,
+                    test=test, DIFVar=DIFVar,
                     vars=vars, poly_facet=poly_facet, poly_group=FALSE,
-                    poly_catgrs=NULL) %>%
+                    poly_catgrs=NULL, save_xlsx=save_xlsx, iterative=iterative) %>%
         append(prep[-length(prep)])
 
     # ####### run models
@@ -99,7 +115,7 @@ DIF_dim_one <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
         do.call(DIF, arg_DIF)
     }
     if (method=='Facet'){
-        poly_facet <- TRUE
+        arg_DIF[['poly_facet']] <- TRUE
         do.call(DIF, arg_DIF)
     }
 }

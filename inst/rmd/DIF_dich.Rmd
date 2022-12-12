@@ -1,0 +1,88 @@
+---
+output: bookdown::html_document2
+params:
+    test: 'test'
+    DIFVar: 'Gender'
+    vars: c('Girls', 'Boys')
+    facil_cut: 10
+    output: output
+title: DIF Analysis of `r DIFVar` on `r test`
+---
+
+```{r setup, include=FALSE}
+library(RaschKit)
+library(tidyverse)
+library(knitr)
+library(bookdown)
+
+knitr::opts_chunk$set(echo=FALSE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+options(knitr.table.format = "simple")
+```
+
+# Recommendation
+
+`r output[['comments']]$Details`
+
+# Procedures
+
+Table \@ref(tab:steps) shows the steps taken to do the DIF analysis.
+
+```{r steps, echo=FALSE}
+output[['step']] %>% 
+    knitr::kable(caption = "Steps used to detec DIF parameters")
+```
+
+# Shift Method
+
+Table \@ref(tab:shift-stats) shows the shifts of item statistics before and 
+after review. It shows that removal of DIF items has improved correlation, 
+mean shift, and ratio of standard deviation.
+
+```{r shift-stats}
+output[['shift']] %>% 
+    knitr::kable(caption = "Shifts of statistics before and after review")
+```
+
+# Statistics Before Review
+
+Table \@ref(tab:bfr-rvw) shows the item statistics before review. From the table, 
+we can see that `r output[['flag']] %>% filter(flag==1) %>% nrow()` items 
+show DIF between `r vars[[1]]` and `r vars[[2]]`.
+
+```{r bfr-rvw}
+output[['flag']] %>% 
+    knitr::kable(caption = "Item statistics before review")
+```
+
+# Statistics After Review
+
+Table \@ref(tab:afr-rvw) shows the item statistics after review. Now, the statistics
+satisfy all the criteria.
+
+```{r afr-rvw}
+output[['final']] %>% 
+    knitr::kable(caption = "Item statistics after review") 
+```
+
+# Scatterplot of Difficulty Estimates
+
+Figure \@ref(fig:logit-scatter) shows the scatterplots of item logit difficulty 
+estimates between `r vars[[1]]` and `r vars[[2]]` both before (top) and after 
+(bottom) review. The caption at bottom right of the scatterplot on top shows 
+all the criteria used to detect DIF items.
+
+```{r logit-scatter, fig.cap = "Scatterplot of logit difficulty estimates", fig.width=7, fig.height=14}
+output[['plot_DIF']]
+```
+
+# Scatterplot of Facility
+
+Figure \@ref(fig:facil-scatter) shows the scatterplot of item facilities 
+between `r vars[[1]]` and `r vars[[2]]` before review. Items whose facilities 
+differed more than `r facil_cut` percent were labelled. 
+
+```{r facil-scatter, fig.cap = "Scatterplot of item facilities", fig.width=7, fig.height=8}
+output[['plot_facil']]
+```
+

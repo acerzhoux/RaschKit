@@ -9,11 +9,13 @@
 #' @return Tibble of facilities of the two categories of the dichotomous DIF variable.
 #' @examples
 #' facil_DIF()
+#' @export
 
 facil_DIF <- function(folder, test, DIFVar, long_label=FALSE){
     N <- N_item(folder=folder, test=test)
     labels <- df_shw(folder=folder, test=test, long_label=long_label) %>%
-        pull(item)
+        pull(item) %>%
+        unique()
 
     file_its(folder=folder, test=test, DIFVar=DIFVar) %>%
         mutate(facility=str_sub(X1, -44, -37) %>%

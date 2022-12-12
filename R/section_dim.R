@@ -7,6 +7,7 @@
 #' @param dim_names Vector of the dimensions' names.
 #' @examples
 #' section_dim(codes=c(1, 2, 3, 4), n_dims=c(30, 45), dim_names=c('Literacy', 'Numeracy'))
+#' @export
 
 section_dim <- function(scrs, n_dims, dim_names){
     scrs_par <- paste0('(', paste0(scrs, collapse=','), ')')

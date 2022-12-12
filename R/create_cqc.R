@@ -2,7 +2,7 @@
 #'
 #' This function creates 'test.cqc' file in 'input' folder. This is associated with test named 'test'.
 #'
-#' For DIF analysis on dichotomous variables, you need specify 'DIFVar', 'DIFVar_cols', and 'dich_code'.
+#' For DIF analysis on dichotomous variables, you need specify 'DIFVar', 'DIFVar_cols'.
 #' For DIF analysis on polytomous variables, there are two methods. Method 1 compares each category's delta estimates with the mean of all subgroups. Specified arguments are 'DIFVar', 'DIFVar_cols', 'DIFVar_cols'. Method 2 runs two models. The first model does calibrations on each subgroup separately where you need to specify arguments of 'DIFVar', 'DIFVar_cols', and 'poly_group'. The other model runs a facet model with an interaction term between group and item where you need to specify arguments of 'DIFVar', 'DIFVar_cols', and 'poly_facet'.
 #'
 #' @param wd Working directory. Default is the folder where .Rproj is located.
@@ -16,13 +16,12 @@
 #' @param delete Vector of item order number to be removed from the test, e.g., c(2, 3, 45, 46).
 #' @param anchor TRUE when anchor is to be done. Default is FALSE.
 #' @param section_extr Extra sections to be added to 'test.cqc' file in 'input' folder.
-#' @param dbl_key TRUE if any item has polytomous scoring. Default is FALSE.
+#' @param dbl_key TRUE if any item has polytomous scoring. Default is NULL.
 #' @param poly_key TRUE if the key of any item has polytomous scoring. Default is FALSE.
 #' @param quick TRUE if quick estimation is preferred. Default is FALSE.
 #' @param step TRUE if any item in the test has polytomous scoring. Default is FALSE.
 #' @param DIFVar Name of DIF variable. Should be lowercase for ConQuest to run.
 #' @param DIFVar_cols DIF variable's column number in data.
-#' @param dich_code Vector of codes for dichotomous DIF variable, e.g., c('F', 'M').
 #' @param poly_catgrs Vector of polytomous DIF variable's categories.
 #' @param poly_facet TRUE if facet model is to be run on a polytomous DIF variable. Default is FALSE.
 #' @param poly_group TRUE if model is run per group. Default is FALSE.
@@ -32,8 +31,8 @@
 
 create_cqc <- function(wd=here::here(), test, run, resps_cols, pid_cols, run_ls=NULL,
                        regr_ls, codes, delete, anchor=FALSE, section_extr=NULL,
-                       dbl_key=FALSE, poly_key=FALSE, quick=FALSE, step=FALSE,
-                       DIFVar=NULL, DIFVar_cols, dich_code, poly_catgrs=NULL,
+                       dbl_key=NULL, poly_key=FALSE, quick=FALSE, step=FALSE,
+                       DIFVar=NULL, DIFVar_cols, poly_catgrs=NULL,
                        poly_facet=FALSE, poly_group=FALSE){
     # run_ls: list(domain='3-11', grade='12-13', flag='36')
     #   for testform; keys, labels differ; put in 'Keepcases'
@@ -45,9 +44,14 @@ create_cqc <- function(wd=here::here(), test, run, resps_cols, pid_cols, run_ls=
     folder_df <- file.path(wd, 'Data')
     path_output <- file.path(wd, if (is.null(DIFVar)) 'Output' else paste0('DIF/', DIFVar))
     path_lab <-  file.path(wd, 'Input', paste0(test, '.lab'))
-    path_df <- file.path(folder_df,
-                         if (is.null(run_ls)) paste0(test, '_Data.txt') else
-                             paste0('Data.txt'))
+
+    if (is.null(DIFVar)){
+        path_df <- file.path(folder_df,
+                             if (is.null(run_ls)) paste0(test, '_Data.txt') else
+                                 paste0('Data.txt'))
+    } else {
+        path_df <- file.path(folder_df, paste0(test, '_', DIFVar, '.txt'))
+    }
 
     # modify if last response col(s) has no data
     if (length(delete)>0) {
@@ -62,13 +66,13 @@ create_cqc <- function(wd=here::here(), test, run, resps_cols, pid_cols, run_ls=
              section_keys(folder=folder_df, test=test, dbl_key=dbl_key,
                           poly_key=poly_key, delete=delete),
              section_specs(anchor=anchor, wd=wd, test=test, DIFVar=DIFVar,
-                           poly_catgrs=poly_catgrs),
+                           poly_catgrs=poly_catgrs, quick=quick),
              if (!is.null(section_extr)) section_extr,
              section_model(run_ls=run_ls, run=run, regr_ls=regr_ls, codes=codes,
-                           poly_key=poly_key, DIFVar=DIFVar,
-                           dich_code=dich_code, poly_facet),
-             section_estimate(quick=quick),
-             section_export(step=step, DIFVar=DIFVar, poly_catgrs=poly_catgrs,
+                           poly_key=poly_key, DIFVar=DIFVar, step=step),
+             section_estimate(quick=quick, poly_key=poly_key),
+             section_export(poly_key=poly_key, step=step, DIFVar=DIFVar,
+                            poly_catgrs=poly_catgrs,
                             poly_facet=poly_facet, poly_group=poly_group),
              'reset;',
              if (!is.null(poly_catgrs)) 'enddo;',
@@ -80,6 +84,7 @@ create_cqc <- function(wd=here::here(), test, run, resps_cols, pid_cols, run_ls=
                            if (is.null(DIFVar)) paste0(test, '.cqc')
                            else if (poly_facet) paste0(DIFVar, '_', test, '_facet.cqc')
                            else if (poly_group) paste0(DIFVar, '_', test, '_group.cqc')
+                           else if (poly_key & step) paste0(DIFVar, '_', test, '_step.cqc')
                            else paste0(DIFVar, '_', test, '.cqc'))
     writeLines(cqc, cqc_path)
 

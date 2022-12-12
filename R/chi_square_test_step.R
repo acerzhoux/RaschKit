@@ -10,6 +10,9 @@
 #' @export
 
 chi_square_test_step <- function(df, desig_effect=1){
+    df <- df %>%
+        modify_at(c('delta.x', 'delta.y', 'error.x', 'error.y'), as.numeric)
+
     df %>% mutate(
         error.x=sqrt(desig_effect)*error.x,
         error.y=sqrt(desig_effect)*error.y,

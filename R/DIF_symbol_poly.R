@@ -8,6 +8,7 @@
 #' @return Tibble of Bonferroni adjusted statistical significance results of three variables/columns. Column 1 is that subgroup's item delta difference, symbol of significance ('*') or not, symbol of bigger than delta mean ('B') or smaller ('S').
 #' @examples
 #' DIF_symbol_poly()
+#' @export
 
 DIF_symbol_poly <- function(cutscore, t_vec, cat_vec){
     cutscore <- abs(cutscore)

@@ -4,6 +4,7 @@
 #'
 #' @param folder Folder where .shw file is located.
 #' @param test Name of test.
+#' @export
 
 term_L2 <- function(folder, test) {
     file_shw(folder=folder, test=test) %>%

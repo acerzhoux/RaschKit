@@ -18,7 +18,7 @@ DIF_dim_multi(
   vars = NULL,
   regr_vec_char = NULL,
   wd = here::here(),
-  quick = FALSE,
+  quick = TRUE,
   step = FALSE,
   delete = NULL,
   dbl_key = FALSE,
@@ -33,7 +33,8 @@ DIF_dim_multi(
   desig_effect = 1,
   dim_multi = FALSE,
   scores = NULL,
-  miss_code = c(".", "r", "R", "x", "X", "", " ")
+  miss_code = c(".", "r", "R", "x", "X", "", " "),
+  prep_process = FALSE
 )
 }
 \arguments{
@@ -63,7 +64,7 @@ DIF_dim_multi(
 
 \item{wd}{Working directory. Default is the folder where .Rproj is located.}
 
-\item{quick}{TRUE when testing. Default is FALSE.}
+\item{quick}{TRUE when testing. Default is TRUE}
 
 \item{step}{TRUE if polytomous items are involved. Default is FALSE.}
 
@@ -85,6 +86,8 @@ DIF_dim_multi(
 
 \item{chi_cut}{Threshold of chi-square difference between two items Default is 10.}
 
+\item{facil_cut}{Threshold of number of percent to flag an item with large facility difference between two groups of test takers. Default is 10.}
+
 \item{desig_effect}{Value to adjust errors. Default is 1.}
 
 \item{dim_multi}{TRUE if the model is multidimensional. Default is FALSE.}
@@ -92,6 +95,8 @@ DIF_dim_multi(
 \item{scores}{Scores possible in the test, e.g., 0:3. Default is NULL.}
 
 \item{miss_code}{Code for missing data that should be converted to NA. Default is c('.', 'r', 'R', 'x', 'X', '', ' ').}
+
+\item{prep_process}{TRUE if it is needed to remove items without data on some categories of DIF variable. Default is FALSE.}
 }
 \description{
 This function can perform DIF analysis on either dichotomous or polytomous variable. This is associated with test named 'test'. When dimension is above two, you would be continuously shown "Yes/No" nonstop. In that case, please stop the program and run the generated .cqc file in 'input' folder with ConQuest GUI or Console version on your computer.
@@ -100,6 +105,6 @@ This function can perform DIF analysis on either dichotomous or polytomous varia
 Sparse data will be processed in three ways before being used for DIF analysis. First, convert non-used categories and missing values to NA. Second, remove item responses with all missing values. Third, remove items that have no data on any category of the DIF variable. An Excel with processed data and removed items is saved in 'data' folder. Its name has both test name and DIF variable.
 }
 \examples{
-DIF_dim_multi(method='chi_square', vars=c('Girls', 'Boys'), DIFVar="studGender", data=df_DIF, test='Dan', pid='studentId', n_cov=5, n_dims=c(901, 171), dim_names=c('HUM', 'Maths'), regr_vec_char=c('countryName', 'studAge'), quick=TRUE, section_extr='group countryName;\n')
-DIF_dim_multi(method='Bonferroni', DIFVar="studAge", data=df_DIF, test='Dan', pid='studentId', n_cov=5, n_dims=c(901, 171), dim_names=c('HUM', 'Maths'), regr_vec_char=c('countryName', 'studGender'), quick=TRUE, section_extr='group countryName;\n')
+DIF_dim_multi(method='chi_square', vars=c('Girls', 'Boys'), DIFVar="studGender", data=df_DIF, test='ELANA', pid='studentId', n_cov=5, n_dims=c(901, 171), dim_names=c('HUM', 'Maths'), regr_vec_char=c('countryName', 'studAge'), section_extr='group countryName;\n')
+DIF_dim_multi(method='Bonferroni', DIFVar="studAge", data=df_DIF, test='ELANA', pid='studentId', n_cov=5, n_dims=c(901, 171), dim_names=c('HUM', 'Maths'), regr_vec_char=c('countryName', 'studGender'), quick=TRUE, section_extr='group countryName;\n')
 }

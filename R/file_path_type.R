@@ -12,6 +12,5 @@
 
 file_path_type <- function(folder, test, type){
     list.files(folder, full.names=TRUE) %>%
-        str_subset(test) %>%
-        str_subset(paste0('.', type))
+        str_subset(paste0(test, '.', type))
 }

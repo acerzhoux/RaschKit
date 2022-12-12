@@ -10,7 +10,7 @@
 #' @param chi_cut Threshold of chi-square difference between two tests. Default is 10.
 #' @param DIF_cut Threshold of an item's delta estimate difference between two tests. Default is 0.5.
 #' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference between two tests. Default is 4.
-#' @param steps TRUE if DIF analysis is performed on step parameters. Default is FALSE.
+#' @param step TRUE if DIF analysis is performed on step parameters. Default is FALSE.
 #' @param long_label Whether item labels are longer than 15 characters' fixed width. Default is FALSE.
 #' @return List of chi-square test results for anchors between two adjacent grades.
 #' @examples
@@ -19,7 +19,7 @@
 
 Equate_Vrt <- function(folder=here::here('output'), test, grades=c(2:10),
                        grade_name='L', p_cut=0.05, chi_cut=10,
-                       DIF_cut=0.5, DIF_adj_cut=4, steps=FALSE, long_label=FALSE){
+                       DIF_cut=0.5, DIF_adj_cut=4, step=FALSE, long_label=FALSE){
     if (!dir.exists(here::here('equating'))) dir.create(here::here('equating'))
 
     n_test <- length(grades)
@@ -31,19 +31,38 @@ Equate_Vrt <- function(folder=here::here('output'), test, grades=c(2:10),
         equat_ls[[sht]] <- Equate_shw(folder=folder, test=test, vars=test_2,
                                       var_name=grade_name, p_cut=p_cut,
                                       DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut,
-                                      sav_results=FALSE, steps=steps,
+                                      sav_results=FALSE, step=step,
                                       long_label=long_label)
     }
 
+    summary <- map(equat_ls, 'shift') %>%
+        imap(~mutate(.x, Grade=.y)) %>%
+        map2(map(equat_ls, 'flag'),
+             ~mutate(.x, Links_bfr=nrow(.y),
+                     Links_afr=nrow(filter(.y, is.na(flag))),
+                     Links_retained_perc=str_c(round(Links_afr/Links_bfr*100), '%'))) %>%
+        reduce(bind_rows) %>%
+        select(Grade, everything())
+    sum_ls <- list(Summary=summary) %>%
+        append(map(equat_ls, 'flag'))
+
     # save results
-    writexl::write_xlsx(map(equat_ls, 'results'),
-                        here::here('equating', paste0('Equating_Vertical_', test,
-                        if(steps) '_Steps', '.xlsx')))
-    pdf(file.path(here::here('equating', paste0('Equating_Vertical_', test,
-                                                if(steps) '_Steps', '.pdf'))),
-        width=20/2.54, height=20/2.54)
-    map(map(equat_ls, 'plot'), print)
+    path_xlsx <- here::here('equating', paste0('Vertical_', test,
+                            if(step) '_step', '.xlsx'))
+    writexl::write_xlsx(sum_ls, path_xlsx)
+
+    path_pdf <- file.path(here::here('equating', paste0('Vertical_', test,
+                          if(step) '_step', '.pdf')))
+    pdf(path_pdf, width=7, height=14)
+    map(map(equat_ls, 'plot_DIF'), print)
     dev.off()
 
-    return(map(equat_ls, 'results'))
+    # point users to files of varying purposes
+    writeLines(c(
+        paste0('Anchor DIF analysis for ', test, ' (before vertical equating):'),
+        paste0('\tSummary:\t', path_xlsx),
+        paste0('\tPlots:\t\t', path_pdf)
+    ))
+
+   # map(equat_ls, 'flag')
 }

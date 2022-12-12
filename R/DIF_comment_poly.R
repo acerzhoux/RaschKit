@@ -6,6 +6,7 @@
 #' @return Tibble of summary of results from polytomous DIF variable analysis.
 #' @examples
 #' DIF_comment_poly()
+#' @export
 
 DIF_comment_poly <- function(DiF_sum){
     # add DIF mark for each item

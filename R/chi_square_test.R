@@ -9,6 +9,9 @@
 #' @export
 
 chi_square_test <- function(df){
+    df <- df %>%
+        modify_at(c('delta.x', 'delta.y', 'error.x', 'error.y'), as.numeric)
+    
     shift <- mean(df$delta.x) - mean(df$delta.y)
     df %>% mutate(
         delta.y_adj=delta.y + shift,

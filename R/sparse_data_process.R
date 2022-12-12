@@ -66,7 +66,7 @@ sparse_data_process <- function(test, data, keys, labels, n_cov, n_dims,
                 length(which(items_rmved_order %in% (sum(n_dims[1:(i-1)])+1):sum(n_dims[1:i])))
         }
     }
-    Removed=tibble(Item=vars_miss, Reason='No data')
+    Removed <- tibble(Item=vars_miss, Reason='No data')
     if (!is.null(DIFVar)) {
         Removed <- Removed %>%
             bind_rows(tibble(Item=vars_miss_DIFVar,

@@ -12,14 +12,20 @@ plot_DIF(
   chi_cut = 10,
   DIF_cut = 0.5,
   DIF_adj_cut = 4,
-  steps = FALSE,
-  DIF = FALSE
+  step = FALSE,
+  DIF = FALSE,
+  cor,
+  shift,
+  sdr,
+  ax_min,
+  ax_max,
+  quick = TRUE
 )
 }
 \arguments{
 \item{df}{Dataframe with results of chi-square tests on items that appeared in two tests.}
 
-\item{wh}{'Before'/'After' when to plot before or after equating or in DIF analysis.}
+\item{wh}{'Before' or 'After' when to plot before or after equating or in DIF analysis.}
 
 \item{vars}{Vector of length 2 such as c('VIC','NSW'). Its order corresponds to .x and .y (delta, error).}
 
@@ -31,16 +37,25 @@ plot_DIF(
 
 \item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference between two tests. Default is 4.}
 
-\item{steps}{TRUE if DIF analysis is performed on step parameters. Default is FALSE.}
+\item{step}{TRUE if DIF analysis is performed on step parameters. Default is FALSE.}
 
 \item{DIF}{TRUE if DIF analysis is performed on a dichotomous DIF variable. Default is FALSE (anchor check).}
+
+\item{cor}{Correlation of two categories' delta estimates.}
+
+\item{shift}{Shift of two categories' average delta estimates.}
+
+\item{sdr}{SD ratio of two categories' delta estimates.}
+
+\item{ax_min}{Minimum value of x and y axis.}
+
+\item{ax_max}{Maximum value of x and y axis.}
+
+\item{quick}{Whether quick error is needed. Default is TRUE for DIF analysis.}
 }
 \value{
 Plot of DIF analysis.
 }
 \description{
 This function plots all items in a test or all anchors and label DIF items/anchors.
-}
-\examples{
-plot_DIF()
 }

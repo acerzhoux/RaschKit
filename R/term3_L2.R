@@ -6,6 +6,7 @@
 #' @param test Name of test.
 #' @examples
 #' term3_L2()
+#' @export
 
 term3_L2 <- function(folder, test) {
     file_shw(folder=folder, test=test) %>%

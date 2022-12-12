@@ -4,7 +4,7 @@
 \alias{section_specs}
 \title{section_specs}
 \usage{
-section_specs(wd, anchor, test, DIFVar, poly_catgrs)
+section_specs(wd, anchor, test, DIFVar, poly_catgrs, quick)
 }
 \arguments{
 \item{wd}{Working directory. Default is the folder where .Rproj is located.}
@@ -16,6 +16,8 @@ section_specs(wd, anchor, test, DIFVar, poly_catgrs)
 \item{DIFVar}{Name of the DIF variable.}
 
 \item{poly_catgrs}{Vector of categories of the polytomous DIF variable 'DIFVar'.}
+
+\item{quick}{TRUE when testing.}
 }
 \value{
 String of characters used in estimation section of 'test.cqc' file in 'input' folder.

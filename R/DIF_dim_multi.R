@@ -17,7 +17,7 @@
 #' @param dim_names Vector of the dimensions' names.
 #' @param keys Vector of keys in the test. Default is NULL.
 #' @param labels Vector of item labels that correspond to order of item response columns in data.
-#' @param quick TRUE when testing. Default is FALSE.
+#' @param quick TRUE when testing. Default is TRUE
 #' @param step TRUE if polytomous items are involved. Default is FALSE.
 #' @param delete Vector of orders of items to be removed.
 #' @param dbl_key TRUE if any item has polytomous scoring. Default is FALSE.
@@ -28,23 +28,26 @@
 #' @param chi_cut Threshold of chi-square difference between two items Default is 10.
 #' @param DIF_cut Threshold of an item's delta estimate difference between two tests. Default is 0.5.
 #' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference between two tests. Default is 4.
+#' @param facil_cut Threshold of number of percent to flag an item with large facility difference between two groups of test takers. Default is 10.
 #' @param desig_effect Value to adjust errors. Default is 1.
 #' @param dim_multi TRUE if the model is multidimensional. Default is FALSE.
 #' @param scores Scores possible in the test, e.g., 0:3. Default is NULL.
 #' @param miss_code Code for missing data that should be converted to NA. Default is c('.', 'r', 'R', 'x', 'X', '', ' ').
+#' @param prep_process TRUE if it is needed to remove items without data on some categories of DIF variable. Default is FALSE.
 #' @examples
-#' DIF_dim_multi(method='chi_square', vars=c('Girls', 'Boys'), DIFVar="studGender", data=df_DIF, test='Dan', pid='studentId', n_cov=5, n_dims=c(901, 171), dim_names=c('HUM', 'Maths'), regr_vec_char=c('countryName', 'studAge'), quick=TRUE, section_extr='group countryName;\n')
-#' DIF_dim_multi(method='Bonferroni', DIFVar="studAge", data=df_DIF, test='Dan', pid='studentId', n_cov=5, n_dims=c(901, 171), dim_names=c('HUM', 'Maths'), regr_vec_char=c('countryName', 'studGender'), quick=TRUE, section_extr='group countryName;\n')
+#' DIF_dim_multi(method='chi_square', vars=c('Girls', 'Boys'), DIFVar="studGender", data=df_DIF, test='ELANA', pid='studentId', n_cov=5, n_dims=c(901, 171), dim_names=c('HUM', 'Maths'), regr_vec_char=c('countryName', 'studAge'), section_extr='group countryName;\n')
+#' DIF_dim_multi(method='Bonferroni', DIFVar="studAge", data=df_DIF, test='ELANA', pid='studentId', n_cov=5, n_dims=c(901, 171), dim_names=c('HUM', 'Maths'), regr_vec_char=c('countryName', 'studGender'), quick=TRUE, section_extr='group countryName;\n')
 #' @export
 
 DIF_dim_multi <- function(method=c('chi_square', 'Bonferroni'), test, DIFVar,
                           pid, n_cov, n_dims, dim_names, data=NULL, keys=NULL,
                           labels=NULL, vars=NULL, regr_vec_char=NULL, wd=here::here(),
-                          quick=FALSE, step=FALSE, delete=NULL,
+                          quick=TRUE, step=FALSE, delete=NULL,
                           dbl_key=FALSE, poly_key=FALSE, anchor=FALSE, section_extr=NULL,
                           p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4, chi_cut=10, facil_cut=10,
                           desig_effect=1, dim_multi=FALSE, scores=NULL,
-                          miss_code=c('.', 'r', 'R', 'x', 'X', '', ' ')){
+                          miss_code=c('.', 'r', 'R', 'x', 'X', '', ' '),
+                          prep_process=FALSE){
     # ####### check inputs
     cat('Checking inputs...\n')
     if (!all(c(pid, regr_vec_char) %in% names(data))) {
@@ -73,14 +76,16 @@ DIF_dim_multi <- function(method=c('chi_square', 'Bonferroni'), test, DIFVar,
     # check colinearity?
 
     # ####### preprocess data
-    cat('Checking and removing items without data on any category of DIF variable...\n')
-    processed <- sparse_data_process(test=test, data=data, keys=keys, labels=labels,
-                              n_cov=n_cov, n_dims=n_dims, miss_code=miss_code,
-                              DIFVar=DIFVar)
-    data <- processed[['data']]
-    n_dims <- processed[['n_dims']]
-    keys <- processed[['keys']]
-    labels <- processed[['labels']]
+    if (prep_process){
+        cat('Checking and removing items without data on any category of DIF variable...\n')
+        processed <- sparse_data_process(test=test, data=data, keys=keys, labels=labels,
+                                  n_cov=n_cov, n_dims=n_dims, miss_code=miss_code,
+                                  DIFVar=DIFVar)
+        data <- processed[['data']]
+        n_dims <- processed[['n_dims']]
+        keys <- processed[['keys']]
+        labels <- processed[['labels']]
+    }
 
     # ####### prepare arguments
     cat('Preparing ConQuest control file...\n')
@@ -100,7 +105,7 @@ DIF_dim_multi <- function(method=c('chi_square', 'Bonferroni'), test, DIFVar,
         DIFVar=DIFVar, DIFVar_cols=prep$DIFVar_cols, poly_catgrs=NULL,
         poly_facet=FALSE, poly_group=FALSE) %>%
         append(list(dich_code=vars))
-    arg_DIF <- list(DIFVar=DIFVar, test=test, p_cut=p_cut, steps=step)
+    arg_DIF <- list(DIFVar=DIFVar, test=test, p_cut=p_cut, step=step)
 
     lab_tbl <- tibble(item=1:length(labels), label=labels)
     N <- length(dim_names)
@@ -123,12 +128,11 @@ DIF_dim_multi <- function(method=c('chi_square', 'Bonferroni'), test, DIFVar,
         for (i in 1:N){
             arg_DIF[['test']] <- paste0(test, '_', dim_names[[i]])
             dat <- df[strt:(strt+n_dims[[i]]-1), ]
-            do.call(DIF_dich_iterative,
+            do.call(DIF_dich,
                     arg_DIF %>% append(list(vars=vars, df=dat,
                                             DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut,
                                             chi_cut=chi_cut, facil_cut=facil_cut,
-                                            desig_effect=desig_effect,
-                                            plot_facil=FALSE)))
+                                            desig_effect=desig_effect)))
             strt <- strt+n_dims[[i]]
         }
     }

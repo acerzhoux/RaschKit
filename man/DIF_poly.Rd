@@ -12,7 +12,7 @@ DIF_poly(
   test,
   domain = NULL,
   p_cut = 0.05,
-  steps = FALSE
+  step = FALSE
 )
 }
 \arguments{
@@ -30,16 +30,16 @@ DIF_poly(
 
 \item{p_cut}{Threshold of statistical test. Default is 0.05.}
 
-\item{steps}{TRUE if polytomous items are involved. Default is FALSE.}
+\item{step}{TRUE if polytomous items are involved. Default is FALSE.}
 }
 \value{
-List of summary of results from polytomous DIF variable analysis, including comments, steps, summary statistics with flags, and statistics used to produce the the flags.
+List of summary of results from polytomous DIF variable analysis, including comments, step, summary statistics with flags, and statistics used to produce the the flags.
 }
 \description{
 This function performs DIF analysis on a polytomous variable and summarizes results.
 }
 \details{
-This functions saves a multiple-facet plot of plots for each subgroup's average delta (x) vs. subgroup delta (y) in the working directory's 'DIF' folder with the DIF variable in the name. Also saved in the 'DIF' folder is an Excel file with four sheets, 'comments', 'steps', 'flags', and 'stats'.
+This functions saves a multiple-facet plot of plots for each subgroup's average delta (x) vs. subgroup delta (y) in the working directory's 'DIF' folder with the DIF variable in the name. Also saved in the 'DIF' folder is an Excel file with four sheets, 'comments', 'step', 'flags', and 'stats'.
 }
 \examples{
 DIF_poly()

@@ -4,10 +4,12 @@
 \alias{section_export}
 \title{section_export}
 \usage{
-section_export(step, DIFVar, poly_catgrs, poly_facet, poly_group)
+section_export(poly_key, step, DIFVar, poly_catgrs, poly_facet, poly_group)
 }
 \arguments{
-\item{step}{TRUE if any item in the test has polytomous scoring.}
+\item{poly_key}{TRUE if the key of any item has polytomous scoring. Default is FALSE.}
+
+\item{step}{TRUE if a three-way interaction term of item, step, and DIF variable is used in facet modeling.}
 
 \item{DIFVar}{Name of DIF variable.}
 

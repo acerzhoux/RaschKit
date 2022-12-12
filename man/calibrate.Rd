@@ -18,7 +18,7 @@ calibrate(
   labels = NULL,
   quick = FALSE,
   delete = NULL,
-  dbl_key = FALSE,
+  dbl_key = NULL,
   poly_key = FALSE,
   anchor = FALSE,
   section_extr = NULL,
@@ -29,11 +29,20 @@ calibrate(
   fit_uw = 1.2,
   dFallThr = 0.5,
   dRiseThr = 0.1,
-  sav_xlsx = TRUE,
   abilEst2use = "pv1",
   numAbilGrps = NULL,
-  recode = TRUE,
-  long_label = FALSE
+  recode_poly = FALSE,
+  long_label = FALSE,
+  missCode2Conv = c("@", "@@", "@@@", "@@@@", "7", "8", "9", "88", "99", ".", "", " ",
+    "-"),
+  filetype = "sav",
+  slope = NULL,
+  intercept = NULL,
+  extrapolation = FALSE,
+  save_xlsx = TRUE,
+  est_type = "wle",
+  anchor_read = FALSE,
+  sparse_check = FALSE
 )
 }
 \arguments{
@@ -43,7 +52,9 @@ calibrate(
 
 \item{test}{Name of the test.}
 
-\item{data}{Dataframe with pid, covariables (e.g,, DIF variable), and responses. Default is NULL where Excel file with name 'test' in 'data' folder is used.}
+\item{data}{Dataframe with pid, covariables (e.g,, DIF variable), and
+responses. Default is NULL where Excel file with name 'test' in 'data'
+folder is used.}
 
 \item{pid}{Name of candidates' ID variable.}
 
@@ -51,57 +62,99 @@ calibrate(
 
 \item{regr_vec_char}{Vector of character regressors' names.}
 
-\item{n_dims}{Vector of numbers of responses the dimensions have. Default is NULL. Define this vector if multi-dimensional model is to be run, e.g., c(30, 45). Also should define this if there are variables after response columns, e.g., 30.}
+\item{n_dims}{Vector of numbers of responses the dimensions have.
+Default is NULL. Define this vector if multi-dimensional model is to be run,
+e.g., c(30, 45). Also should define this if there are variables after
+response columns, e.g., 30.}
 
-\item{dim_names}{Vector of the dimensions' names. Default is NULL. Define this vector if multi-dimensional model is to be run.}
+\item{dim_names}{Vector of the dimensions' names. Default is NULL.
+Define this vector if multi-dimensional model is to be run.}
 
 \item{keys}{Vector of keys in the test. Default is NULL.}
 
-\item{labels}{Vector of item labels that correspond to order of item response columns in data.}
+\item{labels}{Vector of item labels that correspond to order of item
+response columns in data.}
 
 \item{quick}{TRUE when testing. Default is FALSE.}
 
-\item{delete}{Vector of orders of items to be removed. Default is NULL.}
+\item{delete}{Vector of orders or labels of items to be removed. Default is NULL.}
 
-\item{dbl_key}{TRUE if any item has polytomous scoring. Default is FALSE.}
+\item{dbl_key}{TRUE if any item has polytomous scoring. Default is NULL.}
 
-\item{poly_key}{TRUE if the key of any item has polytomous scoring. Default is FALSE.}
+\item{poly_key}{TRUE if the key of any item has polytomous scoring.
+Default is FALSE.}
 
 \item{anchor}{TRUE when anchor is to be done. Default is FALSE.}
 
-\item{section_extr}{Extra sections to be added to 'test.cqc' file in 'input' folder. Default is NULL.}
+\item{section_extr}{Extra sections to be added to 'test.cqc' file in
+'input' folder. Default is NULL.}
 
-\item{easy}{Threshold to flag easy items. Default is 90 (means 90 percent correct).}
+\item{easy}{Threshold to flag easy items. Default is 90 (percent correct).}
 
-\item{hard}{Threshold to flag hard items. Default is 10 (means 10 percent correct).}
+\item{hard}{Threshold to flag hard items. Default is 10 (percent correct).}
 
-\item{iRst}{Threshold to flag low item-rest correlation statistics. Default is 0.11.}
+\item{iRst}{Threshold to flag low item-rest correlation statistics.
+Default is 0.11.}
 
-\item{fit_w}{Threshold to flag large weighted item fit statistics. Default is 1.1.}
+\item{fit_w}{Threshold to flag large weighted item fit statistics.
+Default is 1.1.}
 
-\item{fit_uw}{Threshold to flag large unweighted item fit statistics. Default is 1.2.}
+\item{fit_uw}{Threshold to flag large unweighted item fit statistics.
+Default is 1.2.}
 
-\item{dFallThr}{Ability on last bin above which falling distractor is flagged. Default is 0.5.}
+\item{dFallThr}{Ability on last bin above which falling distractor is flagged.
+Default is 0.5.}
 
-\item{dRiseThr}{Ability on last bin below which rising distractor is unflagged. Default is 0.1.}
+\item{dRiseThr}{Ability on last bin below which rising distractor is unflagged.
+Default is 0.1.}
 
-\item{sav_xlsx}{Whether to save Excel file to 'results' folder. Default is TRUE.}
-
-\item{abilEst2use}{Ability type used for curve data. Default is 'pv1'. Use 'wle' for smaller samples.}
+\item{abilEst2use}{Ability type used for curve data. Default is 'pv1'.
+Use 'wle' for smaller samples.}
 
 \item{numAbilGrps}{Number of ability groups. Default is NULL.}
 
-\item{long_label}{Whether item labels are longer than 16 characters' fixed width. Default is FALSE.}
+\item{recode_poly}{TRUE if polytomous items have non-continuous scores.
+Default is FALSE.}
 
-\item{step}{TRUE if polytomous items are involved. Default is FALSE.}
+\item{long_label}{Whether item labels are longer than 16 characters' fixed
+width. Default is FALSE.}
+
+\item{missCode2Conv}{Missing codes that need to be converted to embedded and
+trailing missing symbols such as 'M' and 'R'. Commonly used missing symbols are
+'@' (less or more),'7','8','9','88','99','.','',' ', and '-'.}
+
+\item{filetype}{Format for input dataset. Default is 'sav'. Also support
+csv and xlsx formats.}
+
+\item{slope}{Slope to multiply ability estimates. Default is NULL}
+
+\item{intercept}{Value/intercept to add to ability estimates. Default is NULL.}
+
+\item{extrapolation}{Whether to extrapolate the minimum and maximum estimates.
+Default is FALSE.}
+
+\item{save_xlsx}{Whether to save summary file. Default is TRUE (single test).}
+
+\item{est_type}{Type of ability estimate to use for score equivalence table,
+'wle' or 'mle'. Default is 'wle'.}
+
+\item{anchor_read}{Whether read from an anchor file in 'input' folder.
+Default is FALSE. Then, should put anchors tbl (Item, Delta) on a sheet of
+'anchors.xlsx' in 'data' folder. If TRUE, an anchor .anc file should exist
+in 'input' folder.}
+
+\item{sparse_check}{Whether to check response column sparsity in general or
+regarding any DIF variable category. Default is FALSE. If TRUE, sparse
+response columns will be removed.}
 }
 \description{
-This function calibrates items in a test and adds comments and flags of levels of priority for review. This is associated with test named 'test'. If sav_xlsx is TRUE, an Excel file with a summary of the above information will be saved in 'results' folder in the working directory.
+This function calibrates items in a test and adds comments and flags of
+levels of priority for review. This is associated with test named 'test'.
+If save_xlsx is TRUE, an Excel file with a summary of the above information
+will be saved in 'results' folder in the working directory.
 }
 \examples{
-calibrate(data=cov_respns, test='randomData_Dim3', pid="pid", n_cov=6, n_dims=c(20, 10), regr_vec_char=c('nation', 'age', 'language', 'grade'), dim_names=c('English', 'Maths'), quick=TRUE, all_mc=FALSE, dim_multi=TRUE)
-calibrate(data=elena, test='elena_Dich2', pid="IDSTUD", n_cov=9, quick=TRUE, delete=c(1,6,8,9,28,34,35,36))
-calibrate(data=elena, test='elana_math1', pid="IDSTUD", n_cov=9, quick=TRUE, all_mc=FALSE, poly_key=TRUE)
-calibrate(data=racp, test='racp1', pid="V1", n_cov=1, quick=TRUE, keys=cd$`Correct options`, labels=cd$`Question ID`)
-calibrate(data=elena, test='elana_poly_score', pid="IDSTUD", n_cov=9, quick=TRUE, poly_key=TRUE)
+# Not run
+# calibrate(data=racp, test='RACP', pid="V1", n_cov=1, keys=cd$`Correct options`,
+# labels=cd$`Question ID`, delete=c(3,4,5,36), dbl_key=list(`7`=c(1,3), `9`=c(3,4)))
 }

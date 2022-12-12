@@ -5,8 +5,7 @@
 #' @param iflag123 Item statistics with flag priorities of 1 to 3.
 #' @param comments Dataframe with Comments.
 #' @return Item statistics with four levels of priority.
-#' @examples
-#' CCC_fine_flag4()
+#' @export
 
 CCC_fine_flag4 <- function(iflag123, comments){
   qorders <- unique(comments$iNum)

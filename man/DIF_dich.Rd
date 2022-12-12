@@ -5,48 +5,73 @@
 \title{DIF_dich}
 \usage{
 DIF_dich(
-  folder = NULL,
   DIFVar,
   test,
-  vars_dich,
+  vars,
+  df,
   p_cut = 0.05,
-  DIF_cut = 0.5,
-  DIF_adj_cut = 5,
   chi_cut = 10,
+  DIF_cut = 0.5,
+  DIF_adj_cut = 4,
+  desig_effect = 1,
+  step = FALSE,
   facil_cut = 10,
-  steps = FALSE,
-  sav_xlsx = TRUE
+  long_label = FALSE,
+  iterative = FALSE,
+  save_xlsx = TRUE,
+  quick = TRUE
 )
 }
 \arguments{
-\item{folder}{Folder where subgroups' calibration results are located. Default is the subfolder with name of argument 'DIFVar' within 'DIF' folder (folder=NULL).}
-
 \item{DIFVar}{Name of dichotomous DIF variable, e.g., 'gender'.}
 
 \item{test}{Name of test.}
 
-\item{vars_dich}{Vector of categories of DIFVar, e.g., c('girl', 'boy'). This is used in plotting. The order should be the same as '1' and '2' in interaction term of ConQuest's .shw files. Note that ConQuest follows alphabetical rule and uses '1' and '2' in output files for 'F' and 'M' (coded in data for female and male).}
+\item{vars}{Vector of length 2 such as c('girls','boys'). Its order
+corresponds to the alphabetic/numeric order of DIF variables' two categories in data.}
 
-\item{p_cut}{P value for performing chi-square significance tests. One criterion to flag DIF items. Default is 0.05.}
+\item{df}{Dataframe with delta estimates and errors of items for both
+categories of dichomomous variable in a test.}
 
-\item{DIF_cut}{Threshold of difference between two categories' delta estimates. One criterion to flag DIF items. Default is 0.5.}
+\item{p_cut}{p value of chi-square test. Default is 0.05.}
 
-\item{DIF_adj_cut}{Threshold of adjusted difference between two categories' delta estimates. One criterion to flag DIF items. Default is 5.}
+\item{chi_cut}{Threshold of chi-square difference between two tests. Default is 10.}
 
-\item{chi_cut}{Chi-square value from chi-square test. One criterion to flag DIF items. Default is 10.}
+\item{DIF_cut}{Threshold of an item's delta estimate difference between
+two tests. Default is 0.5.}
 
-\item{facil_cut}{Threshold of number of percent to flag an item with large facility difference between two groups of test takers. Default is 10.}
+\item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference
+between two tests. Default is 4.}
 
-\item{steps}{TRUE if the chi-square test is on step parameters of polytomous items. Default is FALSE.}
+\item{desig_effect}{Value to adjust errors. Default is 1.}
 
-\item{sav_xlsx}{TRUE if an Excel file of DIF analysis results are to be saved. Default is FALSE.}
+\item{step}{TRUE if DIF analysis is performed on step parameters. Default is FALSE.}
+
+\item{facil_cut}{Threshold of number of percent to flag an item with large
+facility difference between two groups of test takers. Default is 10.}
+
+\item{long_label}{Whether item labels are longer than 11 characters' fixed
+width. Default is FALSE.}
+
+\item{iterative}{TRUE to iteratively remove DIF items. Default is FALSE}
+
+\item{save_xlsx}{Whether to save summary file and plots. Default is TRUE
+(one DIF variable).}
+
+\item{quick}{Whether quick error is needed. Default is TRUE for DIF analysis.}
 }
 \value{
-Dataframe of summary of results from dichotomous DIF variable analysis.
+List of summary of results from dichotomous DIF variable analysis,
+including comments, step, summary statistics with flags, and statistics of
+items after review.
 }
 \description{
-This function performs DIF analyses on a dichotomous variable and summarizes results.
+This function performs chi-square tests (DIF analysis) on all items's
+difference of delta estimates between two groups of test takers.
+An Excel file with test results and flags is saved in 'DIF' folder.
+Also, one plot is saved in subfolder 'plot' inside 'DIF' folder.
 }
 \examples{
-DIF_dich()
+# Not run
+# DIF_dich(DIFVar='gender', test='N_1', vars=c('Girls', 'Boys'))
 }

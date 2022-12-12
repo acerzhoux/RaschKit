@@ -8,37 +8,45 @@ miss_recode(
   df,
   begin,
   end,
-  code_emd = "9",
-  code_trail = "r",
+  code_emd = "M",
+  code_trail = "R",
+  code_allMiss = NA_character_,
+  miss_code = c("@", "@@", "@@@", "@@@@", "7", "8", "9", "88", "99", ".", "", " ", "-"),
   to_dgt = FALSE,
   to_ltr = FALSE
 )
 }
 \arguments{
-\item{df}{Dataframe that contains responses to recode.}
+\item{df}{Dataframe that contains responses.}
 
 \item{begin}{The 1st item's order in test, e.g., 7.}
 
 \item{end}{The last item order in test, e.g., 46.}
 
-\item{code_emd}{Code used for the first missing response (also called embedded missing) of any test taker. Default is '9'.}
+\item{code_emd}{Code used for the first missing response (also called
+embedded missing) of any test taker. Default is '9'.}
 
-\item{code_trail}{Code used for missing responses after the first/embedded missing response (also called trailing missing) of any test taker. Default is 'M'.}
+\item{code_trail}{Code used for missing responses after the first/embedded
+missing response (also called trailing missing) of any test taker. Default is 'M'.}
 
-\item{to_dgt}{TRUE if it is needed to convert letter responses to digits. Default is FALSE.}
+\item{code_allMiss}{Code to use for rows of all missing values.
+Default is NA_character_.}
 
-\item{to_ltr}{TRUE if it is needed to convert digit responses to letters. Default is FALSE.}
+\item{miss_code}{Missing codes that need to be converted to embedded and
+trailing missing symbols such as 'M' and 'R'. Commonly used missing symbols are
+'@' (less or more),'7','8','9','88','99','.','',' ', and '-'.}
+
+\item{to_dgt}{TRUE if it is needed to convert letter responses to digits.
+Default is FALSE.}
+
+\item{to_ltr}{TRUE if it is needed to convert digit responses to letters.
+Default is FALSE.}
 }
 \value{
-Dataframe with recoded symbols for embedded and trailing missing responses of each test taker.
+Dataframe with recoded symbols for embedded and trailing missing
+responses of each test taker.
 }
 \description{
-This function separately recodes embedded missing and trailing missing.
-}
-\examples{
-a <- miss_recode(df=elena[10:48], begin=1, end=39)
-b <- miss_recode(df=elena[10:48], begin=1, end=30)
-c <- miss_recode(df=elena, begin=10, end=48)
-d <- miss_recode(df=elena, begin=10, end=40, code_emd='m', to_ltr=T)
-e <- miss_recode(df=racp, begin=2, end=171)
+This function recodes embedded missing, trailing missing, and all missing
+with code given.
 }

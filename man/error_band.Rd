@@ -15,6 +15,3 @@ Dataframe of chi-square test results with smoothed upper and lower confidence in
 \description{
 This function produces smoothed upper and lower confidence interval (CI) values of the average of an item's delta estimates in two tests. Those values will be used in plotting.
 }
-\examples{
-error_band()
-}

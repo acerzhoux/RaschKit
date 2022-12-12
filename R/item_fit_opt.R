@@ -7,9 +7,11 @@
 #' @return Dataframe of item statistics, fit statistics and option statistics.
 #' @examples
 #' item_fit_opt()
+#' @export
 
 item_fit_opt <- function(folder, test){
     item_stats(folder=folder, test=test) %>%
+        mutate(qOrder=as.character(qOrder)) %>%
         left_join(fit_stats(folder=folder, test=test), by='qOrder') %>%
         left_join(opt_stats(folder=folder, test=test) %>%
                       filter(iScore == 1) %>%

@@ -14,13 +14,12 @@ DIF_items(df, p_cut, chi_cut, DIF_cut, DIF_adj_cut)
 \item{chi_cut}{Threshold of chi-square difference between two tests.}
 
 \item{DIF_cut}{Threshold of an item's delta estimate difference between two tests.}
+
+\item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference between two tests.}
 }
 \value{
 Dataframe with results of chi-square tests that satisfy all thresholds.
 }
 \description{
 This function finds out items showing DIF between two tests.
-}
-\examples{
-DIF_items()
 }

@@ -4,9 +4,9 @@
 #'
 #' @param folder Folder where .shw file is located.
 #' @param test Name of test.
-#' @
 #' @examples
 #' df_shw_Term3(folder=folder, test='randomData')
+#' @export
 
 df_shw_Term3 <- function(folder, test){
     labs <- read.table(here::here('data', paste0(test, '_Labels.txt'))) %>%

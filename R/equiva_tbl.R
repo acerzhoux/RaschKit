@@ -4,18 +4,17 @@
 #'
 #' @param wd Working directory. Default is the folder where .Rproj is located.
 #' @param test Name of test.
-#' @param est_type Type of ability estimate to use, including 'wle', 'mle', 'pv1' 'pv2', 'pv3', 'pv4', and 'pv5'. Default is 'wle'.
-#' @param slope Slope to multiply ability estimates. Default is 10.
-#' @param intercept Value/intercept to add to ability estimates. Default is 100.
-#' @param extrapolation Whether to extrapolate the minimum and maximum estimates. Default is TRUE.
+#' @param est_type Type of ability estimate to use for score equivalence table, 'wle' or 'mle'. Default is 'wle'.
+#' @param slope Slope to multiply ability estimates. Default is NULL
+#' @param intercept Value/intercept to add to ability estimates. Default is NULL.
+#' @param extrapolation Whether to extrapolate the minimum and maximum estimates. Default is FALSE.
 #' @return Dataframe of scaled ability estimates.
 #' @examples
-#' equiva_tbl()
+#' equiva_tbl(test='Writing')
 #' @export
 
-equiva_tbl <- function(wd=here::here(), test, est_type='wle', slope=10,
-                       intercept=100, extrapolation=TRUE){
-    n_item <- N_item(folder=here::here('Output'), test=test)
+equiva_tbl <- function(wd=here::here(), test, est_type='wle', slope=NULL,
+                       intercept=NULL, extrapolation=FALSE){
     equiva_path <- here::here('Output', paste0(test, '.eqv'))
     cn <- c('reset;',
             str_c('get << ', here::here('Output', paste0(test, '_compressed.CQS')), ';', sep=''),
@@ -32,23 +31,37 @@ equiva_tbl <- function(wd=here::here(), test, est_type='wle', slope=10,
         cqc=cqc_path
     )
 
-    data_read <- read_fwf(equiva_path,
-                          fwf_cols(Score_raw=c(2, 10), EST=c(13, 20), SE=c(24, 30)),
-                          skip=10, n_max=(n_item +1)) %>%
-        modify_at(2:3, ~as.numeric(.) %>% round(., digits=3)) %>%
-        modify_at(1, ~as.numeric(.) %>% round(., digits=0))
+    # read equiv tbl
+    lines <- readLines(equiva_path)
+    ind2 <- grep('=====', lines)[[2]]-1
+    eqv_tbl <- str_replace_all(lines[11:ind2], '_BIG_', ' NA') %>%
+        read.table(text=.) %>%
+        as_tibble() %>%
+        `colnames<-`(c('Score_raw','EST','SE'))
 
     # extrapolation
     if (extrapolation){
-        est_min <- data_read[2:4,]$EST %>%
+        tbl_r <- nrow(eqv_tbl)-1
+        est_min <- eqv_tbl[2:4,]$EST %>%
             {.[[3]] - .[[2]]*3 + .[[1]]*3}
-        est_max <- data_read[(n_item-2):n_item,]$EST %>%
+        est_max <- eqv_tbl[(tbl_r-2):tbl_r,]$EST %>%
             {.[[3]]*3 - .[[2]]*3 + .[[1]]}
 
-        data_read[1, ]$EST <- est_min
-        data_read[(n_item+1), ]$EST <- est_max
+        eqv_tbl[1, ]$EST <- est_min
+        eqv_tbl[(tbl_r+1), ]$EST <- est_max
     }
+    writexl::write_xlsx(eqv_tbl,
+                        here::here('results', paste0('eqv_tbl_', test, '.xlsx')))
 
-    data_read %>%
-        mutate(Score_scale=round(slope*EST + intercept, digits=0))
+    # scale scores
+    if (!is.null(intercept) | !is.null(slope)){
+        cat('Generating scaled-score table...\n')
+        if (is.null(intercept)) intercept <- 0
+        if (is.null(slope)) slope <- 1
+        scaled_tbl <- eqv_tbl %>%
+            mutate(Score_scale=round(slope*EST + intercept, digits=0))
+        # save results and return
+        writexl::write_xlsx(scaled_tbl,
+                            here::here('results', paste0('scaled_tbl_', test, '.xlsx')))
+    }
 }

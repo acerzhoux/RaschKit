@@ -6,6 +6,7 @@
 #' @param iDIF Vector of DIF items.
 #' @examples
 #' DIF_comment_dich()
+#' @export
 
 DIF_comment_dich <- function(DIFVar, iDIF){
     tibble(Comment = 1,

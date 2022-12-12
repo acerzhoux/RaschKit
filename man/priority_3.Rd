@@ -18,5 +18,5 @@ Vector of flags.
 This function checks response option point biserial (Pt Bis) values in 'test.itn' file in 'output' folder and flag items with any distractor of positive Pt Bis. This is associated with test named 'test'.
 }
 \examples{
-priority_3(test='Numeracy_item')
+priority_3(test='FPA')
 }

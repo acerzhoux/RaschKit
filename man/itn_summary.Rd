@@ -14,9 +14,9 @@ itn_summary(
   fit_uw = 1.2,
   dFallThr = 0.5,
   dRiseThr = 0.1,
-  sav_xlsx = TRUE,
   ccc_data,
-  iType
+  iType,
+  quick = FALSE
 )
 }
 \arguments{
@@ -24,9 +24,9 @@ itn_summary(
 
 \item{test}{Name of test.}
 
-\item{easy}{Threshold to flag easy items. Default is 90 (means 90% correct).}
+\item{easy}{Threshold to flag easy items. Default is 90 (percent correct).}
 
-\item{hard}{Threshold to flag hard items. Default is 10 (means 10% correct).}
+\item{hard}{Threshold to flag hard items. Default is 10 (percent correct).}
 
 \item{iRst}{Threshold to flag low item-rest correlation statistics. Default is 0.11.}
 
@@ -38,11 +38,11 @@ itn_summary(
 
 \item{dRiseThr}{Ability on last bin below which rising distractor is unflagged. Default is 0.1.}
 
-\item{sav_xlsx}{Whether to save Excel file to 'results' folder. Default is TRUE.}
-
 \item{ccc_data}{Data to draw CCC. One element of list output from Function 'CCC_Vernon'.}
 
 \item{iType}{Dataframe with columns of iNum and itype. One element of list output from Function 'CCC_Vernon'.}
+
+\item{quick}{TRUE when testing. Default is FALSE.}
 }
 \value{
 Dataframe of item statistics with flags.
@@ -51,5 +51,5 @@ Dataframe of item statistics with flags.
 This function produces item analysis results with flags based on item statistics and CCC. This is associated with test named 'test'.
 }
 \examples{
-itn_summary(test='elana_poly_score')
+itn_summary(test='AACA_202208_PRE_Meeting')
 }

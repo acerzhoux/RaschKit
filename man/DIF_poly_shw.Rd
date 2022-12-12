@@ -11,7 +11,7 @@ DIF_poly_shw(
   test,
   domain = NULL,
   p_cut = 0.05,
-  steps = FALSE
+  step = FALSE
 )
 }
 \arguments{
@@ -27,10 +27,10 @@ DIF_poly_shw(
 
 \item{p_cut}{Threshold of statistical test. Default is 0.05.}
 
-\item{steps}{TRUE if polytomous items are involved. Default is FALSE.}
+\item{step}{TRUE if polytomous items are involved. Default is FALSE.}
 }
 \value{
-List of summary of results from polytomous DIF variable analysis, including comments, steps, summary statistics with flags, and statistics used to produce the the flags.
+List of summary of results from polytomous DIF variable analysis, including comments, step, summary statistics with flags, and statistics used to produce the the flags.
 
 Tibble of summary of results from polytomous DIF variable analysis.
 }

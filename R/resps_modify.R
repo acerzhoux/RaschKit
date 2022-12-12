@@ -6,6 +6,7 @@
 #' @param test Name of the test.
 #' @param resps_cols Column number(s) of responses in the data .txt file.
 #' @param delete Vector of item order number to be removed from the test, e.g., c(2, 3, 45, 46).
+#' @export
 
 resps_modify <- function(folder, test, resps_cols, delete){
     keys <- read_keys(folder=folder, test=test)

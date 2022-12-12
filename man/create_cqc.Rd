@@ -16,13 +16,12 @@ create_cqc(
   delete,
   anchor = FALSE,
   section_extr = NULL,
-  dbl_key = FALSE,
+  dbl_key = NULL,
   poly_key = FALSE,
   quick = FALSE,
   step = FALSE,
   DIFVar = NULL,
   DIFVar_cols,
-  dich_code,
   poly_catgrs = NULL,
   poly_facet = FALSE,
   poly_group = FALSE
@@ -51,7 +50,7 @@ create_cqc(
 
 \item{section_extr}{Extra sections to be added to 'test.cqc' file in 'input' folder.}
 
-\item{dbl_key}{TRUE if any item has polytomous scoring. Default is FALSE.}
+\item{dbl_key}{TRUE if any item has polytomous scoring. Default is NULL.}
 
 \item{poly_key}{TRUE if the key of any item has polytomous scoring. Default is FALSE.}
 
@@ -63,8 +62,6 @@ create_cqc(
 
 \item{DIFVar_cols}{DIF variable's column number in data.}
 
-\item{dich_code}{Vector of codes for dichotomous DIF variable, e.g., c('F', 'M').}
-
 \item{poly_catgrs}{Vector of polytomous DIF variable's categories.}
 
 \item{poly_facet}{TRUE if facet model is to be run on a polytomous DIF variable. Default is FALSE.}
@@ -75,7 +72,7 @@ create_cqc(
 This function creates 'test.cqc' file in 'input' folder. This is associated with test named 'test'.
 }
 \details{
-For DIF analysis on dichotomous variables, you need specify 'DIFVar', 'DIFVar_cols', and 'dich_code'.
+For DIF analysis on dichotomous variables, you need specify 'DIFVar', 'DIFVar_cols'.
 For DIF analysis on polytomous variables, there are two methods. Method 1 compares each category's delta estimates with the mean of all subgroups. Specified arguments are 'DIFVar', 'DIFVar_cols', 'DIFVar_cols'. Method 2 runs two models. The first model does calibrations on each subgroup separately where you need to specify arguments of 'DIFVar', 'DIFVar_cols', and 'poly_group'. The other model runs a facet model with an interaction term between group and item where you need to specify arguments of 'DIFVar', 'DIFVar_cols', and 'poly_facet'.
 }
 \examples{

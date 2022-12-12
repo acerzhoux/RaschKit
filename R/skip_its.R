@@ -6,6 +6,7 @@
 #' @return Number of lines to skip.
 #' @examples
 #' skip_its()
+#' @export
 
 skip_its <- function(file){
     readLines(file) %>%

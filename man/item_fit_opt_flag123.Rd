@@ -19,9 +19,9 @@ item_fit_opt_flag123(
 
 \item{test}{Name of test.}
 
-\item{easy}{Threshold to flag easy items. Default is 90 (means 90% correct).}
+\item{easy}{Threshold to flag easy items. Default is 90 (percent correct).}
 
-\item{hard}{Threshold to flag hard items. Default is 10 (means 10% correct).}
+\item{hard}{Threshold to flag hard items. Default is 10 (percent correct).}
 
 \item{iRst}{Threshold to flag low item-rest correlation statistics. Default is 0.11.}
 
@@ -34,7 +34,4 @@ Dataframe of item statistics with flags.
 }
 \description{
 This function adds three priorities of flag to items in a test based on item statistics. This is associated with test named 'test'.
-}
-\examples{
-item_fit_opt_flag123()
 }

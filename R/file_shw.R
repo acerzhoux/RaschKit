@@ -7,10 +7,10 @@
 #' @return String of lines in 'test.shw' file.
 #' @examples
 #' file_shw()
+#' @export
 
 file_shw <- function(folder, test){
     list.files(folder, full.names=TRUE) %>%
-        str_subset(test) %>%
-        str_subset('.shw') %>%
+        str_subset(paste0(test, '.shw')) %>%
         readLines()
 }

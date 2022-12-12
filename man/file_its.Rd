@@ -7,7 +7,9 @@
 file_its(folder = NULL, test, DIFVar)
 }
 \arguments{
-\item{folder}{Folder where subgroups' calibration results are located. Default is the subfolder with name of argument 'DIFVar' within 'DIF' folder (folder=NULL).}
+\item{folder}{Folder where subgroups' calibration results are located.
+Default is the subfolder with name of argument 'DIFVar' within 'DIF'
+folder (folder=NULL).}
 
 \item{test}{Name of test.}
 
@@ -17,8 +19,10 @@ file_its(folder = NULL, test, DIFVar)
 Dataframe of delta, facility, etc..
 }
 \description{
-This function extracts item analysis statistics from CQ output file 'test.its'. This is associated with test named 'test'.
+This function extracts item analysis statistics from CQ output file 'test.its'.
+This is associated with test named 'test'.
 }
 \examples{
-file_its(test='RandD2', DIFVar='gender')
+# Not run
+# file_its(test='AHU', DIFVar='Gender')
 }

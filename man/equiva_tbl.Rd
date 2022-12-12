@@ -8,9 +8,9 @@ equiva_tbl(
   wd = here::here(),
   test,
   est_type = "wle",
-  slope = 10,
-  intercept = 100,
-  extrapolation = TRUE
+  slope = NULL,
+  intercept = NULL,
+  extrapolation = FALSE
 )
 }
 \arguments{
@@ -18,13 +18,13 @@ equiva_tbl(
 
 \item{test}{Name of test.}
 
-\item{est_type}{Type of ability estimate to use, including 'wle', 'mle', 'pv1' 'pv2', 'pv3', 'pv4', and 'pv5'. Default is 'wle'.}
+\item{est_type}{Type of ability estimate to use for score equivalence table, 'wle' or 'mle'. Default is 'wle'.}
 
-\item{slope}{Slope to multiply ability estimates. Default is 10.}
+\item{slope}{Slope to multiply ability estimates. Default is NULL}
 
-\item{intercept}{Value/intercept to add to ability estimates. Default is 100.}
+\item{intercept}{Value/intercept to add to ability estimates. Default is NULL.}
 
-\item{extrapolation}{Whether to extrapolate the minimum and maximum estimates. Default is TRUE.}
+\item{extrapolation}{Whether to extrapolate the minimum and maximum estimates. Default is FALSE.}
 }
 \value{
 Dataframe of scaled ability estimates.
@@ -33,5 +33,5 @@ Dataframe of scaled ability estimates.
 This function extracts desired type of ability estimates from compressed ConQuest .cqs file and generate scaled scores with specified slope and intercept. This is associated with test named 'test'.
 }
 \examples{
-equiva_tbl()
+equiva_tbl(test='Writing')
 }

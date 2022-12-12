@@ -4,7 +4,7 @@
 \alias{plot_facil}
 \title{plot_facil}
 \usage{
-plot_facil(test, facil_dif, vars, facil_cut, steps, DIFVar)
+plot_facil(test, facil_dif, vars, facil_cut, DIFVar)
 }
 \arguments{
 \item{test}{Name of test.}
@@ -15,14 +15,11 @@ plot_facil(test, facil_dif, vars, facil_cut, steps, DIFVar)
 
 \item{facil_cut}{Threshold to label items with big facility difference between the two categories.}
 
-\item{steps}{Whether polytomous items are involved.}
+\item{DIFVar}{Name of DIF variable. Should be lowercase for ConQuest to run. Default is NULL.}
 }
 \value{
 Plot of one category's facilities vs. those of the other category of the dichotomous DIF variable.
 }
 \description{
 This function plots the facilities of the two categories of the dichotomous DIF variable.
-}
-\examples{
-plot_facil()
 }

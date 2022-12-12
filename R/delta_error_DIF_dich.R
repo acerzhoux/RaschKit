@@ -9,6 +9,7 @@
 #' @examples
 #' delta_error_DIF_dich(folder=folder, test='RandD2')
 #' delta_error_DIF_dich(folder=folder, test='RandD2', long_label=TRUE)
+#' @export
 
 delta_error_DIF_dich <- function(folder, test, long_label=FALSE){
     n_item <- N_item(folder=folder, test=test)

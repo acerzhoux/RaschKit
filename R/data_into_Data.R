@@ -4,14 +4,23 @@
 
 #' @param test Name of test. Default is NULL.
 #' @param data Dataframe where responses are put together.
+#' @param DIFVar Name of DIF variable. Should be lowercase for ConQuest to run. Default is NULL.
 #' @examples
 #' data_into_Data()
 #' @export
 
-data_into_Data <- function(test=NULL, data){
+data_into_Data <- function(test=NULL, data, DIFVar=NULL){
+    if (is.null(DIFVar)){
+        file_path <- here::here('data',
+                                paste0(if(!is.null(test)) paste0(test, '_'),
+                                       'Data.txt'))
+    } else {
+        file_path <- here::here('data', paste0(test, '_', DIFVar, '.txt'))
+    }
+
     data %>% as.data.frame() %>%
         gdata::write.fwf(
-            here::here('data', paste0(if(!is.null(test)) paste0(test, '_'), 'Data.txt')),
+            file_path,
             justify="left", na=" ",
             colnames = FALSE, sep = "")
 }

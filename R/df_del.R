@@ -9,6 +9,7 @@
 #' @examples
 #' df_del(test='elana_math_NSW')
 #' df_del(test='elana_math_NSW', long_label=TRUE)
+#' @export
 
 df_del <- function(folder=here::here('output'), test, long_label=FALSE){
     file_del <- file_path_type(folder=folder, test=test, type='.del')

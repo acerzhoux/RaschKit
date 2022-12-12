@@ -17,7 +17,7 @@ DIF(
   section_extr = NULL,
   dbl_key = FALSE,
   poly_key = FALSE,
-  quick = FALSE,
+  quick = TRUE,
   step = FALSE,
   DIFVar = NULL,
   DIFVar_cols = NULL,
@@ -30,9 +30,10 @@ DIF(
   DIF_adj_cut = 4,
   chi_cut = 10,
   facil_cut = 10,
-  steps = FALSE,
   desig_effect = 1,
-  domain = NULL
+  domain = NULL,
+  save_xlsx = TRUE,
+  iterative = TRUE
 )
 }
 \arguments{
@@ -48,62 +49,85 @@ DIF(
 
 \item{resps_cols}{String of column numbers of responses, e.g., '20-30'.}
 
-\item{regr_ls}{List of regressors. Element is column number in data. Element name is regressor's name. Default is NULL.}
+\item{regr_ls}{List of regressors. Element is column number in data.
+Element name is regressor's name. Default is NULL.}
 
-\item{delete}{Vector of item order number(s) to be removed from the test, e.g., c(2, 3, 45, 46). Default is NULL.}
+\item{delete}{Vector of item order number(s) to be removed from the test,
+e.g., c(2, 3, 45, 46). Default is NULL.}
 
 \item{anchor}{TRUE when anchor is to be done. Default is FALSE.}
 
-\item{section_extr}{Extra sections to be added to 'test.cqc' file in 'input' folder. Default is NULL.}
+\item{section_extr}{Extra sections to be added to 'test.cqc' file in
+'input' folder. Default is NULL.}
 
 \item{dbl_key}{TRUE if any item has polytomous scoring. Default is FALSE.}
 
 \item{poly_key}{TRUE if the key of any item has polytomous scoring. Default is FALSE.}
 
-\item{quick}{TRUE if quick estimation is preferred. Default is FALSE.}
+\item{quick}{Whether quick error is needed. Default is TRUE for DIF analysis.}
 
 \item{step}{TRUE if any item in the test has polytomous scoring. Default is FALSE.}
 
-\item{DIFVar}{Name of DIF variable. Should be lowercase for ConQuest to run. Default is NULL.}
+\item{DIFVar}{Name of DIF variable. Should be lowercase for ConQuest to run.
+Default is NULL.}
 
 \item{DIFVar_cols}{DIF variable's column number in data. Default is NULL.}
 
 \item{poly_catgrs}{Vector of polytomous DIF variable's categories. Default is NULL.}
 
-\item{poly_facet}{TRUE if facet model is to be run on a polytomous DIF variable. Default is FALSE.}
+\item{poly_facet}{TRUE if facet model is to be run on a polytomous DIF variable.
+Default is FALSE.}
 
 \item{poly_group}{TRUE if model is run per group. Default is FALSE.}
 
-\item{vars}{Vector of length 2 such as c('girls','boys'). Its order corresponds to the alphabetic/numeric order of DIF variables' two categories in data.}
+\item{vars}{Vector of length 2 such as c('girls','boys'). Its order corresponds
+to the alphabetic/numeric order of DIF variables' two categories in data.}
 
 \item{p_cut}{p value of chi-square test. Default is 0.05.}
 
-\item{DIF_cut}{Threshold of an item's delta estimate difference between two tests. Default is 0.5.}
+\item{DIF_cut}{Threshold of an item's delta estimate difference between two
+tests. Default is 0.5.}
 
-\item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference between two tests. Default is 4.}
+\item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference
+between two tests. Default is 4.}
 
 \item{chi_cut}{Threshold of chi-square difference between two tests. Default is 10.}
 
-\item{facil_cut}{Threshold of number of percent to flag an item with large facility difference between two groups of test takers. Default is 10.}
-
-\item{steps}{TRUE if DIF analysis is performed on step parameters. Default is FALSE.}
+\item{facil_cut}{Threshold of number of percent to flag an item with large
+facility difference between two groups of test takers. Default is 10.}
 
 \item{desig_effect}{Value to adjust errors. Default is 1.}
 
 \item{domain}{Name of the domain in the test, e.g., 'Literacy'. Default is NULL.}
 
-\item{run}{Vector of specific categories of variables to select from 'test_Data.txt' in 'data' folder, e.g., c('English2', 3, 1). This corresponds to the previous argument `run_ls`. Default is NULL.}
+\item{save_xlsx}{Whether to save summary file and plots. Default is TRUE (one DIF variable).}
 
-\item{run_ls}{List of data filters. Element is column number in data. Element name is filter variable's name. Default is NULL.}
+\item{iterative}{TRUE to iteratively remove DIF items. Default is TRUE.}
 }
 \value{
-Dataframe of students' ID, raw score, max test score, estimate, and standard error.
+Dataframe of students' ID, raw score, max test score, estimate,
+and standard error.
 }
 \description{
-This function can perform DIF analysis on either dichotomous or polytomous variables. The method to use depends on the 'method' argument. 'chi_square' performs DIF analysis on a dichotomous variable where you should specify argument 'vars' such as c('girls', 'boys'). 'Bonferroni' performs adjusted mean comparison  on polytomous DIF variable, specify argument poly_catgrs, e.g., 1:5 and use default values of the other two arguments. To use method of both facet and group modeling on polytomous DIF variable, specify argument poly_facet=TRUE and use default values of the other two arguments.
+This function can perform DIF analysis on either dichotomous or polytomous
+variables. The method to use depends on the 'method' argument.
+'method=chi_square' performs DIF analysis on a dichotomous variable.
+Argument vars should be specified, e.g., c('girls', 'boys') whose order
+corresponds to its categories' alphabetic/digital order in data.
+ 'method=Bonferroni' performs adjusted mean comparison  on polytomous DIF
+ variable. Argument poly_catgrs should be specified, e.g., 1:5.
+ 'method=Facet' performs both facet and group modeling on polytomous
+ DIF variable.
 }
 \examples{
-DIF(vars=c('girls', 'boys'), test='literacy', codes=c(1:4, 9), pid_cols='1-12', resps_cols='19-48', DIFVar='gender', DIFVar_cols='14', regr_ls=list(nation='13', age='15-16'), quick=TRUE)
-DIF(poly_catgrs=1:5, test='literacy', codes=c(1:4, 9), pid_cols='1-12', resps_cols='19-48', DIFVar='nation', DIFVar_cols='13', regr_ls=list(G2='17', age='15-16'), quick=TRUE)
-DIF(poly_facet=TRUE, test='literacy', codes=c(1:4, 9), pid_cols='1-12', resps_cols='19-48', DIFVar='nation', DIFVar_cols='13', regr_ls=list(G2='17', age='15-16'), quick=TRUE)
+# Not run
+# DIF(vars=c('girls', 'boys'), test='literacy', codes=c(1:4, 9),
+# pid_cols='1-12', resps_cols='19-48', DIFVar='gender', DIFVar_cols='14',
+# regr_ls=list(nation='13', age='15-16'), quick=TRUE)
+# DIF(poly_catgrs=1:5, test='literacy', codes=c(1:4, 9), pid_cols='1-12',
+# resps_cols='19-48', DIFVar='nation', DIFVar_cols='13',
+# regr_ls=list(G2='17', age='15-16'), quick=TRUE)
+# DIF(poly_facet=TRUE, test='literacy', codes=c(1:4, 9), pid_cols='1-12',
+# resps_cols='19-48', DIFVar='nation', DIFVar_cols='13',
+# regr_ls=list(G2='17', age='15-16'), quick=TRUE)
 }

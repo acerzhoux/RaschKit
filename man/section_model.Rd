@@ -4,16 +4,7 @@
 \alias{section_model}
 \title{section_model}
 \usage{
-section_model(
-  run_ls,
-  run,
-  regr_ls,
-  codes,
-  poly_key,
-  DIFVar,
-  dich_code,
-  poly_facet
-)
+section_model(run_ls, run, regr_ls, codes, poly_key, DIFVar, step)
 }
 \arguments{
 \item{run_ls}{List to filter data, e.g., list(domain='3-11', grade='12-13', flag='36'). Name of list element is variable name in 'test_Data.txt' in 'data' folder. List element (string of numbers, e.g., '3-11') is the column number of that variable in the data.}
@@ -28,9 +19,7 @@ section_model(
 
 \item{DIFVar}{Name of DIF variable.}
 
-\item{dich_code}{Vector of codes for dichotomous DIF variable, e.g., c('F', 'M').}
-
-\item{poly_facet}{TRUE if facet model is to be run on a polytomous DIF variable.}
+\item{step}{TRUE if DIF analysis is performed on step parameters. Default is FALSE.}
 }
 \value{
 String of characters used in model section of 'test.cqc' file in 'input' folder.

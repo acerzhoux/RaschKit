@@ -5,8 +5,9 @@
 \title{install_packages_ls}
 \usage{
 install_packages_ls(
-  packages = c("tidyverse", "conquestr", "rlang", "ggthemes", "ggrepel", "patchwork",
-    "gdata", "janitor", "data.table", "RColorBrewer", "fs")
+  packages = c("plyr", "conquestr", "rlang", "ggthemes", "ggrepel", "patchwork", "gdata",
+    "janitor", "data.table", "RColorBrewer", "fs", "here", "writexl", "ggpubr", "qpdf",
+    "tidyverse")
 )
 }
 \arguments{

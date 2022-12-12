@@ -6,6 +6,7 @@
 #' @param test Name of test.
 #' @examples
 #' fit_stats(test='elana_poly_score')
+#' @export
 
 fit_stats <- function(folder=here::here('output'), test){
     n_item <- N_item(folder=folder, test=test)

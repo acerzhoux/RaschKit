@@ -8,27 +8,34 @@
 #' @param codes Vector of valid codes for item responses, e.g., c(1, 2, 3, 4, 5, 6, 7, 8, 9).
 #' @param poly_key TRUE if any item has polytomous scoring.
 #' @param DIFVar Name of DIF variable.
-#' @param dich_code Vector of codes for dichotomous DIF variable, e.g., c('F', 'M').
-#' @param poly_facet TRUE if facet model is to be run on a polytomous DIF variable.
+#' @param step TRUE if DIF analysis is performed on step parameters. Default is FALSE.
 #' @return String of characters used in model section of 'test.cqc' file in 'input' folder.
 #' @examples
 #' section_model()
+#' @export
 
 section_model <- function(run_ls, run, regr_ls, codes, poly_key,
-                          DIFVar, dich_code, poly_facet){
+                          DIFVar, step){
     c(if (!is.null(run_ls)) {
         map2_chr(run, names(run_ls), ~paste0('keepcases ', .x, '!', .y, ';\n'))
     },
 
     if (!is.null(regr_ls)) {str_c('Regression ', paste0(names(regr_ls), collapse=' '), ';\n')},
     str_c('codes ', paste0(codes, collapse=','), '; /*09 scored zero*/\n'),
+
     if (poly_key){
-        paste0('model item',
-               if (!is.null(dich_code) | poly_facet) {paste0('+', DIFVar, '+item*', DIFVar)},
-               '+item*step;\n')
+        if (step){
+            paste0('model item',
+                   if (!is.null(DIFVar)) {paste0('+', DIFVar, '+item*', DIFVar)},
+                   '+item*step*', DIFVar, ';\n')
+        } else {
+            paste0('model item',
+                   if (!is.null(DIFVar)) {paste0('+', DIFVar, '+item*', DIFVar)},
+                   '+item*step;\n')
+        }
     } else {
         paste0('model item',
-               if (!is.null(dich_code) | poly_facet) {paste0('+', DIFVar, '+item*', DIFVar)},
+               if (!is.null(DIFVar)) {paste0('+', DIFVar, '+item*', DIFVar)},
                ';\n')
     })
 }

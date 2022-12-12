@@ -6,10 +6,13 @@
 #' @param test Name of test.
 #' @return Vector of flags.
 #' @examples
-#' priority_3(test='Numeracy_item')
+#' priority_3(test='FPA')
+#' @export
 
 priority_3 <- function(folder=here::here('output'), test){
-    itn_ls(folder=folder, test=test) %>%
+    priority3=itn_ls(folder=folder, test=test) %>%
         map(~filter(., Score == 0)) %>%
         map_lgl(~any(.$PtBis > 0))
+    tibble(priority_3=priority3,
+        qOrder=1:length(priority3))
 }

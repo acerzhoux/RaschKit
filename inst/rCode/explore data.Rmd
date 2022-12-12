@@ -1,0 +1,55 @@
+---
+title: "vignette"
+author: "Xiaoliang Zhou"
+date: '2022-06-17'
+output: html_document
+---
+
+# install 'RaschKit' package (if not done yet)
+
+```{r}
+# 1. Create a project file 'xxx.Rproj' in a working directory.
+# 2. Open 'xxx.Rproj'. From bottom right pane,    
+#    click 'Packages' (3rd button after 'Files', 'Plots').
+#    click 'Install'. From 'Install from', select 'Package Archive File...'.
+#    Click 'Browse'. Enter into 'File name' file path 'T:\Xiaoliang Zhou'.
+#    Select compressed file 'RaschKit_1.0.0.tar.gz'. 
+#    Click 'Open'. 
+#    Click 'Install'.
+```
+
+```{r}
+library(RaschKit)
+install_packages_ls()
+create_folders() 
+```
+
+```{r}
+# 1. move this .Rmd file into the 'rCode' folder just created.
+# 2. Put received files into 'dataRaw' folder.
+# 3. Open this .Rmd file via 'xxx.Rproj'.
+# 4. Explore data via the following functions.
+```
+
+# Recode embedded/trailing missing as 'M'/'R'
+# Do once for each test dimension if test has more than one domain
+
+```{r}
+miss_recode(df=elena, begin=10, end=40) #specify beginning and end of test section
+```
+
+# Remove missing columns/rows
+
+```{r}
+missAll_remove_cols(df=data)
+# rm=FALSE: all-missing candidates will have 'flag_miss' as 1
+missAll_remove_rows(df, begin=10, end=39) 
+```
+
+# Check response categories' frequencies
+
+```{r}
+n_cov <- 4 # number covariates before response columns ind data
+lapply(resp[-c(1:n_cov)], table) 
+```
+

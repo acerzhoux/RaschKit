@@ -4,14 +4,11 @@
 \alias{calibrate_concurrent}
 \title{calibrate_concurrent}
 \usage{
-calibrate_concurrent()
+calibrate_concurrent(test)
 }
 \arguments{
 \item{test}{Name of test.}
 }
 \description{
 This function combines all steps after T. This is associated with test named 'test'.
-}
-\examples{
-calibrate_concurrent()
 }

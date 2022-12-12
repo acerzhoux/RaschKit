@@ -9,6 +9,7 @@
 #' @examples
 #' df_del_shw_Step(test='elana_poly_score')
 #' df_del_shw_Step(test='elana_poly_score', long_label=TRUE)
+#' @export
 
 df_del_shw_Step <- function(folder=here::here('output'), test, long_label=FALSE){
     df_del(folder=folder, test=test, long_label=long_label) %>%

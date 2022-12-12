@@ -1,24 +1,27 @@
 Package: RaschKit
 Type: Package
-Title: Perform psychometric analyses under Rasch models
-Version: 0.1.0
+Title: Perform Psychometric Analyses under Rasch Models
+Version: 1.0.0
 Authors@R: 
-    c(person("Xiaoliang", 
-             "Zhou", 
-             email = "xz2256@tc.columbia.edu", 
+    c(person("Zhou", 
+             "Xiaoliang", 
+             email = "Xiaoliang.Zhou@acer.org", 
              role = c("aut", "cre")),
     person("Mogol", 
              "Vernon", 
              email = "mogol.vernon@acer.org", 
-             role = c("aut")))
+             role = c("aut")),
+    person("Zoanetti", 
+             "Nathan", 
+             email = "Nathan.Zoanetti@acer.org", 
+             role = c("ctb")))
 Description: Provides tools for item calibration, horizontal and vertical equating, 
-    DIF analyses, data missing coding. Makes it easy to connect psychometric analyses
-    with output from ACER ConQuest.
+    DIF analyses, data missing coding. Makes it easy to perform psychometric analyses
+    with ACER ConQuest.
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
 Imports:
-    tidyverse,
+    plyr,
     conquestr,
     rlang,
     ggthemes,
@@ -29,5 +32,18 @@ Imports:
     lazyeval,
     data.table,
     RColorBrewer,
-    fs
-RoxygenNote: 7.2.0
+    fs,
+    here,
+    writexl,
+    ggpubr,
+    methods,
+    qpdf,
+    ggplot2,
+    dplyr,
+    tidyr,
+    readr,
+    purrr,
+    tibble,
+    stringr,
+    forcats
+RoxygenNote: 7.2.1

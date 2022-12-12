@@ -4,12 +4,14 @@
 \alias{data_into_Data}
 \title{data_into_Data}
 \usage{
-data_into_Data(test = NULL, data)
+data_into_Data(test = NULL, data, DIFVar = NULL)
 }
 \arguments{
 \item{test}{Name of test. Default is NULL.}
 
 \item{data}{Dataframe where responses are put together.}
+
+\item{DIFVar}{Name of DIF variable. Should be lowercase for ConQuest to run. Default is NULL.}
 }
 \description{
 This function saves dataset 'test_Data.txt' into 'data' folder. The saved dataset is imported into ConQuest later for modeling. This is associated with test named 'test'.

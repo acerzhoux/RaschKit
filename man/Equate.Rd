@@ -14,7 +14,9 @@ Equate(
   DIF_adj_cut = 4,
   sav_results = TRUE,
   desig_effect = 1,
-  steps = FALSE
+  step = FALSE,
+  DIF = FALSE,
+  iterative = FALSE
 )
 }
 \arguments{
@@ -36,7 +38,11 @@ Equate(
 
 \item{desig_effect}{Value to adjust errors. Default is 1.}
 
-\item{steps}{TRUE if DIF analysis is performed on step parameters. Default is FALSE.}
+\item{step}{TRUE if DIF analysis is performed on step parameters. Default is FALSE.}
+
+\item{DIF}{TRUE if DIF analysis is performed on a dichotomous DIF variable. Default is FALSE (anchor check).}
+
+\item{iterative}{TRUE to iteratively remove DIF items. Default is FALSE}
 }
 \value{
 Dataframe of chi-square test results for anchors between two tests.
@@ -45,5 +51,5 @@ Dataframe of chi-square test results for anchors between two tests.
 This function performs chi-square tests (DIF analysis) on a group of anchor items' difference of delta estimates in two tests. An Excel file with test results and flags can be saved in 'equating' folder. Also, one plot is saved in subfolder 'plot' inside 'equating' folder.
 }
 \examples{
-Equate()
+Equate(df=data[, c('item', 'delta.x', 'error.x', 'delta.y', 'error.y')], test='Elana_math', vars=c('NSW', 'VIC'))
 }

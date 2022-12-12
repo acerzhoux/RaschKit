@@ -4,21 +4,21 @@
 \alias{est_cas}
 \title{est_cas}
 \usage{
-est_cas(folder = here::here("output"), test, sav_xlsx = TRUE)
+est_cas(folder = here::here("output"), test)
 }
 \arguments{
 \item{folder}{Folder where 'test.cas' file is located. Default is 'output' folder.}
 
 \item{test}{Name of test.}
-
-\item{sav_xlsx}{TRUE if an Excel file is desired. Default is TRUE.}
 }
 \value{
 Dataframe with variables of 'Pid', 'ScoreRaw', 'ScoreMax', 'Est', and 'SE'.
 }
 \description{
-This function extracts ability estimation from 'test.cas' file. This is associated with test named 'test'.
+This function extracts ability estimation from 'test.cas' file.
+This is associated with test named 'test'.
 }
 \examples{
-est_cas(test='HUM_2')
+# Not run
+# est_cas(test='HUM_2')
 }

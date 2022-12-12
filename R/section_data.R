@@ -16,6 +16,7 @@
 #' @return String of characters used in export section of 'test.cqc' file in 'input' folder.
 #' @examples
 #' section_data()
+#' @export
 
 section_data <- function(path_df, resps_cols, pid_cols, run_ls, regr_ls,
                          path_lab, DIFVar, DIFVar_cols, poly_group){

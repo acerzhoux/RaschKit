@@ -8,15 +8,15 @@
 #' @param test Name of the test.
 #' @param domain Name of the domain in the test, e.g., 'Literacy'. Default is NULL.
 #' @param p_cut Threshold of statistical test. Default is 0.05.
-#' @param steps TRUE if polytomous items are involved. Default is FALSE.
-#' @return List of summary of results from polytomous DIF variable analysis, including comments, steps, summary statistics with flags, and statistics used to produce the the flags.
+#' @param step TRUE if polytomous items are involved. Default is FALSE.
+#' @return List of summary of results from polytomous DIF variable analysis, including comments, step, summary statistics with flags, and statistics used to produce the the flags.
 #' @return Tibble of summary of results from polytomous DIF variable analysis.
 #' @examples
 #' DIF_poly_shw(DIFVar='quintile', labels=labels, test=test)
 #' @export
 
 DIF_poly_shw <- function(folder=NULL, DIFVar, labels, test, domain=NULL,
-                         p_cut=0.05, steps=FALSE){
+                         p_cut=0.05, step=FALSE){
     if (is.null(folder)) folder <- here::here('DIF', DIFVar)
     file_ls <- list.files(folder, full.names=TRUE) %>%
         str_subset(test) %>%
@@ -51,5 +51,5 @@ DIF_poly_shw <- function(folder=NULL, DIFVar, labels, test, domain=NULL,
                       })
 
     DIF_poly(df_ls=dif_stats, DIFVar=DIFVar, cats=cats, labels=labels,
-                test=test, domain=domain, p_cut=p_cut, steps=steps)
+                test=test, domain=domain, p_cut=p_cut, step=step)
 }

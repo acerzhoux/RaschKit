@@ -7,6 +7,7 @@
 #' @param N_item Number of items in the test.
 #' @examples
 #' keys_poly_into_Data()
+#' @export
 
 keys_poly_into_Data <- function(test, score_max, N_item){
     matrix(rep(1:score_max, n_test), ncol=n_test, byrow = FALSE) %>%
