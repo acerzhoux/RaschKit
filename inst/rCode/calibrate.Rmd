@@ -1,7 +1,7 @@
 ---
 title: "calibrate"
 author: "Xiaoliang Zhou"
-date: '2022-11-25'
+date: `r format(Sys.time(), "%d %B, %Y")`
 output: html_document
 ---
 
@@ -25,7 +25,8 @@ Read data to be used for 'data' argument of Function calibrate.
 Note that data should have covariates followed by responses.
 
 ```{r}
-resp <- readxl::read_xlsx(list.files(here::here('dataRaw'), 'data', # revised to file name
+resp <- readxl::read_xlsx(list.files(here::here('dataRaw'), 
+        'data', # revise to unique string in file name
          full.names = TRUE)) %>% 
     map_df(~toupper(.x))
 ```
@@ -42,13 +43,14 @@ lapply(resp[-1], table)
 ## Codebook
 
 ```{r}
-cd <- readxl::read_xlsx(list.files(here::here('dataRaw'), 'codebook', # revised to file name
+cd <- readxl::read_xlsx(list.files(here::here('dataRaw'), 
+        'codebook', # revise to unique string in file name
          full.names = TRUE)) %>% 
     row_to_names(1) 
 keys <- cd %>% 
-    pull(Key) # Used as 'keys' for'calibrate' (below)
+    pull(Key) # To be used as 'keys' for'calibrate' (below)
 labels <- cd %>% 
-    pull(Item) # Used as 'labels' for'calibrate' (below)
+    pull(Item) # To be used as 'labels' for'calibrate' (below)
 ```
 
 ## Update key after review
@@ -68,7 +70,7 @@ keys[67] <- 'C'
 calibrate(test='FPA', data=resp, pid='pid', n_cov=1, keys=keys, labels=labels)
 ```
 
-Below are useful arguments in 'calibrate'. 
+Below are useful arguments of 'calibrate'. 
 
 ## Must set 
 

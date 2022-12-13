@@ -1,7 +1,7 @@
 ---
 title: "equate"
 author: "Xiaoliang Zhou"
-date: '2022-06-17'
+date: `r format(Sys.time(), "%d %B, %Y")`
 output: html_document
 ---
 
@@ -19,7 +19,7 @@ Open this .Rmd file via 'xxx.Rproj' in working directory.
 Select function below for different cases. Functions would output instructions 
 on where to find report and/or result files.
 
-## Dataframe as input
+## Use dataframe as input
 
 ```{r}
 Equate(df=df, test='Elana_math', vars=c('NSW', 'VIC'))
@@ -27,25 +27,25 @@ Equate(df=df, test='Elana_math', vars=c('NSW', 'VIC'))
 # .x relates to vars[[1]], .y relates to vars[[2]]
 ```
 
-## CQ output (.shw) as input
+Use of functions below assumes that .shw and other files with names associated 
+with test/test form/grade are in 'output' folder in working directory.
+
+## Use CQ output (.shw) as input
 
 ```{r}
 Equate_shw(test='elana_math', vars=c('NSW', 'VIC'))
-# .shw and other files named as arg 'test' should be in 'output' folder in wd
 ```
 
 ## Horizontal equating
 
 ```{r}
-Equate_Hrz(test='R', grades=c(3:6), forms=c('A','B'))
-# files whose names cover all combinations of args 'grades' and 'forms' (e.g., R_2A.shw)
-# should be in 'output' folder in wd
+Equate_Hrz(test='R', grades=c(2:6), forms=c('A','B'))
+# files names should cover all combinations of args 'grades' and 'forms' (e.g., R_2A.shw)
 ```
 
 ## Vertical equating
 
 ```{r}
 Equate_Vrt(test='R', grades=c(2:10))
-# files whose names cover all elements of arg 'grades' (e.g., R_2.shw)
-# should be in 'output' folder in wd
+# files names should cover all elements of arg 'grades' (e.g., R_2.shw)
 ```

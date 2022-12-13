@@ -1,7 +1,7 @@
 ---
 title: "explore data"
 author: "Xiaoliang Zhou"
-date: '2022-06-17'
+date: `r format(Sys.time(), "%d %B, %Y")`
 output: html_document
 ---
 
@@ -26,32 +26,29 @@ install_packages_ls()
 create_folders() 
 ```
 
-```{r}
-# 1. move this .Rmd file into the 'rCode' folder just created.
-# 2. Put received files into 'dataRaw' folder.
-# 3. Open this .Rmd file via 'xxx.Rproj'.
-# 4. Explore data via the following functions.
-```
+# Explore functions
 
-# Recode embedded/trailing missing as 'M'/'R'
-# Do once for each test dimension if test has more than one domain
+Open this .Rmd file via 'xxx.Rproj' in working directory. Explore data via 
+the following functions.
+
+## Recode embedded/trailing missing as 'M'/'R'
+
+Do once for each test domain if test has more than one domain.
 
 ```{r}
 miss_recode(df=elena, begin=10, end=40) #specify beginning and end of test section
 ```
 
-# Remove missing columns/rows
+## Remove missing columns/rows
 
 ```{r}
-missAll_remove_cols(df=data)
-# rm=FALSE: all-missing candidates will have 'flag_miss' as 1
+missAll_remove_cols(df=data) # rm=FALSE: all-missing rows will have 1 on 'flag_miss'
 missAll_remove_rows(df, begin=10, end=39) 
 ```
 
-# Check response categories' frequencies
+## Check response categories' frequencies
 
 ```{r}
 n_cov <- 4 # number covariates before response columns ind data
 lapply(resp[-c(1:n_cov)], table) 
 ```
-

@@ -1,7 +1,7 @@
 ---
 title: "DIF"
 author: "Xiaoliang Zhou"
-date: '2022-06-17'
+date: `r format(Sys.time(), "%d %B, %Y")`
 output: html_document
 ---
 
@@ -13,58 +13,55 @@ install_packages_ls()
 create_folders() 
 ```
 
-```{r}
-# 1. move this .Rmd file into the 'rCode' folder just created.
-# 2. Put received files into 'dataRaw' folder.
-# 3. Open this .Rmd file via 'xxx.Rproj'.
-# 4. Select functions proper. Functions would output instructions on 
-#    where to find the .html report and key result files.
-```
+# Explore function
 
-# ###### DIF analysis: Data as input; tow/more dichotomous DIF variables
+Open this .Rmd file via 'xxx.Rproj' in working directory.
+Select function below for different cases. Functions would output instructions 
+on where to find report and/or result files.
+
+## Use data as input; use tow/more dichotomous DIF variables
+
+Arguments below may be useful for specific purposes.
+- poly_key: TRUE if polytomous items exist in test.
+- step (useful only when poly_key=TRUE):
+  - FALSE: 'item+DIFVar+item*DIFVar+item*step;' generated for ConQuest;
+    model results used for item delta DIF analysis.
+  - TRUE: 'item+DIFVar+item*DIFVar+item*step*DIFVar;' generated for ConQuest;
+    model results used for item step DIF analysis.
+- output_ready: TURE when ConQuest output files are in 'DIF' folder.
+- iterative: FALSE if to compare with results from using ACER DIF templates.
 
 ```{r}
 DIF_domain(test, data=NULL, var_ls=NULL, n_cov=NULL, pid=NULL,
            keys=NULL, labels=NULL)
-
-# ##### Some useful arguments: ###### 
-# poly_key: TRUE if polytomous items exist
-# step (useful when poly_key=TRUE):
-#   FALSE: 'item+DIFVar+item*DIFVar+item*step;' for ConQuest;
-#     model results used for item delta DIF analysis
-#   TRUE: 'item+DIFVar+item*DIFVar+item*step*DIFVar;' for ConQuest;
-#     model results used for item step DIF analysis
-# output_ready: TURE when ConQuest output files are ready
-# iterative: FALSE if to compare with results from using DIF templates
 ```
 
-# ###### DIF analysis: Data as input; one DIF variable
+## Use data as input; use one dichotomous DIF variable
 
-# One domain in test
+### One domain in test
 
 ```{r}
 # dichotomous DIF variable
 DIF_dim_one(method='chi_square', vars=c('Girls', 'Boys'), data=elena, 
-            test='ELNA', DIFVar="gender", pid="IDSTUD", n_cov=9,
-            regr_vec_char=c('province', 'quintile'), quick=TRUE)
+            test='ELNA', DIFVar="gender", pid="IDSTUD", n_cov=9)
 
 # polytomous DIF variable
 DIF_dim_one(method='Bonferroni', data=elena, test='ELNA', 
-            DIFVar="quintile", pid="IDSTUD", n_cov=9, 
-            regr_vec_char=c('province', 'gender'), miss_code=NULL)
+            DIFVar="quintile", pid="IDSTUD", n_cov=9)
 
 # polytomous DIF variable
 DIF_dim_one(method='Facet', data=elena, test='ELNA', DIFVar="quintile", 
-            pid="IDSTUD", n_cov=9, regr_vec_char=c('province', 'gender'))
+            pid="IDSTUD", n_cov=9)
 ```
+
+To extract and combine DIF analysis results (.xlsx, .pdf) from tests on one 
+dichotomous DIF variable, run the following code.
 
 ```{r}
-# extract and combine DIF analysis from tests on one DIF variable
-# plots will be combined also
-read2one(subfolder=here::here('DIF'), tests=dms, vars=c('Male', 'Female'))
+read2one(subfolder='DIF', tests=dms, vars=c('Male', 'Female'))
 ```
 
-# Two/more domains in test
+### Two/more domains in test
 
 ```{r}
 # dichotomous DIF variable
@@ -81,12 +78,11 @@ DIF_dim_multi(method='Bonferroni', DIFVar="studAge", data=df_DIF, test='ELANA',
               quick=TRUE, section_extr='group countryName;\n')
 ```
 
-# ###### DIF analysis: Dataframe or list as input
+## Use dataframe or list as input
+
+Users prepare df/df_ls as argument for function.
 
 ```{r}
-# Users prepare df or df_ls
-# use ?DIF_dich, ?DIF_poly to learn more
-
 # dichotomous DIF variable
 DIF_dich(df, DIFVar='gender', test='N_1', vars=c('Girls', 'Boys'))
 
@@ -94,7 +90,7 @@ DIF_dich(df, DIFVar='gender', test='N_1', vars=c('Girls', 'Boys'))
 DIF_poly(df_ls, DIFVar, cats, labels, test)
 ```
 
-# ###### DIF analysis: CQ output (.shw, .its files) as input
+## Use CQ output (.shw, .its files) as input
 
 Use of those functions assumes that .shw and other files from facet model are in 'DIF' folder.
 
@@ -102,7 +98,6 @@ Use of those functions assumes that .shw and other files from facet model are in
 # dichotomous DIF variable
 DIF_dich_its_shw(DIFVar='gender', test='N_1', vars=c('Girls', 'Boys'))
 
-# polytomous DIF variable: This will generate an .html report
+# polytomous DIF variable
 DIF_poly_shw(DIFVar='quintile', labels=labels, test='numeracy')
 ```
-
