@@ -1,5 +1,5 @@
 ---
-title: "vignette"
+title: "equate"
 author: "Xiaoliang Zhou"
 date: '2022-06-17'
 output: html_document
