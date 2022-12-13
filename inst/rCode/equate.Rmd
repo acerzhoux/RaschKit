@@ -5,18 +5,7 @@ date: '2022-06-17'
 output: html_document
 ---
 
-# install 'RaschKit' package (if not done yet)
-
-```{r}
-# 1. Create a project file 'xxx.Rproj' in a working directory.
-# 2. Open 'xxx.Rproj'. From bottom right pane,    
-#    click 'Packages' (3rd button after 'Files', 'Plots').
-#    click 'Install'. From 'Install from', select 'Package Archive File...'.
-#    Click 'Browse'. Enter into 'File name' file path 'T:\Xiaoliang Zhou'.
-#    Select compressed file 'RaschKit_1.0.0.tar.gz'. 
-#    Click 'Open'. 
-#    Click 'Install'.
-```
+# Install software (Refer to 'explore data.Rmd' in 'rCode' foler)
 
 ```{r}
 library(RaschKit)
@@ -24,15 +13,13 @@ install_packages_ls()
 create_folders() 
 ```
 
-```{r}
-# 1. move this .Rmd file into the 'rCode' folder just created.
-# 2. Put received files into 'dataRaw' folder.
-# 3. Open this .Rmd file via 'xxx.Rproj'.
-# 4. Select functions proper. Functions
-#    would output instructions on where to find report and/or result files.
-```
+# Explore functions
 
-# ###### Dataframe as input
+Open this .Rmd file via 'xxx.Rproj' in working directory.
+Select function below for different cases. Functions would output instructions 
+on where to find report and/or result files.
+
+## Dataframe as input
 
 ```{r}
 Equate(df=df, test='Elana_math', vars=c('NSW', 'VIC'))
@@ -40,14 +27,14 @@ Equate(df=df, test='Elana_math', vars=c('NSW', 'VIC'))
 # .x relates to vars[[1]], .y relates to vars[[2]]
 ```
 
-# ###### CQ output (.shw) as input
+## CQ output (.shw) as input
 
 ```{r}
 Equate_shw(test='elana_math', vars=c('NSW', 'VIC'))
 # .shw and other files named as arg 'test' should be in 'output' folder in wd
 ```
 
-# ###### Horizontal
+## Horizontal equating
 
 ```{r}
 Equate_Hrz(test='R', grades=c(3:6), forms=c('A','B'))
@@ -55,7 +42,7 @@ Equate_Hrz(test='R', grades=c(3:6), forms=c('A','B'))
 # should be in 'output' folder in wd
 ```
 
-# ###### Vertical
+## Vertical equating
 
 ```{r}
 Equate_Vrt(test='R', grades=c(2:10))

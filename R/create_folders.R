@@ -9,8 +9,7 @@
 #' @export
 
 create_folders <- function(wd=here::here(), DIFVar=NULL){
-    folders <- c(file.path(wd, 'data'),
-                 file.path(wd, 'dataRaw'),
+    folders <- c(file.path(wd, 'dataRaw'),
                  file.path(wd, 'input'),
                  file.path(wd, 'output'),
                  file.path(wd, 'results'),
@@ -20,4 +19,5 @@ create_folders <- function(wd=here::here(), DIFVar=NULL){
     for(i in folders) if(!dir.exists(i)) dir.create(i)
 
     fs::dir_copy(system.file("rCode", package = "RaschKit"), wd)
+    fs::dir_copy(system.file("data", package = "RaschKit"), wd)
 }
