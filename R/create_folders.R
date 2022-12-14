@@ -17,7 +17,11 @@ create_folders <- function(wd=here::here(), DIFVar=NULL){
                  file.path(wd, 'DIF'),
                  if(!is.null(DIFVar)) file.path(wd, 'DIF', DIFVar))
     for(i in folders) if(!dir.exists(i)) dir.create(i)
-
-    fs::dir_copy(system.file("rCode", package = "RaschKit"), wd)
-    fs::dir_copy(system.file("data", package = "RaschKit"), wd)
+    
+    tryCatch({
+        fs::dir_copy(system.file("rCode", package = "RaschKit"), wd)
+        fs::dir_copy(system.file("data", package = "RaschKit"), wd)
+    }, 
+    error = function(e){
+    })
 }
