@@ -1,8 +1,6 @@
-1.	Create a project file 'xxx.Rproj' in a working directory and open it
-2.	In the opened file, run code below
+1.	Create a project file 'xxx.Rproj' in a working directory and open it.
+2.	In the opened file, run code below. If unable to install RaschKit, disconnect VPN. If prompted to update packages, select ‘3: None’.
 library(devtools)\
-# if unable to install, disconnect VPN and retry\
-# if prompted to update packages, select ‘3: None’\
 devtools::install_github("acerzhoux/RaschKit")\
 library(RaschKit)\
 install_packages_ls()\
