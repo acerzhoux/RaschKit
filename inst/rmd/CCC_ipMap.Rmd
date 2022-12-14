@@ -19,7 +19,7 @@ options("scipen" = 999)
 
 \newpage
 
-```{r}
+```{r, fig.width=7, fig.height=7}
 for (i in seq_along(plot_data[['plots']])){
     print(plot_data[['plots']][[i]])
     cat("\n\n")
