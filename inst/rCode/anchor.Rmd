@@ -10,7 +10,6 @@ output: html_document
 ```{r}
 library(RaschKit)
 install_packages_ls()
-create_folders() 
 ```
 
 # Explore functions

@@ -23,7 +23,6 @@ Install 'conquestr' 0.9.995 (Check version: packageVersion('conquestr'))
 ```{r}
 library(RaschKit)
 install_packages_ls()
-create_folders() 
 ```
 
 # Explore functions
