@@ -29,7 +29,6 @@ calibrate(
   fit_uw = 1.2,
   dFallThr = 0.5,
   dRiseThr = 0.1,
-  abilEst2use = "pv1",
   numAbilGrps = NULL,
   recode_poly = FALSE,
   long_label = FALSE,
@@ -107,9 +106,6 @@ Default is 0.5.}
 
 \item{dRiseThr}{Ability on last bin below which rising distractor is unflagged.
 Default is 0.1.}
-
-\item{abilEst2use}{Ability type used for curve data. Default is 'pv1'.
-Use 'wle' for smaller samples.}
 
 \item{numAbilGrps}{Number of ability groups. Default is NULL.}
 
