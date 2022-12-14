@@ -5,4 +5,4 @@ devtools::install_github("acerzhoux/RaschKit")\
 library(RaschKit)\
 install_packages_ls()\
 create_folders()
-3.	Connect VPN if needed. Explore .Rmd files in ‘rCode’ folder.
+3.	Connect VPN if needed. Explore .Rmd files in ‘rCode’ folder for data exploration, calibration, equating, and DIF.
