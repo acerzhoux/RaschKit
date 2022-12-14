@@ -51,4 +51,7 @@ missAll_remove_rows(df, begin=10, end=39)
 ```{r}
 n_cov <- 4 # number covariates before response columns ind data
 lapply(resp[-c(1:n_cov)], table) 
+
+# to put option frequencies into a dataframe
+freq_resps_cat(resp=resp) # wide=TRUE: generate wide frequency table
 ```

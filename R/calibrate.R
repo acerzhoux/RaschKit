@@ -43,8 +43,6 @@
 #' Default is 0.5.
 #' @param dRiseThr Ability on last bin below which rising distractor is unflagged.
 #' Default is 0.1.
-#' @param abilEst2use Ability type used for curve data. Default is 'pv1'.
-#' Use 'wle' for smaller samples.
 #' @param numAbilGrps Number of ability groups. Default is NULL.
 #' @param recode_poly TRUE if polytomous items have non-continuous scores.
 #' Default is FALSE.
@@ -80,7 +78,7 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
                       keys=NULL, labels=NULL, quick=FALSE, delete=NULL,
                       dbl_key=NULL, poly_key=FALSE, anchor=FALSE, section_extr=NULL,
                       easy=90, hard=10, iRst=.11, fit_w=1.1, fit_uw=1.2,
-                      dFallThr=.5, dRiseThr=.1, abilEst2use='pv1',
+                      dFallThr=.5, dRiseThr=.1, 
                       numAbilGrps=NULL, recode_poly=FALSE, long_label=FALSE,
                       missCode2Conv=c('@','@@','@@@','@@@@','7','8','9','88','99','.','',' ', '-'),
                       filetype='sav', slope=NULL, intercept=NULL,
@@ -286,11 +284,11 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
 
         # ####### CCC of categories and scores
         cat('Producing Category Characteristic Curve (CCC)...\n')
-        # # determine whether to use wle or pv1
-        # n_min <- data[-c(1:n_cov)] %>%
-        #     map_int(~length(str_remove_all(na.omit(.x), 'R'))) %>%
-        #     min()
-        # abilEst2use <- ifelse(n_min >= 50, 'pv1', 'wle')
+        # determine whether to use wle or pv1
+        n_min <- data[-c(1:n_cov)] %>%
+            map_int(~length(str_remove_all(na.omit(.x), 'R'))) %>%
+            min()
+        abilEst2use <- ifelse(n_min >= 200, 'pv1', 'wle')
         plot_data <- CCC_ipMap(folder=folder, test=test,
                                abilEst2use=abilEst2use,
                                numAbilGrps=numAbilGrps, long_label=long_label,

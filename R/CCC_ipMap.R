@@ -420,11 +420,26 @@ CCC_ipMap <- function(folder=here::here('output'), test, cqs, abilEst2use='pv1',
     ccc_dich <- function(iStats, dfObs_opt, i){
         i_df <- iStats %>% filter(iNum == i)
         o_df <- dfObs_opt %>% filter(iNum == i)
+
+        # detect sparse options
+        opt_sparse <- o_df %>%
+            filter(!(Option %in% c('M', 'R'))) %>%
+            group_by(Option) %>%
+            summarise(N=sum(Count)) %>%
+            filter(N < 25) %>%
+            pull(Option)
+        if (length(opt_sparse) > 0){
+            opt_text <- str_c('Warning:\nFewer than 25 candidates selected ',
+                              paste(opt_sparse, collapse=' or '), '.')
+            annt <- data.frame(xpos = -Inf, ypos = Inf, txt = opt_text,
+                               hjustvar = 0, vjustvar = 2.5)
+        }
+
         xMin <- c(o_df$Ability) %>% min()  %>% floor() -.25
         m_df <- tibble(pLoc = seq(xMin, 3, .001)) %>%
             mutate(pSuccess = exp(pLoc - i_df$iLogit)/(1+exp(pLoc - i_df$iLogit)),
                    lineLab = "Model\nProbability")
-        ggplot() +
+        p <- ggplot() +
             geom_point(data = o_df,
                        mapping = aes(x = Ability, y = prop, size = Count,
                                      colour = Option), alpha = .8) +
@@ -441,6 +456,14 @@ CCC_ipMap <- function(folder=here::here('output'), test, cqs, abilEst2use='pv1',
                  x = "Latent Trait (logit)", y = "Probability") +
             scale_colour_brewer(type="qual", palette = 2) +
             ggthemes::theme_tufte()
+
+        if (length(opt_sparse) > 0){
+            p + geom_text(data = annt,
+                          aes(x=xpos,y=ypos, hjust=hjustvar,
+                          vjust=vjustvar, label=txt))
+        } else {
+            p
+        }
     }
 
     ccc_poly <- function(iStats, dfObs, i, dfModel){

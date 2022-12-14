@@ -1,0 +1,43 @@
+================================================================================
+MCQ Item Calibration Writing                               Thu Oct 27 15:59 2022
+TABLES OF GIN Thresholds
+==============================================================Version: 5.23.5===
+GIN Number  Threshold           GIN Labels
+--------------------------------------------------------------------------------
+1.1	   -12.563		item	1	Audience	
+1.2	    -5.332		item	1	Audience	
+1.3	    -0.638		item	1	Audience	
+1.4	     3.708		item	1	Audience	
+1.5	     7.459		item	1	Audience	
+1.6	    11.157		item	1	Audience	
+2.1	   -11.593		item	2	Ideas	
+2.2	    -4.670		item	2	Ideas	
+2.3	     0.289		item	2	Ideas	
+2.4	     4.326		item	2	Ideas	
+2.5	     8.040		item	2	Ideas	
+2.6	    11.816		item	2	Ideas	
+3.1	   -11.037		item	3	Structure	
+3.2	    -4.096		item	3	Structure	
+3.3	     1.101		item	3	Structure	
+3.4	     5.567		item	3	Structure	
+3.5	    10.239		item	3	Structure	
+4.1	   -12.137		item	4	Grammar	
+4.2	    -4.781		item	4	Grammar	
+4.3	     0.831		item	4	Grammar	
+4.4	     5.873		item	4	Grammar	
+4.5	    11.524		item	4	Grammar	
+5.1	   -11.708		item	5	Punctuation	
+5.2	    -4.731		item	5	Punctuation	
+5.3	     1.584		item	5	Punctuation	
+5.4	     8.248		item	5	Punctuation	
+6.1	   -11.423		item	6	Vocabulary	
+6.2	    -5.446		item	6	Vocabulary	
+6.3	    -0.402		item	6	Vocabulary	
+6.4	     4.211		item	6	Vocabulary	
+6.5	     8.328		item	6	Vocabulary	
+6.6	    12.659		item	6	Vocabulary	
+7.1	   -12.374		item	7	Spelling	
+7.2	    -5.167		item	7	Spelling	
+7.3	     0.972		item	7	Spelling	
+7.4	     7.425		item	7	Spelling	
+================================================================================
