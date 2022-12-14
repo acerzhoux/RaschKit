@@ -78,7 +78,7 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
                       keys=NULL, labels=NULL, quick=FALSE, delete=NULL,
                       dbl_key=NULL, poly_key=FALSE, anchor=FALSE, section_extr=NULL,
                       easy=90, hard=10, iRst=.11, fit_w=1.1, fit_uw=1.2,
-                      dFallThr=.5, dRiseThr=.1, 
+                      dFallThr=.5, dRiseThr=.1,
                       numAbilGrps=NULL, recode_poly=FALSE, long_label=FALSE,
                       missCode2Conv=c('@','@@','@@@','@@@@','7','8','9','88','99','.','',' ', '-'),
                       filetype='sav', slope=NULL, intercept=NULL,
@@ -187,7 +187,7 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
             iSPSS <- paste0('V', 1:ncol(data_sav))
             names(data_sav)[1:ncol(data_sav)] <- iSPSS
             tibble(iSPSS = iSPSS,
-                   iLabel = c(names(data_sav)[1:n_cov], labels)) %>%
+                   iLabel = c(names(data)[1:n_cov], labels)) %>%
                 write.csv(here::here('data', paste0(test, '_labels.csv')),
                           row.names = FALSE)
             data_sav %>%
