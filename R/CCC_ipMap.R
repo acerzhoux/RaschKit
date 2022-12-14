@@ -432,7 +432,7 @@ CCC_ipMap <- function(folder=here::here('output'), test, cqs, abilEst2use='pv1',
             opt_text <- str_c('Warning:\nFewer than 25 candidates selected ',
                               paste(opt_sparse, collapse=' or '), '.')
             annt <- data.frame(xpos = -Inf, ypos = Inf, txt = opt_text,
-                               hjustvar = 0, vjustvar = 2.5)
+                               hjustvar = 0, vjustvar = 2)
         }
 
         xMin <- c(o_df$Ability) %>% min()  %>% floor() -.25
