@@ -1,6 +1,6 @@
 1.	Create a project file 'xxx.Rproj' in a working directory and open it.
-2.	In the opened file, run code below. (If unable to install RaschKit, 
-    disconnect VPN. If prompted to update packages, select ‘3: None’.)
+2.	In the opened file, run code below (If unable to install RaschKit, 
+    disconnect VPN. If prompted to update packages, select ‘3: None’.).
     install.packages(‘devtools’)\
     library(devtools)\
     devtools::install_github("acerzhoux/RaschKit")\
@@ -9,11 +9,11 @@
     create_folders()
 3.	Connect VPN if needed. Explore .Rmd files in ‘rCode’ folder for data 
     exploration, calibration, equating, and DIF.
-4.  Software compatibility:
+4.  Software compatibility.
     ACER ConQuest: 5.27.0\
     conquestr: 1.0.1\
     Raschkit: 1.0.1
-5.  Install 'conquestr' 1.0.1 (Check version: packageVersion('conquestr'))
+5.  Install 'conquestr' 1.0.1 (packageVersion('conquestr')).
     - Create a project file 'xxx.Rproj' in a working directory.
     - Open 'xxx.Rproj'. From bottom right pane.    
         - click 'Packages' (3rd button after 'Files', 'Plots').
