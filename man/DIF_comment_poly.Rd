@@ -7,13 +7,15 @@
 DIF_comment_poly(DiF_sum)
 }
 \arguments{
-\item{DiF_sum}{Dataframe of summary of results from a Bonferroni-adjusted statistical test.}
+\item{DiF_sum}{Dataframe of summary of results from a Bonferroni-adjusted 
+statistical test.}
 }
 \value{
 Tibble of summary of results from polytomous DIF variable analysis.
 }
 \description{
-This function summarizes results from a type of DIF analysis on a polytomous DIF variable.
+This function summarizes results from a type of DIF analysis on a polytomous 
+DIF variable.
 }
 \examples{
 DIF_comment_poly()

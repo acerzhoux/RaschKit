@@ -12,7 +12,8 @@ df_shw_Term3(folder, test)
 \item{test}{Name of test.}
 }
 \description{
-This function extract item statistics from 'test_facet.shw' file and add significance test results and flags. This is associated with test named 'test'.
+This function extract item statistics from 'test_facet.shw' file and add 
+significance test results and flags. This is associated with test named 'test'.
 }
 \examples{
 df_shw_Term3(folder=folder, test='randomData')

@@ -7,7 +7,8 @@
 priority_3(folder = here::here("output"), test)
 }
 \arguments{
-\item{folder}{Folder that contains ConQuest output files associated with 'test'. Default is 'output' folder in working directory.}
+\item{folder}{Folder that contains ConQuest output files associated with 
+'test'. Default is 'output' folder in working directory.}
 
 \item{test}{Name of test.}
 }
@@ -15,7 +16,9 @@ priority_3(folder = here::here("output"), test)
 Vector of flags.
 }
 \description{
-This function checks response option point biserial (Pt Bis) values in 'test.itn' file in 'output' folder and flag items with any distractor of positive Pt Bis. This is associated with test named 'test'.
+This function checks response option point biserial (Pt Bis) values in 
+'test.itn' file in 'output' folder and flag items with any distractor of 
+positive Pt Bis. This is associated with test named 'test'.
 }
 \examples{
 priority_3(test='FPA')

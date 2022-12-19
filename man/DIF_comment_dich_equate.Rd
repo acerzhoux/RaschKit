@@ -9,10 +9,12 @@ DIF_comment_dich_equate(vars, iDIF, DIF)
 \arguments{
 \item{iDIF}{Vector of DIF items.}
 
-\item{DIF}{TRUE if DIF analysis is performed on a dichotomous DIF variable. Default is FALSE (anchor check).}
+\item{DIF}{TRUE if DIF analysis is performed on a dichotomous DIF variable. 
+Default is FALSE (anchor check).}
 
 \item{DIFVar}{Name of DIF variable.}
 }
 \description{
-This function generates comments for DIF analysis on dichotomous variable. This is associated with test named 'test'.
+This function generates comments for DIF analysis on dichotomous variable. 
+This is associated with test named 'test'.
 }

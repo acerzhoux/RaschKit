@@ -13,8 +13,10 @@ resps_modify(folder, test, resps_cols, delete)
 
 \item{resps_cols}{Column number(s) of responses in the data .txt file.}
 
-\item{delete}{Vector of item order number to be removed from the test, e.g., c(2, 3, 45, 46).}
+\item{delete}{Vector of item order number to be removed from the test, 
+e.g., c(2, 3, 45, 46).}
 }
 \description{
-This function consecutively remove the last item from the delete list of items until no last item is in it.
+This function consecutively remove the last item from the delete list of 
+items until no last item is in it.
 }

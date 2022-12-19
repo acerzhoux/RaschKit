@@ -11,13 +11,17 @@ df_shw(folder = here::here("output"), test, long_label = FALSE)
 
 \item{test}{Name of test.}
 
-\item{long_label}{Whether item labels are longer than 15 characters' fixed width. Default is FALSE.}
+\item{long_label}{Whether item labels are longer than 15 characters' fixed 
+width. Default is FALSE.}
 }
 \value{
 Dataframe of item name, delta, and error.
 }
 \description{
-This function extracts item delta and error estimates from .shw file. This is associated with test named 'test'. If any item label is longer than 15 characters' fixed width, use long_label=TRUE to read complete labels from 'test_Labels.txt' file in 'data' folder.
+This function extracts item delta and error estimates from .shw file. This 
+is associated with test named 'test'. If any item label is longer than 15 
+characters' fixed width, use long_label=TRUE to read complete labels from 
+'test_Labels.txt' file in 'data' folder.
 }
 \examples{
 df_shw(test='racp1', long_label=TRUE)

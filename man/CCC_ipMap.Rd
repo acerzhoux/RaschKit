@@ -15,25 +15,30 @@ CCC_ipMap(
 )
 }
 \arguments{
-\item{folder}{Working directory where .thr and .cqs are located. Default is 'output' folder.}
+\item{folder}{Working directory where .thr and .cqs are located. 
+Default is 'output' folder.}
 
 \item{test}{Name of the test.}
 
 \item{cqs}{CQS output file from ConQuest.}
 
-\item{abilEst2use}{Ability type used for curve data. Default is 'pv1'. Use 'wle' for smaller samples.}
+\item{abilEst2use}{Ability type used for curve data. Default is 'pv1'. 
+Use 'wle' for smaller samples.}
 
 \item{numAbilGrps}{Number of ability groups. Default is NULL.}
 
-\item{long_label}{Whether item labels are longer than 16 characters' fixed width. Default is FALSE.}
+\item{long_label}{Whether item labels are longer than 16 characters' fixed width. 
+Default is FALSE.}
 
-\item{poly_key}{TRUE if the key of any item has polytomous scoring. Default is FALSE.}
+\item{poly_key}{TRUE if the key of any item has polytomous scoring. 
+Default is FALSE.}
 }
 \value{
 Plots of CCC by category and score.
 }
 \description{
-This function draws for each item CCC of both category and score. Plots will be saved in 'output' folder in the working directory.
+This function draws for each item CCC of both category and score. 
+Plots will be saved in 'output' folder in the working directory.
 }
 \examples{
 plot_data <- CCC_ipMap(test='AHU', cqs=cqs)

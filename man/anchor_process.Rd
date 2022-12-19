@@ -9,7 +9,8 @@ anchor_process(test, data, keys, labels, delete, poly_key, n_cov, n_dims)
 \arguments{
 \item{test}{Name of test.}
 
-\item{data}{Dataframe with pid, covariables (e.g,, DIF variable), and responses. Default is NULL where Excel file with name 'test' in 'data' folder is used.}
+\item{data}{Dataframe with pid, covariables (e.g,, DIF variable), and responses. 
+Default is NULL where Excel file with name 'test' in 'data' folder is used.}
 
 \item{keys}{Vector of keys in the test. Default is NULL.}
 
@@ -21,8 +22,11 @@ anchor_process(test, data, keys, labels, delete, poly_key, n_cov, n_dims)
 
 \item{n_cov}{Number of covariates before responses.}
 
-\item{n_dims}{Vector of numbers of responses the dimensions have. Default is NULL. Define this vector if multi-dimensional model is to be run, e.g., c(30, 45). Also should define this if there are variables after response columns, e.g., 30.}
+\item{n_dims}{Vector of numbers of responses the dimensions have. Default is NULL. 
+Define this vector if multi-dimensional model is to be run, e.g., c(30, 45). 
+Also should define this if there are variables after response columns, e.g., 30.}
 }
 \description{
-This function processes anchor file to be input into ConQuest. This is associated with test named 'test'.
+This function processes anchor file to be input into ConQuest. This is 
+associated with test named 'test'.
 }

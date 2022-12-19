@@ -7,11 +7,15 @@
 error_band(df)
 }
 \arguments{
-\item{df}{Dataframe with results of chi-square tests on items that appeared in two tests.}
+\item{df}{Dataframe with results of chi-square tests on items that 
+appeared in two tests.}
 }
 \value{
-Dataframe of chi-square test results with smoothed upper and lower confidence interval values added.
+Dataframe of chi-square test results with smoothed upper and lower 
+confidence interval values added.
 }
 \description{
-This function produces smoothed upper and lower confidence interval (CI) values of the average of an item's delta estimates in two tests. Those values will be used in plotting.
+This function produces smoothed upper and lower confidence interval (CI) 
+values of the average of an item's delta estimates in two tests. Those 
+values will be used in plotting.
 }

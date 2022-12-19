@@ -17,7 +17,9 @@ plot_int_slop(test, x, y)
 Scatter plot with annotation information.
 }
 \description{
-This function draws a scatter plot for two vectors of numbers. This is associated with test named 'test'. The plot also shows the formula, squared error explained, and RMSE.
+This function draws a scatter plot for two vectors of numbers. This is 
+associated with test named 'test'. The plot also shows the formula, 
+squared error explained, and RMSE.
 }
 \examples{
 plot_int_slop()

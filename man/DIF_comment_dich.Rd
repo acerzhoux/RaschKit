@@ -12,7 +12,8 @@ DIF_comment_dich(DIFVar, iDIF)
 \item{iDIF}{Vector of DIF items.}
 }
 \description{
-This function generates comments for DIF analysis on dichotomous variable. This is associated with test named 'test'.
+This function generates comments for DIF analysis on dichotomous variable. 
+This is associated with test named 'test'.
 }
 \examples{
 DIF_comment_dich()

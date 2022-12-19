@@ -14,8 +14,10 @@ section_dim(scrs, n_dims, dim_names)
 \item{dim_names}{Vector of the dimensions' names.}
 }
 \description{
-This function generates the dimension and relevant label sessions of the .cqc file when the test has more than one dimension.
+This function generates the dimension and relevant label sessions of 
+the .cqc file when the test has more than one dimension.
 }
 \examples{
-section_dim(codes=c(1, 2, 3, 4), n_dims=c(30, 45), dim_names=c('Literacy', 'Numeracy'))
+section_dim(codes=c(1, 2, 3, 4), n_dims=c(30, 45), 
+dim_names=c('Literacy', 'Numeracy'))
 }

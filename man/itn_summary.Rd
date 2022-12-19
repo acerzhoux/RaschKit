@@ -28,19 +28,25 @@ itn_summary(
 
 \item{hard}{Threshold to flag hard items. Default is 10 (percent correct).}
 
-\item{iRst}{Threshold to flag low item-rest correlation statistics. Default is 0.11.}
+\item{iRst}{Threshold to flag low item-rest correlation statistics. 
+Default is 0.11.}
 
-\item{fit_w}{Threshold to flag large weighted item fit statistics. Default is 1.1.}
+\item{fit_w}{Threshold to flag large weighted item fit statistics. 
+Default is 1.1.}
 
-\item{fit_uw}{Threshold to flag large unweighted item fit statistics. Default is 1.2.}
+\item{fit_uw}{Threshold to flag large unweighted item fit statistics. 
+Default is 1.2.}
 
-\item{dFallThr}{Ability on last bin above which falling distractor is flagged. Default is 0.5.}
+\item{dFallThr}{Ability on last bin above which falling distractor is flagged. 
+Default is 0.5.}
 
-\item{dRiseThr}{Ability on last bin below which rising distractor is unflagged. Default is 0.1.}
+\item{dRiseThr}{Ability on last bin below which rising distractor is unflagged. 
+Default is 0.1.}
 
 \item{ccc_data}{Data to draw CCC. One element of list output from Function 'CCC_Vernon'.}
 
-\item{iType}{Dataframe with columns of iNum and itype. One element of list output from Function 'CCC_Vernon'.}
+\item{iType}{Dataframe with columns of iNum and itype. One element of list 
+output from Function 'CCC_Vernon'.}
 
 \item{quick}{TRUE when testing. Default is FALSE.}
 }
@@ -48,7 +54,8 @@ itn_summary(
 Dataframe of item statistics with flags.
 }
 \description{
-This function produces item analysis results with flags based on item statistics and CCC. This is associated with test named 'test'.
+This function produces item analysis results with flags based on item 
+statistics and CCC. This is associated with test named 'test'.
 }
 \examples{
 itn_summary(test='AACA_202208_PRE_Meeting')

@@ -14,23 +14,30 @@ CCC_comments(
 )
 }
 \arguments{
-\item{folder}{Folder that contains ConQuest output files associated with 'test'. Default is 'output' folder in working directory.}
+\item{folder}{Folder that contains ConQuest output files associated with 'test'. 
+Default is 'output' folder in working directory.}
 
 \item{test}{Name of test.}
 
-\item{dFallThr}{Ability on last bin above which falling distractor is flagged. Default is 0.5.}
+\item{dFallThr}{Ability on last bin above which falling distractor is flagged. 
+Default is 0.5.}
 
-\item{dRiseThr}{Ability on last bin below which rising distractor is unflagged. Default is 0.1.}
+\item{dRiseThr}{Ability on last bin below which rising distractor is unflagged. 
+Default is 0.1.}
 
 \item{ccc_data}{Data to draw CCC. One element of list output from Function 'CCC_Vernon'.}
 
-\item{iType}{Dataframe with columns of iNum and itype. One element of list output from Function 'CCC_Vernon'.}
+\item{iType}{Dataframe with columns of iNum and itype. One element of list 
+output from Function 'CCC_Vernon'.}
 }
 \value{
 Vector of comments based solely on CCC.
 }
 \description{
-For dichotomous items, examine distractor CCC and add comments if curve is against theory. For polytomous items, add in comments from Function 'itn_poly_comment'. This is associated with test named 'test'.
+For dichotomous items, examine distractor CCC and add comments if curve is 
+against theory. 
+For polytomous items, add in comments from Function 'itn_poly_comment'. 
+This is associated with test named 'test'.
 }
 \examples{
 comments <- CCC_comments(test='racp', ccc_data=ccc_data, iType=iType)

@@ -7,13 +7,15 @@
 chi_square_test(df)
 }
 \arguments{
-\item{df}{Datarame of anchors' delta and error estimates in two tests (.x, .y), with variable names of 'delta.x', 'delta.y', 'error.x', and 'error.y'.}
+\item{df}{Datarame of anchors' delta and error estimates in two tests 
+(.x, .y), with variable names of 'delta.x', 'delta.y', 'error.x', and 'error.y'.}
 }
 \value{
 Dataframe of chi-square test results.
 }
 \description{
-This function does chi-square test on two groups of delta estimates. This is used for equating between anchors of two tests.
+This function does chi-square test on two groups of delta estimates. 
+This is used for equating between anchors of two tests.
 }
 \examples{
 chi_square_test()

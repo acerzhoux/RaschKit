@@ -9,17 +9,22 @@ plot_facil(test, facil_dif, vars, facil_cut, DIFVar)
 \arguments{
 \item{test}{Name of test.}
 
-\item{facil_dif}{Dataframe of two categories' facilities, output from function facil_DIF().}
+\item{facil_dif}{Dataframe of two categories' facilities, output from 
+function facil_DIF().}
 
 \item{vars}{Vector of two categories' names, e.g., c('girls', 'boys').}
 
-\item{facil_cut}{Threshold to label items with big facility difference between the two categories.}
+\item{facil_cut}{Threshold to label items with big facility difference 
+between the two categories.}
 
-\item{DIFVar}{Name of DIF variable. Should be lowercase for ConQuest to run. Default is NULL.}
+\item{DIFVar}{Name of DIF variable. Should be lowercase for ConQuest to run. 
+Default is NULL.}
 }
 \value{
-Plot of one category's facilities vs. those of the other category of the dichotomous DIF variable.
+Plot of one category's facilities vs. those of the other category of 
+the dichotomous DIF variable.
 }
 \description{
-This function plots the facilities of the two categories of the dichotomous DIF variable.
+This function plots the facilities of the two categories of the dichotomous 
+DIF variable.
 }

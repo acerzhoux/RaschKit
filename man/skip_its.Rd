@@ -13,7 +13,8 @@ skip_its(file)
 Number of lines to skip.
 }
 \description{
-This function finds out the number of lines to skip when reading 'test.its' output file from ConQuest.
+This function finds out the number of lines to skip when reading 'test.its' 
+output file from ConQuest.
 }
 \examples{
 skip_its()

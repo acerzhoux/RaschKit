@@ -11,7 +11,8 @@ install_packages_ls(
 )
 }
 \arguments{
-\item{packages}{Vector of package names (character). Default is the vector of packages needed for Package RaschKit.}
+\item{packages}{Vector of package names (character). Default is the vector 
+of packages needed for Package RaschKit.}
 }
 \description{
 This function installs packages if not yet installed.

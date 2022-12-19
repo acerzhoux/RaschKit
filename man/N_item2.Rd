@@ -12,7 +12,8 @@ N_item2(folder = here::here("output"), test)
 \item{test}{Name of test.}
 }
 \description{
-This function calculates number of items in a test based on 'test.its' file. This is associated with test named 'test'.
+This function calculates number of items in a test based on 'test.its' file.
+ This is associated with test named 'test'.
 }
 \examples{
 N_item2(test='elana_poly_score')

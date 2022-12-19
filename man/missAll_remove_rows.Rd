@@ -19,7 +19,8 @@ missAll_remove_rows(df, begin, end, rm = TRUE)
 Dataframe that has responses of all missing values removed.
 }
 \description{
-This function removes cases with all missing responses of c('@', '@@', NA, '9', 'R', 'r', '', ' ').
+This function removes cases with all missing responses of 
+c('@', '@@', NA, '9', 'R', 'r', '', ' ').
 }
 \examples{
 missAll_remove_rows()

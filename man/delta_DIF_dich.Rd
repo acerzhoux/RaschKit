@@ -7,7 +7,9 @@
 delta_DIF_dich(folder = NULL, test, DIFVar, quick = TRUE)
 }
 \arguments{
-\item{folder}{Folder where subgroups' calibration results are located. Default is the subfolder with name of argument 'DIFVar' within 'DIF' folder (folder=NULL).}
+\item{folder}{Folder where subgroups' calibration results are located. 
+Default is the subfolder with name of argument 'DIFVar' within 'DIF' folder 
+(folder=NULL).}
 
 \item{test}{Name of test.}
 

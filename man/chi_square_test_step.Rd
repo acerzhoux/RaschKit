@@ -7,7 +7,8 @@
 chi_square_test_step(df, desig_effect = 1)
 }
 \arguments{
-\item{df}{Datarame of step anchors' delta and error estimates in two tests (.x, .y), with variable names of 'delta.x', 'delta.y', 'error.x', and 'error.y'.}
+\item{df}{Datarame of step anchors' delta and error estimates in two tests 
+(.x, .y), with variable names of 'delta.x', 'delta.y', 'error.x', and 'error.y'.}
 
 \item{desig_effect}{Value to adjust errors. Default is 1.}
 }
@@ -15,7 +16,8 @@ chi_square_test_step(df, desig_effect = 1)
 Dataframe of chi-square test results on step estimates.
 }
 \description{
-This function does chi-square test on two groups of delta estimates of item step parameters. This is used for equating between step anchors of two tests.
+This function does chi-square test on two groups of delta estimates of 
+item step parameters. This is used for equating between step anchors of two tests.
 }
 \examples{
 chi_square_test_step()

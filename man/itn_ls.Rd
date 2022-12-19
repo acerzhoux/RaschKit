@@ -7,10 +7,12 @@
 itn_ls(folder = here::here("output"), test)
 }
 \arguments{
-\item{folder}{Folder that contains ConQuest output files associated with 'test'. Default is 'output' folder in working directory.}
+\item{folder}{Folder that contains ConQuest output files associated with 
+'test'. Default is 'output' folder in working directory.}
 
 \item{test}{Name of test.}
 }
 \description{
-This function extract item analysis results for each item from .itn file and put them into a list. This is associated with test named 'test'.
+This function extract item analysis results for each item from .itn file 
+and put them into a list. This is associated with test named 'test'.
 }

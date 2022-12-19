@@ -12,7 +12,8 @@ N_item(folder, test)
 \item{test}{Name of test.}
 }
 \description{
-This function finds out number of items in a test. This is associated with test named 'test'.
+This function finds out number of items in a test. This is associated 
+with test named 'test'.
 }
 \examples{
 N_item()

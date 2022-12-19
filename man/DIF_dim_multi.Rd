@@ -42,7 +42,8 @@ DIF_dim_multi(
 
 \item{test}{Name of the test.}
 
-\item{DIFVar}{Name of DIF variable. Should be lowercase for ConQuest to run. Default is NULL.}
+\item{DIFVar}{Name of DIF variable. Should be lowercase for ConQuest to run. 
+Default is NULL.}
 
 \item{pid}{Name of candidates' ID variable.}
 
@@ -52,15 +53,19 @@ DIF_dim_multi(
 
 \item{dim_names}{Vector of the dimensions' names.}
 
-\item{data}{Dataframe with pid, covariables (e.g,, DIF variable), and responses. Default is NULL where Excel file with name 'test' in 'data' folder is used.}
+\item{data}{Dataframe with pid, covariables (e.g,, DIF variable), and responses. 
+Default is NULL where Excel file with name 'test' in 'data' folder is used.}
 
 \item{keys}{Vector of keys in the test. Default is NULL.}
 
-\item{labels}{Vector of item labels that correspond to order of item response columns in data.}
+\item{labels}{Vector of item labels that correspond to order of item response 
+columns in data.}
 
-\item{vars}{Vector of length 2 such as c('girls','boys'). Its order corresponds to the alphabetic/numeric order of DIF variables' two categories in data.}
+\item{vars}{Vector of length 2 such as c('girls','boys'). Its order 
+corresponds to the alphabetic/numeric order of DIF variables' two categories in data.}
 
-\item{regr_vec_char}{Vector of character regressors' names. Default is NULL. Make sure to check colinearity of the regressors.}
+\item{regr_vec_char}{Vector of character regressors' names. Default is NULL. 
+Make sure to check colinearity of the regressors.}
 
 \item{wd}{Working directory. Default is the folder where .Rproj is located.}
 
@@ -72,21 +77,27 @@ DIF_dim_multi(
 
 \item{dbl_key}{TRUE if any item has polytomous scoring. Default is FALSE.}
 
-\item{poly_key}{TRUE if the key of any item has polytomous scoring. Default is FALSE.}
+\item{poly_key}{TRUE if the key of any item has polytomous scoring. 
+Default is FALSE.}
 
 \item{anchor}{TRUE when anchor is to be done. Default is FALSE.}
 
-\item{section_extr}{Extra sections to be added to 'test.cqc' file in 'input' folder. Default is NULL.}
+\item{section_extr}{Extra sections to be added to 'test.cqc' file in 'input' 
+folder. Default is NULL.}
 
 \item{p_cut}{p value of chi-square test. Default is 0.05.}
 
-\item{DIF_cut}{Threshold of an item's delta estimate difference between two tests. Default is 0.5.}
+\item{DIF_cut}{Threshold of an item's delta estimate difference between 
+two tests. Default is 0.5.}
 
-\item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference between two tests. Default is 4.}
+\item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference 
+between two tests. Default is 4.}
 
-\item{chi_cut}{Threshold of chi-square difference between two items Default is 10.}
+\item{chi_cut}{Threshold of chi-square difference between two items. 
+Default is 10.}
 
-\item{facil_cut}{Threshold of number of percent to flag an item with large facility difference between two groups of test takers. Default is 10.}
+\item{facil_cut}{Threshold of number of percent to flag an item with large 
+facility difference between two groups of test takers. Default is 10.}
 
 \item{desig_effect}{Value to adjust errors. Default is 1.}
 
@@ -94,17 +105,34 @@ DIF_dim_multi(
 
 \item{scores}{Scores possible in the test, e.g., 0:3. Default is NULL.}
 
-\item{miss_code}{Code for missing data that should be converted to NA. Default is c('.', 'r', 'R', 'x', 'X', '', ' ').}
+\item{miss_code}{Code for missing data that should be converted to NA. 
+Default is c('.', 'r', 'R', 'x', 'X', '', ' ').}
 
-\item{prep_process}{TRUE if it is needed to remove items without data on some categories of DIF variable. Default is FALSE.}
+\item{prep_process}{TRUE if it is needed to remove items without data on 
+some categories of DIF variable. Default is FALSE.}
 }
 \description{
-This function can perform DIF analysis on either dichotomous or polytomous variable. This is associated with test named 'test'. When dimension is above two, you would be continuously shown "Yes/No" nonstop. In that case, please stop the program and run the generated .cqc file in 'input' folder with ConQuest GUI or Console version on your computer.
+This function can perform DIF analysis on either dichotomous or polytomous 
+variable. This is associated with test named 'test'. When dimension is above 
+two, you would be continuously shown "Yes/No" nonstop. In that case, please 
+stop the program and run the generated .cqc file in 'input' folder with 
+ConQuest GUI or Console version on your computer.
 }
 \details{
-Sparse data will be processed in three ways before being used for DIF analysis. First, convert non-used categories and missing values to NA. Second, remove item responses with all missing values. Third, remove items that have no data on any category of the DIF variable. An Excel with processed data and removed items is saved in 'data' folder. Its name has both test name and DIF variable.
+Sparse data will be processed in three ways before being used for DIF analysis. 
+First, convert non-used categories and missing values to NA. Second, remove 
+item responses with all missing values. Third, remove items that have no data 
+on any category of the DIF variable. An Excel with processed data and 
+removed items is saved in 'data' folder. Its name has both test name and 
+DIF variable.
 }
 \examples{
-DIF_dim_multi(method='chi_square', vars=c('Girls', 'Boys'), DIFVar="studGender", data=df_DIF, test='ELANA', pid='studentId', n_cov=5, n_dims=c(901, 171), dim_names=c('HUM', 'Maths'), regr_vec_char=c('countryName', 'studAge'), section_extr='group countryName;\n')
-DIF_dim_multi(method='Bonferroni', DIFVar="studAge", data=df_DIF, test='ELANA', pid='studentId', n_cov=5, n_dims=c(901, 171), dim_names=c('HUM', 'Maths'), regr_vec_char=c('countryName', 'studGender'), quick=TRUE, section_extr='group countryName;\n')
+DIF_dim_multi(method='chi_square', vars=c('Girls', 'Boys'), DIFVar="studGender", 
+data=df_DIF, test='ELANA', pid='studentId', n_cov=5, n_dims=c(901, 171), 
+dim_names=c('HUM', 'Maths'), regr_vec_char=c('countryName', 'studAge'), 
+section_extr='group countryName;\n')
+DIF_dim_multi(method='Bonferroni', DIFVar="studAge", data=df_DIF, 
+test='ELANA', pid='studentId', n_cov=5, n_dims=c(901, 171), 
+dim_names=c('HUM', 'Maths'), regr_vec_char=c('countryName', 'studGender'), 
+quick=TRUE, section_extr='group countryName;\n')
 }

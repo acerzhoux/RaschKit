@@ -13,24 +13,31 @@ section_keys(
 )
 }
 \arguments{
-\item{folder}{The 'data' folder where key 'test_Key.txt' file is located. Default is 'data' folder in working directory.}
+\item{folder}{The 'data' folder where key 'test_Key.txt' file is located. 
+Default is 'data' folder in working directory.}
 
 \item{test}{Name of the test.}
 
 \item{dbl_key}{TRUE if the key of any item is double key. Default is NULL.}
 
-\item{poly_key}{TRUE if the key of any item has polytomous scoring. Default is FALSE.}
+\item{poly_key}{TRUE if the key of any item has polytomous scoring. 
+Default is FALSE.}
 
-\item{delete}{Vector of to-be-removed items' order numbers in the test, e.g., c(4, 7, 65, 114). Default is NULL.}
+\item{delete}{Vector of to-be-removed items' order numbers in the test, 
+e.g., c(4, 7, 65, 114). Default is NULL.}
 }
 \value{
-String of characters used in key section of 'test.cqc' file in 'input' folder.
+String of characters used in key section of 'test.cqc' file in 
+'input' folder.
 }
 \description{
-This function reads in 'test_Key.txt' from 'data' folder and specifies the Key section of the 'test.cqc' file in 'input' folder. Both procedures are associated with test named 'test'.
+This function reads in 'test_Key.txt' from 'data' folder and specifies 
+the Key section of the 'test.cqc' file in 'input' folder. Both procedures 
+are associated with test named 'test'.
 }
 \details{
-They key file has one row for all-multiple-choice-item test, or multiple rows if any item has double key or polytomous scoring.
+They key file has one row for all-multiple-choice-item test, or multiple 
+rows if any item has double key or polytomous scoring.
 }
 \examples{
 section_keys(test='b', delete=c(2, 5))

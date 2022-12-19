@@ -12,7 +12,8 @@ N_item_Step(folder, test)
 \item{test}{Name of test.}
 }
 \description{
-This function extracts line numbers from .shw file and calculates number of item steps. This is associated with test named 'test'.
+This function extracts line numbers from .shw file and calculates number 
+of item steps. This is associated with test named 'test'.
 }
 \examples{
 N_item_Step()

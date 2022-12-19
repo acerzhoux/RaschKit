@@ -14,7 +14,8 @@ cqc_plot_File(wd = here::here(), test, runs)
 \item{runs}{Vector of test forms, e.g., c('2A', '2B', '3A', '3B').}
 }
 \description{
-This function creates 'test_CCC_plots.cqc' file in 'input' folder. This output file needs to be imported into and run in the GUI version of ConQuest.
+This function creates 'test_CCC_plots.cqc' file in 'input' folder. 
+This output file needs to be imported into and run in the GUI version of ConQuest.
 }
 \examples{
 cqc_plot_File()

@@ -15,7 +15,8 @@ qid_its(folder, test)
 Vector of item orders.
 }
 \description{
-This function generates vector of item orders that appeared in .its file. This is associated with test named 'test'.
+This function generates vector of item orders that appeared in .its file. 
+This is associated with test named 'test'.
 }
 \examples{
 qid_its()

@@ -13,7 +13,8 @@ DIF_steps_dich(iterative = FALSE)
 Tibble of six steps to do DIF analyses on dichotomous variable.
 }
 \description{
-This function generates a tibble of steps to follow when performing DIF analysis on a dichotomous DIF variable.
+This function generates a tibble of steps to follow when performing DIF 
+analysis on a dichotomous DIF variable.
 }
 \examples{
 # Not run

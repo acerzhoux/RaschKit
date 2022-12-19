@@ -15,7 +15,8 @@ opt_stats(folder = here::here("output"), test)
 Dataframe of option statistics.
 }
 \description{
-This function extracts option statistics from 'test.txt' file. This is associated with test named 'test'.
+This function extracts option statistics from 'test.txt' file. 
+This is associated with test named 'test'.
 }
 \examples{
 opt_cq <- opt_stats(test='elana_poly_score')

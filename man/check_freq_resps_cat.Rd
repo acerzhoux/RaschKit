@@ -14,10 +14,14 @@ check_freq_resps_cat(folder, test, resp)
 \item{resp}{Responses to items in the test.}
 }
 \value{
-Dataframe with information such as counts in CQ .txt file, counts from R function, and their difference.
+Dataframe with information such as counts in CQ .txt file, counts 
+from R function, and their difference.
 }
 \description{
-This function compares frequencies of item categories from CQ .txt output file against those calculated with Function 'freq_resps_cat'. This is associated with test named 'test'. An Excel file with comparison results will be save in the 'folder' set in that argument.
+This function compares frequencies of item categories from CQ .txt output 
+file against those calculated with Function 'freq_resps_cat'. This is 
+associated with test named 'test'. An Excel file with comparison results 
+will be save in the 'folder' set in that argument.
 }
 \examples{
 check_freq_resps_cat()

@@ -15,5 +15,6 @@ read_keys(folder, test)
 This function read from 'data' folder the key file associated with 'test'.
 }
 \details{
-They key file has one row for all-multiple-choice-item test, or multiple rows if any item has double key or polytomous scoring.
+They key file has one row for all-multiple-choice-item test, or multiple 
+rows if any item has double key or polytomous scoring.
 }

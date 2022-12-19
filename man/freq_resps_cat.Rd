@@ -7,9 +7,12 @@
 freq_resps_cat(resp, wide = FALSE)
 }
 \arguments{
-\item{resp}{Dataframe of responses where each column is a vector of responses to one test item.}
+\item{resp}{Dataframe of responses where each column is a vector of responses 
+to one test item.}
 
-\item{wide}{TRUE if wide form is desired. Default is FALSE. When default, the output has long format same as frequency table in .txt file output from ConQuest.}
+\item{wide}{TRUE if wide form is desired. Default is FALSE. When default, 
+the output has long format same as frequency table in .txt file output 
+from ConQuest.}
 }
 \value{
 Table of each item's category frequencies.

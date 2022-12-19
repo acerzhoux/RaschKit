@@ -33,5 +33,6 @@ item_fit_opt_flag123(
 Dataframe of item statistics with flags.
 }
 \description{
-This function adds three priorities of flag to items in a test based on item statistics. This is associated with test named 'test'.
+This function adds three priorities of flag to items in a test based on item 
+statistics. This is associated with test named 'test'.
 }

@@ -7,7 +7,9 @@
 halo_effect(df, no_dim)
 }
 \arguments{
-\item{df}{Dataframe with only double marks on scoring criteria. The first half of columns are the first marks on each criterion, and the second half the second marks.}
+\item{df}{Dataframe with only double marks on scoring criteria. The first 
+half of columns are the first marks on each criterion, and the second half 
+the second marks.}
 
 \item{no_dim}{Number of scoring criteria.}
 }

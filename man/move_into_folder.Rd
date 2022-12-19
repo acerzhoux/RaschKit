@@ -12,7 +12,9 @@ move_into_folder(folder = here::here("output"), test)
 \item{test}{Name of the test.}
 }
 \description{
-This function checks whether files related to 'test' exist. If so, it establishes a new folder and moves files inside. This is associated with test named 'test'.
+This function checks whether files related to 'test' exist. If so, 
+it establishes a new folder and moves files inside. This is associated 
+with test named 'test'.
 }
 \examples{
 move_into_folder(test='randomData1')

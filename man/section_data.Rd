@@ -23,9 +23,11 @@ section_data(
 
 \item{pid_cols}{Column numbers of person ID.}
 
-\item{run_ls}{List of data filters. Element is column number in data. Element name is filter variable's name.}
+\item{run_ls}{List of data filters. Element is column number in data. 
+Element name is filter variable's name.}
 
-\item{regr_ls}{List of regressors. Element is column number in data. Element name is regressor name.}
+\item{regr_ls}{List of regressors. Element is column number in data. 
+Element name is regressor name.}
 
 \item{path_lab}{Route of label file in 'input' folder.}
 
@@ -36,13 +38,18 @@ section_data(
 \item{poly_group}{TRUE if model is run per group.}
 }
 \value{
-String of characters used in export section of 'test.cqc' file in 'input' folder.
+String of characters used in export section of 'test.cqc' file in 
+'input' folder.
 }
 \description{
-This function creates string of data specification for 'test.cqc' file in 'input' folder. This is associated with test named 'test'.
+This function creates string of data specification for 'test.cqc' file in 
+'input' folder. This is associated with test named 'test'.
 }
 \details{
-Variable names and variable column numbers are added when related arguments are not NULL. Those addable variables are pid_cols (person ID), DIFVar (DIF variable), run_ls (data filters), and regr_ls (regressors). Also, models can be run per group if poly_group is TRUE.
+Variable names and variable column numbers are added when related arguments 
+are not NULL. Those addable variables are pid_cols (person ID), DIFVar 
+(DIF variable), run_ls (data filters), and regr_ls (regressors). Also, 
+models can be run per group if poly_group is TRUE.
 }
 \examples{
 section_data()

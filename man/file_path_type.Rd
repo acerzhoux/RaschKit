@@ -7,17 +7,20 @@
 file_path_type(folder, test, type)
 }
 \arguments{
-\item{folder}{Folder where .shw file is located with delta estimates for interaction term between dichotomous DIF variable and item.}
+\item{folder}{Folder where .shw file is located with delta estimates for 
+interaction term between dichotomous DIF variable and item.}
 
 \item{test}{Name of test.}
 
-\item{type}{Type of output file from ConQuest such as 'txt', 'its', 'shw', and 'itn'}
+\item{type}{Type of output file from ConQuest such as 'txt', 'its', 'shw', 
+and 'itn'.}
 }
 \value{
 Path of the file.
 }
 \description{
-This function generates file path to a specified type. This is associated with test named 'test'.
+This function generates file path to a specified type. This is associated 
+with test named 'test'.
 }
 \examples{
 file_path_type(folder=folder, test=test, type)

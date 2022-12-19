@@ -12,8 +12,11 @@ create_lab(wd, test)
 \item{test}{Name of the test.}
 }
 \description{
-This function reads in 'test_Labels.txt' from 'data' folder and creates 'test.lab' file in 'input' folder. Both procedures are associated with test named 'test'.
+This function reads in 'test_Labels.txt' from 'data' folder and creates 
+'test.lab' file in 'input' folder. Both procedures are associated with 
+test named 'test'.
 }
 \details{
-They key file has one row for all-multiple-choice-item test, or multiple rows if any item has double key or polytomous scoring.
+They key file has one row for all-multiple-choice-item test, or multiple 
+rows if any item has double key or polytomous scoring.
 }

@@ -11,13 +11,17 @@ df_del(folder = here::here("output"), test, long_label = FALSE)
 
 \item{test}{Name of test.}
 
-\item{long_label}{Whether item labels are longer than 16 characters' fixed width. Default is FALSE.}
+\item{long_label}{Whether item labels are longer than 16 characters' fixed 
+width. Default is FALSE.}
 }
 \value{
 Dataframe of item name_step and delta.
 }
 \description{
-This function extracts step parameter estimates from .del file. This is associated with test named 'test'. If any item label is longer than 16 characters' fixed width, use long_label=TRUE to read complete labels from 'test_Labels.txt' file in 'data' folder.
+This function extracts step parameter estimates from .del file. This is 
+associated with test named 'test'. If any item label is longer than 16 
+characters' fixed width, use long_label=TRUE to read complete labels from 
+'test_Labels.txt' file in 'data' folder.
 }
 \examples{
 df_del(test='elana_math_NSW')

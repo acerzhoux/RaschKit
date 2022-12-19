@@ -12,7 +12,8 @@ fit_stats(folder = here::here("output"), test)
 \item{test}{Name of test.}
 }
 \description{
-This function extracts fit statistics from 'test.shw' file. This is associated with test named 'test'.
+This function extracts fit statistics from 'test.shw' file. This is 
+associated with test named 'test'.
 }
 \examples{
 fit_stats(test='elana_poly_score')

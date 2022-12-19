@@ -21,9 +21,12 @@ pid_resp_regrs_cols(df, pid, n_cov, n_resp, regr_vec = NULL)
 e.g., list(pid_cols='14-30', resps_cols='35-308', regr_ls=list(...))
 }
 \description{
-This function calculates and outputs some variables' beginning and ending in a dataframe if saved as a fixed-width .txt file. Those variables include person ID, responses, and perhaps regressors.
+This function calculates and outputs some variables' beginning and ending 
+in a dataframe if saved as a fixed-width .txt file. Those variables include 
+person ID, responses, and perhaps regressors.
 }
 \examples{
 pid_resp_regrs_cols(df=cov_respns, pid='pid', n_cov=5, n_resp=2)
-pid_resp_regrs_cols(df=cov_respns, pid='pid', n_cov=5, n_resp=2, regr_vec=c('nation', 'gender', 'G2'))
+pid_resp_regrs_cols(df=cov_respns, pid='pid', n_cov=5, n_resp=2, 
+regr_vec=c('nation', 'gender', 'G2'))
 }

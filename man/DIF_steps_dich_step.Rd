@@ -10,10 +10,12 @@ DIF_steps_dich_step(iterative = FALSE)
 \item{iterative}{TRUE to iteratively remove DIF items. Default is FALSE}
 }
 \value{
-Tibble of six steps to do DIF analyses on dichotomous variable and polytomous responses.
+Tibble of six steps to do DIF analyses on dichotomous variable and 
+polytomous responses.
 }
 \description{
-This function generates a tibble of steps to follow when performing DIF analysis on a dichotomous DIF variable and polytomous responses.
+This function generates a tibble of steps to follow when performing DIF 
+analysis on a dichotomous DIF variable and polytomous responses.
 }
 \examples{
 # Not run

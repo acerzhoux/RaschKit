@@ -15,7 +15,9 @@ item_fit_opt(folder, test)
 Dataframe of item statistics, fit statistics and option statistics.
 }
 \description{
-This function extracts item statistics, fit statistics and option statistics from ConQuest output files in 'output' folder and merges them into one dataframe. This is associated with test named 'test'.
+This function extracts item statistics, fit statistics and option statistics 
+from ConQuest output files in 'output' folder and merges them into one dataframe. 
+This is associated with test named 'test'.
 }
 \examples{
 item_fit_opt()

@@ -45,7 +45,9 @@ df_key_lab_args(
 A list of arguments with calculated elements.
 }
 \description{
-This function saves data, label, and keys into 'Data' folder in the working directory. It also prepares the arguments needed for calibration functions. This is associated with test named 'test'.
+This function saves data, label, and keys into 'Data' folder in the working 
+directory. It also prepares the arguments needed for calibration functions. 
+This is associated with test named 'test'.
 }
 \examples{
 # not run

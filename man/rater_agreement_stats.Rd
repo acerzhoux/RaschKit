@@ -7,15 +7,19 @@
 rater_agreement_stats(df, dimensions)
 }
 \arguments{
-\item{df}{Dataframe with scores on scoring criteria. Each dimension has at least two scores. Each criterion should have unique char string in the variable names.}
+\item{df}{Dataframe with scores on scoring criteria. Each dimension has 
+at least two scores. Each criterion should have unique char string in the 
+variable names.}
 
-\item{dimensions}{Unique char string in the variable names associated with one scoring criterion.}
+\item{dimensions}{Unique char string in the variable names associated with 
+one scoring criterion.}
 }
 \value{
 Dataframe with types of rater agreement statistics.
 }
 \description{
-This function calculates types of rater agreement statistics, including agreements, Fleiss, ICC, and Pearson correlation.
+This function calculates types of rater agreement statistics, including 
+agreements, Fleiss, ICC, and Pearson correlation.
 }
 \examples{
 rater_agreement_stats()

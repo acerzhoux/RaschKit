@@ -12,10 +12,12 @@ var_cols(df, var_name)
 \item{var_name}{Variable name in the dataframe, e.g., 'gender'.}
 }
 \value{
-List. Name is variable. Element is variable's column numbers in 'test_Data.txt' file in 'data' folder.
+List. Name is variable. Element is variable's column numbers in 
+'test_Data.txt' file in 'data' folder.
 }
 \description{
-This function calculates and outputs a variable's beginning and ending in a dataframe if saved as a fixed-width .txt file.
+This function calculates and outputs a variable's beginning and ending in 
+a dataframe if saved as a fixed-width .txt file.
 }
 \examples{
 var_cols(df=cov_respns, var_name='gender')

@@ -16,30 +16,42 @@ DIF_poly(
 )
 }
 \arguments{
-\item{df_ls}{List of dataframes of test calibration results for various groups of the poloymous DIF variable. Each list element of the dataframe includes variables of item (item order in a single calibration of one DIF variable group), delta, and error.}
+\item{df_ls}{List of dataframes of test calibration results for various 
+groups of the poloymous DIF variable. Each list element of the dataframe 
+includes variables of item (item order in a single calibration of one 
+DIF variable group), delta, and error.}
 
 \item{DIFVar}{Name of polytomous DIF variable.}
 
-\item{cats}{Vector of categories of the polytomous DIF variable, e.g., c(4, 5, 6, 7).}
+\item{cats}{Vector of categories of the polytomous DIF variable, 
+e.g., c(4, 5, 6, 7).}
 
-\item{labels}{Dataframe of labels of all the items in a test with two variable of 'item' and 'label'. 'Item' is the item order in the test. 'Label' is the item label.}
+\item{labels}{Dataframe of labels of all the items in a test with two 
+variable of 'item' and 'label'. 'Item' is the item order in the test. 
+'Label' is the item label.}
 
 \item{test}{Name of the test.}
 
-\item{domain}{Name of the domain in the test, e.g., 'Literacy'. Default is NULL.}
+\item{domain}{Name of the domain in the test, e.g., 'Literacy'. 
+Default is NULL.}
 
 \item{p_cut}{Threshold of statistical test. Default is 0.05.}
 
 \item{step}{TRUE if polytomous items are involved. Default is FALSE.}
 }
 \value{
-List of summary of results from polytomous DIF variable analysis, including comments, step, summary statistics with flags, and statistics used to produce the the flags.
+List of summary of results from polytomous DIF variable analysis, 
+including comments, step, summary statistics with flags, and statistics 
+used to produce the the flags.
 }
 \description{
 This function performs DIF analysis on a polytomous variable and summarizes results.
 }
 \details{
-This functions saves a multiple-facet plot of plots for each subgroup's average delta (x) vs. subgroup delta (y) in the working directory's 'DIF' folder with the DIF variable in the name. Also saved in the 'DIF' folder is an Excel file with four sheets, 'comments', 'step', 'flags', and 'stats'.
+This functions saves a multiple-facet plot of plots for each subgroup's 
+average delta (x) vs. subgroup delta (y) in the working directory's 'DIF' 
+folder with the DIF variable in the name. Also saved in the 'DIF' folder is 
+an Excel file with four sheets, 'comments', 'step', 'flags', and 'stats'.
 }
 \examples{
 DIF_poly()
