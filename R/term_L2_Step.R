@@ -1,6 +1,7 @@
 #' term_L2_Step
 #'
-#' This function a line number close to interaction term estimates of 'item*step' in .shw file. This is associated with test named 'test'.
+#' This function a line number close to interaction term estimates of 
+#' 'item*step' in .shw file. This is associated with test named 'test'.
 #'
 #' @param folder Folder where .shw file is located.
 #' @param test Name of test.

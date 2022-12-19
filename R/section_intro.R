@@ -1,13 +1,16 @@
 #' section_intro
 #'
-#' This function creates string of introduction specification for 'test.cqc' file in 'input' folder. This is associated with test named 'test'.
+#' This function creates string of introduction specification for 'test.cqc' 
+#' file in 'input' folder. This is associated with test named 'test'.
 #'
 #' @param test Name of test.
-#' @param run_ls List of data filters. Element is column number in data. Element name is filter variable's name.
+#' @param run_ls List of data filters. Element is column number in data. 
+#' Element name is filter variable's name.
 #' @param path_output Route of folder to put export files.
 #' @param DIFVar Name of DIF variable.
 #' @param poly_catgrs Vector of polytomous DIF variable's categories.
-#' @return String of characters used in introduction section of 'test.cqc' file in 'input' folder.
+#' @return String of characters used in introduction section of 'test.cqc' 
+#' file in 'input' folder.
 #' @examples
 #' section_intro()
 #' @export

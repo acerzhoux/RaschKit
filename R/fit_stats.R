@@ -1,6 +1,7 @@
 #' fit_stats
 #'
-#' This function extracts fit statistics from 'test.shw' file. This is associated with test named 'test'.
+#' This function extracts fit statistics from 'test.shw' file. This is 
+#' associated with test named 'test'.
 #'
 #' @param folder Folder where 'test.shw' file is located. Default is 'output' folder.
 #' @param test Name of test.

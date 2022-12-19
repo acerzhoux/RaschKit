@@ -1,6 +1,7 @@
 #' N_item_Step
 #'
-#' This function extracts line numbers from .shw file and calculates number of item steps. This is associated with test named 'test'.
+#' This function extracts line numbers from .shw file and calculates number 
+#' of item steps. This is associated with test named 'test'.
 #'
 #' @param folder Folder where .shw file is located.
 #' @param test Name of test.

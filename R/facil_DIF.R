@@ -1,12 +1,16 @@
 #' facil_DIF
 #'
-#' This function extracts facilities of the two categories of the dichotomous DIF variable.
+#' This function extracts facilities of the two categories of the dichotomous 
+#' DIF variable.
 #'
-#' @param folder Folder where .its file of the facet model on dichotomous DIF variable is located.
+#' @param folder Folder where .its file of the facet model on dichotomous DIF 
+#' variable is located.
 #' @param test Name of test.
 #' @param DIFVar Name of dichotomous DIF variable, e.g., 'gender'.
-#' @param long_label Whether item labels are longer than 15 characters' fixed width. Default is FALSE.
-#' @return Tibble of facilities of the two categories of the dichotomous DIF variable.
+#' @param long_label Whether item labels are longer than 15 characters' fixed 
+#' width. Default is FALSE.
+#' @return Tibble of facilities of the two categories of the dichotomous DIF 
+#' variable.
 #' @examples
 #' facil_DIF()
 #' @export

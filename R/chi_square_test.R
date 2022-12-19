@@ -1,8 +1,10 @@
 #' chi_square_test
 #'
-#' This function does chi-square test on two groups of delta estimates. This is used for equating between anchors of two tests.
+#' This function does chi-square test on two groups of delta estimates. 
+#' This is used for equating between anchors of two tests.
 #'
-#' @param df Datarame of anchors' delta and error estimates in two tests (.x, .y), with variable names of 'delta.x', 'delta.y', 'error.x', and 'error.y'.
+#' @param df Datarame of anchors' delta and error estimates in two tests 
+#' (.x, .y), with variable names of 'delta.x', 'delta.y', 'error.x', and 'error.y'.
 #' @return Dataframe of chi-square test results.
 #' @examples
 #' chi_square_test()

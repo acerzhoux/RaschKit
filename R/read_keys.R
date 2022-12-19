@@ -2,7 +2,8 @@
 #'
 #' This function read from 'data' folder the key file associated with 'test'.
 #'
-#' They key file has one row for all-multiple-choice-item test, or multiple rows if any item has double key or polytomous scoring.
+#' They key file has one row for all-multiple-choice-item test, or multiple 
+#' rows if any item has double key or polytomous scoring.
 #'
 #' @param folder The 'data' folder where key 'test_Key.txt' file is located.
 #' @param test Name of the test.

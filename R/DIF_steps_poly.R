@@ -1,6 +1,7 @@
 #' DIF_steps_poly
 #'
-#' This function generates a tibble of steps to follow when performing a type of DIF analysis on a polytomous DIF variable.
+#' This function generates a tibble of steps to follow when performing a type 
+#' of DIF analysis on a polytomous DIF variable.
 #'
 #' @return Tibble of four steps to do DIF analyses.
 #' @examples

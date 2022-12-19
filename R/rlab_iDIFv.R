@@ -2,15 +2,26 @@
 #'
 #' This function relabel DIF items that show up from vertical equating.
 #'
-#' This function uses vertical equating results (DIF_ls) to relabel each grade's item labels (lab_ls) and merge all grades' data into one. Second, it adds a dummy regressor for each grade except the lowest grade. Third, it saves merged data, revised labels, and keys into 'Data' folder. Finally, it returns the column numbers of pid, responses, and grade regressors to be used for 'test.cqc' file in 'input' folder.
+#' This function uses vertical equating results (DIF_ls) to relabel each 
+#' grade's item labels (lab_ls) and merge all grades' data into one. Second, 
+#' it adds a dummy regressor for each grade except the lowest grade. Third, 
+#' it saves merged data, revised labels, and keys into 'Data' folder. Finally, 
+#' it returns the column numbers of pid, responses, and grade regressors to 
+#' be used for 'test.cqc' file in 'input' folder.
 #'
 #' @param test Name of test.
 #' @param pid Variable name of person ID.
 #' @param grade Variable name of students' grade.
-#' @param data_ls List of dataframe for each grade. Name is grade, e.g., `2`. Each dataframe has two parts, covariates (include `StudentID`, `grade`) and responses.
-#' @param lab_ls List of lables. Name is grade, e.g., `2`. Element is vector of item labels (char).
-#' @param cd_ls List of codebook dataframes. Name is grade. Element is dataframe with variables of `Item ID`, `Key`. Make sure item order is same as item response order in data_ls.
-#' @param DIF_ls List of DIF item labels (char). Name is grade. Element is DIF item labels.
+#' @param data_ls List of dataframe for each grade. Name is grade, e.g., `2`. 
+#' Each dataframe has two parts, covariates (include `StudentID`, `grade`) 
+#' and responses.
+#' @param lab_ls List of lables. Name is grade, e.g., `2`. Element is vector 
+#' of item labels (char).
+#' @param cd_ls List of codebook dataframes. Name is grade. Element is dataframe 
+#' with variables of `Item ID`, `Key`. Make sure item order is same as item 
+#' response order in data_ls.
+#' @param DIF_ls List of DIF item labels (char). Name is grade. Element is 
+#' DIF item labels.
 #' @param n_cov Number of covariates before responses.
 #' @return List of column numbers of pid, responses, and grade regressors.
 #' @examples

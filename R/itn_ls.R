@@ -1,8 +1,10 @@
 #' itn_ls
 #'
-#' This function extract item analysis results for each item from .itn file and put them into a list. This is associated with test named 'test'.
+#' This function extract item analysis results for each item from .itn file 
+#' and put them into a list. This is associated with test named 'test'.
 #'
-#' @param folder Folder that contains ConQuest output files associated with 'test'. Default is 'output' folder in working directory.
+#' @param folder Folder that contains ConQuest output files associated with 
+#' 'test'. Default is 'output' folder in working directory.
 #' @param test Name of test.
 #' @export
 

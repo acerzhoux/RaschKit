@@ -1,6 +1,8 @@
 #' pid_resp_regrs_cols
 #'
-#' This function calculates and outputs some variables' beginning and ending in a dataframe if saved as a fixed-width .txt file. Those variables include person ID, responses, and perhaps regressors.
+#' This function calculates and outputs some variables' beginning and ending 
+#' in a dataframe if saved as a fixed-width .txt file. Those variables include 
+#' person ID, responses, and perhaps regressors.
 
 #' @param df Dataframe with ID, covariates and responses.
 #' @param pid Variable name of person ID.
@@ -10,7 +12,8 @@
 #' @return e.g., list(pid_cols='14-30', resps_cols='35-308', regr_ls=list(...))
 #' @examples
 #' pid_resp_regrs_cols(df=cov_respns, pid='pid', n_cov=5, n_resp=2)
-#' pid_resp_regrs_cols(df=cov_respns, pid='pid', n_cov=5, n_resp=2, regr_vec=c('nation', 'gender', 'G2'))
+#' pid_resp_regrs_cols(df=cov_respns, pid='pid', n_cov=5, n_resp=2, 
+#' regr_vec=c('nation', 'gender', 'G2'))
 #' @export
 
 pid_resp_regrs_cols <- function(df, pid, n_cov, n_resp, regr_vec=NULL){

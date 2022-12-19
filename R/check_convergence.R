@@ -1,6 +1,9 @@
 #' check_convergence
 #'
-#' This function checks convergence of the model by checking model deviance change and maximum changes in estimates of delta's, covariance, and regressors. This is associated with test named 'test'. A plot of the checks is saved in 'output' folder in the working directory.
+#' This function checks convergence of the model by checking model deviance 
+#' change and maximum changes in estimates of delta's, covariance, and regressors. 
+#' This is associated with test named 'test'. A plot of the checks is saved in 
+#' 'output' folder in the working directory.
 #'
 #' @param cqs CQS output file from ConQuest.
 #' @param test Test name.

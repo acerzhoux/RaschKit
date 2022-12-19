@@ -1,10 +1,12 @@
 #' var_cols
 #'
-#' This function calculates and outputs a variable's beginning and ending in a dataframe if saved as a fixed-width .txt file.
+#' This function calculates and outputs a variable's beginning and ending in 
+#' a dataframe if saved as a fixed-width .txt file.
 
 #' @param df Dataframe with ID, covariates and responses.
 #' @param var_name Variable name in the dataframe, e.g., 'gender'.
-#' @return List. Name is variable. Element is variable's column numbers in 'test_Data.txt' file in 'data' folder.
+#' @return List. Name is variable. Element is variable's column numbers in 
+#' 'test_Data.txt' file in 'data' folder.
 #' @examples
 #' var_cols(df=cov_respns, var_name='gender')
 #' @export

@@ -1,10 +1,12 @@
 #' DIF_comment_dich_equate
 #'
-#' This function generates comments for DIF analysis on dichotomous variable. This is associated with test named 'test'.
+#' This function generates comments for DIF analysis on dichotomous variable. 
+#' This is associated with test named 'test'.
 #'
 #' @param DIFVar Name of DIF variable.
 #' @param iDIF Vector of DIF items.
-#' @param DIF TRUE if DIF analysis is performed on a dichotomous DIF variable. Default is FALSE (anchor check).
+#' @param DIF TRUE if DIF analysis is performed on a dichotomous DIF variable. 
+#' Default is FALSE (anchor check).
 #' @export
 
 DIF_comment_dich_equate <- function(vars, iDIF, DIF){

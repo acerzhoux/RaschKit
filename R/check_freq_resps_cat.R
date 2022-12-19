@@ -1,11 +1,15 @@
 #' check_freq_resps_cat
 #'
-#' This function compares frequencies of item categories from CQ .txt output file against those calculated with Function 'freq_resps_cat'. This is associated with test named 'test'. An Excel file with comparison results will be save in the 'folder' set in that argument.
+#' This function compares frequencies of item categories from CQ .txt output 
+#' file against those calculated with Function 'freq_resps_cat'. This is 
+#' associated with test named 'test'. An Excel file with comparison results 
+#' will be save in the 'folder' set in that argument.
 #'
 #' @param test Name of the test.
 #' @param folder Place to find CQ output files.
 #' @param resp Responses to items in the test.
-#' @return Dataframe with information such as counts in CQ .txt file, counts from R function, and their difference.
+#' @return Dataframe with information such as counts in CQ .txt file, counts 
+#' from R function, and their difference.
 #' @examples
 #' check_freq_resps_cat()
 #' @export

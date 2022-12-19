@@ -1,8 +1,10 @@
 #' DIF_comment_poly
 #'
-#' This function summarizes results from a type of DIF analysis on a polytomous DIF variable.
+#' This function summarizes results from a type of DIF analysis on a polytomous 
+#' DIF variable.
 #'
-#' @param DiF_sum Dataframe of summary of results from a Bonferroni-adjusted statistical test.
+#' @param DiF_sum Dataframe of summary of results from a Bonferroni-adjusted 
+#' statistical test.
 #' @return Tibble of summary of results from polytomous DIF variable analysis.
 #' @examples
 #' DIF_comment_poly()

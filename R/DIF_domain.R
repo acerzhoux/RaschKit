@@ -1,22 +1,34 @@
 #' DIF_domain
 #'
-#' This function performs DIF analysis on variables and responses in the data. Data should be processed to have DIF variables of only categories needed. This is associated with test named 'test'. An Excel file with a summary of the DIF analysis results and plots will be saved in 'DIF' folder in the working directory.
+#' This function performs DIF analysis on variables and responses in the data. 
+#' Data should be processed to have DIF variables of only categories needed. 
+#' This is associated with test named 'test'. An Excel file with a summary of 
+#' the DIF analysis results and plots will be saved in 'DIF' folder in the 
+#' working directory.
 #'
 #' @param test Name of the test.
 #' @param data Dataframe of DIF variables and responses.
-#' @param var_ls List of DIF variables. Name is variable name. Element is name of categories which corresponds to data coding order.
+#' @param var_ls List of DIF variables. Name is variable name. Element is name 
+#' of categories which corresponds to data coding order.
 #' @param pid Name of candidates' ID variable.
 #' @param n_cov Number of covariates before responses.
 #' @param keys Vector of keys in the test.
-#' @param labels Vector of item labels that correspond to order of item response columns in data.
-#' @param poly_key TRUE if the key of any item has polytomous scoring. Default is FALSE.
+#' @param labels Vector of item labels that correspond to order of item response 
+#' columns in data.
+#' @param poly_key TRUE if the key of any item has polytomous scoring. 
+#' Default is FALSE.
 #' @param p_cut p value of chi-square test. Default is 0.05.
-#' @param chi_cut Threshold of chi-square difference between two tests. Default is 10.
-#' @param DIF_cut Threshold of an item's delta estimate difference between two tests. Default is 0.5.
-#' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference between two tests. Default is 4.
-#' @param facil_cut Threshold of number of percent to flag an item with large facility difference between two groups of test takers. Default is 10.
+#' @param chi_cut Threshold of chi-square difference between two tests. 
+#' Default is 10.
+#' @param DIF_cut Threshold of an item's delta estimate difference between two 
+#' tests. Default is 0.5.
+#' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference 
+#' between two tests. Default is 4.
+#' @param facil_cut Threshold of number of percent to flag an item with large 
+#' facility difference between two groups of test takers. Default is 10.
 #' @param desig_effect Value to adjust errors. Default is 1.
-#' @param step TRUE if DIF analysis is performed on step parameters. Default is FALSE.
+#' @param step TRUE if DIF analysis is performed on step parameters. Default 
+#' is FALSE.
 #' @param miss_code Missing codes. Default is c('M', 'R').
 #' @param output_ready TRUE if results are ready. Default is FALSE.
 #' @param iterative TRUE to iteratively remove DIF items. Default is TRUE.

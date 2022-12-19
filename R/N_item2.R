@@ -1,6 +1,7 @@
 #' N_item2
 #'
-#' This function calculates number of items in a test based on 'test.its' file. This is associated with test named 'test'.
+#' This function calculates number of items in a test based on 'test.its' file.
+#'  This is associated with test named 'test'.
 #'
 #' @param folder Folder where 'test.its' file is located. Default is 'output' folder.
 #' @param test Name of test.

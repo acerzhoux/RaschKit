@@ -1,14 +1,19 @@
 #' CCC_ipMap
 #'
-#' This function draws for each item CCC of both category and score. Plots will be saved in 'output' folder in the working directory.
+#' This function draws for each item CCC of both category and score. 
+#' Plots will be saved in 'output' folder in the working directory.
 #'
-#' @param folder Working directory where .thr and .cqs are located. Default is 'output' folder.
+#' @param folder Working directory where .thr and .cqs are located. 
+#' Default is 'output' folder.
 #' @param test Name of the test.
 #' @param cqs CQS output file from ConQuest.
-#' @param abilEst2use Ability type used for curve data. Default is 'pv1'. Use 'wle' for smaller samples.
+#' @param abilEst2use Ability type used for curve data. Default is 'pv1'. 
+#' Use 'wle' for smaller samples.
 #' @param numAbilGrps Number of ability groups. Default is NULL.
-#' @param long_label Whether item labels are longer than 16 characters' fixed width. Default is FALSE.
-#' @param poly_key TRUE if the key of any item has polytomous scoring. Default is FALSE.
+#' @param long_label Whether item labels are longer than 16 characters' fixed width. 
+#' Default is FALSE.
+#' @param poly_key TRUE if the key of any item has polytomous scoring. 
+#' Default is FALSE.
 #' @return Plots of CCC by category and score.
 #' @examples
 #' plot_data <- CCC_ipMap(test='AHU', cqs=cqs)

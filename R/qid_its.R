@@ -1,6 +1,7 @@
 #' qid_its
 #'
-#' This function generates vector of item orders that appeared in .its file. This is associated with test named 'test'.
+#' This function generates vector of item orders that appeared in .its file. 
+#' This is associated with test named 'test'.
 #'
 #' @param folder Folder that contains ConQuest output files associated with 'test'.
 #' @param test Name of test.

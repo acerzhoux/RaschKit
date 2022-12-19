@@ -1,10 +1,14 @@
 #' df_thr
 #'
-#' This function extracts step parameter estimates from .thr file. This is associated with test named 'test'.If any item label is longer than 16 characters' fixed width, use long_label=TRUE to read complete labels from 'test_Labels.txt' file in 'data' folder.
+#' This function extracts step parameter estimates from .thr file. This is 
+#' associated with test named 'test'.If any item label is longer than 16 
+#' characters' fixed width, use long_label=TRUE to read complete labels 
+#' from 'test_Labels.txt' file in 'data' folder.
 #'
 #' @param folder Folder where .thr file is located.
 #' @param test Name of test.
-#' @param long_label Whether item labels are longer than 16 characters' fixed width. Default is FALSE.
+#' @param long_label Whether item labels are longer than 16 characters' fixed 
+#' width. Default is FALSE.
 #' @return Dataframe of step parameter estimates.
 #' @examples
 #' df_thr(test='elana_math')

@@ -36,20 +36,21 @@
 #' @export
 
 DIF_dich <- function(DIFVar, test, vars, df,
-                   p_cut=0.05, chi_cut=10, DIF_cut=0.5, DIF_adj_cut=4,
-                   desig_effect=1, step=FALSE, facil_cut=10,
-                   long_label=FALSE, iterative=FALSE, save_xlsx=TRUE,
-                   quick=TRUE){
+                     p_cut=0.05, chi_cut=10, DIF_cut=0.5, DIF_adj_cut=4,
+                     desig_effect=1, step=FALSE, facil_cut=10,
+                     long_label=FALSE, iterative=FALSE, save_xlsx=TRUE,
+                     quick=TRUE){
     folder <- here::here('DIF')
     if (!dir.exists(folder)) dir.create(folder)
-
-
+    
+    
     # read N and facilities from .its file
     N_facil <- file_its(test=test, DIFVar=DIFVar) %>%
         mutate(X1=str_squish(X1)) %>%
         separate(X1, str_c('V', 1:8), ' ') %>%
-        separate(V4, c('item', 'N' ), '\\)') %>%
-        mutate(item=str_replace(item, '\\(', ''),
+        mutate(item=parse_number(V3),
+               N=parse_number(V4),
+               item=str_replace(item, '\\(', ''),
                var=str_sub(V1, -1, -1),
                var=ifelse(var==1, vars[[1]], vars[[2]])) %>%
         select(var, item, N, Facil=V5) %>%
@@ -59,13 +60,13 @@ DIF_dich <- function(DIFVar, test, vars, df,
         ) %>%
         modify_at(-1, as.numeric) %>%
         modify_at(4:5, ~round(., digits = 3))
-
+    
     # DIF: delta
     results <- chi_square_test(df=df)
     iDIF <- DIF_items(df=results, p_cut=p_cut, chi_cut=chi_cut,
                       DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut) %>%
         pull(item)
-
+    
     # DIF check
     if (step){
         results <- chi_square_test_step(df=df, desig_effect=desig_effect)
@@ -82,18 +83,18 @@ DIF_dich <- function(DIFVar, test, vars, df,
                         shift_bfr = round(mean(results$delta.x)-mean(results$delta.y), 3),
                         sdr_bfr = round(sd(results$delta.y)/sd(results$delta.x), 3))
     }
-
+    
     p1 <- plot_DIF(df=error_band(results), wh='Before', vars=vars,
                    p_cut=p_cut, chi_cut=chi_cut, DIF_cut=DIF_cut,
                    DIF_adj_cut=DIF_adj_cut, step=step, DIF=TRUE,
                    cor=shift$cor_bfr, shift=shift$shift_bfr, sdr=shift$sdr_bfr,
                    ax_min=ax_min, ax_max=ax_max, quick=quick)
-
+    
     # iteraively remove DIF anchor of max chi-sq
     updated <- results
     iDIF <- DIF_items(df=updated, p_cut=p_cut, chi_cut=chi_cut,
                       DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut)
-
+    
     # two ways of dealing with DIF items
     if (iterative){
         # iteraively remove DIF item of max chi-sq
@@ -111,26 +112,24 @@ DIF_dich <- function(DIFVar, test, vars, df,
         }
     } else {
         # filter once with all conditions
-        if (nrow(iDIF)==0){
-
-        } else {
+        if (nrow(iDIF)>0){
             updated <- updated %>%
                 filter(!(item %in% iDIF$item))
         }
     }
-
+    
     if (step){
         shift <- shift %>%
             mutate(cor_afr = round(cor(updated$delta.x_dev, updated$delta.y_dev), 3),
-                        shift_afr = round(mean(updated$delta.x_dev)-mean(updated$delta.y_dev), 3),
-                        sdr_afr = round(sd(updated$delta.y_dev)/sd(updated$delta.x_dev), 3))
+                   shift_afr = round(mean(updated$delta.x_dev)-mean(updated$delta.y_dev), 3),
+                   sdr_afr = round(sd(updated$delta.y_dev)/sd(updated$delta.x_dev), 3))
     } else {
         shift <- shift %>%
             mutate(cor_afr = round(cor(updated$delta.x, updated$delta.y_adj), 3),
                    shift_afr = round(mean(updated$delta.x)-mean(updated$delta.y), 3),
                    sdr_afr = round(sd(updated$delta.y)/sd(updated$delta.x), 3))
     }
-
+    
     # plot non-DIF anchors
     p2 <- plot_DIF(df=error_band(updated), wh='After', vars=vars,
                    step=step, DIF=TRUE,
@@ -143,7 +142,7 @@ DIF_dich <- function(DIFVar, test, vars, df,
                                      nrow(results)-nrow(updated)),
                         subtitle=paste0(vars[[1]], ' vs. ', vars[[2]]),
                         tag_levels='I')
-
+    
     # DIF anchors found
     if('iStep' %in% names(results)) {
         iDIF <- setdiff(results$iStep, updated$iStep)
@@ -154,18 +153,20 @@ DIF_dich <- function(DIFVar, test, vars, df,
         results_flag <- results %>%
             mutate(flag=ifelse(item %in% iDIF, 1, NA))
     }
-
+    
     # list to save and return
+    N_facil <- N_facil %>% 
+        mutate(item=results_flag$item)
     results_ls <- list(comments = DIF_comment_dich(DIFVar=DIFVar, iDIF=iDIF),
-                    step = if (step) DIF_steps_dich_step(iterative=iterative) else DIF_steps_dich(iterative=iterative),
-                    shift=shift,
-                    flag=right_join(N_facil, results_flag, by='item') %>%
-                        `names<-`(gsub("\\.x", str_c('_', vars[[1]]), names(.))) %>%
-                        `names<-`(gsub("\\.y", str_c('_', vars[[2]]), names(.))),
-                    final=right_join(N_facil, updated, by='item') %>%
-                        `names<-`(gsub("\\.x", str_c('_', vars[[1]]), names(.))) %>%
-                        `names<-`(gsub("\\.y", str_c('_', vars[[2]]), names(.))))
-
+                       step = if (step) DIF_steps_dich_step(iterative=iterative) else DIF_steps_dich(iterative=iterative),
+                       shift=shift,
+                       flag=right_join(N_facil, results_flag, by='item') %>%
+                           `names<-`(gsub("\\.x", str_c('_', vars[[1]]), names(.))) %>%
+                           `names<-`(gsub("\\.y", str_c('_', vars[[2]]), names(.))),
+                       final=right_join(N_facil, updated, by='item') %>%
+                           `names<-`(gsub("\\.x", str_c('_', vars[[1]]), names(.))) %>%
+                           `names<-`(gsub("\\.y", str_c('_', vars[[2]]), names(.))))
+    
     # DIF: facility
     if(!step){
         sht_facil <- paste0(DIFVar, if(step) '_step', '_', test, '_Facility')
@@ -175,11 +176,11 @@ DIF_dich <- function(DIFVar, test, vars, df,
                                                       long_label=long_label),
                                   DIFVar=DIFVar)
     }
-
+    
     # save results and plots
     output <- append(results_ls, list(plot_DIF=p_save))
     if (!step) output <- append(output, list(plot_facil=p_DIF_facil))
-
+    
     if (save_xlsx){
         sht <- paste0(DIFVar, if(step) '_step', '_', test)
         writexl::write_xlsx(results_ls, here::here('DIF', paste0(sht, '.xlsx')))
@@ -187,7 +188,7 @@ DIF_dich <- function(DIFVar, test, vars, df,
                width=17, height=30, units="cm")
         ggsave(file.path(folder, paste0(sht_facil, '.pdf')), p_DIF_facil,
                width=20, height=20, units="cm")
-
+        
         if (step){
             # rmd_file <- here::here('rCode', 'report', 'DIF_dich_step.Rmd')
             rmd_file <- system.file("rmd", "DIF_dich_step.Rmd", package = "RaschKit")
@@ -211,7 +212,7 @@ DIF_dich <- function(DIFVar, test, vars, df,
                                   output_dir=here::here('DIF'))
             }
         }
-
+        
         # point users to files of varying purposes
         writeLines(c(
             paste0(toupper(DIFVar), ' DIF analysis for ', test,

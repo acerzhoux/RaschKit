@@ -2,15 +2,22 @@
 #'
 #' This function plots all items in a test or all anchors and label DIF items/anchors.
 #'
-#' @param df Dataframe with results of chi-square tests on items that appeared in two tests.
-#' @param wh 'Before' or 'After' when to plot before or after equating or in DIF analysis.
-#' @param vars Vector of length 2 such as c('VIC','NSW'). Its order corresponds to .x and .y (delta, error).
+#' @param df Dataframe with results of chi-square tests on items that appeared 
+#' in two tests.
+#' @param wh 'Before' or 'After' when to plot before or after equating or in 
+#' DIF analysis.
+#' @param vars Vector of length 2 such as c('VIC','NSW'). Its order corresponds 
+#' to .x and .y (delta, error).
 #' @param p_cut p value of chi-square test. Default is 0.05.
-#' @param chi_cut Threshold of chi-square difference between two tests. Default is 10.
-#' @param DIF_cut Threshold of an item's delta estimate difference between two tests. Default is 0.5.
-#' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference between two tests. Default is 4.
+#' @param chi_cut Threshold of chi-square difference between two tests. 
+#' Default is 10.
+#' @param DIF_cut Threshold of an item's delta estimate difference between two 
+#' tests. Default is 0.5.
+#' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference 
+#' between two tests. Default is 4.
 #' @param step TRUE if DIF analysis is performed on step parameters. Default is FALSE.
-#' @param DIF TRUE if DIF analysis is performed on a dichotomous DIF variable. Default is FALSE (anchor check).
+#' @param DIF TRUE if DIF analysis is performed on a dichotomous DIF variable. 
+#' Default is FALSE (anchor check).
 #' @param cor Correlation of two categories' delta estimates.
 #' @param shift Shift of two categories' average delta estimates.
 #' @param sdr SD ratio of two categories' delta estimates.

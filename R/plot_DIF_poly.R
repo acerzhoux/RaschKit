@@ -1,14 +1,20 @@
 #' plot_DIF_poly
 #'
-#' This function plots all items' average delta estimates against those in each subgroup. It also labels items that showed DIF in the Bonferroni adjusted significance test.
+#' This function plots all items' average delta estimates against those in each 
+#' subgroup. It also labels items that showed DIF in the Bonferroni adjusted 
+#' significance test.
 #'
 #' @param DIFVar Name of polytomous DIF variable.
-#' @param subgrp Order of a category of the DIF variable among all categories. Minimum is 1. Maximum is length of categories.
+#' @param subgrp Order of a category of the DIF variable among all categories. 
+#' Minimum is 1. Maximum is length of categories.
 #' @param cats Ordered categories of the DIF variable, e.g., c(4:10)
 #' @param item Vector of item labels that had estimates in each subgroup.
-#' @param delta_cat Dataframe with items' delta estimates in subgroups (1st to last but one columns) and average estimates (last column).
-#' @param Flag_dif Dataframe with both adjusted delta estimates (one column) and significant symbols (one column) for each subgroup.
-#' @return Plot of DIF analysis of test items (that had estimates for all subgroups) on one subgroup.
+#' @param delta_cat Dataframe with items' delta estimates in subgroups (1st to 
+#' last but one columns) and average estimates (last column).
+#' @param Flag_dif Dataframe with both adjusted delta estimates (one column) 
+#' and significant symbols (one column) for each subgroup.
+#' @return Plot of DIF analysis of test items (that had estimates for all 
+#' subgroups) on one subgroup.
 #' @examples
 #' plot_DIF_poly()
 #' @export

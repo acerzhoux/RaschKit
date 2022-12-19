@@ -1,6 +1,8 @@
 #' move_into_folder
 #'
-#' This function checks whether files related to 'test' exist. If so, it establishes a new folder and moves files inside. This is associated with test named 'test'.
+#' This function checks whether files related to 'test' exist. If so, 
+#' it establishes a new folder and moves files inside. This is associated 
+#' with test named 'test'.
 #'
 #' @param folder Place to find CQ output files. Default is 'output' folder.
 #' @param test Name of the test.

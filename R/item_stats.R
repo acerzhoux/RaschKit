@@ -1,6 +1,8 @@
 #' item_stats
 #'
-#' This function extracts item statistics such as item-rest correlation, facility, delta, and case number from 'test.its' file. This is associated with test named 'test'.
+#' This function extracts item statistics such as item-rest correlation, 
+#' facility, delta, and case number from 'test.its' file. This is associated 
+#' with test named 'test'.
 #'
 #' @param folder Folder where 'test.its' file is located.
 #' @param test Name of test.

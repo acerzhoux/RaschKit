@@ -1,15 +1,19 @@
 #' anchor_process
 #'
-#' This function processes anchor file to be input into ConQuest. This is associated with test named 'test'.
+#' This function processes anchor file to be input into ConQuest. This is 
+#' associated with test named 'test'.
 #'
 #' @param test Name of test.
-#' @param data Dataframe with pid, covariables (e.g,, DIF variable), and responses. Default is NULL where Excel file with name 'test' in 'data' folder is used.
+#' @param data Dataframe with pid, covariables (e.g,, DIF variable), and responses. 
+#' Default is NULL where Excel file with name 'test' in 'data' folder is used.
 #' @param keys Vector of keys in the test. Default is NULL.
 #' @param labels Vector of item labels that correspond to order of item response columns in data.
 #' @param delete Vector of orders of items to be removed. Default is NULL.
 #' @param poly_key TRUE if the key of any item has polytomous scoring. Default is FALSE.
 #' @param n_cov Number of covariates before responses.
-#' @param n_dims Vector of numbers of responses the dimensions have. Default is NULL. Define this vector if multi-dimensional model is to be run, e.g., c(30, 45). Also should define this if there are variables after response columns, e.g., 30.
+#' @param n_dims Vector of numbers of responses the dimensions have. Default is NULL. 
+#' Define this vector if multi-dimensional model is to be run, e.g., c(30, 45). 
+#' Also should define this if there are variables after response columns, e.g., 30.
 #' @export
 
 anchor_process <- function(test, data, keys, labels, delete, poly_key,

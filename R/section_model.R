@@ -1,15 +1,24 @@
 #' section_model
 #'
-#' This function creates string of model specification for 'test.cqc' file in 'input' folder. This is associated with test named 'test'.
+#' This function creates string of model specification for 'test.cqc' file 
+#' in 'input' folder. This is associated with test named 'test'.
 #'
-#' @param run_ls List to filter data, e.g., list(domain='3-11', grade='12-13', flag='36'). Name of list element is variable name in 'test_Data.txt' in 'data' folder. List element (string of numbers, e.g., '3-11') is the column number of that variable in the data.
-#' @param run Vector of specific categories of variables to select from 'test_Data.txt' in 'data' folder, e.g., c('English2', 3, 1). This corresponds to the previous argument `run_ls`.
-#' @param regr_ls List of regressors with reference group excluded, e.g., list('G4'='110', 'G5'='111', 'G6'='112').
+#' @param run_ls List to filter data, e.g., list(domain='3-11', grade='12-13', flag='36'). 
+#' Name of list element is variable name in 'test_Data.txt' in 'data' folder. 
+#' List element (string of numbers, e.g., '3-11') is the column number of that 
+#' variable in the data.
+#' @param run Vector of specific categories of variables to select from 
+#' test_Data.txt' in 'data' folder, e.g., c('English2', 3, 1). This corresponds 
+#' to the previous argument `run_ls`.
+#' @param regr_ls List of regressors with reference group excluded, 
+#' e.g., list('G4'='110', 'G5'='111', 'G6'='112').
 #' @param codes Vector of valid codes for item responses, e.g., c(1, 2, 3, 4, 5, 6, 7, 8, 9).
 #' @param poly_key TRUE if any item has polytomous scoring.
 #' @param DIFVar Name of DIF variable.
-#' @param step TRUE if DIF analysis is performed on step parameters. Default is FALSE.
-#' @return String of characters used in model section of 'test.cqc' file in 'input' folder.
+#' @param step TRUE if DIF analysis is performed on step parameters. 
+#' Default is FALSE.
+#' @return String of characters used in model section of 'test.cqc' file in 
+#' 'input' folder.
 #' @examples
 #' section_model()
 #' @export

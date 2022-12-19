@@ -1,22 +1,35 @@
 #' Equate
 #'
-#' This function performs chi-square tests (DIF analysis) on a group of anchor items' difference of delta estimates in two tests. An Excel file with test results and flags can be saved in 'equating' folder. Also, one plot is saved in subfolder 'plot' inside 'equating' folder.
+#' This function performs chi-square tests (DIF analysis) on a group of anchor 
+#' items' difference of delta estimates in two tests. An Excel file with test 
+#' results and flags can be saved in 'equating' folder. Also, one plot is saved 
+#' in subfolder 'plot' inside 'equating' folder.
 #'
-#' @param df Dataframe of five variables of 'item' (anchor labels), 'delta.x', 'error.x', 'delta.y', and 'error.y'. '.x' and '.y' should correspond to order of test names in 'vars'.
+#' @param df Dataframe of five variables of 'item' (anchor labels), 'delta.x', 
+#' 'error.x', 'delta.y', and 'error.y'. '.x' and '.y' should correspond to order 
+#' of test names in 'vars'.
 #' @param test Name of test such as 'AGAT'.
-#' @param vars Vector of length 2 such as c('VIC','NSW'). Its order corresponds to two tests associated with .x and .y.
+#' @param vars Vector of length 2 such as c('VIC','NSW'). Its order corresponds 
+#' to two tests associated with .x and .y.
 #' @param p_cut p value of chi-square test. Default is 0.05.
-#' @param chi_cut Threshold of chi-square difference between two tests. Default is 10.
-#' @param DIF_cut Threshold of an item's delta estimate difference between two tests. Default is 0.5.
-#' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference between two tests. Default is 4.
-#' @param sav_results TRUE if an Excel file with chi-square test results and a plot are desired. Default is TRUE.
+#' @param chi_cut Threshold of chi-square difference between two tests. 
+#' Default is 10.
+#' @param DIF_cut Threshold of an item's delta estimate difference between two 
+#' tests. Default is 0.5.
+#' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference 
+#' between two tests. Default is 4.
+#' @param sav_results TRUE if an Excel file with chi-square test results and 
+#' a plot are desired. Default is TRUE.
 #' @param desig_effect Value to adjust errors. Default is 1.
-#' @param step TRUE if DIF analysis is performed on step parameters. Default is FALSE.
-#' @param DIF TRUE if DIF analysis is performed on a dichotomous DIF variable. Default is FALSE (anchor check).
+#' @param step TRUE if DIF analysis is performed on step parameters. 
+#' Default is FALSE.
+#' @param DIF TRUE if DIF analysis is performed on a dichotomous DIF variable. 
+#' Default is FALSE (anchor check).
 #' @param iterative TRUE to iteratively remove DIF items. Default is FALSE
 #' @return Dataframe of chi-square test results for anchors between two tests.
 #' @examples
-#' Equate(df=data[, c('item', 'delta.x', 'error.x', 'delta.y', 'error.y')], test='Elana_math', vars=c('NSW', 'VIC'))
+#' Equate(df=data[, c('item', 'delta.x', 'error.x', 'delta.y', 'error.y')], 
+#' test='Elana_math', vars=c('NSW', 'VIC'))
 #' @export
 
 Equate <- function(df, test, vars, p_cut=0.05, chi_cut=10,

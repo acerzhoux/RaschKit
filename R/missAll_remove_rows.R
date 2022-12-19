@@ -1,6 +1,7 @@
 #' missAll_remove_rows
 #'
-#' This function removes cases with all missing responses of c('@@', '@@@', NA, '9', 'R', 'r', '', ' ').
+#' This function removes cases with all missing responses of 
+#' c('@@', '@@@', NA, '9', 'R', 'r', '', ' ').
 
 #' @param df Dataframe that contains responses of all missing values.
 #' @param begin The 1st item's order in test, e.g., 7.

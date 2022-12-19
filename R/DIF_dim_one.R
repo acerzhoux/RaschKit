@@ -1,40 +1,64 @@
 #' DIF_dim_one
 #'
-#' This function can perform DIF analysis on either dichotomous or polytomous variable. This is associated with test named 'test'.
+#' This function can perform DIF analysis on either dichotomous or polytomous 
+#' variable. This is associated with test named 'test'.
 #'
-#' Should preprocess data in three ways. First, convert non-used categories and missing values to NA. Second, remove item responses with all missing values. Third, remove items that have all missing values or all correct/incorrect responses on any category of the DIF variable.
+#' Should preprocess data in three ways. First, convert non-used categories and 
+#' missing values to NA. Second, remove item responses with all missing values. 
+#' Third, remove items that have all missing values or all correct/incorrect 
+#' responses on any category of the DIF variable.
 #'
 #' @param method One of 'chi_square', 'Bonferroni', or 'Facet'.
 #' @param wd Working directory. Default is the folder where .Rproj is located.
-#' @param DIFVar Name of DIF variable. Should be lowercase for ConQuest to run. Default is NULL.
-#' @param vars Vector of length 2 such as c('girls','boys'). Its order corresponds to the alphabetic/numeric order of DIF variables' two categories in data.
-#' @param poly_facet TRUE if facet model is to be run on a polytomous DIF variable. Default is FALSE.
+#' @param DIFVar Name of DIF variable. Should be lowercase for ConQuest to run. 
+#' Default is NULL.
+#' @param vars Vector of length 2 such as c('girls','boys'). Its order corresponds 
+#' to the alphabetic/numeric order of DIF variables' two categories in data.
+#' @param poly_facet TRUE if facet model is to be run on a polytomous DIF variable. 
+#' Default is FALSE.
 #' @param test Name of the test.
-#' @param data Dataframe with pid, covariables (e.g,, DIF variable), and responses. Default is NULL where Excel file with name 'test' in 'data' folder is used.
+#' @param data Dataframe with pid, covariables (e.g,, DIF variable), and responses. 
+#' Default is NULL where Excel file with name 'test' in 'data' folder is used.
 #' @param keys Vector of keys in the test. Default is NULL.
 #' @param pid Name of candidates' ID variable.
 #' @param n_cov Number of covariates before responses.
 #' @param n_resp Number of items. Default is NULL.
 #' @param regr_vec_char Vector of character regressors' names.
-#' @param labels Vector of item labels that correspond to order of item response columns in data.
+#' @param labels Vector of item labels that correspond to order of item response 
+#' columns in data.
 #' @param quick Whether quick error is needed. Default is TRUE for DIF analysis.
-#' @param section_extr Extra sections to be added to .cqc file in 'input' folder. Default is NULL.
-#' @param miss_code Code for missing data that should be converted to NA. Default is c('.', 'r', 'R', 'x', 'X', '', ' ').
-#' @param poly_key TRUE if the key of any item has polytomous scoring. Default is FALSE.
-#' @param prep_process TRUE if it is needed to remove items without data on some categories of DIF variable. Default is FALSE.
-#' @param save_xlsx Whether to save summary file and plots. Default is TRUE (one DIF variable).
+#' @param section_extr Extra sections to be added to .cqc file in 'input' folder. 
+#' Default is NULL.
+#' @param miss_code Code for missing data that should be converted to NA. 
+#' Default is c('.', 'r', 'R', 'x', 'X', '', ' ').
+#' @param poly_key TRUE if the key of any item has polytomous scoring. 
+#' Default is FALSE.
+#' @param prep_process TRUE if it is needed to remove items without data on 
+#' some categories of DIF variable. Default is FALSE.
+#' @param save_xlsx Whether to save summary file and plots. Default is TRUE 
+#' (one DIF variable).
 #' @param p_cut p value of chi-square test. Default is 0.05.
-#' @param chi_cut Threshold of chi-square difference between two tests. Default is 10.
-#' @param DIF_cut Threshold of an item's delta estimate difference between two tests. Default is 0.5.
-#' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference between two tests. Default is 4.
+#' @param chi_cut Threshold of chi-square difference between two tests. 
+#' Default is 10.
+#' @param DIF_cut Threshold of an item's delta estimate difference between 
+#' two tests. Default is 0.5.
+#' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference 
+#' between two tests. Default is 4.
 #' @param desig_effect Value to adjust errors. Default is 1.
-#' @param facil_cut Threshold of number of percent to flag an item with large facility difference between two groups of test takers. Default is 10.
+#' @param facil_cut Threshold of number of percent to flag an item with large 
+#' facility difference between two groups of test takers. Default is 10.
 #' @param iterative TRUE to iteratively remove DIF items. Default is FALSE
 #' @param step TRUE if polytomous items are involved. Default is FALSE.
 #' @examples
-#' DIF_dim_one(method='chi_square', vars=c('Girls', 'Boys'), data=elena, test='ELNA', DIFVar="gender", pid="IDSTUD", n_cov=9, regr_vec_char=c('province', 'quintile'), quick=TRUE, miss_code=NULL)
-#' DIF_dim_one(method='Bonferroni', data=elena, test='ELNA', DIFVar="quintile", pid="IDSTUD", n_cov=9, regr_vec_char=c('province', 'gender'), quick=TRUE, miss_code=NULL)
-#' DIF_dim_one(method='Facet', data=elena, test='ELNA', DIFVar="quintile", pid="IDSTUD", n_cov=9, regr_vec_char=c('province', 'gender'), quick=TRUE, miss_code=NULL)
+#' DIF_dim_one(method='chi_square', vars=c('Girls', 'Boys'), data=elena, 
+#' test='ELNA', DIFVar="gender", pid="IDSTUD", n_cov=9, 
+#' regr_vec_char=c('province', 'quintile'), quick=TRUE, miss_code=NULL)
+#' DIF_dim_one(method='Bonferroni', data=elena, test='ELNA', DIFVar="quintile", 
+#' pid="IDSTUD", n_cov=9, regr_vec_char=c('province', 'gender'), quick=TRUE, 
+#' miss_code=NULL)
+#' DIF_dim_one(method='Facet', data=elena, test='ELNA', DIFVar="quintile", 
+#' pid="IDSTUD", n_cov=9, regr_vec_char=c('province', 'gender'), quick=TRUE, 
+#' miss_code=NULL)
 #' @export
 
 DIF_dim_one <- function(method=c('chi_square', 'Bonferroni', 'Facet'),

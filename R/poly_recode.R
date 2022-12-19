@@ -1,8 +1,11 @@
 #' poly_recode
 #'
-#' This function down ranks non-continuous polytomous item response vectors in a dataframe.
+#' This function down ranks non-continuous polytomous item response vectors 
+#' in a dataframe.
 #'
-#' @param data Dataframe with pid, covariables (e.g,, DIF variable), and responses. Default is NULL where Excel file with name 'test' in 'data' folder is used.
+#' @param data Dataframe with pid, covariables (e.g,, DIF variable), and 
+#' responses. Default is NULL where Excel file with name 'test' in 'data' 
+#' folder is used.
 #' @param keys Vector of keys in the test. Default is NULL.
 #' @param n_cov Number of covariates before responses.
 #' @param miss_code Missing codes. Default is c('r','R','m','M','9','x','X','.','',' ',NA).

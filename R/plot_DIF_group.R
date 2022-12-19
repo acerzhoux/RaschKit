@@ -1,10 +1,13 @@
 #' plot_DIF_group
 #'
-#' This function plots expected score curves for each item using results from item calibration with the DIF variable as a group variable. This is associated with test named 'test'.
+#' This function plots expected score curves for each item using results from 
+#' item calibration with the DIF variable as a group variable. This is associated 
+#' with test named 'test'.
 #'
 #' @param test Name of test.
 #' @param DIFVar Name of DIF variable. Default is NULL.
-#' @param abilEst2use Ability type used for curve data. Default is 'pv1'. For smaller sample size,  'wle' should be considered.
+#' @param abilEst2use Ability type used for curve data. Default is 'pv1'. 
+#' For smaller sample size,  'wle' should be considered.
 #' @param numAbilGrps Number of ability groups. Default is 3.
 #' @examples
 #' plot_DIF_group(test='elena', DIFVar='quintile')

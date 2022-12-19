@@ -1,15 +1,22 @@
 #' section_keys
 #'
-#' This function reads in 'test_Key.txt' from 'data' folder and specifies the Key section of the 'test.cqc' file in 'input' folder. Both procedures are associated with test named 'test'.
+#' This function reads in 'test_Key.txt' from 'data' folder and specifies 
+#' the Key section of the 'test.cqc' file in 'input' folder. Both procedures 
+#' are associated with test named 'test'.
 #'
-#' They key file has one row for all-multiple-choice-item test, or multiple rows if any item has double key or polytomous scoring.
+#' They key file has one row for all-multiple-choice-item test, or multiple 
+#' rows if any item has double key or polytomous scoring.
 #'
-#' @param folder The 'data' folder where key 'test_Key.txt' file is located. Default is 'data' folder in working directory.
+#' @param folder The 'data' folder where key 'test_Key.txt' file is located. 
+#' Default is 'data' folder in working directory.
 #' @param test Name of the test.
 #' @param dbl_key TRUE if the key of any item is double key. Default is NULL.
-#' @param poly_key TRUE if the key of any item has polytomous scoring. Default is FALSE.
-#' @param delete Vector of to-be-removed items' order numbers in the test, e.g., c(4, 7, 65, 114). Default is NULL.
-#' @return String of characters used in key section of 'test.cqc' file in 'input' folder.
+#' @param poly_key TRUE if the key of any item has polytomous scoring. 
+#' Default is FALSE.
+#' @param delete Vector of to-be-removed items' order numbers in the test, 
+#' e.g., c(4, 7, 65, 114). Default is NULL.
+#' @return String of characters used in key section of 'test.cqc' file in 
+#' 'input' folder.
 #' @examples
 #' section_keys(test='b', delete=c(2, 5))
 #' section_keys(test='b', dbl_key=list(`5`=c(1,3), `29`=c(3,4)))

@@ -1,11 +1,13 @@
 #' resps_modify
 #'
-#' This function consecutively remove the last item from the delete list of items until no last item is in it.
+#' This function consecutively remove the last item from the delete list of 
+#' items until no last item is in it.
 #'
 #' @param folder The 'data' folder where key 'test_Key.txt' file is located.
 #' @param test Name of the test.
 #' @param resps_cols Column number(s) of responses in the data .txt file.
-#' @param delete Vector of item order number to be removed from the test, e.g., c(2, 3, 45, 46).
+#' @param delete Vector of item order number to be removed from the test, 
+#' e.g., c(2, 3, 45, 46).
 #' @export
 
 resps_modify <- function(folder, test, resps_cols, delete){

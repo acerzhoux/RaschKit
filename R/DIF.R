@@ -13,7 +13,8 @@
 #' @param method One of 'chi_square', 'Bonferroni', or 'Facet'.
 #' @param wd Working directory. Default is the folder where .Rproj is located.
 #' @param test Name of the test.
-#' @param codes Vector of valid codes for item responses, e.g., c(1, 2, 3, 4, 5, 6, 7, 8, 9).
+#' @param codes Vector of valid codes for item responses, 
+#' e.g., c(1, 2, 3, 4, 5, 6, 7, 8, 9).
 #' @param pid_cols String of column numbers of person ID. Default is NULL.
 #' @param resps_cols String of column numbers of responses, e.g., '20-30'.
 #' @param regr_ls List of regressors. Element is column number in data.
@@ -46,7 +47,8 @@
 #' @param facil_cut Threshold of number of percent to flag an item with large
 #' facility difference between two groups of test takers. Default is 10.
 #' @param domain Name of the domain in the test, e.g., 'Literacy'. Default is NULL.
-#' @param save_xlsx Whether to save summary file and plots. Default is TRUE (one DIF variable).
+#' @param save_xlsx Whether to save summary file and plots. Default is TRUE 
+#' (one DIF variable).
 #' @return Dataframe of students' ID, raw score, max test score, estimate,
 #' and standard error.
 #' @param iterative TRUE to iteratively remove DIF items. Default is TRUE.

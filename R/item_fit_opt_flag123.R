@@ -1,6 +1,7 @@
 #' item_fit_opt_flag123
 #'
-#' This function adds three priorities of flag to items in a test based on item statistics. This is associated with test named 'test'.
+#' This function adds three priorities of flag to items in a test based on item 
+#' statistics. This is associated with test named 'test'.
 #'
 #' @param folder Folder that contains ConQuest output files associated with 'test'.
 #' @param test Name of test.

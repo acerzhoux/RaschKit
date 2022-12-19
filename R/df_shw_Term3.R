@@ -1,6 +1,7 @@
 #' df_shw_Term3
 #'
-#' This function extract item statistics from 'test_facet.shw' file and add significance test results and flags. This is associated with test named 'test'.
+#' This function extract item statistics from 'test_facet.shw' file and add 
+#' significance test results and flags. This is associated with test named 'test'.
 #'
 #' @param folder Folder where .shw file is located.
 #' @param test Name of test.

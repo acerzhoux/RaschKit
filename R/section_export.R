@@ -1,16 +1,22 @@
 #' section_export
 #'
-#' This function creates string of export specification for 'test.cqc' file in 'input' folder. This is associated with test named 'test'.
+#' This function creates string of export specification for 'test.cqc' file 
+#' in 'input' folder. This is associated with test named 'test'.
 #'
-#' If poly_catgrs is not NULL, then each category's code is added into names of output files. If poly_facet is TRUE, then string '_facet' is added into names of output files of the facet model.
+#' If poly_catgrs is not NULL, then each category's code is added into names 
+#' of output files. If poly_facet is TRUE, then string '_facet' is added into 
+#' names of output files of the facet model.
 #'
-#' @param poly_key TRUE if the key of any item has polytomous scoring. Default is FALSE.
-#' @param step TRUE if a three-way interaction term of item, step, and DIF variable is used in facet modeling.
+#' @param poly_key TRUE if the key of any item has polytomous scoring. 
+#' Default is FALSE.
+#' @param step TRUE if a three-way interaction term of item, step, and DIF 
+#' variable is used in facet modeling.
 #' @param DIFVar Name of DIF variable.
 #' @param poly_catgrs Vector of categories of the polytomous DIF variable 'DIFVar'.
 #' @param poly_facet TRUE if facet model is to be run on a polytomous DIF variable.
 #' @param poly_group TRUE if model is run per group. Default is FALSE.
-#' @return String of characters used in export section of 'test.cqc' file in 'input' folder.
+#' @return String of characters used in export section of 'test.cqc' file 
+#' in 'input' folder.
 #' @examples
 #' section_export()
 #' @export

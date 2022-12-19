@@ -1,6 +1,7 @@
 #' cqc_plot_File
 #'
-#' This function creates 'test_CCC_plots.cqc' file in 'input' folder. This output file needs to be imported into and run in the GUI version of ConQuest.
+#' This function creates 'test_CCC_plots.cqc' file in 'input' folder. 
+#' This output file needs to be imported into and run in the GUI version of ConQuest.
 
 #' @param wd Working directory. Default is the folder where .Rproj is located.
 #' @param test Name of test.

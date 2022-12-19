@@ -1,10 +1,14 @@
 #' df_shw
 #'
-#' This function extracts item delta and error estimates from .shw file. This is associated with test named 'test'. If any item label is longer than 15 characters' fixed width, use long_label=TRUE to read complete labels from 'test_Labels.txt' file in 'data' folder.
+#' This function extracts item delta and error estimates from .shw file. This 
+#' is associated with test named 'test'. If any item label is longer than 15 
+#' characters' fixed width, use long_label=TRUE to read complete labels from 
+#' 'test_Labels.txt' file in 'data' folder.
 #'
 #' @param folder Folder where .shw file is located.
 #' @param test Name of test.
-#' @param long_label Whether item labels are longer than 15 characters' fixed width. Default is FALSE.
+#' @param long_label Whether item labels are longer than 15 characters' fixed 
+#' width. Default is FALSE.
 #' @return Dataframe of item name, delta, and error.
 #' @examples
 #' df_shw(test='racp1', long_label=TRUE)

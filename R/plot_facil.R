@@ -1,13 +1,18 @@
 #' plot_facil
 #'
-#' This function plots the facilities of the two categories of the dichotomous DIF variable.
+#' This function plots the facilities of the two categories of the dichotomous 
+#' DIF variable.
 #'
 #' @param test Name of test.
-#' @param facil_dif Dataframe of two categories' facilities, output from function facil_DIF().
+#' @param facil_dif Dataframe of two categories' facilities, output from 
+#' function facil_DIF().
 #' @param vars Vector of two categories' names, e.g., c('girls', 'boys').
-#' @param facil_cut Threshold to label items with big facility difference between the two categories.
-#' @param DIFVar Name of DIF variable. Should be lowercase for ConQuest to run. Default is NULL.
-#' @return Plot of one category's facilities vs. those of the other category of the dichotomous DIF variable.
+#' @param facil_cut Threshold to label items with big facility difference 
+#' between the two categories.
+#' @param DIFVar Name of DIF variable. Should be lowercase for ConQuest to run. 
+#' Default is NULL.
+#' @return Plot of one category's facilities vs. those of the other category of 
+#' the dichotomous DIF variable.
 #' @export
 
 plot_facil <- function(test, facil_dif, vars, facil_cut, DIFVar){

@@ -1,6 +1,8 @@
 #' keys_poly_into_Data
 #'
-#' This function saves raw key file 'test_Key.txt' into 'data' folder. Later, this saved file is used to produce the key section of 'test.cqc' file in 'input' folder. This is associated with polytomous item test named 'test'.
+#' This function saves raw key file 'test_Key.txt' into 'data' folder. Later, 
+#' this saved file is used to produce the key section of 'test.cqc' file in 
+#' 'input' folder. This is associated with polytomous item test named 'test'.
 
 #' @param test Name of test.
 #' @param score_max Maximum score of single polytomous items in the test.

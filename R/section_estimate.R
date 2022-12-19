@@ -1,10 +1,13 @@
 #' section_estimate
 #'
-#' This function creates string of estimation specification for 'test.cqc' file in 'input' folder. This is associated with test named 'test'.
+#' This function creates string of estimation specification for 'test.cqc' 
+#' file in 'input' folder. This is associated with test named 'test'.
 #'
 #' @param quick TRUE if quick estimation is preferred.
-#' @param poly_key TRUE if the key of any item has polytomous scoring. Default is FALSE.
-#' @return String of characters used in estimation section of 'test.cqc' file in 'input' folder.
+#' @param poly_key TRUE if the key of any item has polytomous scoring. 
+#' Default is FALSE.
+#' @return String of characters used in estimation section of 'test.cqc' file 
+#' in 'input' folder.
 #' @examples
 #' section_estimate()
 #' @export

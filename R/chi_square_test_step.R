@@ -1,8 +1,10 @@
 #' chi_square_test_step
 #'
-#' This function does chi-square test on two groups of delta estimates of item step parameters. This is used for equating between step anchors of two tests.
+#' This function does chi-square test on two groups of delta estimates of 
+#' item step parameters. This is used for equating between step anchors of two tests.
 #'
-#' @param df Datarame of step anchors' delta and error estimates in two tests (.x, .y), with variable names of 'delta.x', 'delta.y', 'error.x', and 'error.y'.
+#' @param df Datarame of step anchors' delta and error estimates in two tests 
+#' (.x, .y), with variable names of 'delta.x', 'delta.y', 'error.x', and 'error.y'.
 #' @param desig_effect Value to adjust errors. Default is 1.
 #' @return Dataframe of chi-square test results on step estimates.
 #' @examples

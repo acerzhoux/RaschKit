@@ -1,18 +1,25 @@
 #' itn_summary
 #'
-#' This function produces item analysis results with flags based on item statistics and CCC. This is associated with test named 'test'.
+#' This function produces item analysis results with flags based on item 
+#' statistics and CCC. This is associated with test named 'test'.
 #'
 #' @param folder Folder that contains ConQuest output files associated with 'test'.
 #' @param test Name of test.
 #' @param easy Threshold to flag easy items. Default is 90 (percent correct).
 #' @param hard Threshold to flag hard items. Default is 10 (percent correct).
-#' @param iRst Threshold to flag low item-rest correlation statistics. Default is 0.11.
-#' @param fit_w Threshold to flag large weighted item fit statistics. Default is 1.1.
-#' @param fit_uw Threshold to flag large unweighted item fit statistics. Default is 1.2.
-#' @param dFallThr Ability on last bin above which falling distractor is flagged. Default is 0.5.
-#' @param dRiseThr Ability on last bin below which rising distractor is unflagged. Default is 0.1.
+#' @param iRst Threshold to flag low item-rest correlation statistics. 
+#' Default is 0.11.
+#' @param fit_w Threshold to flag large weighted item fit statistics. 
+#' Default is 1.1.
+#' @param fit_uw Threshold to flag large unweighted item fit statistics. 
+#' Default is 1.2.
+#' @param dFallThr Ability on last bin above which falling distractor is flagged. 
+#' Default is 0.5.
+#' @param dRiseThr Ability on last bin below which rising distractor is unflagged. 
+#' Default is 0.1.
 #' @param ccc_data Data to draw CCC. One element of list output from Function 'CCC_Vernon'.
-#' @param iType Dataframe with columns of iNum and itype. One element of list output from Function 'CCC_Vernon'.
+#' @param iType Dataframe with columns of iNum and itype. One element of list 
+#' output from Function 'CCC_Vernon'.
 #' @param quick TRUE when testing. Default is FALSE.
 #' @return Dataframe of item statistics with flags.
 #' @examples

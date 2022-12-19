@@ -1,6 +1,7 @@
 #' DIF_comment_dich
 #'
-#' This function generates comments for DIF analysis on dichotomous variable. This is associated with test named 'test'.
+#' This function generates comments for DIF analysis on dichotomous variable. 
+#' This is associated with test named 'test'.
 #'
 #' @param DIFVar Name of DIF variable.
 #' @param iDIF Vector of DIF items.

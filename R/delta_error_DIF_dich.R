@@ -1,10 +1,14 @@
 #' delta_error_DIF_dich
 #'
-#' This function extracts error statistics for two categories of dichotomous DIF variable.
+#' This function extracts error statistics for two categories of dichotomous 
+#' DIF variable.
 #'
-#' @param folder Folder where .shw file is located with delta estimates for interaction term between dichotomous DIF variable and item. Default is 'DIF' folder in working directory.
+#' @param folder Folder where .shw file is located with delta estimates for 
+#' interaction term between dichotomous DIF variable and item. Default is 'DIF' 
+#' folder in working directory.
 #' @param test Name of test.
-#' @param long_label Whether item labels are longer than 15 characters' fixed width. Default is FALSE.
+#' @param long_label Whether item labels are longer than 15 characters' fixed 
+#' width. Default is FALSE.
 #' @return Dataframe of three variables of 'item', 'error.x', 'error.y'.
 #' @examples
 #' delta_error_DIF_dich(folder=folder, test='RandD2')

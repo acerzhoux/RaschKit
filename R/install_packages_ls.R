@@ -2,7 +2,8 @@
 #'
 #' This function installs packages if not yet installed.
 #'
-#' @param packages Vector of package names (character). Default is the vector of packages needed for Package RaschKit.
+#' @param packages Vector of package names (character). Default is the vector 
+#' of packages needed for Package RaschKit.
 #' @examples
 #' install_packages_ls(packages='openxlsx')
 #' @export

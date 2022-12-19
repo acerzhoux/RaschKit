@@ -1,11 +1,15 @@
 #' df_del
 #'
-#' This function extracts step parameter estimates from .del file. This is associated with test named 'test'. If any item label is longer than 16 characters' fixed width, use long_label=TRUE to read complete labels from 'test_Labels.txt' file in 'data' folder.
+#' This function extracts step parameter estimates from .del file. This is 
+#' associated with test named 'test'. If any item label is longer than 16 
+#' characters' fixed width, use long_label=TRUE to read complete labels from 
+#' 'test_Labels.txt' file in 'data' folder.
 #'
 #' @param folder Folder where .del file is located.
 #' @param test Name of test.
 #' @return Dataframe of item name_step and delta.
-#' @param long_label Whether item labels are longer than 16 characters' fixed width. Default is FALSE.
+#' @param long_label Whether item labels are longer than 16 characters' fixed 
+#' width. Default is FALSE.
 #' @examples
 #' df_del(test='elana_math_NSW')
 #' df_del(test='elana_math_NSW', long_label=TRUE)

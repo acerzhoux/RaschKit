@@ -1,10 +1,13 @@
 #' data_into_Data
 #'
-#' This function saves dataset 'test_Data.txt' into 'data' folder. The saved dataset is imported into ConQuest later for modeling. This is associated with test named 'test'.
+#' This function saves dataset 'test_Data.txt' into 'data' folder. The saved 
+#' dataset is imported into ConQuest later for modeling. This is associated 
+#' with test named 'test'.
 
 #' @param test Name of test. Default is NULL.
 #' @param data Dataframe where responses are put together.
-#' @param DIFVar Name of DIF variable. Should be lowercase for ConQuest to run. Default is NULL.
+#' @param DIFVar Name of DIF variable. Should be lowercase for ConQuest to run. 
+#' Default is NULL.
 #' @examples
 #' data_into_Data()
 #' @export

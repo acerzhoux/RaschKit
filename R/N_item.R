@@ -1,6 +1,7 @@
 #' N_item
 #'
-#' This function finds out number of items in a test. This is associated with test named 'test'.
+#' This function finds out number of items in a test. This is associated 
+#' with test named 'test'.
 #'
 #' @param folder Folder where .shw file is located.
 #' @param test Name of test.

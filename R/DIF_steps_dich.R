@@ -1,6 +1,7 @@
 #' DIF_steps_dich
 #'
-#' This function generates a tibble of steps to follow when performing DIF analysis on a dichotomous DIF variable.
+#' This function generates a tibble of steps to follow when performing DIF 
+#' analysis on a dichotomous DIF variable.
 #'
 #' @param iterative TRUE to iteratively remove DIF items. Default is FALSE
 #' @return Tibble of six steps to do DIF analyses on dichotomous variable.

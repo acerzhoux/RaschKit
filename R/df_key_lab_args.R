@@ -1,6 +1,8 @@
 #' df_key_lab_args
 #'
-#' This function saves data, label, and keys into 'Data' folder in the working directory. It also prepares the arguments needed for calibration functions. This is associated with test named 'test'.
+#' This function saves data, label, and keys into 'Data' folder in the working 
+#' directory. It also prepares the arguments needed for calibration functions. 
+#' This is associated with test named 'test'.
 #'
 #' @param test Name of the test.
 #' @param data Dataframe with covariables, DIF variable, and responses.

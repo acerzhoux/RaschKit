@@ -2,7 +2,9 @@
 #'
 #' This function extracts delta statistics for two categories of dichotomous DIF variable.
 #'
-#' @param folder Folder where subgroups' calibration results are located. Default is the subfolder with name of argument 'DIFVar' within 'DIF' folder (folder=NULL).
+#' @param folder Folder where subgroups' calibration results are located. 
+#' Default is the subfolder with name of argument 'DIFVar' within 'DIF' folder 
+#' (folder=NULL).
 #' @param test Name of test.
 #' @param DIFVar Name of dichotomous DIF variable, e.g., 'gender'.
 #' @param quick Whether quick error is needed. Default is TRUE for DIF analysis.

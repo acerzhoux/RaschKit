@@ -1,6 +1,8 @@
 #' plot_int_slop
 #'
-#' This function draws a scatter plot for two vectors of numbers. This is associated with test named 'test'. The plot also shows the formula, squared error explained, and RMSE.
+#' This function draws a scatter plot for two vectors of numbers. This is 
+#' associated with test named 'test'. The plot also shows the formula, 
+#' squared error explained, and RMSE.
 #'
 #' @param test Name of test.
 #' @param x Vector of numbers that correspond to x-axis.

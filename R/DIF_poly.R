@@ -2,17 +2,29 @@
 #'
 #' This function performs DIF analysis on a polytomous variable and summarizes results.
 #'
-#' This functions saves a multiple-facet plot of plots for each subgroup's average delta (x) vs. subgroup delta (y) in the working directory's 'DIF' folder with the DIF variable in the name. Also saved in the 'DIF' folder is an Excel file with four sheets, 'comments', 'step', 'flags', and 'stats'.
+#' This functions saves a multiple-facet plot of plots for each subgroup's 
+#' average delta (x) vs. subgroup delta (y) in the working directory's 'DIF' 
+#' folder with the DIF variable in the name. Also saved in the 'DIF' folder is 
+#' an Excel file with four sheets, 'comments', 'step', 'flags', and 'stats'.
 #'
-#' @param df_ls List of dataframes of test calibration results for various groups of the poloymous DIF variable. Each list element of the dataframe includes variables of item (item order in a single calibration of one DIF variable group), delta, and error.
+#' @param df_ls List of dataframes of test calibration results for various 
+#' groups of the poloymous DIF variable. Each list element of the dataframe 
+#' includes variables of item (item order in a single calibration of one 
+#' DIF variable group), delta, and error.
 #' @param DIFVar Name of polytomous DIF variable.
-#' @param cats Vector of categories of the polytomous DIF variable, e.g., c(4, 5, 6, 7).
-#' @param labels Dataframe of labels of all the items in a test with two variable of 'item' and 'label'. 'Item' is the item order in the test. 'Label' is the item label.
+#' @param cats Vector of categories of the polytomous DIF variable, 
+#' e.g., c(4, 5, 6, 7).
+#' @param labels Dataframe of labels of all the items in a test with two 
+#' variable of 'item' and 'label'. 'Item' is the item order in the test. 
+#' 'Label' is the item label.
 #' @param test Name of the test.
-#' @param domain Name of the domain in the test, e.g., 'Literacy'. Default is NULL.
+#' @param domain Name of the domain in the test, e.g., 'Literacy'. 
+#' Default is NULL.
 #' @param p_cut Threshold of statistical test. Default is 0.05.
 #' @param step TRUE if polytomous items are involved. Default is FALSE.
-#' @return List of summary of results from polytomous DIF variable analysis, including comments, step, summary statistics with flags, and statistics used to produce the the flags.
+#' @return List of summary of results from polytomous DIF variable analysis, 
+#' including comments, step, summary statistics with flags, and statistics 
+#' used to produce the the flags.
 #' @examples
 #' DIF_poly()
 #' @export

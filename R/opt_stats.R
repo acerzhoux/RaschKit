@@ -1,6 +1,7 @@
 #' opt_stats
 #'
-#' This function extracts option statistics from 'test.txt' file. This is associated with test named 'test'.
+#' This function extracts option statistics from 'test.txt' file. 
+#' This is associated with test named 'test'.
 #'
 #' @param folder Folder where 'test.txt' file is located.
 #' @param test Name of test.

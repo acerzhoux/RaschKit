@@ -1,8 +1,10 @@
 #' itn_poly_comment
 #'
-#' This function checks whether polytomous items' neighbor categories' ability estimates are too small. This is associated with test named 'test'.
+#' This function checks whether polytomous items' neighbor categories' ability 
+#' estimates are too small. This is associated with test named 'test'.
 #'
-#' @param folder Folder that contains ConQuest output files associated with 'test'. Default is 'output' folder in working directory.
+#' @param folder Folder that contains ConQuest output files associated with 
+#' 'test'. Default is 'output' folder in working directory.
 #' @param test Name of test.
 #' @examples
 #' Numeracy_item <- itn_poly_comment(test='Numeracy_item')
