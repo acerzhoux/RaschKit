@@ -87,8 +87,7 @@ DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'), wd=here::here(),
         anchor=anchor, step=step, regr_ls=regr_ls, section_extr=section_extr,
         DIFVar=DIFVar, DIFVar_cols=DIFVar_cols, poly_catgrs=poly_catgrs,
         poly_facet=poly_facet, poly_group=poly_group)
-    arg_DIF <- list(DIFVar=DIFVar, test=test, p_cut=p_cut, step=step,
-                    save_xlsx=save_xlsx, iterative=iterative, quick=quick)
+    arg_DIF <- list(DIFVar=DIFVar, test=test, p_cut=p_cut, step=step)
 
     if (method=='chi_square'){
         if (is.null(vars)) stop('Please set \'vars\' as name vector of DIF variable\'s two categories.
@@ -104,7 +103,8 @@ DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'), wd=here::here(),
                        DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut,
                        chi_cut=chi_cut, facil_cut=facil_cut,
                        desig_effect=desig_effect,
-                       long_label=TRUE)))
+                       long_label=TRUE, save_xlsx=save_xlsx, 
+                       iterative=iterative, quick=quick)))
     }
 
     if (method=='Bonferroni'){
