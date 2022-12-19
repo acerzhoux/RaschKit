@@ -5,8 +5,6 @@ date: `r format(Sys.time(), "%d %B, %Y")`
 output: html_document
 ---
 
-# Install software (Refer to 'explore data.Rmd' in 'rCode' foler)
-
 ```{r}
 library(RaschKit)
 install_packages_ls()

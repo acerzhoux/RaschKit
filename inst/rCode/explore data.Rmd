@@ -5,21 +5,6 @@ date: `r format(Sys.time(), "%d %B, %Y")`
 output: html_document
 ---
 
-# Install software
-
-Make sure ACER ConQuest has version 5.23.4 on your machine.
-
-Install 'conquestr' 0.9.995 (Check version: packageVersion('conquestr'))
-  - Create a project file 'xxx.Rproj' in a working directory.
-  - Open 'xxx.Rproj'. From bottom right pane.    
-    - click 'Packages' (3rd button after 'Files', 'Plots').
-    - click 'Install'. From 'Install from', select 'Package Archive File...'.
-    - Click 'Browse'. Enter into 'File name' file path 
-      'P:\ACER ConQuest\Admin\InHouse - ConQuest Latest versions\conquestr\old'.
-    - Select 'conquestr_0.9.995.zip'. 
-    - Click 'Open'. 
-    - Click 'Install'.
-
 ```{r}
 library(RaschKit)
 install_packages_ls()

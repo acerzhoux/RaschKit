@@ -9,3 +9,17 @@
     create_folders()
 3.	Connect VPN if needed. Explore .Rmd files in ‘rCode’ folder for data\ 
     exploration, calibration, equating, and DIF.
+4.  Software compatibility:
+    ACER ConQuest: 5.27.0\
+    conquestr: 1.0.1\
+    Raschkit: 1.0.1
+5.  Install 'conquestr' 1.0.1 (Check version: packageVersion('conquestr'))
+    - Create a project file 'xxx.Rproj' in a working directory.\
+    - Open 'xxx.Rproj'. From bottom right pane.\    
+        - click 'Packages' (3rd button after 'Files', 'Plots').\
+        - click 'Install'. From 'Install from', select 'Package Archive File...'.\
+        - Click 'Browse'. Enter into 'File name' file path\ 
+          'P:\ACER ConQuest\Admin\InHouse - ConQuest Latest versions\conquestr\Win'.
+        - Select 'conquestr_1.0.1.zip'.\ 
+        - Click 'Open'.\ 
+        - Click 'Install'.\
