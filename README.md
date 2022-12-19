@@ -12,7 +12,7 @@
         - From bottom right pane of 'xxx.Rproj' (Step 1).    
             - click 'Packages' (3rd button after 'Files', 'Plots').
             - click 'Install'. From 'Install from', select 'Package Archive File...'.
-            - Click 'Browse'. Enter into 'File name' file path (if Windows)
+            - Click 'Browse'. Enter into 'File name' file path (if Windows)\
                 'P:\ACER ConQuest\Admin\InHouse - ConQuest Latest versions\conquestr\Win'.
             - Select 'conquestr_1.0.1.zip'. 
             - Click 'Open'. 
@@ -21,13 +21,13 @@
         - From bottom right pane of 'xxx.Rproj' (Step 1).    
             - click 'Packages' (3rd button after 'Files', 'Plots').
             - click 'Install'. From 'Install from', select 'Package Archive File...'.
-            - Click 'Browse'. Enter into 'File name' file path (if Windows)
+            - Click 'Browse'. Enter into 'File name' file path\
                 'T:\Xiaoliang Zhou'.
             - Select 'RaschKit_1.0.1.tar.gz'. 
             - Click 'Open'. 
             - Click 'Install'.
 5.  In 'xxx.Rproj', run code below and explore .Rmd files in ‘rCode’ folder for 
-    data exploration, calibration, equating, and DIF. 
+    data exploration, calibration, equating, and DIF.\ 
     library(RaschKit)\
     install_packages_ls()\
     create_folders()
