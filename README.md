@@ -27,7 +27,7 @@
             - Click 'Open'. 
             - Click 'Install'.
 5.  In 'xxx.Rproj', run code below and explore .Rmd files in ‘rCode’ folder for 
-    data exploration, calibration, equating, and DIF.\ 
+    data exploration, calibration, equating, and DIF. 
     library(RaschKit)\
     install_packages_ls()\
     create_folders()
