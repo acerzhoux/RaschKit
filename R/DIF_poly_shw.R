@@ -59,7 +59,7 @@ DIF_poly_shw <- function(folder=NULL, DIFVar, labels, test, domain=NULL,
                               skip=(b + 5), n_max=c,
                               show_col_types = FALSE) %>%
                               mutate(item = as.character(item),
-                                     delta = parse_number(delta))
+                                     delta = parse_number(as.character(delta)))
                       })
 
     DIF_poly(df_ls=dif_stats, DIFVar=DIFVar, cats=cats, labels=labels,
