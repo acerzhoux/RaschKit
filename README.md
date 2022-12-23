@@ -1,3 +1,5 @@
+===== Steps to install RaschKit and set up ====
+
 1.	Create a project file 'xxx.Rproj' in a working directory and open it.
 2.	Software compatibility.
     - ACER ConQuest: 5.27.0\
@@ -31,3 +33,9 @@
     - library(RaschKit)
     - install_packages_ls()
     - create_folders()
+
+===== v1.0.1 Updates =====
+
+1. section_model() sets up correct model terms for group model used in DIF analysis on polytomous variable.
+2. DIF_poly_shw() extracts from .shw files delta columns of all numeric.
+3. plot_DIF_group() plots polytomous items.
