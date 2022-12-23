@@ -4,19 +4,19 @@
 \alias{section_model}
 \title{section_model}
 \usage{
-section_model(run_ls, run, regr_ls, codes, poly_key, DIFVar, step)
+section_model(run_ls, run, regr_ls, codes, poly_key, DIFVar, step, poly_group)
 }
 \arguments{
-\item{run_ls}{List to filter data, e.g., list(domain='3-11', grade='12-13', flag='36'). 
-Name of list element is variable name in 'test_Data.txt' in 'data' folder. 
-List element (string of numbers, e.g., '3-11') is the column number of that 
+\item{run_ls}{List to filter data, e.g., list(domain='3-11', grade='12-13', flag='36').
+Name of list element is variable name in 'test_Data.txt' in 'data' folder.
+List element (string of numbers, e.g., '3-11') is the column number of that
 variable in the data.}
 
-\item{run}{Vector of specific categories of variables to select from 
-test_Data.txt' in 'data' folder, e.g., c('English2', 3, 1). This corresponds 
+\item{run}{Vector of specific categories of variables to select from
+test_Data.txt' in 'data' folder, e.g., c('English2', 3, 1). This corresponds
 to the previous argument `run_ls`.}
 
-\item{regr_ls}{List of regressors with reference group excluded, 
+\item{regr_ls}{List of regressors with reference group excluded,
 e.g., list('G4'='110', 'G5'='111', 'G6'='112').}
 
 \item{codes}{Vector of valid codes for item responses, e.g., c(1, 2, 3, 4, 5, 6, 7, 8, 9).}
@@ -25,15 +25,17 @@ e.g., list('G4'='110', 'G5'='111', 'G6'='112').}
 
 \item{DIFVar}{Name of DIF variable.}
 
-\item{step}{TRUE if DIF analysis is performed on step parameters. 
+\item{step}{TRUE if DIF analysis is performed on step parameters.
 Default is FALSE.}
+
+\item{poly_group}{TRUE if model is run per group and no DIF variable is used.}
 }
 \value{
-String of characters used in model section of 'test.cqc' file in 
+String of characters used in model section of 'test.cqc' file in
 'input' folder.
 }
 \description{
-This function creates string of model specification for 'test.cqc' file 
+This function creates string of model specification for 'test.cqc' file
 in 'input' folder. This is associated with test named 'test'.
 }
 \examples{

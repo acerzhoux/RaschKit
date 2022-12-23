@@ -12,10 +12,9 @@
 #' @examples
 #' plot_DIF_group(test='elena', DIFVar='quintile')
 #' @export
-
 plot_DIF_group <- function(test, DIFVar, numAbilGrps=3, abilEst2use="pv1"){
     cqs <- conquestr::ConQuestSys(here::here("DIF", DIFVar, paste0(test, '_group.CQS')))
-
+    
     # Person Stats ------------------------------------------------------------
     pStats <- cqs$gAllCaseEstimates %>% {
         tibble(pid = map_int(., "pid"),
@@ -35,7 +34,7 @@ plot_DIF_group <- function(test, DIFVar, numAbilGrps=3, abilEst2use="pv1"){
            # to ensure that all are captured if there are > 5 pvs
            pv1 = map_dbl(pvs, 1), pv2 = map_dbl(pvs, 2), pv3 = map_dbl(pvs, 3),
            pv4 = map_dbl(pvs, 4), pv5 = map_dbl(pvs, 5))
-
+    
     # Item Difficulties (iLogit) and deltas -----------------------------------
     iStepsCounts <- tibble(
         temp = cqs$gGinLongLabels %>% unlist() %>% str_remove_all(., "item:|(|)"),
@@ -46,16 +45,16 @@ plot_DIF_group <- function(test, DIFVar, numAbilGrps=3, abilEst2use="pv1"){
                iNum = as.numeric(iNum),
                iType = case_when(iStepsCount == 2 ~ "Dichotomous",
                                  iStepsCount > 2 ~ "Polytomous"))
-
+    
     # items excluded from calibration
     # OR items in the item pool but not in the test
     iExc <- iStepsCounts %>% filter(iStepsCount == 0) %>%
         distinct(iNum, iLab)
-
+    
     # included items
     iInc <- iStepsCounts %>% filter(iStepsCount > 0) %>%
         distinct(iNum, iLab)
-
+    
     # empirical error
     varCovMat <- cqs$gMatrixList$e_estimatecovariances[(1:nrow(iInc)-1),(1:nrow(iInc)-1)]
     empErrs <- tibble(errorEmp = diag(varCovMat) %>% sqrt()) %>%
@@ -63,7 +62,7 @@ plot_DIF_group <- function(test, DIFVar, numAbilGrps=3, abilEst2use="pv1"){
         bind_rows(tibble(rowid = nrow(iInc),
                          errorEmp = sum(varCovMat) %>% sqrt())
         )
-
+    
     if(is.null(varCovMat) == TRUE){empErrs <- empErrs %>% filter(rowid == 0)}
     iEstTemp <- tibble(Xsi = c(cqs$gXsi),
                        errorQuick = c(sqrt(cqs$gQuickErrorsXsi))) %>%
@@ -84,13 +83,13 @@ plot_DIF_group <- function(test, DIFVar, numAbilGrps=3, abilEst2use="pv1"){
         mutate(modelTerm = ifelse(is.na(category), 1, 2),
                category = ifelse(is.na(category), 1, category)) %>%
         filter(!is.na(iLab))
-
+    
     constrained1 <- iStepsCounts %>% filter(iNum == max(iStepsCounts$iNum)) %>%
         select(iLab) %>%
         bind_cols(iEstTemp %>% filter(modelTerm == 1) %>%
                       summarise(Xsi = sum(Xsi)*-1, errorQuick = mean(errorQuick), modelTerm = 1)
         )
-
+    
     if(2 %in% unique(iEstTemp$modelTerm)){
         constrained2 <- iEstTemp %>% filter(modelTerm == 2) %>%
             group_by(iLab) %>%
@@ -101,10 +100,10 @@ plot_DIF_group <- function(test, DIFVar, numAbilGrps=3, abilEst2use="pv1"){
     }else{constrained2 <- tibble()}
     ## In shw files, model term 1 refers to the item estimates
     ## and model term 2 refers to item category estimates
-
+    
     iEstimates <- iEstTemp %>%
         bind_rows(constrained1, constrained2)
-
+    
     # if test has only dichomtomously scored items, then CQ's item delta is iLogit (item difficulty)
     deltas <- iStepsCounts %>% filter(iStepsCount > 0) %>%
         left_join(iEstimates %>% filter(modelTerm == 1) %>%
@@ -124,7 +123,7 @@ plot_DIF_group <- function(test, DIFVar, numAbilGrps=3, abilEst2use="pv1"){
         mutate(stepLogit = ifelse(is.na(stepLogit) & iStepsCount == 2, 0, stepLogit),
                category = ifelse(is.na(category) & iStepsCount == 2, 1, category),
                delta = iLogit + stepLogit)
-
+    
     # Response Data -----------------------------------------------------------
     preKeyLookUp <- cqs$gPreKeyLookUp %>% tbl_df() %>%
         rowid_to_column() %>% unnest_longer(col = Value) %>%
@@ -143,7 +142,7 @@ plot_DIF_group <- function(test, DIFVar, numAbilGrps=3, abilEst2use="pv1"){
         left_join(deltas %>% distinct(iNum, iLab, iStepsCount),
                   by = "iNum") %>%
         left_join(pidVar_groupTab)
-
+    
     # Characteristic Curves ----------------------------------------------
     # prepare data
     ccDat <- pStats %>%
@@ -162,7 +161,7 @@ plot_DIF_group <- function(test, DIFVar, numAbilGrps=3, abilEst2use="pv1"){
         group_by(type, var_group, group) %>%
         mutate(abilityGrp = mean(ability)) %>% ungroup() %>%
         rename(score = resp)
-
+    
     # ICCs by var_group
     dfObserved <- ccDat %>% filter(type == abilEst2use) %>%
         group_by(type, var_group, group) %>%
@@ -184,7 +183,7 @@ plot_DIF_group <- function(test, DIFVar, numAbilGrps=3, abilEst2use="pv1"){
         ungroup() %>%
         arrange(iNum, group, Ability, Score) %>%
         mutate(Group = str_pad(Group, 2, "left", "0"))
-
+    
     dfObservedAverage <- ccDat %>% filter(type == abilEst2use) %>%
         group_by(type, group) %>%
         mutate(abilityGrp = mean(ability)) %>% ungroup() %>%
@@ -202,27 +201,27 @@ plot_DIF_group <- function(test, DIFVar, numAbilGrps=3, abilEst2use="pv1"){
         mutate(prop = Count/sum(Count)) %>%
         ungroup() %>%
         arrange(iNum, group, Ability, Score)
-
-    xMin <- round(min(dfObserved$Ability), 2) - 0.1
+    
+    xMin <- round(min( dfObserved$Ability[dfObserved$Ability>-10]), 2) - 0.1
     xMax <- round(max(dfObserved$Ability), 2) + 0.1
-
+    
     pdf(file=here::here('DIF', paste0(DIFVar, '_', test, "_Group.pdf")),
         width = 10, height = 7)
-
+    
     for(k in unique(deltas$iNum)){
         i_df <- deltas %>% filter(iNum == k)
-        o_df <- dfObserved %>% filter(iNum == k, Score == 1) %>%
+        o_df <- dfObserved %>% filter(iNum == k, Score == 1, !is.na(Group)) %>%
             bind_rows(dfObservedAverage %>% filter(iNum == k, Score == 1) %>%
                           mutate(Group = "Average\nExpected")) %>%
             mutate(lineLab = "Observed\nProportion")
-
+        
         m_df <- tibble(iNum = k, ability = seq(xMin, xMax, by=.02)) %>%
-            mutate(pSuccess = exp(ability - i_df$delta)/(1+exp(ability - i_df$delta)),
+            mutate(pSuccess = exp(ability - unique(i_df$iLogit))/(1 + exp(ability - unique(i_df$iLogit))),
                    lineLab = "Model\nProbability")
-
+        
         colourCount = length(unique(o_df$Group))
         getPalette = colorRampPalette(brewer.pal(9, "Set1"))
-
+        
         plot <- ggplot() +
             geom_line(m_df, mapping= aes(x=ability, y=pSuccess, linetype = lineLab), lwd = 1) +
             geom_point(o_df, mapping = aes(x = Ability, y = prop, shape = Group, fill = Group,
@@ -238,9 +237,9 @@ plot_DIF_group <- function(test, DIFVar, numAbilGrps=3, abilEst2use="pv1"){
                  y = "Probability",
                  linetype = "") +
             scale_x_continuous(breaks=seq(-5, 5, 1)) +
-            scale_y_continuous(breaks=seq(.2, 1, .1), limits = c(.2, 1)) +
+            scale_y_continuous(breaks=seq(0, 1, .1), limits = c(0, 1)) +
             ggthemes::theme_tufte()
-
+        
         print(plot)
     }
     dev.off()

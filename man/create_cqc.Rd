@@ -32,20 +32,20 @@ create_cqc(
 
 \item{test}{Name of the test.}
 
-\item{run}{Vector of specific categories of variables to select from 
-'test_Data.txt' in 'data' folder, e.g., c('English2', 3, 1). This corresponds 
+\item{run}{Vector of specific categories of variables to select from
+'test_Data.txt' in 'data' folder, e.g., c('English2', 3, 1). This corresponds
 to the previous argument `run_ls`.}
 
 \item{resps_cols}{Column numbers of responses.}
 
 \item{pid_cols}{Column numbers of person ID.}
 
-\item{run_ls}{List of data filters. Element is column number in data. 
-Element name is filter variable's name. This argument is useful for data 
-including more than one test forms each of which has respective keys and labels. 
+\item{run_ls}{List of data filters. Element is column number in data.
+Element name is filter variable's name. This argument is useful for data
+including more than one test forms each of which has respective keys and labels.
 The elements will be used by 'Keepcases' to filter a test form.}
 
-\item{regr_ls}{List of regressors. Element is column number in data. Element 
+\item{regr_ls}{List of regressors. Element is column number in data. Element
 name is regressor's name.}
 
 \item{codes}{Vector of valid codes for item responses, e.g., c(1, 2, 3, 4, 5, 6, 7, 8, 9).}
@@ -70,24 +70,24 @@ name is regressor's name.}
 
 \item{poly_catgrs}{Vector of polytomous DIF variable's categories.}
 
-\item{poly_facet}{TRUE if facet model is to be run on a polytomous DIF variable. 
+\item{poly_facet}{TRUE if facet model is to be run on a polytomous DIF variable.
 Default is FALSE.}
 
 \item{poly_group}{TRUE if model is run per group. Default is FALSE.}
 }
 \description{
-This function creates 'test.cqc' file in 'input' folder. This is associated 
+This function creates 'test.cqc' file in 'input' folder. This is associated
 with test named 'test'.
 }
 \details{
 For DIF analysis on dichotomous variables, you need specify 'DIFVar', 'DIFVar_cols'.
-For DIF analysis on polytomous variables, there are two methods. Method 1 
-compares each category's delta estimates with the mean of all subgroups. 
-Specified arguments are 'DIFVar', 'DIFVar_cols', 'DIFVar_cols'. Method 2 
-runs two models. The first model does calibrations on each subgroup separately 
-where you need to specify arguments of 'DIFVar', 'DIFVar_cols', and 'poly_group'. 
-The other model runs a facet model with an interaction term between group 
-and item where you need to specify arguments of 'DIFVar', 'DIFVar_cols', 
+For DIF analysis on polytomous variables, there are two methods. Method 1
+compares each category's delta estimates with the mean of all subgroups.
+Specified arguments are 'DIFVar', 'DIFVar_cols', 'DIFVar_cols'. Method 2
+runs two models. The first model does calibrations on each subgroup separately
+where you need to specify arguments of 'DIFVar', 'DIFVar_cols', and 'poly_group'.
+The other model runs a facet model with an interaction term between group
+and item where you need to specify arguments of 'DIFVar', 'DIFVar_cols',
 and 'poly_facet'.
 }
 \examples{
