@@ -39,3 +39,5 @@
 1. section_model() sets up correct model terms for group model used in DIF analysis on polytomous variable.
 2. DIF_poly_shw() extracts from .shw files delta columns of all numeric.
 3. plot_DIF_group() plots polytomous items.
+4. plot_DIF_poly() allows for 30 overlapping labels.
+5. DIF_dich() reads facilities from collapsed columns in .its file (CQ 5.27.0).

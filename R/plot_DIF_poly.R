@@ -43,5 +43,6 @@ plot_DIF_poly <- function(DIFVar, subgrp, cats, item, delta_cat, Flag_dif) {
         labs(x='', y=paste(DIFVar, cats[[subgrp]], 'Difficulty' )) +
         ggthemes::theme_tufte() +
         ggrepel::geom_label_repel(data=DIF_txt, aes(label=item),
-                                  size=2, segment.size=0.25, alpha=0.5)
+                                  size=2, segment.size=0.25, alpha=0.5, 
+                                  max.overlaps=20)
 }
