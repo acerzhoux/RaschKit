@@ -67,6 +67,8 @@
 #' @param sparse_check Whether to check response column sparsity in general or
 #'  regarding any DIF variable category. Default is FALSE. If TRUE, sparse
 #'  response columns will be removed.
+#' @param CCCip2Wd TRUE if to save CCC and item-person map to a Word file. Default
+#' is FALSE.
 #' @examples
 #' # Not run
 #' # calibrate(data=racp, test='RACP', pid="V1", n_cov=1, keys=cd$`Correct options`,
@@ -83,7 +85,7 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
                       missCode2Conv=c('@','@@','@@@','@@@@','7','8','9','88','99','.','',' ', '-'),
                       filetype='sav', slope=NULL, intercept=NULL,
                       extrapolation=FALSE, save_xlsx=TRUE, est_type='wle',
-                      anchor_read=FALSE, sparse_check=FALSE){
+                      anchor_read=FALSE, sparse_check=FALSE, CCCip2Wd=FALSE){
     options(warn=-1)
     # read data
     save_data <- TRUE
@@ -298,10 +300,10 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
         ccc_data <- plot_data[['ccc_data']]
         iType <- plot_data[['itype']]
         
-        # save CCC, imap to Word file
-        cat('Saving CCC and ipMap to Word file...\n')
-        rmd_file <- system.file("rmd", "CCC_ipMap.Rmd", package = "RaschKit")
-        if (file.exists(rmd_file)) {
+        # save CCC, imap to Word file        
+        if (CCCip2Wd) {
+            cat('Saving CCC and ipMap to Word file...\n')
+            rmd_file <- system.file("rmd", "CCC_ipMap.Rmd", package = "RaschKit")
             rmarkdown::render(rmd_file,
                               params=list(test=test, plot_data=plot_data),
                               output_file=str_c(test, '_CCC_ipMap', '.docx'),
@@ -336,7 +338,7 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
                 paste0('\tConverge check:\t', here::here('output', paste0(test, '_convergence_check.pdf'))),
                 paste0('\tQA:\t\t', here::here('output', paste0(test, '_Frequency_check.xlsx'))),
                 paste0('\tCCC:\t\t', here::here('output', paste0(test, '_CCC.pdf'))),
-                if (file.exists(rmd_file)){
+                if (CCCip2Wd){
                     paste0('\tCCC_ipMap:\t', here::here('output', str_c(test, '_CCC_ipMap', '.docx')))
                 },
                 paste0('\tsummary:\t', here::here('results', paste0('itn_', test, '.xlsx')))

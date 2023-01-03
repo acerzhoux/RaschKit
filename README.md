@@ -46,7 +46,7 @@
     - install_packages_ls()
     - create_folders()
 
-===== v1.0.2 Updates =====
+===== v1.0.2 Updating (Yet to come) =====
 1. Suppress ConQuest, Rmd, and other printing in R console.
 2. install_packages_ls() includes packages needed to knit Rmd files.
 
