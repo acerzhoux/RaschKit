@@ -319,7 +319,7 @@ CCC_ipMap <- function(folder=here::here('output'), test, cqs, abilEst2use='pv1',
     }
 
     iPlotDat <- iPlotDat %>%
-        left_join(deltas %>% select(iNum, item=iLab))
+        left_join(deltas %>% select(iNum, item=iLab), by = "item")
     if (ni>100 || np-ni>100){
         iPlot <- ggplot(iPlotDat, aes(x = deltaRank, y = delta2, label = iNum))
     } else {

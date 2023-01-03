@@ -148,7 +148,8 @@ Equate <- function(df, test, vars, p_cut=0.05, chi_cut=10,
                                           step=step, DIF=DIF,
                                           output=output),
                               output_file=str_c(sht, '.html'),
-                              output_dir=here::here('equating'))
+                              output_dir=here::here('equating'),
+                              quiet=TRUE)
         }
 
         # point users to files of varying purposes

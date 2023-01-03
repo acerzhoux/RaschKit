@@ -13,10 +13,11 @@
 
 create_lab <- function(wd, test){
     labs <- read_tsv(file.path(file.path(wd, 'data'), paste0(test, '_Labels.txt')),
-                     col_names = FALSE) %>%
+                     col_names = FALSE,
+                     show_col_types = FALSE) %>%
         rowid_to_column() %>%
         `colnames<-`(c('===>', 'item'))
     labs_path <- file.path(wd, 'Input', paste0(test, '.lab'))
-
+    
     write_delim(labs, labs_path, delim = ' ', col_names = TRUE)
 }

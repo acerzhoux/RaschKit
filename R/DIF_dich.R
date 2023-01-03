@@ -198,7 +198,8 @@ DIF_dich <- function(DIFVar, test, vars, df,
                                               DIFVar=DIFVar, vars=vars,
                                               facil_cut=facil_cut),
                                   output_file=str_c(DIFVar, '_', test, '_step.html'),
-                                  output_dir=here::here('DIF'))
+                                  output_dir=here::here('DIF'),
+                                  quiet=TRUE)
             }
         } else {
             # rmd_file <- here::here('rCode', 'report', 'DIF_dich.Rmd')
@@ -209,7 +210,8 @@ DIF_dich <- function(DIFVar, test, vars, df,
                                               DIFVar=DIFVar, vars=vars,
                                               facil_cut=facil_cut),
                                   output_file=str_c(DIFVar, '_', test, '.html'),
-                                  output_dir=here::here('DIF'))
+                                  output_dir=here::here('DIF'),
+                                  quiet=TRUE)
             }
         }
         

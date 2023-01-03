@@ -102,7 +102,8 @@ DIF_poly <- function(df_ls, DIFVar, cats, labels, test, domain=NULL,
                           params=list(output=output, test=test,
                                       DIFVar=DIFVar),
                           output_file=str_c(DIFVar, '_', test, '.html'),
-                          output_dir=here::here('DIF'))
+                          output_dir=here::here('DIF'),
+                          quiet=TRUE)
     }
 
     # point users to files of varying purposes

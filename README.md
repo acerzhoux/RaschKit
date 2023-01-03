@@ -4,7 +4,7 @@
 2.  Run code below to install packages.\
     lapply(\
         c('plyr', 'conquestr', 'rlang','bookdown',\
-          'ggthemes', 'ggrepel', 'patchwork',\
+          'ggthemes', 'ggrepel', 'patchwork','rmarkdown',\
           'gdata', 'janitor', 'data.table','knitr',\
           'RColorBrewer', 'fs', 'here', 'lazyeval',\
           'writexl', 'ggpubr', 'qpdf', 'tidyverse'), \
@@ -28,7 +28,7 @@
             - click 'Install'. From 'Install from', select 'Package Archive File...'.
             - Click 'Browse'. Enter into 'File name' file path (if Windows)\
                 P:\ACER ConQuest\Admin\InHouse - ConQuest Latest versions\conquestr\Win
-            - Select 'conquestr_1.0.1.zip'. 
+            - Select 'conquestr_1.0.2.zip'. 
             - Click 'Open'. 
             - Click 'Install'.
     - Install 'RaschKit' 1.0.1 (packageVersion('RaschKit')).
@@ -45,6 +45,10 @@
     - library(RaschKit)
     - install_packages_ls()
     - create_folders()
+
+===== v1.0.2 Updates =====
+1. Suppress ConQuest, Rmd, and other printing in R console.
+2. install_packages_ls() includes packages needed to knit Rmd files.
 
 ===== v1.0.1 Updates =====
 
