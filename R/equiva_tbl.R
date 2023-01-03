@@ -27,14 +27,15 @@ equiva_tbl <- function(wd=here::here(), test, est_type='wle', slope=NULL,
             'quit;'
     )
     cqc_path <-  file.path(wd, 'Input', paste0(test, '_eqv.cqc'))
-    writeLines(cn, cqc_path)
-
+    # writeLines(cn, cqc_path)
+    
     # call CQ and generate equiv table
     conquestr::ConQuestCall(
         file.path('C:', 'Program Files', 'ACER ConQuest', 'ConQuestConsole.exe'),
-        cqc=cqc_path
+        cqc=cqc_path,
+        stdout=NULL 
     )
-
+    
     # read equiv tbl
     lines <- readLines(equiva_path)
     ind2 <- grep('=====', lines)[[2]]-1
@@ -42,7 +43,7 @@ equiva_tbl <- function(wd=here::here(), test, est_type='wle', slope=NULL,
         read.table(text=.) %>%
         as_tibble() %>%
         `colnames<-`(c('Score_raw','EST','SE'))
-
+    
     # extrapolation
     if (extrapolation){
         tbl_r <- nrow(eqv_tbl)-1
@@ -50,13 +51,13 @@ equiva_tbl <- function(wd=here::here(), test, est_type='wle', slope=NULL,
             {.[[3]] - .[[2]]*3 + .[[1]]*3}
         est_max <- eqv_tbl[(tbl_r-2):tbl_r,]$EST %>%
             {.[[3]]*3 - .[[2]]*3 + .[[1]]}
-
+        
         eqv_tbl[1, ]$EST <- est_min
         eqv_tbl[(tbl_r+1), ]$EST <- est_max
     }
     writexl::write_xlsx(eqv_tbl,
                         here::here('results', paste0('eqv_tbl_', test, '.xlsx')))
-
+    
     # scale scores
     if (!is.null(intercept) | !is.null(slope)){
         cat('Generating scaled-score table...\n')
