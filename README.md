@@ -3,9 +3,9 @@
 1.  Create a project file 'xxx.Rproj' in a working directory and open it.
 2.  Run code below to install packages.\
     lapply(\
-        c('plyr', 'conquestr', 'rlang',\
+        c('plyr', 'conquestr', 'rlang','bookdown',\
           'ggthemes', 'ggrepel', 'patchwork',\
-          'gdata', 'janitor', 'data.table',\
+          'gdata', 'janitor', 'data.table','knitr',\
           'RColorBrewer', 'fs', 'here', 'lazyeval',\
           'writexl', 'ggpubr', 'qpdf', 'tidyverse'), \
         function(x){\

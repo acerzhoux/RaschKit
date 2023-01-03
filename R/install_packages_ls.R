@@ -8,9 +8,9 @@
 #' install_packages_ls(packages='openxlsx')
 #' @export
 
-install_packages_ls <- function(packages=c('plyr', 'conquestr', 'rlang',
-                                           'ggthemes', 'ggrepel', 'patchwork',
-                                           'gdata', 'janitor', 'data.table',
+install_packages_ls <- function(packages=c('plyr', 'conquestr', 'rlang', 'bookdown',
+                                           'ggthemes', 'ggrepel', 'patchwork', 
+                                           'gdata', 'janitor', 'data.table', 'knitr',
                                            'RColorBrewer', 'fs', 'here', 'lazyeval',
                                            'writexl', 'ggpubr', 'qpdf', 'tidyverse')){
     lapply(packages, function(x){
