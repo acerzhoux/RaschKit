@@ -13,7 +13,6 @@ title: Analysis of `r if (DIF) 'DIF' else 'Equating'` on `r test` Between `r var
 library(RaschKit)
 library(tidyverse)
 library(knitr)
-library(bookdown)
 
 knitr::opts_chunk$set(echo=FALSE)
 knitr::opts_chunk$set(warning = FALSE, message = FALSE) 

@@ -10,7 +10,6 @@ title: CCC and Item-person Map of `r test`
 library(RaschKit)
 library(tidyverse)
 library(knitr)
-library(bookdown)
 
 knitr::opts_chunk$set(echo=FALSE, results = "asis", webshot = "webshot")
 knitr::opts_chunk$set(warning = FALSE, message = FALSE) 

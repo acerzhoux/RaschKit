@@ -13,7 +13,6 @@ title: DIF Analysis of `r DIFVar` on `r test` Steps
 library(RaschKit)
 library(tidyverse)
 library(knitr)
-library(bookdown)
 
 knitr::opts_chunk$set(echo=FALSE)
 knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
