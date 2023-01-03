@@ -11,7 +11,7 @@
 install_packages_ls <- function(packages=c('plyr', 'conquestr', 'rlang',
                                            'ggthemes', 'ggrepel', 'patchwork',
                                            'gdata', 'janitor', 'data.table',
-                                           'RColorBrewer', 'fs', 'here',
+                                           'RColorBrewer', 'fs', 'here', 'lazyeval',
                                            'writexl', 'ggpubr', 'qpdf', 'tidyverse')){
     lapply(packages, function(x){
         if (!require(x, character.only=TRUE)){

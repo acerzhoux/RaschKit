@@ -36,14 +36,6 @@ Imports:
     here,
     writexl,
     ggpubr,
-    methods,
     qpdf,
-    ggplot2,
-    dplyr,
-    tidyr,
-    readr,
-    purrr,
-    tibble,
-    stringr,
-    forcats
+    tidyverse
 RoxygenNote: 7.2.1

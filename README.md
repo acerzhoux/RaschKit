@@ -1,7 +1,19 @@
 ===== Steps to install RaschKit and set up ====
 
-1.	Create a project file 'xxx.Rproj' in a working directory and open it.
-2.	Software compatibility.
+1.  Create a project file 'xxx.Rproj' in a working directory and open it.
+2.  Run code below to install packages.
+    lapply(
+        c('plyr', 'conquestr', 'rlang',
+          'ggthemes', 'ggrepel', 'patchwork',
+          'gdata', 'janitor', 'data.table',
+          'RColorBrewer', 'fs', 'here', 'lazyeval',
+          'writexl', 'ggpubr', 'qpdf', 'tidyverse'), 
+        function(x){
+          if (!require(x, character.only=TRUE)){
+             install.packages(x)
+             library(x, character.only=TRUE)}}
+    )
+3.	Software compatibility.
     - ACER ConQuest: 5.27.0\
       conquestr: 1.0.1\
       Raschkit: 1.0.1
@@ -28,7 +40,7 @@
             - Select 'RaschKit_1.0.1.tar.gz'. 
             - Click 'Open'. 
             - Click 'Install'.
-5.  In 'xxx.Rproj', run code below and explore .Rmd files in ‘rCode’ folder for 
+4.  In 'xxx.Rproj', run code below and explore .Rmd files in ‘rCode’ folder for 
     data exploration, calibration, equating, and DIF. 
     - library(RaschKit)
     - install_packages_ls()
