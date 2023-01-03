@@ -105,6 +105,8 @@ create_cqc <- function(wd=here::here(), test, run, resps_cols, pid_cols, run_ls=
     writeLines(cqc, cqc_path)
 
     # run CQC
-    conquestr::ConQuestCall(file.path('C:', 'Program Files', 'ACER ConQuest', 'ConQuestConsole.exe'),
-        cqc = cqc_path)
+    conquestr::ConQuestCall(
+        cqExe = file.path('C:', 'Program Files', 'ACER ConQuest', 'ConQuestConsole.exe'),
+        cqc = cqc_path, 
+        stdout = NULL)
 }
