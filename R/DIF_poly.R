@@ -108,6 +108,7 @@ DIF_poly <- function(df_ls, DIFVar, cats, labels, test, domain=NULL,
 
     # point users to files of varying purposes
     writeLines(c(
+        paste0('\n========= Output Files =========\n'),
         paste0(toupper(DIFVar), ' DIF analysis for ', test,
                if (step) ' (step)', ' (Bonferroni adjusted tests):'),
         paste0('\tSummary:\t', here::here('DIF', paste0(sht, '.xlsx'))),

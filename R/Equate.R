@@ -154,6 +154,7 @@ Equate <- function(df, test, vars, p_cut=0.05, chi_cut=10,
 
         # point users to files of varying purposes
         writeLines(c(
+            paste0('\n========= Output Files =========\n'),
             paste0('Anchor DIF analysis for ', test,
                    ' (', vars[[2]], ' vs. ', vars[[1]], '):'),
             paste0('\tSummary:\t', path_xlsx),

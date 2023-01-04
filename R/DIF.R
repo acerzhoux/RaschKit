@@ -96,7 +96,7 @@ DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'), wd=here::here(),
         cat('Running ConQuest for facet model...\n')
         do.call(lab_cqc, arg_cqc)
 
-        cat('Performing', 'chi_square tests',
+        cat('Performing', 'chi_square tests with facet model results',
             if (iterative) 'iteratively' else 'once and for all', '...\n')
         do.call(DIF_dich_its_shw,
                 append(arg_DIF, list(vars=vars,
@@ -135,17 +135,18 @@ DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'), wd=here::here(),
         arg_cqc[['quick']] <- FALSE
         do.call(lab_cqc, arg_cqc)
 
-        # plot and summarise results
-        cat('Plotting using results from group model...\n')
-        plot_DIF_group(test=test, DIFVar=DIFVar)
-
-        cat('Summarising using results from facet model...\n')
+        # summarise and plot results
+         cat('Summarising results from facet model...\n')
         df_shw_Term3(folder=here::here('DIF', DIFVar), test=test) %>%
             writexl::write_xlsx(here::here('DIF',
               paste0(DIFVar, if(step) '_step', '_', test, '_Facet.xlsx')))
+              
+        cat('Plotting results from group model...\n')
+        plot_DIF_group(test=test, DIFVar=DIFVar)
 
         # point users to files of varying purposes
         writeLines(c(
+            paste0('\n========= Output Files =========\n'),
             paste0(toupper(DIFVar), ' DIF analysis for ', test,
                    if (step) ' (step)', ' (Facet model & group model):'),
             paste0('\tSummary:\t\t', here::here('DIF',

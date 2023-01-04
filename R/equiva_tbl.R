@@ -27,7 +27,7 @@ equiva_tbl <- function(wd=here::here(), test, est_type='wle', slope=NULL,
             'quit;'
     )
     cqc_path <-  file.path(wd, 'Input', paste0(test, '_eqv.cqc'))
-    # writeLines(cn, cqc_path)
+    writeLines(cn, cqc_path)
     
     # call CQ and generate equiv table
     conquestr::ConQuestCall(

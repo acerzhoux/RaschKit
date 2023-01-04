@@ -41,7 +41,8 @@ calibrate(
   save_xlsx = TRUE,
   est_type = "wle",
   anchor_read = FALSE,
-  sparse_check = FALSE
+  sparse_check = FALSE,
+  CCCip2Wd = FALSE
 )
 }
 \arguments{
@@ -142,6 +143,9 @@ in 'input' folder.}
 \item{sparse_check}{Whether to check response column sparsity in general or
 regarding any DIF variable category. Default is FALSE. If TRUE, sparse
 response columns will be removed.}
+
+\item{CCCip2Wd}{TRUE if to save CCC and item-person map to a Word file. Default
+is FALSE.}
 }
 \description{
 This function calibrates items in a test and adds comments and flags of

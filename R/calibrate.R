@@ -269,8 +269,8 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
         
         # point users to files of varying purposes
         writeLines(c(
-            paste0('\n\n========= Output Files =========\n\n'),
-            paste0('\nAnchoring and scaling of ', toupper(test), ':'),
+            paste0('\n========= Output Files =========\n'),
+            paste0('Anchoring and scaling of ', toupper(test), ':'),
             paste0('\tScore equivalence table:\t',
                    here::here('results', paste0('eqv_tbl_', test, '.xlsx'))),
             paste0('\tRaw and logit score table:\t', here::here('results', paste0('estimates_', test, '.xlsx'))),
@@ -326,7 +326,7 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
             
             # point users to files of varying purposes
             writeLines(c(
-                paste0('\n\n========= Output Files =========\n\n'),
+                paste0('\n========= Output Files =========\n'),
                 paste0('Item calibration of ', toupper(test), ':'),
                 paste0('\tCQ output:\t', here::here('output'), ' (Files with \'', test, '\' in name)'),
                 if (save_data){

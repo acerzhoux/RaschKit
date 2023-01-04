@@ -217,6 +217,7 @@ DIF_dich <- function(DIFVar, test, vars, df,
         
         # point users to files of varying purposes
         writeLines(c(
+            paste0('\n========= Output Files =========\n'),
             paste0(toupper(DIFVar), ' DIF analysis for ', test,
                    if (step) ' (step)', ' (Chi-squared tests):'),
             paste0('\tSummary:\t', here::here('DIF', paste0(sht, '.xlsx'))),
