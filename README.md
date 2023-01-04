@@ -16,7 +16,7 @@
 3.	Software compatibility.
     - ACER ConQuest: 5.27.0\
       conquestr: 1.0.1\
-      Raschkit: 1.0.1
+      Raschkit: 1.0.2
     - Install ACER ConQuest 5.27.0.
         - From left bottom corner of Windows, 
             - Type in 'software centre' and click.
@@ -28,16 +28,16 @@
             - click 'Install'. From 'Install from', select 'Package Archive File...'.
             - Click 'Browse'. Enter into 'File name' file path (if Windows)\
                 P:\ACER ConQuest\Admin\InHouse - ConQuest Latest versions\conquestr\Win
-            - Select 'conquestr_1.0.2.zip'. 
+            - Select 'conquestr_1.0.1.zip'. 
             - Click 'Open'. 
             - Click 'Install'.
-    - Install 'RaschKit' 1.0.1 (packageVersion('RaschKit')).
+    - Install 'RaschKit' 1.0.2 (packageVersion('RaschKit')).
         - From bottom right pane of 'xxx.Rproj' (Step 1).    
             - click 'Packages' (3rd button after 'Files', 'Plots').
             - click 'Install'. From 'Install from', select 'Package Archive File...'.
             - Click 'Browse'. Enter into 'File name' file path\
                 T:\Xiaoliang Zhou
-            - Select 'RaschKit_1.0.1.tar.gz'. 
+            - Select 'RaschKit_1.0.2.tar.gz'. 
             - Click 'Open'. 
             - Click 'Install'.
 4.  In 'xxx.Rproj', run code below and explore .Rmd files in ‘rCode’ folder for 
@@ -46,7 +46,7 @@
     - install_packages_ls()
     - create_folders()
 
-===== v1.0.2 Updating (Yet to come) =====
+===== v1.0.2 Updates =====
 1. Suppress ConQuest, Rmd, and other printing in R console.
 2. install_packages_ls() includes packages needed to knit Rmd files.
 

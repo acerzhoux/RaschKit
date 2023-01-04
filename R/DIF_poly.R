@@ -67,9 +67,9 @@ DIF_poly <- function(df_ls, DIFVar, cats, labels, test, domain=NULL,
     plist <- map(1:length(cats), ~plot_DIF_poly(DIFVar, ., cats,
                            item=error_cat_item$item, delta_cat, Flag_dif))
     p_save <- patchwork::wrap_plots(plist, ncol=floor(sqrt(length(plist)))) +
-        plot_annotation(title=paste0(str_to_title(test),
+        plot_annotation(title=paste0(toupper(test),
             if (!is.null(domain)) paste0(' ', domain),
-            ': ', str_to_title(DIFVar), ' DIF Review on ', nrow(delta_cat), ' items')) +
+            ': ', toupper(DIFVar), ' DIF Review on ', nrow(delta_cat), ' items')) +
         labs(x=paste0('Average Difficulty (Logits)'),
              caption=paste0('DIF: Bonferroni Adj. Sig. Test'))
 

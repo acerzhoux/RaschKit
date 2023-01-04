@@ -38,5 +38,6 @@ DIF_symbol_poly <- function(cutscore, t_vec, cat_vec){
             }
         }
     }
-    bind_cols(cat_vec, cat_vec_sig, cat_vec_sign)
+    bind_cols(cat_vec, cat_vec_sig, cat_vec_sign,
+              .name_repair = "unique_quiet")
 }

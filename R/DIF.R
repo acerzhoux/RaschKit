@@ -110,7 +110,7 @@ DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'), wd=here::here(),
     if (method=='Bonferroni'){
         if (is.null(poly_catgrs)) stop('Please set \'poly_catgrs\' as vector of DIF variable\'s categories\' integer code.')
 
-        cat('Running ConQuest for each subgroup...\n')
+        cat('Running ConQuest: Item calibration for each subgroup...\n')
         do.call(lab_cqc, arg_cqc)
 
         cat('Performing Bonferroni adjusted comparison...\n')

@@ -35,14 +35,15 @@ plot_DIF_poly <- function(DIFVar, subgrp, cats, item, delta_cat, Flag_dif) {
     DIF_txt <- df %>%
         filter(item %in% flags)
 
-    ggplot(df, aes(average, subgroup)) +
-        geom_point() +
-        geom_smooth(method='lm') +
+    ggplot(df, aes(x=average, y=subgroup)) +
+        geom_point()  +
+        geom_abline(intercept=0, slope=1, colour='gray') +
+        # stat_smooth(method='lm', formula = y ~ poly(x, 2), size = 1) +
         geom_text(aes(label=label), data=txt1, vjust='top', hjust='left') +
         geom_text(aes(label=label), data=txt2, vjust='bottom', hjust='right') +
         labs(x='', y=paste(DIFVar, cats[[subgrp]], 'Difficulty' )) +
         ggthemes::theme_tufte() +
         ggrepel::geom_label_repel(data=DIF_txt, aes(label=item),
                                   size=2, segment.size=0.25, alpha=0.5, 
-                                  max.overlaps=20)
+                                  max.overlaps=30)
 }

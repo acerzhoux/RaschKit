@@ -135,7 +135,8 @@ plot_DIF_group <- function(test, DIFVar, numAbilGrps=3, abilEst2use="pv1"){
                                  TRUE ~ errorEmp)) %>%
         left_join(iEstimates %>% filter(modelTerm > 1) %>%
                       rename(stepLogit = Xsi) %>%
-                      select(-errorQuick, -modelTerm)
+                      select(-errorQuick, -modelTerm), 
+            by = "iLab"
         )  %>%
         mutate(stepLogit = ifelse(is.na(stepLogit) & iStepsCount == 2, 0, stepLogit),
                category = ifelse(is.na(category) & iStepsCount == 2, 1, category),
@@ -160,7 +161,7 @@ plot_DIF_group <- function(test, DIFVar, numAbilGrps=3, abilEst2use="pv1"){
         left_join(preKeyLookUp, by = "respPrekey") %>%
         left_join(deltas %>% distinct(iNum, iLab, iStepsCount),
                   by = "iNum") %>%
-        left_join(pidVar_groupTab)
+        left_join(pidVar_groupTab, by = "pid")
     
     # Characteristic Curves ----------------------------------------------
     # prepare data
