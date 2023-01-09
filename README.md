@@ -47,12 +47,17 @@
     - create_folders()
 
 ===== v1.0.2 Updates =====
-1. Suppress ConQuest, Rmd, and other printing in R console.
+1. Suppress ConQuest, Rmd, and other unnecessary printing in R console.
 2. install_packages_ls() includes packages needed to knit Rmd files.
+3. freq_resps_cat() orders in numerical order score categories in column names\ 
+   of wide form. It also adds response total 'N' in output and argument 'prop'\ 
+   for proportion.
+4. calibrate() supports case weights with argument 'pweight'.
 
 ===== v1.0.1 Updates =====
 
-1. section_model() sets up correct model terms for group model used in DIF analysis on polytomous variable.
+1. section_model() sets up correct model terms for group model used in DIF\ 
+   analysis on polytomous variable.
 2. DIF_poly_shw() extracts from .shw files delta columns of all numeric.
 3. plot_DIF_group() plots polytomous items.
 4. plot_DIF_poly() allows for 30 overlapping labels.

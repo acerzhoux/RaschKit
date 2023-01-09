@@ -19,6 +19,8 @@
 #' @param DIFVar Name of DIF variable.
 #' @param DIFVar_cols DIF variable's column number in data.
 #' @param poly_group TRUE if model is run per group.
+#' @param pweight Variable name of person weights in response dataframe. Should 
+#' be specified if weight is used for modeling. 
 #' @return String of characters used in export section of 'test.cqc' file in 
 #' 'input' folder.
 #' @examples
@@ -26,7 +28,7 @@
 #' @export
 
 section_data <- function(path_df, resps_cols, pid_cols, run_ls, regr_ls,
-                         path_lab, DIFVar, DIFVar_cols, poly_group){
+                         path_lab, DIFVar, DIFVar_cols, poly_group, pweight){
     c(paste0('data ', path_df, ';\n'),
       paste('format responses', resps_cols,
             if (!is.null(pid_cols)) paste('pid', pid_cols),
@@ -35,5 +37,6 @@ section_data <- function(path_df, resps_cols, pid_cols, run_ls, regr_ls,
             if (!is.null(regr_ls)) paste(paste(names(regr_ls), regr_ls), collapse=' '),
             ';\n'),
       if (poly_group) paste0('group ', DIFVar, ';\n'),
-      paste0('labels                                           << ', path_lab, ';\n'))
+      paste0('labels                                           << ', path_lab, ';\n'), 
+      if (!is.null(pweight)) paste0('caseweight ', pweight, ';\n'))
 }

@@ -60,7 +60,7 @@
 #' @param save_xlsx Whether to save summary file. Default is TRUE (single test).
 #' @param est_type Type of ability estimate to use for score equivalence table,
 #' 'wle' or 'mle'. Default is 'wle'.
-#' @param anchor_read Whether read from an anchor file in 'input' folder.
+#' @param anchor_read Whether to read from an anchor file in 'input' folder.
 #' Default is FALSE. Then, should put anchors tbl (Item, Delta) on a sheet of
 #' 'anchors.xlsx' in 'data' folder. If TRUE, an anchor .anc file should exist
 #' in 'input' folder.
@@ -69,6 +69,8 @@
 #'  response columns will be removed.
 #' @param CCCip2Wd TRUE if to save CCC and item-person map to a Word file. Default
 #' is FALSE.
+#' @param pweight Variable name of person weights in response dataframe. Should 
+#' be specified if weight is used for modeling. Default is NULL.
 #' @examples
 #' # Not run
 #' # calibrate(data=racp, test='RACP', pid="V1", n_cov=1, keys=cd$`Correct options`,
@@ -85,7 +87,8 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
                       missCode2Conv=c('@','@@','@@@','@@@@','7','8','9','88','99','.','',' ', '-'),
                       filetype='sav', slope=NULL, intercept=NULL,
                       extrapolation=FALSE, save_xlsx=TRUE, est_type='wle',
-                      anchor_read=FALSE, sparse_check=FALSE, CCCip2Wd=FALSE){
+                      anchor_read=FALSE, sparse_check=FALSE, CCCip2Wd=FALSE,
+                      pweight=NULL){
     options(warn=-1)
     # read data
     save_data <- TRUE
@@ -232,7 +235,7 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
             anchor=anchor, step=FALSE, regr_ls=prep$regr_ls,
             section_extr=prep$section_extr,
             DIFVar=NULL, DIFVar_cols=prep$DIFVar_cols, poly_catgrs=NULL,
-            poly_facet=FALSE, poly_group=FALSE)
+            poly_facet=FALSE, poly_group=FALSE, pweight=pweight)
     
     # ####### read CQS output for summary
     cat('Reading CQS file...\n')

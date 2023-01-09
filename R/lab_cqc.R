@@ -42,6 +42,8 @@
 #' @param poly_facet TRUE if facet model is to be run on a polytomous DIF variable. 
 #' Default is FALSE.
 #' @param poly_group TRUE if model is run per group. Default is FALSE.
+#' @param pweight Variable name of person weights in response dataframe. Should 
+#' be specified if weight is used for modeling. Default is NULL.
 #' @return 'test.cqc' file in 'input' folder.
 #' @examples
 #' lab_cqc()
@@ -53,7 +55,7 @@ lab_cqc <- function(wd=here::here(), test, run=NULL, run_ls=NULL,
                     step=FALSE, regr_ls=NULL,
                     DIFVar=NULL, DIFVar_cols=NULL, #dich & poly
                     poly_catgrs=NULL, #dich, poly
-                    poly_facet=FALSE, poly_group=FALSE){ #poly: facet
+                    poly_facet=FALSE, poly_group=FALSE, pweight=NULL){ #poly: facet
     # create folders
     create_folders(wd=wd, DIFVar=DIFVar)
 
@@ -66,5 +68,5 @@ lab_cqc <- function(wd=here::here(), test, run=NULL, run_ls=NULL,
                regr_ls=regr_ls, codes=codes, delete=delete, dbl_key=dbl_key,
                poly_key=poly_key, quick=quick, step=step, DIFVar=DIFVar,
                DIFVar_cols=DIFVar_cols, poly_catgrs=poly_catgrs,
-               poly_facet=poly_facet, poly_group=poly_group)
+               poly_facet=poly_facet, poly_group=poly_group, pweight=pweight)
 }
