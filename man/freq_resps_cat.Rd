@@ -4,7 +4,7 @@
 \alias{freq_resps_cat}
 \title{freq_resps_cat}
 \usage{
-freq_resps_cat(resp, wide = FALSE)
+freq_resps_cat(resp, wide = FALSE, prop = FALSE)
 }
 \arguments{
 \item{resp}{Dataframe of responses where each column is a vector of responses 
@@ -13,6 +13,8 @@ to one test item.}
 \item{wide}{TRUE if wide form is desired. Default is FALSE. When default, 
 the output has long format same as frequency table in .txt file output 
 from ConQuest.}
+
+\item{prop}{TRUE if proportion is desired. Default is FALSE.}
 }
 \value{
 Table of each item's category frequencies.

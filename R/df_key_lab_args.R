@@ -1,7 +1,7 @@
 #' df_key_lab_args
 #'
-#' This function saves data, label, and keys into 'Data' folder in the working 
-#' directory. It also prepares the arguments needed for calibration functions. 
+#' This function saves data, label, and keys into 'Data' folder in the working
+#' directory. It also prepares the arguments needed for calibration functions.
 #' This is associated with test named 'test'.
 #'
 #' @param test Name of the test.
@@ -15,6 +15,8 @@
 #' @param section_extr Sections to be included in the .cqc file. Default is NULL.
 #' @param labels Item labels. Default is NULL.
 #' @param anchor TRUE when anchor is to be done. Default is FALSE.
+#' @param pweight Variable name of person weights in response dataframe. Should
+#' be specified if weight is used for modeling. Default is NULL.
 #' @return A list of arguments with calculated elements.
 #' @examples
 #' # not run
@@ -25,7 +27,8 @@
 
 df_key_lab_args <- function(test, data, pid, n_cov, n_resp, keys,
                             DIFVar=NULL, regr_vec_char=NULL,
-                            section_extr=NULL, labels=NULL, anchor=FALSE){
+                            section_extr=NULL, labels=NULL, anchor=FALSE,
+                            pweight=NULL){
     create_folders(DIFVar=DIFVar)
     if (!is.null(regr_vec_char)){
         section_extr <- map(regr_vec_char, ~data[[.]] %>%
@@ -47,7 +50,8 @@ df_key_lab_args <- function(test, data, pid, n_cov, n_resp, keys,
 
     # prepare arguments
     prr <- pid_resp_regrs_cols(df=data, pid=pid, n_cov=n_cov,
-                               n_resp=n_resp, regr_vec=regr_vec_char)
+                               n_resp=n_resp, regr_vec=regr_vec_char,
+                               pweight=pweight)
     if (!is.null(DIFVar)) {
         DIFVar_cols <- var_cols(df=data, var_name=DIFVar)[[DIFVar]]
     } else {
@@ -68,7 +72,7 @@ df_key_lab_args <- function(test, data, pid, n_cov, n_resp, keys,
             sort()
     }
 
-    list(codes=codes, pid_cols=prr$pid_cols,
+    list(codes=codes, pid_cols=prr$pid_cols, pw_cols=prr$pw_cols,
          resps_cols=prr$resps_cols, regr_ls=prr$regr_ls,
          DIFVar_cols=DIFVar_cols,
          section_extr=section_extr)

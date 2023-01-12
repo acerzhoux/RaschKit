@@ -15,7 +15,8 @@ df_key_lab_args(
   regr_vec_char = NULL,
   section_extr = NULL,
   labels = NULL,
-  anchor = FALSE
+  anchor = FALSE,
+  pweight = NULL
 )
 }
 \arguments{
@@ -40,13 +41,16 @@ df_key_lab_args(
 \item{labels}{Item labels. Default is NULL.}
 
 \item{anchor}{TRUE when anchor is to be done. Default is FALSE.}
+
+\item{pweight}{Variable name of person weights in response dataframe. Should
+be specified if weight is used for modeling. Default is NULL.}
 }
 \value{
 A list of arguments with calculated elements.
 }
 \description{
-This function saves data, label, and keys into 'Data' folder in the working 
-directory. It also prepares the arguments needed for calibration functions. 
+This function saves data, label, and keys into 'Data' folder in the working
+directory. It also prepares the arguments needed for calibration functions.
 This is associated with test named 'test'.
 }
 \examples{

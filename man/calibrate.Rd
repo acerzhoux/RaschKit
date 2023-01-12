@@ -42,7 +42,8 @@ calibrate(
   est_type = "wle",
   anchor_read = FALSE,
   sparse_check = FALSE,
-  CCCip2Wd = FALSE
+  CCCip2Wd = FALSE,
+  pweight = NULL
 )
 }
 \arguments{
@@ -135,7 +136,7 @@ Default is FALSE.}
 \item{est_type}{Type of ability estimate to use for score equivalence table,
 'wle' or 'mle'. Default is 'wle'.}
 
-\item{anchor_read}{Whether read from an anchor file in 'input' folder.
+\item{anchor_read}{Whether to read from an anchor file in 'input' folder.
 Default is FALSE. Then, should put anchors tbl (Item, Delta) on a sheet of
 'anchors.xlsx' in 'data' folder. If TRUE, an anchor .anc file should exist
 in 'input' folder.}
@@ -146,6 +147,9 @@ response columns will be removed.}
 
 \item{CCCip2Wd}{TRUE if to save CCC and item-person map to a Word file. Default
 is FALSE.}
+
+\item{pweight}{Variable name of person weights in response dataframe. Should
+be specified if weight is used for modeling. Default is NULL.}
 }
 \description{
 This function calibrates items in a test and adds comments and flags of

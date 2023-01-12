@@ -24,7 +24,9 @@ create_cqc(
   DIFVar_cols,
   poly_catgrs = NULL,
   poly_facet = FALSE,
-  poly_group = FALSE
+  poly_group = FALSE,
+  pweight = NULL,
+  pw_cols = NULL
 )
 }
 \arguments{
@@ -74,6 +76,11 @@ name is regressor's name.}
 Default is FALSE.}
 
 \item{poly_group}{TRUE if model is run per group. Default is FALSE.}
+
+\item{pweight}{Variable name of person weights in response dataframe. Should
+be specified if weight is used for modeling. Default is NULL.}
+
+\item{pw_cols}{String of column numbers of case weight, e.g., '5-15'.}
 }
 \description{
 This function creates 'test.cqc' file in 'input' folder. This is associated

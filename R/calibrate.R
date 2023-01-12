@@ -69,7 +69,7 @@
 #'  response columns will be removed.
 #' @param CCCip2Wd TRUE if to save CCC and item-person map to a Word file. Default
 #' is FALSE.
-#' @param pweight Variable name of person weights in response dataframe. Should 
+#' @param pweight Variable name of person weights in response dataframe. Should
 #' be specified if weight is used for modeling. Default is NULL.
 #' @examples
 #' # Not run
@@ -107,17 +107,17 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
         } else if (filetype == 'xlsx'){
             data <- readxl::read_xlsx(here::here('data', paste0(test, '.xlsx')))
         } else {
-            stop('Data must use xlsx, csv, or sav.')
+            stop('Data must use sav, csv, or xlsx.')
         }
         save_data <- FALSE
     }
-    
+
     # check input
     cat('Checking inputs...\n')
     if (!all(c(pid, regr_vec_char) %in% names(data))) {
         stop('Pid or regressor is not in data column names!')
     }
-    
+
     # calculating arguments
     cat('Using default arguments if not given...\n')
     if (is.null(n_dims)) n_dims <- ncol(data) - n_cov
@@ -127,7 +127,7 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
     } else {
         names(data)[(n_cov+1):(n_cov+sum(n_dims))] <- labels
     }
-    
+
     # ####### check folders that may contain files related to 'test'
     cat('Move existing files with test name into new folder if any...\n')
     if (anchor_read){
@@ -137,7 +137,7 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
     }
     map(folders_mov,
         ~move_into_folder(folder=file.path(here::here(), .x), test=test))
-    
+
     # ####### preprocess data
     if (poly_key){
         cat('Checking polytomou-score items; recode if score are not continuous...\n')
@@ -147,7 +147,7 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
                                 miss_code=c('r','R','m','M','9','x','X','.','',' ',NA))
         }
     }
-    
+
     if (sparse_check){
         cat('Checking and removing items without data on any item or DIF variable categories...\n')
         processed <- sparse_data_process(test=test, data=data, keys=keys, labels=labels,
@@ -159,7 +159,7 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
         keys <- processed[['keys']]
         labels <- processed[['labels']]
     }
-    
+
     # recode data
     if (!is.null(missCode2Conv)){
         cat('Recoding embedded & trailing missing in responses to M & R...\n')
@@ -170,14 +170,14 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
                                      end=n_cov+sum(n_dims[1:i]), miss_code=missCode2Conv)
         }
     }
-    
+
     # find out deleted item order if delete is item labels
     if (!is.null(delete)){
         if (typeof(delete) == "character"){
             delete <- which(labels %in% delete)
         }
     }
-    
+
     # save data
     if (save_data) {
         cat('Saving data into xlsx and sav...\n')
@@ -192,28 +192,37 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
             data_sav <- data
             iSPSS <- paste0('V', 1:ncol(data_sav))
             names(data_sav)[1:ncol(data_sav)] <- iSPSS
+
+            N1 <- sum(n_cov, length(labels))
+            if (ncol(data)==N1){
+                iLabel <- c(names(data)[1:n_cov], labels)
+            } else {
+                iLabel <- c(names(data)[1:n_cov], labels, names(data)[(N1+1):ncol(data)])
+            }
+
             tibble(iSPSS = iSPSS,
-                   iLabel = c(names(data)[1:n_cov], labels)) %>%
+                   iLabel = iLabel) %>%
                 write.csv(here::here('data', paste0(test, '_labels.csv')),
                           row.names = FALSE)
             data_sav %>%
                 haven::write_sav(here::here('data', paste0(test, '.sav')))
         })
     }
-    
+
     # prepare arguments
     cat('Preparing ConQuest control file...\n')
     prep <- df_key_lab_args(test=test, data=data, DIFVar=NULL,
                             regr_vec_char=regr_vec_char, section_extr=section_extr,
                             pid=pid, n_cov=n_cov, n_resp=sum(n_dims),
-                            keys=keys, labels=labels, anchor=anchor)
+                            keys=keys, labels=labels, anchor=anchor,
+                            pweight=pweight)
     if (length(n_dims) > 1){
         if(is.null(dim_names)) stop('Please set dimension names \'dim_names\'!')
         if (poly_key) scrs <- 0:max(keys$Max_score) else scrs <- 0:1
         prep[['section_extr']] <- prep[['section_extr']] %>%
             c(section_dim(scrs=scrs, n_dims=n_dims, dim_names=dim_names))
     }
-    
+
     # ####### process anchor file
     if (anchor) {
         cat('Processing anchor file...\n')
@@ -226,7 +235,7 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
                            n_cov=n_cov, n_dims=n_dims)
         }
     }
-    
+
     # ####### calibrate
     cat('Calibrating test items...\n')
     lab_cqc(wd=wd, test=test, run=NULL, run_ls=NULL,
@@ -235,17 +244,18 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
             anchor=anchor, step=FALSE, regr_ls=prep$regr_ls,
             section_extr=prep$section_extr,
             DIFVar=NULL, DIFVar_cols=prep$DIFVar_cols, poly_catgrs=NULL,
-            poly_facet=FALSE, poly_group=FALSE, pweight=pweight)
-    
+            poly_facet=FALSE, poly_group=FALSE,
+            pweight=pweight, pw_cols=prep$pw_cols)
+
     # ####### read CQS output for summary
     cat('Reading CQS file...\n')
     cqs <- conquestr::ConQuestSys(here::here('output', paste0(test, ".CQS")))
     saveRDS(cqs, here::here(here::here('output', paste0(test, "_CQS.rds"))))
-    
+
     # ####### check: Convergence
     cat('Checking convergence...\n')
     check_convergence(test=test, cqs=cqs)
-    
+
     if (anchor){
         # check: input .anc file vs. output .anc file
         anchor_dif <- read.table(here::here('input', paste0(test, '.anc'))) %>%
@@ -262,14 +272,14 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
             print(anchor_dif)
             stop('Anchor order was messed up! Check printed difference above.')
         }
-        
+
         # get equivalence table
         cat('Generating equivalence table...\n')
         equiva_tbl(wd=wd, test=test, slope=slope, est_type=est_type,
                    intercept=intercept, extrapolation=extrapolation)
         est_cas(folder=folder, test=test)
         rm(cqs)
-        
+
         # point users to files of varying purposes
         writeLines(c(
             paste0('\n========= Output Files =========\n'),
@@ -280,7 +290,7 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
             if (!is.null(intercept) | !is.null(slope)){
                 paste0('\tScaled score table:\t\t',
                        here::here('results', paste0('scaled_tbl_', test, '.xlsx')))
-                
+
             }
         ))
     } else { # summarize item calibration
@@ -288,7 +298,7 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
         cat('Checking option frequencies...\n')
         check_freq_resps_cat(resp=data[(n_cov+1):(n_cov+sum(n_dims))],
                              folder=folder, test=test)
-        
+
         # ####### CCC of categories and scores
         cat('Producing Category Characteristic Curve (CCC)...\n')
         # determine whether to use wle or pv1
@@ -302,8 +312,8 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
                                poly_key=poly_key, cqs=cqs)
         ccc_data <- plot_data[['ccc_data']]
         iType <- plot_data[['itype']]
-        
-        # save CCC, imap to Word file        
+
+        # save CCC, imap to Word file
         if (CCCip2Wd) {
             cat('Saving CCC and ipMap to Word file...\n')
             rmd_file <- system.file("rmd", "CCC_ipMap.Rmd", package = "RaschKit")
@@ -313,7 +323,7 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
                               output_dir=here::here('output'),
                               quiet=TRUE)
         }
-        
+
         # ####### item summary
         cat('Putting together item analysis summaries...\n')
         results_calibr <- itn_summary(folder=folder, test=test, easy=easy,
@@ -326,7 +336,7 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
         if (save_xlsx){
             file_saved <- here::here('results', paste0('itn_', test, '.xlsx'))
             writexl::write_xlsx(results_calibr, file_saved)
-            
+
             # point users to files of varying purposes
             writeLines(c(
                 paste0('\n========= Output Files =========\n'),
@@ -336,7 +346,7 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
                     paste0('\tData saved:\t',
                            here::here('data', paste0(test, '.xlsx\n\t\t\t')),
                            here::here('data', paste0(test, '.sav')))
-                    
+
                 },
                 paste0('\tConverge check:\t', here::here('output', paste0(test, '_convergence_check.pdf'))),
                 paste0('\tQA:\t\t', here::here('output', paste0(test, '_Frequency_check.xlsx'))),
@@ -351,5 +361,5 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
             return(results_calibr)
         }
     }
-    
+
 }

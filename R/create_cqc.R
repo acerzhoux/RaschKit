@@ -40,8 +40,9 @@
 #' @param poly_facet TRUE if facet model is to be run on a polytomous DIF variable.
 #' Default is FALSE.
 #' @param poly_group TRUE if model is run per group. Default is FALSE.
-#' @param pweight Variable name of person weights in response dataframe. Should 
+#' @param pweight Variable name of person weights in response dataframe. Should
 #' be specified if weight is used for modeling. Default is NULL.
+#' @param pw_cols String of column numbers of case weight, e.g., '5-15'.
 #' @examples
 #' create_cqc()
 #' @export
@@ -50,7 +51,8 @@ create_cqc <- function(wd=here::here(), test, run, resps_cols, pid_cols, run_ls=
                        regr_ls, codes, delete, anchor=FALSE, section_extr=NULL,
                        dbl_key=NULL, poly_key=FALSE, quick=FALSE, step=FALSE,
                        DIFVar=NULL, DIFVar_cols, poly_catgrs=NULL,
-                       poly_facet=FALSE, poly_group=FALSE, pweight=NULL){
+                       poly_facet=FALSE, poly_group=FALSE,
+                       pweight=NULL, pw_cols=NULL){
     # run_ls: list(domain='3-11', grade='12-13', flag='36')
     #   for testform; keys, labels differ; put in 'Keepcases'
     # run: c('English2', 3, 1); used with `run_ls`
@@ -79,8 +81,8 @@ create_cqc <- function(wd=here::here(), test, run, resps_cols, pid_cols, run_ls=
                            DIFVar=DIFVar, poly_catgrs=poly_catgrs),
              section_data(path_df=path_df, resps_cols=resps_cols, pid_cols=pid_cols,
                           run_ls=run_ls, regr_ls=regr_ls, path_lab=path_lab,
-                          DIFVar=DIFVar, DIFVar_cols=DIFVar_cols, 
-                          poly_group=poly_group, pweight=pweight),
+                          DIFVar=DIFVar, DIFVar_cols=DIFVar_cols,
+                          poly_group=poly_group, pweight=pweight, pw_cols=pw_cols),
              section_keys(folder=folder_df, test=test, dbl_key=dbl_key,
                           poly_key=poly_key, delete=delete),
              section_specs(anchor=anchor, wd=wd, test=test, DIFVar=DIFVar,
@@ -110,6 +112,6 @@ create_cqc <- function(wd=here::here(), test, run, resps_cols, pid_cols, run_ls=
     # run CQC
     conquestr::ConQuestCall(
         cqExe = file.path('C:', 'Program Files', 'ACER ConQuest', 'ConQuestConsole.exe'),
-        cqc = cqc_path, 
+        cqc = cqc_path,
         stdout = NULL)
 }

@@ -24,7 +24,9 @@ lab_cqc(
   DIFVar_cols = NULL,
   poly_catgrs = NULL,
   poly_facet = FALSE,
-  poly_group = FALSE
+  poly_group = FALSE,
+  pweight = NULL,
+  pw_cols = NULL
 )
 }
 \arguments{
@@ -32,14 +34,14 @@ lab_cqc(
 
 \item{test}{Name of the test.}
 
-\item{run}{Vector of specific categories of variables to select from 
-'test_Data.txt' in 'data' folder, e.g., c('English2', 3, 1). This corresponds 
+\item{run}{Vector of specific categories of variables to select from
+'test_Data.txt' in 'data' folder, e.g., c('English2', 3, 1). This corresponds
 to the previous argument `run_ls`. Default is NULL.}
 
-\item{run_ls}{List of data filters. Element is column number in data. 
+\item{run_ls}{List of data filters. Element is column number in data.
 Element name is filter variable's name. Default is NULL.}
 
-\item{codes}{Vector of valid codes for item responses, 
+\item{codes}{Vector of valid codes for item responses,
 e.g., c(1, 2, 3, 4, 5, 6, 7, 8, 9).}
 
 \item{pid_cols}{String of column numbers of person ID. Default is NULL.}
@@ -48,7 +50,7 @@ e.g., c(1, 2, 3, 4, 5, 6, 7, 8, 9).}
 
 \item{quick}{TRUE if quick estimation is preferred. Default is FALSE.}
 
-\item{delete}{Vector of item order number(s) to be removed from the test, 
+\item{delete}{Vector of item order number(s) to be removed from the test,
 e.g., c(2, 3, 45, 46). Default is NULL.}
 
 \item{dbl_key}{TRUE if any item has polytomous scoring. Default is NULL.}
@@ -57,42 +59,47 @@ e.g., c(2, 3, 45, 46). Default is NULL.}
 
 \item{anchor}{TRUE when anchor is to be done. Default is FALSE.}
 
-\item{section_extr}{Extra sections to be added to 'test.cqc' file in 
+\item{section_extr}{Extra sections to be added to 'test.cqc' file in
 'input' folder. Default is NULL.}
 
 \item{step}{TRUE if any item in the test has polytomous scoring. Default is FALSE.}
 
-\item{regr_ls}{List of regressors. Element is column number in data. 
+\item{regr_ls}{List of regressors. Element is column number in data.
 Element name is regressor's name. Default is NULL.}
 
-\item{DIFVar}{Name of DIF variable. Should be lowercase for ConQuest to run. 
+\item{DIFVar}{Name of DIF variable. Should be lowercase for ConQuest to run.
 Default is NULL.}
 
 \item{DIFVar_cols}{DIF variable's column number in data. Default is NULL.}
 
 \item{poly_catgrs}{Vector of polytomous DIF variable's categories. Default is NULL.}
 
-\item{poly_facet}{TRUE if facet model is to be run on a polytomous DIF variable. 
+\item{poly_facet}{TRUE if facet model is to be run on a polytomous DIF variable.
 Default is FALSE.}
 
 \item{poly_group}{TRUE if model is run per group. Default is FALSE.}
+
+\item{pweight}{Variable name of person weights in response dataframe. Should
+be specified if weight is used for modeling. Default is NULL.}
+
+\item{pw_cols}{String of column numbers of case weight, e.g., '5-15'.}
 }
 \value{
 'test.cqc' file in 'input' folder.
 }
 \description{
-This function creates folders in the working directory, and creates 
+This function creates folders in the working directory, and creates
 'test.lab' file and 'test.cqc' file in 'input' folder.
 }
 \details{
 For DIF analysis on dichotomous variables, you need specify 'DIFVar', 'DIFVar_cols'.
-For DIF analysis on polytomous variables, there are two methods. Method 1 
-compares each category's delta estimates with the mean of all subgroups. 
-Specified arguments are 'DIFVar', 'DIFVar_cols', 'DIFVar_cols'. 
-Method 2 runs two models. The first model does calibrations on each subgroup 
-separately where you need to specify arguments of 'DIFVar', 'DIFVar_cols', 
-and 'poly_group'. The other model runs a facet model with an interaction term 
-between group and item where you need to specify arguments of 'DIFVar', 
+For DIF analysis on polytomous variables, there are two methods. Method 1
+compares each category's delta estimates with the mean of all subgroups.
+Specified arguments are 'DIFVar', 'DIFVar_cols', 'DIFVar_cols'.
+Method 2 runs two models. The first model does calibrations on each subgroup
+separately where you need to specify arguments of 'DIFVar', 'DIFVar_cols',
+and 'poly_group'. The other model runs a facet model with an interaction term
+between group and item where you need to specify arguments of 'DIFVar',
 'DIFVar_cols', and 'poly_facet'.
 }
 \examples{
