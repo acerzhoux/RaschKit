@@ -46,13 +46,15 @@
     - install_packages_ls()
     - create_folders()
 
-===== v1.0.2 Updates =====
+===== v1.0.2 Updates (ongoing) =====
 1. Suppress ConQuest, Rmd, and other unnecessary printing in R console.
 2. install_packages_ls() includes packages needed to knit Rmd files.
 3. freq_resps_cat() orders in numerical order score categories in column names\ 
    of wide form. It also adds response total 'N' in output and argument 'prop'\ 
    for proportion.
 4. calibrate() supports case weights with argument 'pweight'.
+5. calibrate() accepts dataframe with covariates after response columns. Need\ 
+   specify 'n_dims'.
 
 ===== v1.0.1 Updates =====
 
