@@ -5,8 +5,6 @@
 \title{calibrate}
 \usage{
 calibrate(
-  wd = here::here(),
-  folder = here::here("output"),
   test,
   data = NULL,
   pid,
@@ -47,10 +45,6 @@ calibrate(
 )
 }
 \arguments{
-\item{wd}{Working directory. Default is the folder where .Rproj is located.}
-
-\item{folder}{Place to find CQ output files.}
-
 \item{test}{Name of the test.}
 
 \item{data}{Dataframe with pid, covariables (e.g,, DIF variable), and

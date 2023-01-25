@@ -7,14 +7,12 @@
 N_item(folder, test)
 }
 \arguments{
-\item{folder}{Folder where .shw file is located.}
+\item{folder}{Place of output files from ConQuest. Default is NULL where
+'output' folder is used.}
 
 \item{test}{Name of test.}
 }
 \description{
-This function finds out number of items in a test. This is associated 
+This function finds out number of items in a test. This is associated
 with test named 'test'.
-}
-\examples{
-N_item()
 }

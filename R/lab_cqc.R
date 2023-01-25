@@ -13,7 +13,6 @@
 #' between group and item where you need to specify arguments of 'DIFVar',
 #' 'DIFVar_cols', and 'poly_facet'.
 #'
-#' @param wd Working directory. Default is the folder where .Rproj is located.
 #' @param test Name of the test.
 #' @param run Vector of specific categories of variables to select from
 #' 'test_Data.txt' in 'data' folder, e.g., c('English2', 3, 1). This corresponds
@@ -50,7 +49,7 @@
 #' lab_cqc()
 #' @export
 
-lab_cqc <- function(wd=here::here(), test, run=NULL, run_ls=NULL,
+lab_cqc <- function(test, run=NULL, run_ls=NULL,
                     codes, pid_cols=NULL, resps_cols, quick=FALSE, delete=NULL,
                     dbl_key=NULL, poly_key=FALSE, anchor=FALSE, section_extr=NULL,
                     step=FALSE, regr_ls=NULL,
@@ -59,13 +58,13 @@ lab_cqc <- function(wd=here::here(), test, run=NULL, run_ls=NULL,
                     poly_facet=FALSE, poly_group=FALSE, #poly: facet
                     pweight=NULL, pw_cols=NULL){
     # create folders
-    create_folders(wd=wd, DIFVar=DIFVar)
+    create_folders(DIFVar=DIFVar)
 
     # create label file
-    create_lab(wd=wd, test=test) # Item label file
+    create_lab(test=test) # Item label file
 
     # create control file
-    create_cqc(wd=wd, test=test, run=run, resps_cols=resps_cols, pid_cols=pid_cols,
+    create_cqc(test=test, run=run, resps_cols=resps_cols, pid_cols=pid_cols,
                run_ls=run_ls, anchor=anchor, section_extr=section_extr,
                regr_ls=regr_ls, codes=codes, delete=delete, dbl_key=dbl_key,
                poly_key=poly_key, quick=quick, step=step, DIFVar=DIFVar,

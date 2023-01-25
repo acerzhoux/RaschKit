@@ -7,10 +7,10 @@
 section_export(poly_key, step, DIFVar, poly_catgrs, poly_facet, poly_group)
 }
 \arguments{
-\item{poly_key}{TRUE if the key of any item has polytomous scoring. 
+\item{poly_key}{TRUE if the key of any item has polytomous scoring.
 Default is FALSE.}
 
-\item{step}{TRUE if a three-way interaction term of item, step, and DIF 
+\item{step}{TRUE if a three-way interaction term of item, step, and DIF
 variable is used in facet modeling.}
 
 \item{DIFVar}{Name of DIF variable.}
@@ -22,16 +22,16 @@ variable is used in facet modeling.}
 \item{poly_group}{TRUE if model is run per group. Default is FALSE.}
 }
 \value{
-String of characters used in export section of 'test.cqc' file 
+String of characters used in export section of 'test.cqc' file
 in 'input' folder.
 }
 \description{
-This function creates string of export specification for 'test.cqc' file 
+This function creates string of export specification for 'test.cqc' file
 in 'input' folder. This is associated with test named 'test'.
 }
 \details{
-If poly_catgrs is not NULL, then each category's code is added into names 
-of output files. If poly_facet is TRUE, then string '_facet' is added into 
+If poly_catgrs is not NULL, then each category's code is added into names
+of output files. If poly_facet is TRUE, then string '_facet' is added into
 names of output files of the facet model.
 }
 \examples{

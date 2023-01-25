@@ -4,17 +4,17 @@
 \alias{cqc_plot_File}
 \title{cqc_plot_File}
 \usage{
-cqc_plot_File(wd = here::here(), test, runs)
+cqc_plot_File(folder = "output", test, runs)
 }
 \arguments{
-\item{wd}{Working directory. Default is the folder where .Rproj is located.}
+\item{folder}{Folder where ConQuest output files are located.}
 
 \item{test}{Name of test.}
 
 \item{runs}{Vector of test forms, e.g., c('2A', '2B', '3A', '3B').}
 }
 \description{
-This function creates 'test_CCC_plots.cqc' file in 'input' folder. 
+This function creates 'test_CCC_plots.cqc' file in 'input' folder.
 This output file needs to be imported into and run in the GUI version of ConQuest.
 }
 \examples{

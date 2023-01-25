@@ -5,7 +5,7 @@
 \title{read2one}
 \usage{
 read2one(
-  subfolder = c("results", "DIF", "equating"),
+  folder = c("results", "DIF", "equating"),
   tests,
   prefix = NULL,
   file_name = NULL,
@@ -13,7 +13,7 @@ read2one(
 )
 }
 \arguments{
-\item{subfolder}{Folder where to-be-read files are located. Must be one of
+\item{folder}{Folder where to-be-read files are located. Must be one of
 c('results', 'DIF', 'equating').}
 
 \item{tests}{Vector of test names after '_'.}
@@ -30,10 +30,10 @@ Its order corresponds to the alphabetic/numeric order of DIF variables'
 two categories in data.}
 }
 \description{
-This function reads from 'results' folder Excel files associated with 'tests'
+This function reads from 'folder' files associated with 'tests'
 and puts them into one file.
 }
 \examples{
 # Not run
-# read2one(subfolder='equating', tests=c('AHU','MST','R','N'))
+# read2one(folder='equating', tests=c('AHU','MST','R','N'))
 }

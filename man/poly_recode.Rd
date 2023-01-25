@@ -14,8 +14,8 @@ poly_recode(
 \arguments{
 \item{keys}{Vector of keys in the test. Default is NULL.}
 
-\item{data}{Dataframe with pid, covariables (e.g,, DIF variable), and 
-responses. Default is NULL where Excel file with name 'test' in 'data' 
+\item{data}{Dataframe with pid, covariables (e.g,, DIF variable), and
+responses. Default is NULL where Excel file with name 'test' in 'data'
 folder is used.}
 
 \item{n_cov}{Number of covariates before responses.}
@@ -23,6 +23,6 @@ folder is used.}
 \item{miss_code}{Missing codes. Default is c('r','R','m','M','9','x','X','.','',' ',NA).}
 }
 \description{
-This function down ranks non-continuous polytomous item response vectors 
+This function down ranks non-continuous polytomous item response vectors
 in a dataframe.
 }

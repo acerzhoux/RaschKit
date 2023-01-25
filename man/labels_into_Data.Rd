@@ -9,11 +9,11 @@ labels_into_Data(test, labels)
 \arguments{
 \item{test}{Name of test.}
 
-\item{labels}{Vector of item labels in the test, e.g., 
+\item{labels}{Vector of item labels in the test, e.g.,
 c('iTrack3984232', 'iTrack4890298')}
 }
 \description{
-This function saves raw label file 'test_Labels.txt' into 'data' folder. 
-Later, this saved file is used to produce label file 'test.lab' in 'input' 
+This function saves raw label file 'test_Labels.txt' into 'data' folder.
+Later, this saved file is used to produce label file 'test.lab' in 'input'
 folder. This is associated with test named 'test'.
 }

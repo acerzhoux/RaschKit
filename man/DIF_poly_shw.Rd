@@ -4,26 +4,13 @@
 \alias{DIF_poly_shw}
 \title{DIF_poly_shw}
 \usage{
-DIF_poly_shw(
-  folder = NULL,
-  DIFVar,
-  labels,
-  test,
-  domain = NULL,
-  p_cut = 0.05,
-  step = FALSE
-)
+DIF_poly_shw(DIFVar, labels, test, domain = NULL, p_cut = 0.05, step = FALSE)
 }
 \arguments{
-\item{folder}{Folder where subgroups' calibration results are located. 
-Default is the subfolder with name of argument 'DIFVar' within 'DIF' folder 
-(folder=NULL). It's advisable to put factor level in file names such as 
-'test_4.shw' and put all groups' .shw files in this folder.}
-
 \item{DIFVar}{Name of polytomous DIF variable, e.g., 'nation'.}
 
-\item{labels}{Dataframe of labels of all the items in a test. Variable 
-'item' is item order in label file ('test_Labels.txt' in 'data' folder) 
+\item{labels}{Dataframe of labels of all the items in a test. Variable
+'item' is item order in label file ('test_Labels.txt' in 'data' folder)
 and in test. Variable 'label' is complete item labels of test items.}
 
 \item{test}{Name of the test.}
@@ -35,20 +22,20 @@ and in test. Variable 'label' is complete item labels of test items.}
 \item{step}{TRUE if polytomous items are involved. Default is FALSE.}
 }
 \value{
-List of summary of results from polytomous DIF variable analysis, 
-including comments, step, summary statistics with flags, and statistics used 
+List of summary of results from polytomous DIF variable analysis,
+including comments, step, summary statistics with flags, and statistics used
 to produce the the flags.
 
 Tibble of summary of results from polytomous DIF variable analysis.
 }
 \description{
-This function extracts item statistics from subgroups of the polytmous 
-DIF variable (in 'test_category.shw' files in DIF variable's subfolder 
-within 'DIF' folder) to produce a list of dataframes of those statistics. 
-Then it calls function DIF_poly() to perform a Bonferroni-adjusted 
-statistical test and flag the combinations of item and category that show 
+This function extracts item statistics from subgroups of the polytmous
+DIF variable (in 'test_category.shw' files in DIF variable's subfolder
+within 'DIF' folder) to produce a list of dataframes of those statistics.
+Then it calls function DIF_poly() to perform a Bonferroni-adjusted
+statistical test and flag the combinations of item and category that show
 significant results.
 }
 \examples{
-DIF_poly_shw(DIFVar='quintile', labels=labels, test=test)
+DIF_poly_shw(DIFVar='quintile', labels=labels, test='ELNA')
 }

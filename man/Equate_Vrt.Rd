@@ -5,7 +5,6 @@
 \title{Equate_Vrt}
 \usage{
 Equate_Vrt(
-  folder = here::here("output"),
   test,
   grades = c(2:10),
   grade_name = "L",
@@ -18,40 +17,37 @@ Equate_Vrt(
 )
 }
 \arguments{
-\item{folder}{Folder where all grades' calibration results are located. 
-Default is 'output' folder.}
-
 \item{test}{Name of test.}
 
 \item{grades}{Vector of all grades. Default is c(2:10).}
 
-\item{grade_name}{Character to add before grade in plots. Default is 'L' 
+\item{grade_name}{Character to add before grade in plots. Default is 'L'
 (for 'level').}
 
 \item{p_cut}{p value of chi-square test. Default is 0.05.}
 
-\item{chi_cut}{Threshold of chi-square difference between two tests. 
+\item{chi_cut}{Threshold of chi-square difference between two tests.
 Default is 10.}
 
-\item{DIF_cut}{Threshold of an item's delta estimate difference between two 
+\item{DIF_cut}{Threshold of an item's delta estimate difference between two
 tests. Default is 0.5.}
 
-\item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference 
+\item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference
 between two tests. Default is 4.}
 
-\item{step}{TRUE if DIF analysis is performed on step parameters. 
+\item{step}{TRUE if DIF analysis is performed on step parameters.
 Default is FALSE.}
 
-\item{long_label}{Whether item labels are longer than 15 characters' fixed 
+\item{long_label}{Whether item labels are longer than 15 characters' fixed
 width. Default is FALSE.}
 }
 \value{
 List of chi-square test results for anchors between two adjacent grades.
 }
 \description{
-This function performs vertical equating. An Excel file with 'Equating_Vertical' 
-in name is saved in 'equating' folder, each sheet of which is for two 
-adjacent grades. Also, one plot is saved in subfolder 'plot' inside 
+This function performs vertical equating. An Excel file with 'Equating_Vertical'
+in name is saved in 'equating' folder, each sheet of which is for two
+adjacent grades. Also, one plot is saved in subfolder 'plot' inside
 'equating' folder for two adjacent grades.
 }
 \examples{

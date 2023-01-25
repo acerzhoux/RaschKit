@@ -55,7 +55,7 @@ To extract and combine DIF analysis results (.xlsx, .pdf) from tests on one
 dichotomous DIF variable, run the following code.
 
 ```{r}
-read2one(subfolder='DIF', tests=dms, vars=c('Male', 'Female'))
+read2one(folder='DIF', tests=dms, vars=c('Male', 'Female'))
 ```
 
 ### Two/more domains in test

@@ -14,7 +14,6 @@
 #' DIF variable.
 #'
 #' @param method One of 'chi_square' or 'Bonferroni'.
-#' @param wd Working directory. Default is the folder where .Rproj is located.
 #' @param DIFVar Name of DIF variable. Should be lowercase for ConQuest to run.
 #' Default is NULL.
 #' @param vars Vector of length 2 such as c('girls','boys'). Its order
@@ -69,7 +68,7 @@
 
 DIF_dim_multi <- function(method=c('chi_square', 'Bonferroni'), test, DIFVar,
                           pid, n_cov, n_dims, dim_names, data=NULL, keys=NULL,
-                          labels=NULL, vars=NULL, regr_vec_char=NULL, wd=here::here(),
+                          labels=NULL, vars=NULL, regr_vec_char=NULL,
                           quick=TRUE, step=FALSE, delete=NULL,
                           dbl_key=FALSE, poly_key=FALSE, anchor=FALSE, section_extr=NULL,
                           p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4, chi_cut=10, facil_cut=10,
@@ -126,7 +125,7 @@ DIF_dim_multi <- function(method=c('chi_square', 'Bonferroni'), test, DIFVar,
         prep[['section_extr']] <- prep[['section_extr']] %>%
             c(section_dim(scrs=scrs, n_dims=n_dims, dim_names=dim_names))
     }
-    arg_cqc <- list(wd=wd, test=test, run=NULL, run_ls=NULL,
+    arg_cqc <- list(test=test, run=NULL, run_ls=NULL,
         codes=prep$codes, pid_cols=prep$pid_cols, resps_cols=prep$resps_cols,
         quick=quick, delete=delete, dbl_key=dbl_key, poly_key=poly_key,
         anchor=anchor, step=step, regr_ls=prep$regr_ls, section_extr=prep$section_extr,

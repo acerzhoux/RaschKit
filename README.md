@@ -15,20 +15,20 @@
     )
 3.	Software compatibility.
     - ACER ConQuest: 5.27.0\
-      conquestr: 1.0.1\
+      conquestr: 1.0.5\
       Raschkit: 1.0.2
     - Install ACER ConQuest 5.27.0.
         - From left bottom corner of Windows, 
             - Type in 'software centre' and click.
             - click 'Applications'.
             - click 'ACER ConQuest v5.27.0' and install.
-    - Install 'conquestr' 1.0.1 (packageVersion('conquestr')).
+    - Install 'conquestr' 1.0.5 (packageVersion('conquestr')).
         - From bottom right pane of 'xxx.Rproj' (Step 1).    
             - click 'Packages' (3rd button after 'Files', 'Plots').
             - click 'Install'. From 'Install from', select 'Package Archive File...'.
             - Click 'Browse'. Enter into 'File name' file path (if Windows)\
                 P:\ACER ConQuest\Admin\InHouse - ConQuest Latest versions\conquestr\Win
-            - Select 'conquestr_1.0.1.zip'. 
+            - Select 'conquestr_1.0.5.zip'. 
             - Click 'Open'. 
             - Click 'Install'.
     - Install 'RaschKit' 1.0.2 (packageVersion('RaschKit')).
@@ -46,19 +46,25 @@
     - install_packages_ls()
     - create_folders()
 
-===== v1.0.2 Updates (ongoing) =====
-1. Suppress ConQuest, Rmd, and other unnecessary printing in R console.
-2. install_packages_ls() includes packages needed to knit Rmd files.
-3. freq_resps_cat() orders in numerical order score categories in column names\ 
-   of wide form. It also adds response total 'N' in output and argument 'prop'\ 
+===== v1.0.2 Updates =====
+1. Suppressed ConQuest, Rmd, and other unnecessary printing in R console.
+2. install_packages_ls() included packages needed to knit Rmd files.
+3. freq_resps_cat() ordered in numerical/alphabetic order score categories in column names 
+   of wide form. It also added response total 'N' in output and argument 'prop' 
    for proportion.
 4. calibrate() supports case weights with argument 'pweight'.
-5. calibrate() accepts dataframe with covariates after response columns. Need\ 
+5. calibrate() accepts dataframe with covariates after response columns. Need 
    specify 'n_dims'.
+6. Used .txt extension for input and output text files.
+7. Inside functions, changed some %>% to |>, removed some dependencies, and 
+   added some package names to functions (ongoing).
+8. 'facet' method of DIF analysis for polytomous variable shows DIF variable 
+   name in both table column name and plot legend. Also, a note is shown beside 
+   table to interpret results.
 
 ===== v1.0.1 Updates =====
 
-1. section_model() sets up correct model terms for group model used in DIF\ 
+1. section_model() sets up correct model terms for group model used in DIF 
    analysis on polytomous variable.
 2. DIF_poly_shw() extracts from .shw files delta columns of all numeric.
 3. plot_DIF_group() plots polytomous items.

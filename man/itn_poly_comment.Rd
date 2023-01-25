@@ -4,19 +4,15 @@
 \alias{itn_poly_comment}
 \title{itn_poly_comment}
 \usage{
-itn_poly_comment(folder = here::here("output"), test)
+itn_poly_comment(test)
 }
 \arguments{
-\item{folder}{Folder that contains ConQuest output files associated with 
-'test'. Default is 'output' folder in working directory.}
-
 \item{test}{Name of test.}
 }
 \description{
-This function checks whether polytomous items' neighbor categories' ability 
+This function checks whether polytomous items' neighbor categories' ability
 estimates are too small. This is associated with test named 'test'.
 }
 \examples{
-Numeracy_item <- itn_poly_comment(test='Numeracy_item')
-elana_math <- itn_poly_comment(test='elana_math')
+itn_poly_comment('Numeracy_item')
 }

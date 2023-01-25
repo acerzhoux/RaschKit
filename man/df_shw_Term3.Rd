@@ -4,17 +4,17 @@
 \alias{df_shw_Term3}
 \title{df_shw_Term3}
 \usage{
-df_shw_Term3(folder, test)
+df_shw_Term3(DIFVar, test)
 }
 \arguments{
-\item{folder}{Folder where .shw file is located.}
+\item{DIFVar}{Name of DIF variable. Should be lowercase for ConQuest to run.}
 
 \item{test}{Name of test.}
 }
 \description{
-This function extract item statistics from 'test_facet.shw' file and add 
+This function extract item statistics from 'test_facet_shw.txt' file and add
 significance test results and flags. This is associated with test named 'test'.
 }
 \examples{
-df_shw_Term3(folder=folder, test='randomData')
+df_shw_Term3(DIFVar = 'Educator', test = 'RANZCOG')
 }

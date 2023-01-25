@@ -12,7 +12,6 @@ DIF_dim_one(
   DIFVar,
   data = NULL,
   keys = NULL,
-  wd = here::here(),
   vars = NULL,
   poly_facet = FALSE,
   n_resp = NULL,
@@ -50,8 +49,6 @@ Default is NULL.}
 Default is NULL where Excel file with name 'test' in 'data' folder is used.}
 
 \item{keys}{Vector of keys in the test. Default is NULL.}
-
-\item{wd}{Working directory. Default is the folder where .Rproj is located.}
 
 \item{vars}{Vector of length 2 such as c('girls','boys'). Its order corresponds
 to the alphabetic/numeric order of DIF variables' two categories in data.}

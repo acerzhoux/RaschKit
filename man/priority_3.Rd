@@ -4,20 +4,17 @@
 \alias{priority_3}
 \title{priority_3}
 \usage{
-priority_3(folder = here::here("output"), test)
+priority_3(test)
 }
 \arguments{
-\item{folder}{Folder that contains ConQuest output files associated with 
-'test'. Default is 'output' folder in working directory.}
-
 \item{test}{Name of test.}
 }
 \value{
-Vector of flags.
+Dataframe of flags and item order.
 }
 \description{
-This function checks response option point biserial (Pt Bis) values in 
-'test.itn' file in 'output' folder and flag items with any distractor of 
+This function checks response option point biserial (Pt Bis) values in
+'xxx_itn.txt' file in 'output' folder and flag items with any distractor of
 positive Pt Bis. This is associated with test named 'test'.
 }
 \examples{

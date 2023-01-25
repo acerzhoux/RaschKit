@@ -1,17 +1,14 @@
 #' N_item
 #'
-#' This function finds out number of items in a test. This is associated 
+#' This function finds out number of items in a test. This is associated
 #' with test named 'test'.
 #'
-#' @param folder Folder where .shw file is located.
+#' @param folder Place of output files from ConQuest. Default is NULL where
+#' 'output' folder is used.
 #' @param test Name of test.
-#' @examples
-#' N_item()
 #' @export
 
 N_item <- function(folder, test){
-    {file_shw(folder=folder, test=test) %>%
-            str_detect('An asterisk') %>%
-            which() %>% .[1]} -
-        term_L2(folder=folder, test=test) - 7
+    Lines(folder, test, 'shw', 'An asterisk')[[1]] -
+    Lines(folder, test, 'shw', 'TERM 1: item')[[2]] - 7
 }

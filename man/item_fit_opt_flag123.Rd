@@ -5,7 +5,6 @@
 \title{item_fit_opt_flag123}
 \usage{
 item_fit_opt_flag123(
-  folder,
   test,
   easy = 90,
   hard = 10,
@@ -15,8 +14,6 @@ item_fit_opt_flag123(
 )
 }
 \arguments{
-\item{folder}{Folder that contains ConQuest output files associated with 'test'.}
-
 \item{test}{Name of test.}
 
 \item{easy}{Threshold to flag easy items. Default is 90 (percent correct).}
@@ -33,6 +30,6 @@ item_fit_opt_flag123(
 Dataframe of item statistics with flags.
 }
 \description{
-This function adds three priorities of flag to items in a test based on item 
+This function adds three priorities of flag to items in a test based on item
 statistics. This is associated with test named 'test'.
 }

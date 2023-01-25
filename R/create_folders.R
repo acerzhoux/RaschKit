@@ -2,36 +2,31 @@
 #'
 #' This function creates folders for a pineline of psychometric analyses.
 #'
-#' This function create folders to put different types of files. The folders 
-#' are named as 'data', 'dataRaw', 'DIF', 'equating', 'input', 'output', 'rCode', 
-#' and 'results'. 'dataRaw' contains raw dataset files received. 'data' contains 
-#' processed dataset, key, and label files (.txt) that correspond to a test 
-#' such as 'HUM_1' (Humanities, Grade 1). 'DIF' and 'equating' contain table 
-#' and plot results (.xlsx, .pdf) of DIF and equating analyses. 'input' contains 
-#' ConQuest input files of control files (.cqc), label files (.lab), and perhaps 
-#' anchor files (.anc). 'output' contains output files from ConQuest. 'rCode' 
+#' This function create folders to put different types of files. The folders
+#' are named as 'data', 'dataRaw', 'DIF', 'equating', 'input', 'output', 'rCode',
+#' and 'results'. 'dataRaw' contains raw dataset files received. 'data' contains
+#' processed dataset, key, and label files (.txt) that correspond to a test
+#' such as 'HUM_1' (Humanities, Grade 1). 'DIF' and 'equating' contain table
+#' and plot results (.xlsx, .pdf) of DIF and equating analyses. 'input' contains
+#' ConQuest input files of control files (.cqc), label files (.lab), and perhaps
+#' anchor files (.anc). 'output' contains output files from ConQuest. 'rCode'
 #' contains R code files (.R). 'results' contains summary files.
 #'
-#' @param wd Working directory. Default is the folder where .Rproj is located.
-#' @param DIFVar Name of DIF variable for DIF analysis. Default is NULL. When a 
-#' name is provided, a folder with that name will be created under 'DIF' folder 
+#' @param DIFVar Name of DIF variable for DIF analysis. Default is NULL. When a
+#' name is provided, a folder with that name will be created under 'DIF' folder
 #' to hold DIF analysis output files and analysis results.
 #' @export
 
-create_folders <- function(wd=here::here(), DIFVar=NULL){
-    folders <- c(file.path(wd, 'dataRaw'),
-                 file.path(wd, 'input'),
-                 file.path(wd, 'output'),
-                 file.path(wd, 'results'),
-                 file.path(wd, 'equating'),
-                 file.path(wd, 'DIF'),
-                 if(!is.null(DIFVar)) file.path(wd, 'DIF', DIFVar))
+create_folders <- function(DIFVar=NULL){
+    folders <- c('dataRaw', 'input', 'output',
+                 'results', 'equating', 'DIF',
+                 if(!is.null(DIFVar)) paste0('DIF/', DIFVar))
     for(i in folders) if(!dir.exists(i)) dir.create(i)
-    
+
     tryCatch({
-        fs::dir_copy(system.file("rCode", package = "RaschKit"), wd)
-        fs::dir_copy(system.file("data", package = "RaschKit"), wd)
-    }, 
+        fs::dir_copy(system.file("rCode", package = "RaschKit"), getwd())
+        fs::dir_copy(system.file("data", package = "RaschKit"), getwd())
+    },
     error = function(e){
     })
 }

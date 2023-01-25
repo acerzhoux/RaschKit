@@ -4,13 +4,9 @@
 \alias{delta_DIF_dich_step}
 \title{delta_DIF_dich_step}
 \usage{
-delta_DIF_dich_step(folder = NULL, test, DIFVar, quick = TRUE)
+delta_DIF_dich_step(test, DIFVar, quick = TRUE)
 }
 \arguments{
-\item{folder}{Folder where subgroups' calibration results are located. 
-Default is the subfolder with name of argument 'DIFVar' within 'DIF' folder 
-(folder=NULL).}
-
 \item{test}{Name of test.}
 
 \item{DIFVar}{Name of dichotomous DIF variable, e.g., 'gender'.}
@@ -21,7 +17,7 @@ Default is the subfolder with name of argument 'DIFVar' within 'DIF' folder
 Dataframe of variables of 'delta.x', 'delta.y'.
 }
 \description{
-This function extracts delta statistics for two categories of dichotomous 
+This function extracts delta statistics for two categories of dichotomous
 DIF variable.
 }
 \examples{

@@ -13,7 +13,6 @@
 #' and item where you need to specify arguments of 'DIFVar', 'DIFVar_cols',
 #' and 'poly_facet'.
 #'
-#' @param wd Working directory. Default is the folder where .Rproj is located.
 #' @param test Name of the test.
 #' @param run Vector of specific categories of variables to select from
 #' 'test_Data.txt' in 'data' folder, e.g., c('English2', 3, 1). This corresponds
@@ -47,7 +46,7 @@
 #' create_cqc()
 #' @export
 
-create_cqc <- function(wd=here::here(), test, run, resps_cols, pid_cols, run_ls=NULL,
+create_cqc <- function(test, run, resps_cols, pid_cols, run_ls=NULL,
                        regr_ls, codes, delete, anchor=FALSE, section_extr=NULL,
                        dbl_key=NULL, poly_key=FALSE, quick=FALSE, step=FALSE,
                        DIFVar=NULL, DIFVar_cols, poly_catgrs=NULL,
@@ -60,21 +59,20 @@ create_cqc <- function(wd=here::here(), test, run, resps_cols, pid_cols, run_ls=
     # DIFVar: Lowercase to run 'conquestr'
 
     # specify paths
-    folder_df <- file.path(wd, 'Data')
-    path_output <- file.path(wd, if (is.null(DIFVar)) 'Output' else paste0('DIF/', DIFVar))
-    path_lab <-  file.path(wd, 'Input', paste0(test, '.lab'))
+    path_output <- if (is.null(DIFVar)) 'Output' else paste0('DIF/', DIFVar)
+    path_lab <- paste0('input/', test, '_lab.txt')
 
     if (is.null(DIFVar)){
-        path_df <- file.path(folder_df,
-                             if (is.null(run_ls)) paste0(test, '_Data.txt') else
-                                 paste0('Data.txt'))
+        path_df <- paste0('data/',
+                          if (is.null(run_ls)) paste0(test, '_Data.txt') else
+                            paste0('Data.txt'))
     } else {
-        path_df <- file.path(folder_df, paste0(test, '_', DIFVar, '.txt'))
+        path_df <- paste0('data/', test, '_', DIFVar, '.txt')
     }
 
     # modify if last response col(s) has no data
     if (length(delete)>0) {
-        resps_cols <- resps_modify(folder=folder_df, test=test,
+        resps_cols <- resps_modify(test=test,
                                    resps_cols=resps_cols, delete=delete)}
     # compose CQC string
     cqc <- c(section_intro(path_output=path_output, test=test,  run_ls=run_ls,
@@ -83,9 +81,9 @@ create_cqc <- function(wd=here::here(), test, run, resps_cols, pid_cols, run_ls=
                           run_ls=run_ls, regr_ls=regr_ls, path_lab=path_lab,
                           DIFVar=DIFVar, DIFVar_cols=DIFVar_cols,
                           poly_group=poly_group, pweight=pweight, pw_cols=pw_cols),
-             section_keys(folder=folder_df, test=test, dbl_key=dbl_key,
+             section_keys(test=test, dbl_key=dbl_key,
                           poly_key=poly_key, delete=delete),
-             section_specs(anchor=anchor, wd=wd, test=test, DIFVar=DIFVar,
+             section_specs(anchor=anchor, test=test, DIFVar=DIFVar,
                            poly_catgrs=poly_catgrs, quick=quick),
              if (!is.null(section_extr)) section_extr,
              section_model(run_ls=run_ls, run=run, regr_ls=regr_ls, codes=codes,
@@ -101,17 +99,20 @@ create_cqc <- function(wd=here::here(), test, run, resps_cols, pid_cols, run_ls=
         str_replace_all(c(' ;'=';', '  ;'=';', '   ;'=';', '    ;'=';', '     ;'=';'))
 
     # write CQC into folder
-    cqc_path <-  file.path(wd, 'input',
-                           if (is.null(DIFVar)) paste0(test, '.cqc')
-                           else if (poly_facet) paste0(DIFVar, '_', test, '_facet.cqc')
-                           else if (poly_group) paste0(DIFVar, '_', test, '_group.cqc')
-                           else if (poly_key & step) paste0(DIFVar, '_', test, '_step.cqc')
-                           else paste0(DIFVar, '_', test, '.cqc'))
+    cqc_path <-  paste0(
+        'input/',
+        if (is.null(DIFVar)) paste0(test, '.cqc')
+        else if (poly_facet) paste0(DIFVar, '_', test, '_facet.cqc')
+        else if (poly_group) paste0(DIFVar, '_', test, '_group.cqc')
+        else if (poly_key & step) paste0(DIFVar, '_', test, '_step.cqc')
+        else paste0(DIFVar, '_', test, '.cqc')
+    )
     writeLines(cqc, cqc_path)
 
     # run CQC
     conquestr::ConQuestCall(
-        cqExe = file.path('C:', 'Program Files', 'ACER ConQuest', 'ConQuestConsole.exe'),
         cqc = cqc_path,
-        stdout = NULL)
+        cqExe = file.path('C:', 'Program Files', 'ACER ConQuest', 'ConQuestConsole.exe'),
+        stdout = NULL
+    )
 }

@@ -4,12 +4,10 @@
 \alias{file_its}
 \title{file_its}
 \usage{
-file_its(folder = NULL, test, DIFVar)
+file_its(folder = "output", test, DIFVar = NULL)
 }
 \arguments{
-\item{folder}{Folder where subgroups' calibration results are located.
-Default is the subfolder with name of argument 'DIFVar' within 'DIF'
-folder (folder=NULL).}
+\item{folder}{Folder where ConQuest output files are located.}
 
 \item{test}{Name of test.}
 
@@ -24,5 +22,5 @@ This is associated with test named 'test'.
 }
 \examples{
 # Not run
-# file_its(test='AHU', DIFVar='Gender')
+# file_its(test=test)
 }

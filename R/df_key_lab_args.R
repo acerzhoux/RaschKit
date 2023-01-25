@@ -72,8 +72,13 @@ df_key_lab_args <- function(test, data, pid, n_cov, n_resp, keys,
             sort()
     }
 
-    list(codes=codes, pid_cols=prr$pid_cols, pw_cols=prr$pw_cols,
-         resps_cols=prr$resps_cols, regr_ls=prr$regr_ls,
-         DIFVar_cols=DIFVar_cols,
-         section_extr=section_extr)
+    list(
+        codes=codes,
+        pid_cols=prr$pid_cols,
+        pw_cols=prr$pw_cols,
+        resps_cols=prr$resps_cols,
+        regr_ls=prr$regr_ls,
+        DIFVar_cols=DIFVar_cols,
+        section_extr=section_extr
+    )
 }

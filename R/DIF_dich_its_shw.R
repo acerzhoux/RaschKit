@@ -6,7 +6,6 @@
 #' Also, scatterplot of delta  before and after review is saved in
 #' subfolder 'plot' inside 'DIF' folder.
 #'
-#' @param folder Where to read item or step estimates. Default is NULL.
 #' @param DIFVar Name of dichotomous DIF variable, e.g., 'gender'.
 #' @param test Name of test.
 #' @param vars Vector of DIF categories, e.g., c('Girls','Boys'). Order should
@@ -36,29 +35,26 @@
 #' # DIF_dich_its_shw(DIFVar='Gender', test='AHU', vars=c('Male', 'Female'))
 #' @export
 
-DIF_dich_its_shw <- function(folder=NULL, DIFVar, test, vars,
+DIF_dich_its_shw <- function(DIFVar, test, vars,
                              p_cut=0.05, chi_cut=10, DIF_cut=0.5, DIF_adj_cut=4,
                              desig_effect=1, step=FALSE, facil_cut=10,
                              long_label=FALSE, save_xlsx=TRUE,
                              iterative=FALSE, quick=TRUE){
-    if (is.null(folder)) folder <- here::here('DIF', DIFVar)
-
     # DIF: delta
     if (step){
         # use item*step*DIFVar estimates
-        df <- delta_DIF_dich_step(folder=folder, test=test,
-                                  DIFVar=DIFVar, quick=quick)
+        df <- delta_DIF_dich_step(test, DIFVar, quick)
     } else {
-        df <- delta_DIF_dich(folder=folder, test=test,
-                             DIFVar=DIFVar, quick=quick) %>%
-            bind_cols(delta_error_DIF_dich(folder=folder, test=test,
-                                           long_label=long_label)) %>%
+        df <- delta_DIF_dich(test, DIFVar, quick) %>%
+            bind_cols(
+                delta_error_DIF_dich(paste0('DIF/', DIFVar), test, long_label)
+            ) %>%
             select(item, everything())
 
         id_na <- which(apply(select(df, -item), 1, function(x) any(is.na(x))))
         if (length(id_na)){
             df[id_na,] %>%
-                write_xlsx(here::here('DIF', str_c(DIFVar, '_', test, '_iRemoved', '.xlsx')))
+                write_xlsx(paste0('DIF/', DIFVar, '_', test, '_iRemoved', '.xlsx'))
             df <- na.omit(df)
         }
     }

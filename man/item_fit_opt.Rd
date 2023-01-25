@@ -4,21 +4,19 @@
 \alias{item_fit_opt}
 \title{item_fit_opt}
 \usage{
-item_fit_opt(folder, test)
+item_fit_opt(test)
 }
 \arguments{
-\item{folder}{Folder that contains ConQuest output files associated with 'test'.}
-
 \item{test}{Name of test.}
 }
 \value{
 Dataframe of item statistics, fit statistics and option statistics.
 }
 \description{
-This function extracts item statistics, fit statistics and option statistics 
-from ConQuest output files in 'output' folder and merges them into one dataframe. 
+This function extracts item statistics, fit statistics and option statistics
+from ConQuest output files in 'output' folder and merges them into one dataframe.
 This is associated with test named 'test'.
 }
 \examples{
-item_fit_opt()
+item_fit_opt(test)
 }

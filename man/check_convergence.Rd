@@ -12,9 +12,9 @@ check_convergence(cqs, test)
 \item{test}{Test name.}
 }
 \description{
-This function checks convergence of the model by checking model deviance 
-change and maximum changes in estimates of delta's, covariance, and regressors. 
-This is associated with test named 'test'. A plot of the checks is saved in 
+This function checks convergence of the model by checking model deviance
+change and maximum changes in estimates of delta's, covariance, and regressors.
+This is associated with test named 'test'. A plot of the checks is saved in
 'output' folder in the working directory.
 }
 \examples{

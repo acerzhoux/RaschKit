@@ -73,5 +73,5 @@ Also, one plot is saved in subfolder 'plot' inside 'DIF' folder.
 }
 \examples{
 # Not run
-# DIF_dich(DIFVar='gender', test='N_1', vars=c('Girls', 'Boys'))
+# DIF_dich(DIFVar='gender', test='ELNA', vars=c('Girls', 'Boys'), df=df)
 }

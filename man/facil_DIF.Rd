@@ -4,27 +4,24 @@
 \alias{facil_DIF}
 \title{facil_DIF}
 \usage{
-facil_DIF(folder, test, DIFVar, long_label = FALSE)
+facil_DIF(test, DIFVar = NULL, long_label = FALSE)
 }
 \arguments{
-\item{folder}{Folder where .its file of the facet model on dichotomous DIF 
-variable is located.}
-
 \item{test}{Name of test.}
 
 \item{DIFVar}{Name of dichotomous DIF variable, e.g., 'gender'.}
 
-\item{long_label}{Whether item labels are longer than 15 characters' fixed 
+\item{long_label}{Whether item labels are longer than 15 characters' fixed
 width. Default is FALSE.}
 }
 \value{
-Tibble of facilities of the two categories of the dichotomous DIF 
+Tibble of facilities of the two categories of the dichotomous DIF
 variable.
 }
 \description{
-This function extracts facilities of the two categories of the dichotomous 
+This function extracts facilities of the two categories of the dichotomous
 DIF variable.
 }
 \examples{
-facil_DIF()
+facil_DIF(test=test, DIFVar='gender')
 }

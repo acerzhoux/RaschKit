@@ -1,33 +1,30 @@
 #' CCC_comments
 #'
-#' For dichotomous items, examine distractor CCC and add comments if curve is 
-#' against theory. 
-#' For polytomous items, add in comments from Function 'itn_poly_comment'. 
+#' For dichotomous items, examine distractor CCC and add comments if curve is
+#' against theory.
+#' For polytomous items, add in comments from Function 'itn_poly_comment'.
 #' This is associated with test named 'test'.
 #'
-#' @param folder Folder that contains ConQuest output files associated with 'test'. 
-#' Default is 'output' folder in working directory.
 #' @param test Name of test.
-#' @param dFallThr Ability on last bin above which falling distractor is flagged. 
+#' @param dFallThr Ability on last bin above which falling distractor is flagged.
 #' Default is 0.5.
-#' @param dRiseThr Ability on last bin below which rising distractor is unflagged. 
+#' @param dRiseThr Ability on last bin below which rising distractor is unflagged.
 #' Default is 0.1.
 #' @param ccc_data Data to draw CCC. One element of list output from Function 'CCC_Vernon'.
-#' @param iType Dataframe with columns of iNum and itype. One element of list 
+#' @param iType Dataframe with columns of iNum and itype. One element of list
 #' output from Function 'CCC_Vernon'.
 #' @return Vector of comments based solely on CCC.
 #' @examples
 #' comments <- CCC_comments(test='racp', ccc_data=ccc_data, iType=iType)
 #' @export
 
-CCC_comments <- function(folder=here::here('output'), test,
-                         dFallThr=.5, dRiseThr=.1, ccc_data, iType){
+CCC_comments <- function(test, dFallThr=.5, dRiseThr=.1, ccc_data, iType){
   q_oders <- sort(unique(ccc_data$iNum))
   iType <- iType %>% mutate(Comment='')
 
   # If there is any poly item, get comments
   if ('poly' %in% iType$itype) {
-    comment_poly <- itn_poly_comment(folder=folder, test=test)
+    comment_poly <- itn_poly_comment(test)
   }
 
   for(i in q_oders){

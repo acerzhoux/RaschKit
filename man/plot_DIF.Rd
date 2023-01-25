@@ -23,29 +23,29 @@ plot_DIF(
 )
 }
 \arguments{
-\item{df}{Dataframe with results of chi-square tests on items that appeared 
+\item{df}{Dataframe with results of chi-square tests on items that appeared
 in two tests.}
 
-\item{wh}{'Before' or 'After' when to plot before or after equating or in 
+\item{wh}{'Before' or 'After' when to plot before or after equating or in
 DIF analysis.}
 
-\item{vars}{Vector of length 2 such as c('VIC','NSW'). Its order corresponds 
+\item{vars}{Vector of length 2 such as c('VIC','NSW'). Its order corresponds
 to .x and .y (delta, error).}
 
 \item{p_cut}{p value of chi-square test. Default is 0.05.}
 
-\item{chi_cut}{Threshold of chi-square difference between two tests. 
+\item{chi_cut}{Threshold of chi-square difference between two tests.
 Default is 10.}
 
-\item{DIF_cut}{Threshold of an item's delta estimate difference between two 
+\item{DIF_cut}{Threshold of an item's delta estimate difference between two
 tests. Default is 0.5.}
 
-\item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference 
+\item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference
 between two tests. Default is 4.}
 
 \item{step}{TRUE if DIF analysis is performed on step parameters. Default is FALSE.}
 
-\item{DIF}{TRUE if DIF analysis is performed on a dichotomous DIF variable. 
+\item{DIF}{TRUE if DIF analysis is performed on a dichotomous DIF variable.
 Default is FALSE (anchor check).}
 
 \item{cor}{Correlation of two categories' delta estimates.}

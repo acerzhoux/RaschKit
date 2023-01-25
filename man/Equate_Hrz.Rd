@@ -5,7 +5,6 @@
 \title{Equate_Hrz}
 \usage{
 Equate_Hrz(
-  folder = here::here("output"),
   test,
   grades = c(2:10),
   forms = c("A", "B"),
@@ -18,9 +17,6 @@ Equate_Hrz(
 )
 }
 \arguments{
-\item{folder}{Folder where all grades' calibration results on both Form A 
-and Form B are located. Default is 'output' folder.}
-
 \item{test}{Name of test.}
 
 \item{grades}{Vector of all grades. Default is c(2:10).}
@@ -29,28 +25,28 @@ and Form B are located. Default is 'output' folder.}
 
 \item{p_cut}{p value of chi-square test. Default is 0.05.}
 
-\item{chi_cut}{Threshold of chi-square difference between two tests. 
+\item{chi_cut}{Threshold of chi-square difference between two tests.
 Default is 10.}
 
-\item{DIF_cut}{Threshold of an item's delta estimate difference between 
+\item{DIF_cut}{Threshold of an item's delta estimate difference between
 two tests. Default is 0.5.}
 
-\item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference 
+\item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference
 between two tests. Default is 4.}
 
-\item{step}{TRUE if DIF analysis is performed on step parameters. 
+\item{step}{TRUE if DIF analysis is performed on step parameters.
 Default is FALSE.}
 
-\item{long_label}{Whether item labels are longer than 15 characters' fixed 
+\item{long_label}{Whether item labels are longer than 15 characters' fixed
 width. Default is FALSE.}
 }
 \value{
 List of chi-square test results on Form A and Form B for each grade.
 }
 \description{
-This function performs horizontal equating. An Excel file with 
-'Equating_Horizontal' in name is saved in 'equating' folder, each sheet of 
-which is for one grade. Also, one plot is saved in subfolder 'plot' inside 
+This function performs horizontal equating. An Excel file with
+'Equating_Horizontal' in name is saved in 'equating' folder, each sheet of
+which is for one grade. Also, one plot is saved in subfolder 'plot' inside
 'equating' folder for each grade.
 }
 \examples{

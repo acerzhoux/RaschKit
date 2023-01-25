@@ -5,7 +5,6 @@
 \title{create_cqc}
 \usage{
 create_cqc(
-  wd = here::here(),
   test,
   run,
   resps_cols,
@@ -30,8 +29,6 @@ create_cqc(
 )
 }
 \arguments{
-\item{wd}{Working directory. Default is the folder where .Rproj is located.}
-
 \item{test}{Name of the test.}
 
 \item{run}{Vector of specific categories of variables to select from

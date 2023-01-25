@@ -1,10 +1,10 @@
 #' sparse_data_process
 #'
-#' This function preprocesses data in three ways. First, convert non-used 
-#' categories and missing values to NA. Second, remove item responses with 
-#' all missing values. Third, for DIF analysis, remove items that have no data 
-#' on any category of the DIF variable. This is associated with test named 'test'. 
-#' An Excel file with processed data and removed items will be saved to 'data' 
+#' This function preprocesses data in three ways. First, convert non-used
+#' categories and missing values to NA. Second, remove item responses with
+#' all missing values. Third, for DIF analysis, remove items that have no data
+#' on any category of the DIF variable. This is associated with test named 'test'.
+#' An Excel file with processed data and removed items will be saved to 'data'
 #' folder in working directory.
 #'
 #' @param test Name of test.
@@ -14,20 +14,20 @@
 #' @param n_cov Number of covariables before reponses in the dataframe.
 #' @param n_dims Vector of number of items for each dimension in the test.
 #' @param miss_code Code for missing data that should be coded to NA.
-#' @param DIFVar Name of DIF variable. Should be lowercase for ConQuest to run. 
+#' @param DIFVar Name of DIF variable. Should be lowercase for ConQuest to run.
 #' Default is NULL.
-#' @return List of processed data, updated dimension test numbers, updated keys, 
+#' @return List of processed data, updated dimension test numbers, updated keys,
 #' and updated labels.
 #' @examples
-#' processed <- sparse_data_process(test='Dan', data=df_DIF, keys=rep(1,1072), 
-#' labels=rep(1,1072), n_cov=5, n_dims=c(901, 171), 
-#' miss_code=c('.', 'r', 'R', 'x', 'X', '', ' '), 
+#' processed <- sparse_data_process(test='Dan', data=df_DIF, keys=rep(1,1072),
+#' labels=rep(1,1072), n_cov=5, n_dims=c(901, 171),
+#' miss_code=c('.', 'r', 'R', 'x', 'X', '', ' '),
 #' DIFVar='studGender')
-#' processed1 <- sparse_data_process(test='Dan', data=df_DIF, keys=rep(1,1072), 
-#' labels=rep(1,1072), n_cov=5, n_dims=c(901, 171), 
+#' processed1 <- sparse_data_process(test='Dan', data=df_DIF, keys=rep(1,1072),
+#' labels=rep(1,1072), n_cov=5, n_dims=c(901, 171),
 #' miss_code=c('.', 'r', 'R', 'x', 'X', '', ' '))
-#' processed_elena <- sparse_data_process(test='elena', data=elena, 
-#' keys=rep(1,39), labels=rep(1,39), n_cov=9, n_dims=c(30, 9), 
+#' processed_elena <- sparse_data_process(test='elena', data=elena,
+#' keys=rep(1,39), labels=rep(1,39), n_cov=9, n_dims=c(30, 9),
 #' miss_code=c('.', 'r', 'R', 'x', 'X', '', ' '), DIFVar='gender')
 #' @export
 
@@ -98,7 +98,7 @@ sparse_data_process <- function(test, data, keys, labels, n_cov, n_dims,
     # ####### save data, return data and process ways
     if (!is.null(DIFVar)) {
         writexl::write_xlsx(list(data=data, Removed=Removed),
-                        here::here('data', paste0(test, '_', DIFVar, '.xlsx')))
+                            paste0('data/', test, '_', DIFVar, '.xlsx'))
     }
 
     list(data=data,

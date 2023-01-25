@@ -14,8 +14,8 @@ keys_poly_into_Data(test, score_max, N_item)
 \item{N_item}{Number of items in the test.}
 }
 \description{
-This function saves raw key file 'test_Key.txt' into 'data' folder. Later, 
-this saved file is used to produce the key section of 'test.cqc' file in 
+This function saves raw key file 'test_Key.txt' into 'data' folder. Later,
+this saved file is used to produce the key section of 'test.cqc' file in
 'input' folder. This is associated with polytomous item test named 'test'.
 }
 \examples{

@@ -12,15 +12,15 @@ freq_all_scores(vec, max_lev)
 \item{max_lev}{Maximum score in the test.}
 }
 \value{
-Dataframe with raw scores, frequencies, cumulative frequencies, 
+Dataframe with raw scores, frequencies, cumulative frequencies,
 and cumulative percentiles.
 }
 \description{
-This function reads in a vector of raw scores and return a dataframe of 
+This function reads in a vector of raw scores and return a dataframe of
 raw scores, frequencies, cumulative frequencies, and cumulative percentiles.
 }
 \details{
-This function uses 0 as minimum score and allows users to input a maximum 
+This function uses 0 as minimum score and allows users to input a maximum
 score of the test. Floor is used to obtain whole numbers for cumulative percentiles.
 }
 \examples{

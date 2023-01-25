@@ -5,7 +5,6 @@
 \title{Equate_shw}
 \usage{
 Equate_shw(
-  folder = here::here("output"),
   test,
   vars,
   var_name = NULL,
@@ -19,45 +18,42 @@ Equate_shw(
 )
 }
 \arguments{
-\item{folder}{Folder where two tests' .shw (.del also for step anchors) 
-files are located. Default is 'output' folder.}
-
 \item{test}{Name of test.}
 
-\item{vars}{Vector of length 2 such as c('VIC','NSW'). This should exist in 
-.shw file (.del also for step anchors) such as 'test_VIC.shw' and 'test_NSW.shw'. 
+\item{vars}{Vector of length 2 such as c('VIC','NSW'). This should exist in
+.shw file (.del also for step anchors) such as 'test_VIC.shw' and 'test_NSW.shw'.
 This will also be used in plotting. Order is flexible.}
 
 \item{var_name}{Character to add before vars in plots. Default is NULL.}
 
 \item{p_cut}{p value of chi-square test. Default is 0.05.}
 
-\item{chi_cut}{Threshold of chi-square difference between two tests. 
+\item{chi_cut}{Threshold of chi-square difference between two tests.
 Default is 10.}
 
-\item{DIF_cut}{Threshold of an item's delta estimate difference between two 
+\item{DIF_cut}{Threshold of an item's delta estimate difference between two
 tests. Default is 0.5.}
 
-\item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference 
+\item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference
 between two tests. Default is 10.}
 
-\item{sav_results}{TRUE if an Excel file with chi-square test results and 
+\item{sav_results}{TRUE if an Excel file with chi-square test results and
 a plot are desired. Default is TRUE.}
 
-\item{step}{TRUE if DIF analysis is performed on step parameters. 
+\item{step}{TRUE if DIF analysis is performed on step parameters.
 Default is FALSE.}
 
-\item{long_label}{Whether item labels are longer than 15 characters' fixed 
+\item{long_label}{Whether item labels are longer than 15 characters' fixed
 width. Default is FALSE.}
 }
 \value{
 Dataframe of chi-square test results for anchors between two tests.
 }
 \description{
-This function extracts two tests' delta estimates and errors from 
-corresponding .shw files in 'output' folder and performs chi-square tests 
-(DIF analysis) on their anchors' delta estimate difference. An Excel file 
-with test results and flags can be saved in 'equating' folder. Also, one 
+This function extracts two tests' delta estimates and errors from
+corresponding .shw files in 'output' folder and performs chi-square tests
+(DIF analysis) on their anchors' delta estimate difference. An Excel file
+with test results and flags can be saved in 'equating' folder. Also, one
 plot is saved in subfolder 'plot' inside 'equating' folder.
 }
 \examples{

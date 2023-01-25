@@ -1,18 +1,15 @@
 #' itn_poly_comment
 #'
-#' This function checks whether polytomous items' neighbor categories' ability 
+#' This function checks whether polytomous items' neighbor categories' ability
 #' estimates are too small. This is associated with test named 'test'.
 #'
-#' @param folder Folder that contains ConQuest output files associated with 
-#' 'test'. Default is 'output' folder in working directory.
 #' @param test Name of test.
 #' @examples
-#' Numeracy_item <- itn_poly_comment(test='Numeracy_item')
-#' elana_math <- itn_poly_comment(test='elana_math')
+#' itn_poly_comment('Numeracy_item')
 #' @export
 
-itn_poly_comment <- function(folder=here::here('output'), test){
-    itn_items <- itn_ls(folder=folder, test=test)
+itn_poly_comment <- function(test){
+    itn_items <- itn_ls(test=test)
     iCat <- iCat_new <- map(itn_items, 'Label')
 
     # check ability estimate difference of neighbor categories

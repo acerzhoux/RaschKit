@@ -13,14 +13,14 @@ plot_DIF_group(test, DIFVar, numAbilGrps = 3, abilEst2use = "pv1")
 
 \item{numAbilGrps}{Number of ability groups. Default is 3.}
 
-\item{abilEst2use}{Ability type used for curve data. Default is 'pv1'. 
+\item{abilEst2use}{Ability type used for curve data. Default is 'pv1'.
 For smaller sample size,  'wle' should be considered.}
 }
 \description{
-This function plots expected score curves for each item using results from 
-item calibration with the DIF variable as a group variable. This is associated 
+This function plots expected score curves for each item using results from
+item calibration with the DIF variable as a group variable. This is associated
 with test named 'test'.
 }
 \examples{
-plot_DIF_group(test='elena', DIFVar='quintile')
+plot_DIF_group(test='RANZCOG', DIFVar='Educator')
 }

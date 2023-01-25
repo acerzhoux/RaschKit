@@ -4,17 +4,15 @@
 \alias{fit_stats}
 \title{fit_stats}
 \usage{
-fit_stats(folder = here::here("output"), test)
+fit_stats(test)
 }
 \arguments{
-\item{folder}{Folder where 'test.shw' file is located. Default is 'output' folder.}
-
 \item{test}{Name of test.}
 }
 \description{
-This function extracts fit statistics from 'test.shw' file. This is 
+This function extracts fit statistics from xxx_shw.txt file. This is
 associated with test named 'test'.
 }
 \examples{
-fit_stats(test='elana_poly_score')
+fit_stats(test)
 }

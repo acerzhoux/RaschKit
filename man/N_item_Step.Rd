@@ -7,12 +7,12 @@
 N_item_Step(folder, test)
 }
 \arguments{
-\item{folder}{Folder where .shw file is located.}
+\item{folder}{Folder where xxx_shw.txt file is located.}
 
 \item{test}{Name of test.}
 }
 \description{
-This function extracts line numbers from .shw file and calculates number 
+This function extracts line numbers from _shw.txt file and calculates number
 of item steps. This is associated with test named 'test'.
 }
 \examples{

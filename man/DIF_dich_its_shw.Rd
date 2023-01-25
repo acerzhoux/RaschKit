@@ -5,7 +5,6 @@
 \title{DIF_dich_its_shw}
 \usage{
 DIF_dich_its_shw(
-  folder = NULL,
   DIFVar,
   test,
   vars,
@@ -23,8 +22,6 @@ DIF_dich_its_shw(
 )
 }
 \arguments{
-\item{folder}{Where to read item or step estimates. Default is NULL.}
-
 \item{DIFVar}{Name of dichotomous DIF variable, e.g., 'gender'.}
 
 \item{test}{Name of test.}

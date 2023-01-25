@@ -4,11 +4,9 @@
 \alias{est_cas}
 \title{est_cas}
 \usage{
-est_cas(folder = here::here("output"), test)
+est_cas(test)
 }
 \arguments{
-\item{folder}{Folder where 'test.cas' file is located. Default is 'output' folder.}
-
 \item{test}{Name of test.}
 }
 \value{
@@ -20,5 +18,5 @@ This is associated with test named 'test'.
 }
 \examples{
 # Not run
-# est_cas(test='HUM_2')
+# est_cas(test='FPA')
 }

@@ -4,10 +4,10 @@
 \alias{N_item2}
 \title{N_item2}
 \usage{
-N_item2(folder = here::here("output"), test)
+N_item2(folder, test)
 }
 \arguments{
-\item{folder}{Folder where 'test.its' file is located. Default is 'output' folder.}
+\item{folder}{Folder where ConQuest output files are located.}
 
 \item{test}{Name of test.}
 }
@@ -16,5 +16,5 @@ This function calculates number of items in a test based on 'test.its' file.
  This is associated with test named 'test'.
 }
 \examples{
-N_item2(test='elana_poly_score')
+N_item2(test='FPA')
 }

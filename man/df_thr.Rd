@@ -4,26 +4,26 @@
 \alias{df_thr}
 \title{df_thr}
 \usage{
-df_thr(folder = here::here("output"), test, long_label = FALSE)
+df_thr(folder = "output", test, long_label = FALSE)
 }
 \arguments{
-\item{folder}{Folder where .thr file is located.}
+\item{folder}{Folder where ConQuest output files are located.}
 
 \item{test}{Name of test.}
 
-\item{long_label}{Whether item labels are longer than 16 characters' fixed 
+\item{long_label}{Whether item labels are longer than 16 characters' fixed
 width. Default is FALSE.}
 }
 \value{
 Dataframe of step parameter estimates.
 }
 \description{
-This function extracts step parameter estimates from .thr file. This is 
-associated with test named 'test'.If any item label is longer than 16 
-characters' fixed width, use long_label=TRUE to read complete labels 
+This function extracts step parameter estimates from xxx_thr.txt file. This is
+associated with test named 'test'. If any item label is longer than 16
+characters' fixed width, use long_label=TRUE to read complete labels
 from 'test_Labels.txt' file in 'data' folder.
 }
 \examples{
-df_thr(test='elana_math')
-df_thr(test='elana_math', long_label=TRUE)
+df_thr(test='FPA')
+df_thr(test='FPA', long_label=TRUE)
 }

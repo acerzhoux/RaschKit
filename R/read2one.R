@@ -1,9 +1,9 @@
 #' read2one
 #'
-#' This function reads from 'results' folder Excel files associated with 'tests'
+#' This function reads from 'folder' files associated with 'tests'
 #' and puts them into one file.
 #'
-#' @param subfolder Folder where to-be-read files are located. Must be one of
+#' @param folder Folder where to-be-read files are located. Must be one of
 #' c('results', 'DIF', 'equating').
 #' @param tests Vector of test names after '_'.
 #' @param prefix Common prefix in file names before first '_'. Default is NULL.
@@ -16,15 +16,13 @@
 #' two categories in data.
 #' @examples
 #' # Not run
-#' # read2one(subfolder='equating', tests=c('AHU','MST','R','N'))
+#' # read2one(folder='equating', tests=c('AHU','MST','R','N'))
 #' @export
 
-read2one <- function (subfolder = c('results', 'DIF', 'equating'), tests, prefix=NULL,
+read2one <- function (folder = c('results', 'DIF', 'equating'), tests, prefix=NULL,
                       file_name = NULL, vars=NULL){
-    folder <- here::here(subfolder)
-
     # Excel names to read files from
-    if (subfolder == 'equating'){
+    if (folder == 'equating'){
         file_ls <- map(tests, ~list.files(folder, pattern=.x, full.names=TRUE))
         files <- file_ls %>%
             map(~str_subset(.x, '.xlsx')) %>%
@@ -37,12 +35,12 @@ read2one <- function (subfolder = c('results', 'DIF', 'equating'), tests, prefix
     }
 
     # sheet name to read from
-    sheetNm <- ifelse(subfolder %in% c('DIF', 'equating'), 'flag', 1)
+    sheetNm <- ifelse(folder %in% c('DIF', 'equating'), 'flag', 1)
     ex_ls <- map(files, ~readxl::read_xlsx(.x, sheetNm))
 
     # Excel name to save files into one
     if (is.null(file_name)) {
-        if (subfolder == 'equating'){
+        if (folder == 'equating'){
             file_name <- list.files(folder, pattern=tests[[1]]) %>%
                 str_subset('.pdf') %>%
                 strsplit('_') %>%
@@ -61,7 +59,7 @@ read2one <- function (subfolder = c('results', 'DIF', 'equating'), tests, prefix
     if (sheetNm == 'flag'){
         # combine excels
         names(ex_ls) <- tests
-        if (subfolder == 'equating'){
+        if (folder == 'equating'){
             summary <- map(files, ~readxl::read_xlsx(.x, 'shift'))  %>%
                 map2(tests, ~mutate(.x, Domain=.y)) %>%
                 map2(map(files, ~readxl::read_xlsx(.x, 'flag')),
@@ -86,7 +84,7 @@ read2one <- function (subfolder = c('results', 'DIF', 'equating'), tests, prefix
             writexl::write_xlsx(file)
 
         # combine pdf's
-        if (subfolder == 'DIF') {
+        if (folder == 'DIF') {
             in_dif <- file.path(folder, str_c(prefix, '_', tests, '.pdf'))
             out_dif <- file.path(folder, str_c(prefix, '.pdf'))
             qpdf::pdf_combine(input = in_dif, output = out_dif)
@@ -103,7 +101,7 @@ read2one <- function (subfolder = c('results', 'DIF', 'equating'), tests, prefix
             paste0('Files and plots combined to:'),
             paste0('\tDIF flags:\t', file),
             paste0('\tDIF plots:\t', out_dif),
-            if (subfolder == 'DIF') paste0('\tFacility plots:\t', out_facil)))
+            if (folder == 'DIF') paste0('\tFacility plots:\t', out_facil)))
     }
     if (sheetNm == 1){
         ex_ls %>%

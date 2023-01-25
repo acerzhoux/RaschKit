@@ -6,7 +6,6 @@
 \usage{
 DIF(
   method = c("chi_square", "Bonferroni", "Facet"),
-  wd = here::here(),
   test,
   codes,
   pid_cols = NULL,
@@ -39,11 +38,9 @@ DIF(
 \arguments{
 \item{method}{One of 'chi_square', 'Bonferroni', or 'Facet'.}
 
-\item{wd}{Working directory. Default is the folder where .Rproj is located.}
-
 \item{test}{Name of the test.}
 
-\item{codes}{Vector of valid codes for item responses, 
+\item{codes}{Vector of valid codes for item responses,
 e.g., c(1, 2, 3, 4, 5, 6, 7, 8, 9).}
 
 \item{pid_cols}{String of column numbers of person ID. Default is NULL.}
@@ -101,7 +98,7 @@ facility difference between two groups of test takers. Default is 10.}
 
 \item{domain}{Name of the domain in the test, e.g., 'Literacy'. Default is NULL.}
 
-\item{save_xlsx}{Whether to save summary file and plots. Default is TRUE 
+\item{save_xlsx}{Whether to save summary file and plots. Default is TRUE
 (one DIF variable).}
 
 \item{iterative}{TRUE to iteratively remove DIF items. Default is TRUE.}

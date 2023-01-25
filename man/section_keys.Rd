@@ -4,39 +4,33 @@
 \alias{section_keys}
 \title{section_keys}
 \usage{
-section_keys(
-  folder = here::here("data"),
-  test,
-  dbl_key = NULL,
-  poly_key = FALSE,
-  delete = NULL
-)
+section_keys(test, dbl_key = NULL, poly_key = FALSE, delete = NULL)
 }
 \arguments{
-\item{folder}{The 'data' folder where key 'test_Key.txt' file is located. 
-Default is 'data' folder in working directory.}
-
 \item{test}{Name of the test.}
 
 \item{dbl_key}{TRUE if the key of any item is double key. Default is NULL.}
 
-\item{poly_key}{TRUE if the key of any item has polytomous scoring. 
+\item{poly_key}{TRUE if the key of any item has polytomous scoring.
 Default is FALSE.}
 
-\item{delete}{Vector of to-be-removed items' order numbers in the test, 
+\item{delete}{Vector of to-be-removed items' order numbers in the test,
 e.g., c(4, 7, 65, 114). Default is NULL.}
+
+\item{folder}{The 'data' folder where key 'test_Key.txt' file is located.
+Default is 'data' folder in working directory.}
 }
 \value{
-String of characters used in key section of 'test.cqc' file in 
+String of characters used in key section of 'test.cqc' file in
 'input' folder.
 }
 \description{
-This function reads in 'test_Key.txt' from 'data' folder and specifies 
-the Key section of the 'test.cqc' file in 'input' folder. Both procedures 
+This function reads in 'test_Key.txt' from 'data' folder and specifies
+the Key section of the 'test.cqc' file in 'input' folder. Both procedures
 are associated with test named 'test'.
 }
 \details{
-They key file has one row for all-multiple-choice-item test, or multiple 
+They key file has one row for all-multiple-choice-item test, or multiple
 rows if any item has double key or polytomous scoring.
 }
 \examples{

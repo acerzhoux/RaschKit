@@ -1,18 +1,16 @@
 #' CCC_ipMap
 #'
-#' This function draws for each item CCC of both category and score. 
-#' Plots will be saved in 'output' folder in the working directory.
+#' This function draws for each item CCC of both category and score.
+#' Plots will be saved in 'output' folder.
 #'
-#' @param folder Working directory where .thr and .cqs are located. 
-#' Default is 'output' folder.
 #' @param test Name of the test.
 #' @param cqs CQS output file from ConQuest.
-#' @param abilEst2use Ability type used for curve data. Default is 'pv1'. 
+#' @param abilEst2use Ability type used for curve data. Default is 'pv1'.
 #' Use 'wle' for smaller samples.
 #' @param numAbilGrps Number of ability groups. Default is NULL.
-#' @param long_label Whether item labels are longer than 16 characters' fixed width. 
+#' @param long_label Whether item labels are longer than 16 characters' fixed width.
 #' Default is FALSE.
-#' @param poly_key TRUE if the key of any item has polytomous scoring. 
+#' @param poly_key TRUE if the key of any item has polytomous scoring.
 #' Default is FALSE.
 #' @return Plots of CCC by category and score.
 #' @examples
@@ -20,9 +18,9 @@
 #' plot_data <- CCC_ipMap(test='RACP', abilEst2use='wle')
 #' @export
 
-CCC_ipMap <- function(folder=here::here('output'), test, cqs, abilEst2use='pv1',
-                       numAbilGrps=NULL, long_label=FALSE, poly_key=FALSE){
-    thr <- df_thr(folder=folder, test=test, long_label=long_label)
+CCC_ipMap <- function(test, cqs, abilEst2use='pv1',
+                      numAbilGrps=NULL, long_label=FALSE, poly_key=FALSE){
+    thr <- df_thr(test=test, long_label=long_label)
 
     # check names
     if (!('i_pvmeansd' %in% names(cqs$gMatrixList))){
@@ -343,7 +341,7 @@ CCC_ipMap <- function(folder=here::here('output'), test, cqs, abilEst2use='pv1',
                                widths = c(2, 3))
 
     # save item-person map
-    pdf(file=file.path(folder, paste0(test, "_ipMap.pdf")), width = 7, height = 7)
+    pdf(file = paste0('output/', test, "_ipMap.pdf"), width = 7, height = 7)
     print(ipMap)
     dev.off()
 
@@ -567,7 +565,7 @@ CCC_ipMap <- function(folder=here::here('output'), test, cqs, abilEst2use='pv1',
     }
 
     # ####### generate ICCs by Score
-    pdf(file=file.path(folder, paste0(test, "_CCC.pdf")), width = 10, height = 7)
+    pdf(file = paste0('output/', test, "_CCC.pdf"), width = 10, height = 7)
     map(plot_ls, ~print(.x))
     dev.off()
 

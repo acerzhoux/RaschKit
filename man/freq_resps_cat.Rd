@@ -7,11 +7,11 @@
 freq_resps_cat(resp, wide = FALSE, prop = FALSE)
 }
 \arguments{
-\item{resp}{Dataframe of responses where each column is a vector of responses 
+\item{resp}{Dataframe of responses where each column is a vector of responses
 to one test item.}
 
-\item{wide}{TRUE if wide form is desired. Default is FALSE. When default, 
-the output has long format same as frequency table in .txt file output 
+\item{wide}{TRUE if wide form is desired. Default is FALSE. When default,
+the output has long format same as frequency table in .txt file output
 from ConQuest.}
 
 \item{prop}{TRUE if proportion is desired. Default is FALSE.}
@@ -23,5 +23,5 @@ Table of each item's category frequencies.
 This function . This is associated with test named 'test'.
 }
 \examples{
-a=freq_resps_cat(resp=df_DIF[-c(1:5)], wide=TRUE)
+freq_resps_cat(resp, TRUE, TRUE)
 }

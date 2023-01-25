@@ -4,11 +4,9 @@
 \alias{section_specs}
 \title{section_specs}
 \usage{
-section_specs(wd, anchor, test, DIFVar, poly_catgrs, quick)
+section_specs(anchor, test, DIFVar, poly_catgrs, quick)
 }
 \arguments{
-\item{wd}{Working directory. Default is the folder where .Rproj is located.}
-
 \item{anchor}{TRUE when anchor is to be done.}
 
 \item{test}{Name of the test.}
@@ -20,18 +18,18 @@ section_specs(wd, anchor, test, DIFVar, poly_catgrs, quick)
 \item{quick}{TRUE when testing.}
 }
 \value{
-String of characters used in estimation section of 'test.cqc' 
+String of characters used in estimation section of 'test.cqc'
 file in 'input' folder.
 }
 \description{
-This function specifies the section of estimation details in 'test.cqc' 
+This function specifies the section of estimation details in 'test.cqc'
 file in 'input' folder. This is associated with test named 'test'.
 }
 \details{
-When anchoring is to be done, the import route of the anchor file is 
-designated and item constraint is specified as 'constraints=none'. 
-When DIF analysis is to be done on a polytomous DIF variable, it is 
-specified that some category of the DIF variable is to be selected from 
+When anchoring is to be done, the import route of the anchor file is
+designated and item constraint is specified as 'constraints=none'.
+When DIF analysis is to be done on a polytomous DIF variable, it is
+specified that some category of the DIF variable is to be selected from
 among all of its categories.
 }
 \examples{

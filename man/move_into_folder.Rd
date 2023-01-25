@@ -4,7 +4,7 @@
 \alias{move_into_folder}
 \title{move_into_folder}
 \usage{
-move_into_folder(folder = here::here("output"), test)
+move_into_folder(folder = "output", test)
 }
 \arguments{
 \item{folder}{Place to find CQ output files. Default is 'output' folder.}
@@ -12,8 +12,8 @@ move_into_folder(folder = here::here("output"), test)
 \item{test}{Name of the test.}
 }
 \description{
-This function checks whether files related to 'test' exist. If so, 
-it establishes a new folder and moves files inside. This is associated 
+This function checks whether files related to 'test' exist. If so,
+it establishes a new folder and moves files inside. This is associated
 with test named 'test'.
 }
 \examples{

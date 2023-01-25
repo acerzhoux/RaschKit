@@ -1,21 +1,21 @@
 #' section_keys
 #'
-#' This function reads in 'test_Key.txt' from 'data' folder and specifies 
-#' the Key section of the 'test.cqc' file in 'input' folder. Both procedures 
+#' This function reads in 'test_Key.txt' from 'data' folder and specifies
+#' the Key section of the 'test.cqc' file in 'input' folder. Both procedures
 #' are associated with test named 'test'.
 #'
-#' They key file has one row for all-multiple-choice-item test, or multiple 
+#' They key file has one row for all-multiple-choice-item test, or multiple
 #' rows if any item has double key or polytomous scoring.
 #'
-#' @param folder The 'data' folder where key 'test_Key.txt' file is located. 
+#' @param folder The 'data' folder where key 'test_Key.txt' file is located.
 #' Default is 'data' folder in working directory.
 #' @param test Name of the test.
 #' @param dbl_key TRUE if the key of any item is double key. Default is NULL.
-#' @param poly_key TRUE if the key of any item has polytomous scoring. 
+#' @param poly_key TRUE if the key of any item has polytomous scoring.
 #' Default is FALSE.
-#' @param delete Vector of to-be-removed items' order numbers in the test, 
+#' @param delete Vector of to-be-removed items' order numbers in the test,
 #' e.g., c(4, 7, 65, 114). Default is NULL.
-#' @return String of characters used in key section of 'test.cqc' file in 
+#' @return String of characters used in key section of 'test.cqc' file in
 #' 'input' folder.
 #' @examples
 #' section_keys(test='b', delete=c(2, 5))
@@ -24,11 +24,11 @@
 #' section_keys(test='b', poly_key=TRUE, delete=c(2, 5))
 #' @export
 
-section_keys <- function(folder=here::here('data'), test, dbl_key=NULL,
+section_keys <- function(test, dbl_key=NULL,
                          poly_key=FALSE, delete=NULL){
     # ########## Step 1: Read in keys #########
     if (poly_key){
-        # polytomous keys: Read from 'keys.xlsx' file in 'data' folder
+        # polytomous keys: Read from 'keys.xlsx' file in 'data'
         keys <- readxl::read_xlsx(here::here('data', 'keys.xlsx'), test)
 
         # if double key, record and add one extra line on top
@@ -63,8 +63,8 @@ section_keys <- function(folder=here::here('data'), test, dbl_key=NULL,
         # If double score, add one extra 1-score line on top
         if (isTRUE(dbl_key)) keys <- c(Line_top, keys)
     } else {
-        # MC items: Read from 'xxx_Key.txt' file in 'data' folder
-        keys <- read_keys(folder=folder, test=test)
+        # MC items: Read from 'xxx_Key.txt' file in 'data'
+        keys <- read.table(paste0('data/', test, '_Key.txt'), colClasses = "character")[[1]]
         # double-key: add double key
         if (!is.null(dbl_key)){
             id_dbl <- names(dbl_key)

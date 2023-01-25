@@ -9,26 +9,26 @@ plot_DIF_poly(DIFVar, subgrp, cats, item, delta_cat, Flag_dif)
 \arguments{
 \item{DIFVar}{Name of polytomous DIF variable.}
 
-\item{subgrp}{Order of a category of the DIF variable among all categories. 
+\item{subgrp}{Order of a category of the DIF variable among all categories.
 Minimum is 1. Maximum is length of categories.}
 
 \item{cats}{Ordered categories of the DIF variable, e.g., c(4:10)}
 
 \item{item}{Vector of item labels that had estimates in each subgroup.}
 
-\item{delta_cat}{Dataframe with items' delta estimates in subgroups (1st to 
+\item{delta_cat}{Dataframe with items' delta estimates in subgroups (1st to
 last but one columns) and average estimates (last column).}
 
-\item{Flag_dif}{Dataframe with both adjusted delta estimates (one column) 
+\item{Flag_dif}{Dataframe with both adjusted delta estimates (one column)
 and significant symbols (one column) for each subgroup.}
 }
 \value{
-Plot of DIF analysis of test items (that had estimates for all 
+Plot of DIF analysis of test items (that had estimates for all
 subgroups) on one subgroup.
 }
 \description{
-This function plots all items' average delta estimates against those in each 
-subgroup. It also labels items that showed DIF in the Bonferroni adjusted 
+This function plots all items' average delta estimates against those in each
+subgroup. It also labels items that showed DIF in the Bonferroni adjusted
 significance test.
 }
 \examples{

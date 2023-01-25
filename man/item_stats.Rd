@@ -4,18 +4,16 @@
 \alias{item_stats}
 \title{item_stats}
 \usage{
-item_stats(folder = here::here("output"), test)
+item_stats(test)
 }
 \arguments{
-\item{folder}{Folder where 'test.its' file is located.}
-
 \item{test}{Name of test.}
 }
 \description{
-This function extracts item statistics such as item-rest correlation, 
-facility, delta, and case number from 'test.its' file. This is associated 
+This function extracts item statistics such as item-rest correlation,
+facility, delta, and case number from 'test.its' file. This is associated
 with test named 'test'.
 }
 \examples{
-item_stats(test='AHU')
+item_stats(test='FPA')
 }

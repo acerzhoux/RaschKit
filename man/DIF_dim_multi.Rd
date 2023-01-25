@@ -17,7 +17,6 @@ DIF_dim_multi(
   labels = NULL,
   vars = NULL,
   regr_vec_char = NULL,
-  wd = here::here(),
   quick = TRUE,
   step = FALSE,
   delete = NULL,
@@ -66,8 +65,6 @@ corresponds to the alphabetic/numeric order of DIF variables' two categories in 
 
 \item{regr_vec_char}{Vector of character regressors' names. Default is NULL.
 Make sure to check colinearity of the regressors.}
-
-\item{wd}{Working directory. Default is the folder where .Rproj is located.}
 
 \item{quick}{TRUE when testing. Default is TRUE}
 

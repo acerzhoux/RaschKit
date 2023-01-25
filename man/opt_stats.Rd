@@ -4,20 +4,18 @@
 \alias{opt_stats}
 \title{opt_stats}
 \usage{
-opt_stats(folder = here::here("output"), test)
+opt_stats(test)
 }
 \arguments{
-\item{folder}{Folder where 'test.txt' file is located.}
-
 \item{test}{Name of test.}
 }
 \value{
 Dataframe of option statistics.
 }
 \description{
-This function extracts option statistics from 'test.txt' file. 
+This function extracts option statistics from 'test.txt' file.
 This is associated with test named 'test'.
 }
 \examples{
-opt_cq <- opt_stats(test='elana_poly_score')
+opt_stats(test='FPA')
 }

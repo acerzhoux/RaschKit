@@ -7,7 +7,7 @@
 qid_its(folder, test)
 }
 \arguments{
-\item{folder}{Folder that contains ConQuest output files associated with 'test'.}
+\item{folder}{Folder where ConQuest output files are located.}
 
 \item{test}{Name of test.}
 }
@@ -15,9 +15,9 @@ qid_its(folder, test)
 Vector of item orders.
 }
 \description{
-This function generates vector of item orders that appeared in .its file. 
+This function generates vector of item orders that appeared in _its.txt file.
 This is associated with test named 'test'.
 }
 \examples{
-qid_its()
+qid_its('output', 'FPA')
 }

@@ -4,19 +4,17 @@
 \alias{resps_modify}
 \title{resps_modify}
 \usage{
-resps_modify(folder, test, resps_cols, delete)
+resps_modify(test, resps_cols, delete)
 }
 \arguments{
-\item{folder}{The 'data' folder where key 'test_Key.txt' file is located.}
-
 \item{test}{Name of the test.}
 
 \item{resps_cols}{Column number(s) of responses in the data .txt file.}
 
-\item{delete}{Vector of item order number to be removed from the test, 
+\item{delete}{Vector of item order number to be removed from the test,
 e.g., c(2, 3, 45, 46).}
 }
 \description{
-This function consecutively remove the last item from the delete list of 
+This function consecutively remove the last item from the delete list of
 items until no last item is in it.
 }

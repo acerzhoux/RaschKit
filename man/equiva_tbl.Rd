@@ -5,7 +5,6 @@
 \title{equiva_tbl}
 \usage{
 equiva_tbl(
-  wd = here::here(),
   test,
   est_type = "wle",
   slope = NULL,
@@ -14,26 +13,24 @@ equiva_tbl(
 )
 }
 \arguments{
-\item{wd}{Working directory. Default is the folder where .Rproj is located.}
-
 \item{test}{Name of test.}
 
-\item{est_type}{Type of ability estimate to use for score equivalence table, 
+\item{est_type}{Type of ability estimate to use for score equivalence table,
 'wle' or 'mle'. Default is 'wle'.}
 
 \item{slope}{Slope to multiply ability estimates. Default is NULL}
 
 \item{intercept}{Value/intercept to add to ability estimates. Default is NULL.}
 
-\item{extrapolation}{Whether to extrapolate the minimum and maximum estimates. 
+\item{extrapolation}{Whether to extrapolate the minimum and maximum estimates.
 Default is FALSE.}
 }
 \value{
 Dataframe of scaled ability estimates.
 }
 \description{
-This function extracts desired type of ability estimates from compressed 
-ConQuest .cqs file and generate scaled scores with specified slope and 
+This function extracts desired type of ability estimates from compressed
+ConQuest .cqs file and generate scaled scores with specified slope and
 intercept. This is associated with test named 'test'.
 }
 \examples{

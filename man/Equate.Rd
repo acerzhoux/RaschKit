@@ -20,35 +20,35 @@ Equate(
 )
 }
 \arguments{
-\item{df}{Dataframe of five variables of 'item' (anchor labels), 'delta.x', 
-'error.x', 'delta.y', and 'error.y'. '.x' and '.y' should correspond to order 
+\item{df}{Dataframe of five variables of 'item' (anchor labels), 'delta.x',
+'error.x', 'delta.y', and 'error.y'. '.x' and '.y' should correspond to order
 of test names in 'vars'.}
 
 \item{test}{Name of test such as 'AGAT'.}
 
-\item{vars}{Vector of length 2 such as c('VIC','NSW'). Its order corresponds 
+\item{vars}{Vector of length 2 such as c('VIC','NSW'). Its order corresponds
 to two tests associated with .x and .y.}
 
 \item{p_cut}{p value of chi-square test. Default is 0.05.}
 
-\item{chi_cut}{Threshold of chi-square difference between two tests. 
+\item{chi_cut}{Threshold of chi-square difference between two tests.
 Default is 10.}
 
-\item{DIF_cut}{Threshold of an item's delta estimate difference between two 
+\item{DIF_cut}{Threshold of an item's delta estimate difference between two
 tests. Default is 0.5.}
 
-\item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference 
+\item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference
 between two tests. Default is 4.}
 
-\item{sav_results}{TRUE if an Excel file with chi-square test results and 
+\item{sav_results}{TRUE if an Excel file with chi-square test results and
 a plot are desired. Default is TRUE.}
 
 \item{desig_effect}{Value to adjust errors. Default is 1.}
 
-\item{step}{TRUE if DIF analysis is performed on step parameters. 
+\item{step}{TRUE if DIF analysis is performed on step parameters.
 Default is FALSE.}
 
-\item{DIF}{TRUE if DIF analysis is performed on a dichotomous DIF variable. 
+\item{DIF}{TRUE if DIF analysis is performed on a dichotomous DIF variable.
 Default is FALSE (anchor check).}
 
 \item{iterative}{TRUE to iteratively remove DIF items. Default is FALSE}
@@ -57,12 +57,12 @@ Default is FALSE (anchor check).}
 Dataframe of chi-square test results for anchors between two tests.
 }
 \description{
-This function performs chi-square tests (DIF analysis) on a group of anchor 
-items' difference of delta estimates in two tests. An Excel file with test 
-results and flags can be saved in 'equating' folder. Also, one plot is saved 
+This function performs chi-square tests (DIF analysis) on a group of anchor
+items' difference of delta estimates in two tests. An Excel file with test
+results and flags can be saved in 'equating' folder. Also, one plot is saved
 in subfolder 'plot' inside 'equating' folder.
 }
 \examples{
-Equate(df=data[, c('item', 'delta.x', 'error.x', 'delta.y', 'error.y')], 
+Equate(df=data[, c('item', 'delta.x', 'error.x', 'delta.y', 'error.y')],
 test='Elana_math', vars=c('NSW', 'VIC'))
 }

@@ -1,0 +1,81 @@
+---
+title: "testing"
+author: "Xiaoliang Zhou"
+date: "Last compiled on `r format(Sys.time(), '%d %B, %Y')`"
+output: html_document
+---
+
+```{r}
+library(RaschKit)
+install_packages_ls()
+create_folders() 
+```
+
+# clean data
+
+```{r}
+# read data
+resp <- readxl::read_xlsx(list.files(here::here('dataRaw'),
+                                     'CFPC datafile',
+                                     full.names = TRUE)) %>% 
+    map_df(~toupper(.x))
+
+# read keys
+keys <- readxl::read_xlsx(list.files(here::here('dataRaw'),
+                                     'Exam_Correct-Response',
+                                     full.names = TRUE)) %>% 
+    row_to_names(1) %>% 
+    pull(`Correct Response`)
+```
+
+# ####### calibrate: Before review ######
+
+```{r}
+calibrate(test='FPA', data=resp, pid='ID number', n_cov=2, keys=keys, 
+          labels=paste0('Q', 1:70), quick=TRUE, n_dims=70) # n_dims
+```
+
+# use weights
+
+```{r}
+calibrate(test='FPA', data=resp, pid='ID number', n_cov=2, keys=keys, 
+          labels=paste0('Q', 1:70), quick=TRUE, 
+          pweight='weight', n_dims=70, missCode2Conv='-') 
+```
+
+# use regressor
+
+```{r}
+calibrate(test='FPA', data=resp, pid='ID number', n_cov=2, keys=keys, 
+          labels=paste0('Q', 1:70), quick=TRUE, 
+          pweight='weight', n_dims=70, regr_vec_char='gender') 
+```
+
+# ####### calibrate: After review ######
+
+```{r}
+keys[25] <- 'A' 
+keys[53] <- 'B'
+keys[67] <- 'C'
+
+calibrate(test='FPA', pid='ID number', n_cov=1, keys=keys, 
+          labels=paste0('Q', 1:70), quick=TRUE, delete=c('Q4', 'Q58'),
+          dbl_key=list(`45`=c('A', 'C')), pweight='weight', n_dims=70)
+```
+
+# ####### anchoring ######
+
+```{r}
+calibrate(anchor=TRUE, test='FPA', pid='ID number', n_cov=2, keys=keys, 
+          labels=paste0('Q', 1:70), quick=TRUE, 
+          dbl_key=list(`45`=c('A', 'C')), pweight='weight', n_dims=70)
+```
+
+# multi-dimension model
+
+```{r}
+calibrate(test='FPA', data=resp, pid='ID number', n_cov=2, keys=keys, 
+          labels=paste0('Q', 1:70), quick=TRUE, pweight='weight', 
+          n_dims=c(30, 40), dim_names=c('D1', 'D2'),
+          regr_vec_char='gender') 
+```

@@ -5,9 +5,7 @@
 #' If save_xlsx is TRUE, an Excel file with a summary of the above information
 #' will be saved in 'results' folder in the working directory.
 #'
-#' @param wd Working directory. Default is the folder where .Rproj is located.
 #' @param test Name of the test.
-#' @param folder Place to find CQ output files.
 #' @param data Dataframe with pid, covariables (e.g,, DIF variable), and
 #' responses. Default is NULL where Excel file with name 'test' in 'data'
 #' folder is used.
@@ -77,7 +75,7 @@
 #' # labels=cd$`Question ID`, delete=c(3,4,5,36), dbl_key=list(`7`=c(1,3), `9`=c(3,4)))
 #' @export
 
-calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=NULL,
+calibrate <- function(test, data=NULL,
                       pid, n_cov, regr_vec_char=NULL, n_dims=NULL, dim_names=NULL,
                       keys=NULL, labels=NULL, quick=FALSE, delete=NULL,
                       dbl_key=NULL, poly_key=FALSE, anchor=FALSE, section_extr=NULL,
@@ -95,17 +93,16 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
     if (is.null(data)) {
         cat('Reading data...\n')
         if (filetype == 'sav') {
-            data <- haven::read_sav(here::here('data', paste0(test, '.sav')))
-            label_csv <- here::here('data', str_c(test, '_labels.csv'))
+            data <- haven::read_sav(paste0('data/', test, '.sav'))
+            label_csv <- paste0('data/', test, '_labels.csv')
             if (file.exists(label_csv)){
-                nms <- read.csv(label_csv) %>%
-                    pull(iLabel)
+                nms <- read.csv(label_csv)$iLabel
                 names(data) <- nms
             }
         } else if (filetype == 'csv') {
-            data <- read.csv(here::here('data', paste0(test, '.csv')))
+            data <- read.csv(paste0('data/', test, '.csv'))
         } else if (filetype == 'xlsx'){
-            data <- readxl::read_xlsx(here::here('data', paste0(test, '.xlsx')))
+            data <- readxl::read_xlsx(paste0('data/', test, '.xlsx'))
         } else {
             stop('Data must use sav, csv, or xlsx.')
         }
@@ -118,10 +115,10 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
         stop('Pid or regressor is not in data column names!')
     }
 
-    # calculating arguments
+    # calculate arguments
     cat('Using default arguments if not given...\n')
     if (is.null(n_dims)) n_dims <- ncol(data) - n_cov
-    if (is.null(keys) & !poly_key) keys <- rep(1, sum(n_dims))
+    if (is.null(keys) & !poly_key) keys <- rep('1', sum(n_dims))
     if (is.null(labels)) {
         labels <- names(data)[(n_cov+1):(n_cov+sum(n_dims))]
     } else {
@@ -135,13 +132,12 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
     } else {
         folders_mov <- c('input', 'output', 'results')
     }
-    map(folders_mov,
-        ~move_into_folder(folder=file.path(here::here(), .x), test=test))
+    map(folders_mov, ~move_into_folder(folder=.x, test=test))
 
     # ####### preprocess data
     if (poly_key){
         cat('Checking polytomou-score items; recode if score are not continuous...\n')
-        keys <- readxl::read_xlsx(here::here('data', 'keys.xlsx'), test)
+        keys <- readxl::read_xlsx(paste0('data/', 'keys.xlsx'), test)
         if (recode_poly) {
             data <- poly_recode(keys=keys, data=data, n_cov=n_cov,
                                 miss_code=c('r','R','m','M','9','x','X','.','',' ',NA))
@@ -164,10 +160,18 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
     if (!is.null(missCode2Conv)){
         cat('Recoding embedded & trailing missing in responses to M & R...\n')
         for (i in 1:length(n_dims)){
-            if (i==1) data <- miss_recode(df=data, begin=n_cov+1,
-                                          end=n_cov+n_dims[[i]], miss_code=missCode2Conv)
-            else data <- miss_recode(df=data, begin=n_cov+sum(n_dims[1:(i-1)])+1,
-                                     end=n_cov+sum(n_dims[1:i]), miss_code=missCode2Conv)
+            if (i==1){
+                data <- miss_recode(
+                    data, n_cov+1, n_cov+n_dims[[i]], 'M','R',
+                    NA, missCode2Conv, F, F
+                )
+            }
+            else {
+                data <- miss_recode(
+                    data, n_cov+sum(n_dims[1:(i-1)])+1, n_cov+sum(n_dims[1:i]),
+                    'M','R', NA, missCode2Conv, F, F
+                )
+            }
         }
     }
 
@@ -181,12 +185,10 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
     # save data
     if (save_data) {
         cat('Saving data into xlsx and sav...\n')
-        data %>%
-            writexl::write_xlsx(here::here('data', paste0(test, '.xlsx')))
+        writexl::write_xlsx(data, paste0('data/', test, '.xlsx'))
         # for .sav data
         tryCatch({
-            data %>%
-                haven::write_sav(here::here('data', paste0(test, '.sav')))
+            haven::write_sav(data, paste0('data/', test, '.sav'))
         },
         error = function(e) {
             data_sav <- data
@@ -200,12 +202,12 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
                 iLabel <- c(names(data)[1:n_cov], labels, names(data)[(N1+1):ncol(data)])
             }
 
-            tibble(iSPSS = iSPSS,
-                   iLabel = iLabel) %>%
-                write.csv(here::here('data', paste0(test, '_labels.csv')),
-                          row.names = FALSE)
-            data_sav %>%
-                haven::write_sav(here::here('data', paste0(test, '.sav')))
+            write.csv(
+                tibble(iSPSS = iSPSS, iLabel = iLabel),
+                paste0('data/', test, '_labels.csv'),
+                row.names = FALSE
+            )
+            haven::write_sav(data_sav, paste0('data/', test, '.sav'))
         })
     }
 
@@ -219,7 +221,7 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
     if (length(n_dims) > 1){
         if(is.null(dim_names)) stop('Please set dimension names \'dim_names\'!')
         if (poly_key) scrs <- 0:max(keys$Max_score) else scrs <- 0:1
-        prep[['section_extr']] <- prep[['section_extr']] %>%
+        prep[['section_extr']] <- prep[['section_extr']] |>
             c(section_dim(scrs=scrs, n_dims=n_dims, dim_names=dim_names))
     }
 
@@ -238,7 +240,7 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
 
     # ####### calibrate
     cat('Calibrating test items...\n')
-    lab_cqc(wd=wd, test=test, run=NULL, run_ls=NULL,
+    lab_cqc(test=test, run=NULL, run_ls=NULL,
             codes=prep$codes, pid_cols=prep$pid_cols, resps_cols=prep$resps_cols,
             quick=quick, delete=delete, dbl_key=dbl_key, poly_key=poly_key,
             anchor=anchor, step=FALSE, regr_ls=prep$regr_ls,
@@ -249,25 +251,28 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
 
     # ####### read CQS output for summary
     cat('Reading CQS file...\n')
-    cqs <- conquestr::ConQuestSys(here::here('output', paste0(test, ".CQS")))
-    saveRDS(cqs, here::here(here::here('output', paste0(test, "_CQS.rds"))))
+    cqs <- conquestr::ConQuestSys(paste0('output/', test, ".CQS"))
+    saveRDS(cqs, paste0('output/', test, "_CQS.rds"))
 
     # ####### check: Convergence
     cat('Checking convergence...\n')
-    check_convergence(test=test, cqs=cqs)
+    check_convergence(cqs, test)
 
     if (anchor){
         # check: input .anc file vs. output .anc file
-        anchor_dif <- read.table(here::here('input', paste0(test, '.anc'))) %>%
-            select(anchor=V3, input=V2) %>%
+        anchor_dif <- read.table(paste0('input/', test, '_anc.txt')) |>
+            dplyr::select(anchor=V3, input=V2) |>
             left_join(
-                read.table(here::here('output', paste0(test, '.anc'))) %>%
-                    mutate(output=V2, anchor=str_c(V3,V5,V6)) %>%
-                    select(anchor, output),
+                read.table(paste0('output/', test, '_anc.txt')) |>
+                    mutate(output=V2, anchor=str_c(V3,V5,V6)) |>
+                    dplyr::select(anchor, output),
                 by = "anchor"
-            ) %>%
-            mutate(dif=input - output, anchor=str_remove_all(anchor, '[(//)(/*)]')) %>%
-            filter(abs(dif) > 0.0001)
+            ) |>
+            mutate(
+                dif = input - output,
+                anchor = str_remove_all(anchor, '[(//)(/*)]')
+            ) |>
+            dplyr::filter(abs(dif) > 0.0001)
         if (nrow(anchor_dif) != 0){
             print(anchor_dif)
             stop('Anchor order was messed up! Check printed difference above.')
@@ -275,41 +280,35 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
 
         # get equivalence table
         cat('Generating equivalence table...\n')
-        equiva_tbl(wd=wd, test=test, slope=slope, est_type=est_type,
-                   intercept=intercept, extrapolation=extrapolation)
-        est_cas(folder=folder, test=test)
+        equiva_tbl(test, est_type, slope, intercept, extrapolation)
+        est_cas(test)
         rm(cqs)
 
         # point users to files of varying purposes
         writeLines(c(
             paste0('\n========= Output Files =========\n'),
             paste0('Anchoring and scaling of ', toupper(test), ':'),
-            paste0('\tScore equivalence table:\t',
-                   here::here('results', paste0('eqv_tbl_', test, '.xlsx'))),
-            paste0('\tRaw and logit score table:\t', here::here('results', paste0('estimates_', test, '.xlsx'))),
+            paste0('\tScore equivalence table:\t', 'results/', 'eqv_tbl_', test, '.xlsx'),
+            paste0('\tRaw and logit score table:\t', 'results/', 'estimates_', test, '.xlsx'),
             if (!is.null(intercept) | !is.null(slope)){
-                paste0('\tScaled score table:\t\t',
-                       here::here('results', paste0('scaled_tbl_', test, '.xlsx')))
+                paste0('\tScaled score table:\t\t', 'results/', 'scaled_tbl_', test, '.xlsx')
 
             }
         ))
     } else { # summarize item calibration
         # ####### check: Option frequencies
         cat('Checking option frequencies...\n')
-        check_freq_resps_cat(resp=data[(n_cov+1):(n_cov+sum(n_dims))],
-                             folder=folder, test=test)
+        check_freq_resps_cat(test, data[(n_cov+1):(n_cov+sum(n_dims))])
+
+        # ####### TODO: Plotting, summary stats for multi-dim models #######
+        if (length(n_dims)>1) return('Results are in output folder.')
 
         # ####### CCC of categories and scores
         cat('Producing Category Characteristic Curve (CCC)...\n')
         # determine whether to use wle or pv1
-        n_min <- data[-c(1:n_cov)] %>%
-            map_int(~length(str_remove_all(na.omit(.x), 'R'))) %>%
-            min()
+        n_min <- min(map_int(data[-c(1:n_cov)], ~length(str_remove_all(na.omit(.x), 'R'))))
         abilEst2use <- ifelse(n_min >= 200, 'pv1', 'wle')
-        plot_data <- CCC_ipMap(folder=folder, test=test,
-                               abilEst2use=abilEst2use,
-                               numAbilGrps=numAbilGrps, long_label=long_label,
-                               poly_key=poly_key, cqs=cqs)
+        plot_data <- CCC_ipMap(test, cqs, abilEst2use, numAbilGrps, long_label, poly_key)
         ccc_data <- plot_data[['ccc_data']]
         iType <- plot_data[['itype']]
 
@@ -317,48 +316,44 @@ calibrate <- function(wd=here::here(), folder=here::here('output'), test, data=N
         if (CCCip2Wd) {
             cat('Saving CCC and ipMap to Word file...\n')
             rmd_file <- system.file("rmd", "CCC_ipMap.Rmd", package = "RaschKit")
-            rmarkdown::render(rmd_file,
-                              params=list(test=test, plot_data=plot_data),
-                              output_file=str_c(test, '_CCC_ipMap', '.docx'),
-                              output_dir=here::here('output'),
-                              quiet=TRUE)
+            rmarkdown::render(
+                rmd_file,
+                params = list(test=test, plot_data=plot_data),
+                output_file = str_c(test, '_CCC_ipMap', '.docx'),
+                output_dir = here::here('output'),
+                quiet = TRUE
+            )
         }
 
         # ####### item summary
         cat('Putting together item analysis summaries...\n')
-        results_calibr <- itn_summary(folder=folder, test=test, easy=easy,
-                                      hard=hard, iRst=iRst,
-                                      fit_w=fit_w, fit_uw=fit_uw,
-                                      dFallThr=dFallThr, dRiseThr=dRiseThr,
-                                      ccc_data=ccc_data, iType=iType,
-                                      quick=quick)
+        smry <- itn_summary(test, easy, hard, iRst, fit_w, fit_uw,
+                            dFallThr, dRiseThr, ccc_data, iType, quick)
         rm(cqs)
         if (save_xlsx){
-            file_saved <- here::here('results', paste0('itn_', test, '.xlsx'))
-            writexl::write_xlsx(results_calibr, file_saved)
+            file_saved <- paste0('results/', paste0('itn_', test, '.xlsx'))
+            writexl::write_xlsx(smry, file_saved)
 
             # point users to files of varying purposes
             writeLines(c(
                 paste0('\n========= Output Files =========\n'),
                 paste0('Item calibration of ', toupper(test), ':'),
-                paste0('\tCQ output:\t', here::here('output'), ' (Files with \'', test, '\' in name)'),
+                paste0('\tCQ output:\t', 'output/', ' (Files with \'', test, '\' in name)'),
                 if (save_data){
-                    paste0('\tData saved:\t',
-                           here::here('data', paste0(test, '.xlsx\n\t\t\t')),
-                           here::here('data', paste0(test, '.sav')))
-
+                    paste0('\tData saved:\t', 'data/', test, '.xlsx\n\t\t\t',
+                           'data/', test, '.sav')
                 },
-                paste0('\tConverge check:\t', here::here('output', paste0(test, '_convergence_check.pdf'))),
-                paste0('\tQA:\t\t', here::here('output', paste0(test, '_Frequency_check.xlsx'))),
-                paste0('\tCCC:\t\t', here::here('output', paste0(test, '_CCC.pdf'))),
+                paste0('\tConverge check:\t', 'output/', test, '_convergence_check.pdf'),
+                paste0('\tQA:\t\t', 'output/', test, '_Frequency_check.xlsx'),
+                paste0('\tCCC:\t\t', 'output/', test, '_CCC.pdf'),
                 if (CCCip2Wd){
-                    paste0('\tCCC_ipMap:\t', here::here('output', str_c(test, '_CCC_ipMap', '.docx')))
+                    paste0('\tCCC_ipMap:\t', 'output/', test, '_CCC_ipMap', '.docx')
                 },
-                paste0('\tsummary:\t', here::here('results', paste0('itn_', test, '.xlsx')))
+                paste0('\tsummary:\t', 'results/', 'itn_', test, '.xlsx')
             ))
         } else {
             cat('Calibration of', test, 'completed.\n')
-            return(results_calibr)
+            return(smry)
         }
     }
 

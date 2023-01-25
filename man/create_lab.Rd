@@ -4,19 +4,17 @@
 \alias{create_lab}
 \title{create_lab}
 \usage{
-create_lab(wd, test)
+create_lab(test)
 }
 \arguments{
-\item{wd}{Working directory. Default is the folder where .Rproj is located.}
-
 \item{test}{Name of the test.}
 }
 \description{
-This function reads in 'test_Labels.txt' from 'data' folder and creates 
-'test.lab' file in 'input' folder. Both procedures are associated with 
+This function reads in 'test_Labels.txt' from 'data' folder and creates
+'test.lab' file in 'input' folder. Both procedures are associated with
 test named 'test'.
 }
 \details{
-They key file has one row for all-multiple-choice-item test, or multiple 
+They key file has one row for all-multiple-choice-item test, or multiple
 rows if any item has double key or polytomous scoring.
 }

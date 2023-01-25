@@ -11,9 +11,8 @@
 #'  DIF variable.
 
 #' @param method One of 'chi_square', 'Bonferroni', or 'Facet'.
-#' @param wd Working directory. Default is the folder where .Rproj is located.
 #' @param test Name of the test.
-#' @param codes Vector of valid codes for item responses, 
+#' @param codes Vector of valid codes for item responses,
 #' e.g., c(1, 2, 3, 4, 5, 6, 7, 8, 9).
 #' @param pid_cols String of column numbers of person ID. Default is NULL.
 #' @param resps_cols String of column numbers of responses, e.g., '20-30'.
@@ -47,7 +46,7 @@
 #' @param facil_cut Threshold of number of percent to flag an item with large
 #' facility difference between two groups of test takers. Default is 10.
 #' @param domain Name of the domain in the test, e.g., 'Literacy'. Default is NULL.
-#' @param save_xlsx Whether to save summary file and plots. Default is TRUE 
+#' @param save_xlsx Whether to save summary file and plots. Default is TRUE
 #' (one DIF variable).
 #' @return Dataframe of students' ID, raw score, max test score, estimate,
 #' and standard error.
@@ -65,7 +64,7 @@
 #' # regr_ls=list(G2='17', age='15-16'), quick=TRUE)
 #' @export
 
-DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'), wd=here::here(),
+DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
                 test, #### CQC #####
                 codes, pid_cols=NULL, resps_cols, regr_ls=NULL, delete=NULL, anchor=FALSE,
                 section_extr=NULL, dbl_key=FALSE,
@@ -81,7 +80,7 @@ DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'), wd=here::here(),
         stop('Please set \'method\' as one of \'chi_square\', \'Bonferroni\', or \'Facet\'.')
     }
 
-    arg_cqc <- list(wd=wd, test=test, run=NULL, run_ls=NULL, ####CQC
+    arg_cqc <- list(test=test, run=NULL, run_ls=NULL, ####CQC
         codes=codes, pid_cols=pid_cols, resps_cols=resps_cols,
         quick=quick, delete=delete, dbl_key=dbl_key, poly_key=poly_key,
         anchor=anchor, step=step, regr_ls=regr_ls, section_extr=section_extr,
@@ -98,13 +97,20 @@ DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'), wd=here::here(),
 
         cat('Performing', 'chi_square tests with facet model results',
             if (iterative) 'iteratively' else 'once and for all', '...\n')
-        do.call(DIF_dich_its_shw,
-                append(arg_DIF, list(vars=vars,
-                       DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut,
-                       chi_cut=chi_cut, facil_cut=facil_cut,
-                       desig_effect=desig_effect,
-                       long_label=TRUE, save_xlsx=save_xlsx, 
-                       iterative=iterative, quick=quick)))
+        do.call(
+            DIF_dich_its_shw,
+            append(
+                arg_DIF,
+                list(
+                    vars=vars,
+                    DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut,
+                    chi_cut=chi_cut, facil_cut=facil_cut,
+                    desig_effect=desig_effect,
+                    long_label=TRUE, save_xlsx=save_xlsx,
+                    iterative=iterative, quick=quick
+                )
+            )
+        )
     }
 
     if (method=='Bonferroni'){
@@ -114,12 +120,13 @@ DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'), wd=here::here(),
         do.call(lab_cqc, arg_cqc)
 
         cat('Performing Bonferroni adjusted comparison...\n')
-        labels <- read.table(here::here('data', paste0(test, '_Labels.txt'))) %>%
-            rownames_to_column() %>%
+        labels <- read.table(paste0('data/', test, '_Labels.txt')) |>
+            rownames_to_column() |>
             `colnames<-`(c('item', 'label'))
-        do.call(DIF_poly_shw,
-                arg_DIF %>% append(list(folder=NULL,
-                     labels=labels, domain=domain)))
+        do.call(
+            DIF_poly_shw,
+            append(arg_DIF, list(labels=labels, domain=domain))
+        )
     }
 
     if (method=='Facet'){
@@ -136,23 +143,21 @@ DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'), wd=here::here(),
         do.call(lab_cqc, arg_cqc)
 
         # summarise and plot results
-         cat('Summarising results from facet model...\n')
-        df_shw_Term3(folder=here::here('DIF', DIFVar), test=test) %>%
-            writexl::write_xlsx(here::here('DIF',
-              paste0(DIFVar, if(step) '_step', '_', test, '_Facet.xlsx')))
-              
+        cat('Summarising results from facet model...\n')
+        df_shw_Term3(DIFVar, test) |>
+            writexl::write_xlsx(
+                paste0('DIF/', DIFVar, if(step) '_step', '_', test, '_Facet.xlsx')
+            )
+
         cat('Plotting results from group model...\n')
         plot_DIF_group(test=test, DIFVar=DIFVar)
 
         # point users to files of varying purposes
         writeLines(c(
             paste0('\n========= Output Files =========\n'),
-            paste0(toupper(DIFVar), ' DIF analysis for ', test,
-                   if (step) ' (step)', ' (Facet model & group model):'),
-            paste0('\tSummary:\t\t', here::here('DIF',
-                   paste0(DIFVar, if(step) '_step', '_', test, '_Facet.xlsx'))),
-            paste0('\tExpected Score Curves:\t', here::here('DIF',
-                   paste0(DIFVar, if(step) '_step', '_', test, '_Group.pdf')))
+            paste0(toupper(DIFVar), ' DIF analysis for ', test, if (step) ' (step)', ' (Facet model & group model):'),
+            paste0('\tSummary:\t\t', 'DIF/', DIFVar, if(step) '_step', '_', test, '_Facet.xlsx'),
+            paste0('\tExpected Score Curves:\t', 'DIF/', DIFVar, if(step) '_step', '_', test, '_Group.pdf')
         ))
     }
 }

@@ -4,23 +4,23 @@
 \alias{df_del_shw_Step}
 \title{df_del_shw_Step}
 \usage{
-df_del_shw_Step(folder = here::here("output"), test, long_label = FALSE)
+df_del_shw_Step(folder = "output", test, long_label = FALSE)
 }
 \arguments{
-\item{folder}{Folder where .shw file is located. Default is 'output' folder.}
+\item{folder}{Folder where xxx_shw.txt file is located. Default is 'output' folder.}
 
 \item{test}{Name of test.}
 
-\item{long_label}{Whether item labels are longer than 15 characters' fixed 
+\item{long_label}{Whether item labels are longer than 15 characters' fixed
 width. Default is FALSE.}
 }
 \value{
 Dataframe of item name_step, delta, and error.
 }
 \description{
-This function extract item steps' delta estimates from .shw file. This is 
-associated with test named 'test'. If any item label is longer than 13 
-characters' fixed width, use long_label=TRUE to read complete labels from 
+This function extract item steps' delta estimates from .shw file. This is
+associated with test named 'test'. If any item label is longer than 13
+characters' fixed width, use long_label=TRUE to read complete labels from
 'test_Labels.txt' file in 'data' folder.
 }
 \examples{

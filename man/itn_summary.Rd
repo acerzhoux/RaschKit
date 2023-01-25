@@ -5,7 +5,6 @@
 \title{itn_summary}
 \usage{
 itn_summary(
-  folder = here::here("output"),
   test,
   easy = 90,
   hard = 10,
@@ -20,32 +19,30 @@ itn_summary(
 )
 }
 \arguments{
-\item{folder}{Folder that contains ConQuest output files associated with 'test'.}
-
 \item{test}{Name of test.}
 
 \item{easy}{Threshold to flag easy items. Default is 90 (percent correct).}
 
 \item{hard}{Threshold to flag hard items. Default is 10 (percent correct).}
 
-\item{iRst}{Threshold to flag low item-rest correlation statistics. 
+\item{iRst}{Threshold to flag low item-rest correlation statistics.
 Default is 0.11.}
 
-\item{fit_w}{Threshold to flag large weighted item fit statistics. 
+\item{fit_w}{Threshold to flag large weighted item fit statistics.
 Default is 1.1.}
 
-\item{fit_uw}{Threshold to flag large unweighted item fit statistics. 
+\item{fit_uw}{Threshold to flag large unweighted item fit statistics.
 Default is 1.2.}
 
-\item{dFallThr}{Ability on last bin above which falling distractor is flagged. 
+\item{dFallThr}{Ability on last bin above which falling distractor is flagged.
 Default is 0.5.}
 
-\item{dRiseThr}{Ability on last bin below which rising distractor is unflagged. 
+\item{dRiseThr}{Ability on last bin below which rising distractor is unflagged.
 Default is 0.1.}
 
 \item{ccc_data}{Data to draw CCC. One element of list output from Function 'CCC_Vernon'.}
 
-\item{iType}{Dataframe with columns of iNum and itype. One element of list 
+\item{iType}{Dataframe with columns of iNum and itype. One element of list
 output from Function 'CCC_Vernon'.}
 
 \item{quick}{TRUE when testing. Default is FALSE.}
@@ -54,7 +51,7 @@ output from Function 'CCC_Vernon'.}
 Dataframe of item statistics with flags.
 }
 \description{
-This function produces item analysis results with flags based on item 
+This function produces item analysis results with flags based on item
 statistics and CCC. This is associated with test named 'test'.
 }
 \examples{

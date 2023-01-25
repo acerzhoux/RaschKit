@@ -9,7 +9,6 @@
 #' responses on any category of the DIF variable.
 #'
 #' @param method One of 'chi_square', 'Bonferroni', or 'Facet'.
-#' @param wd Working directory. Default is the folder where .Rproj is located.
 #' @param DIFVar Name of DIF variable. Should be lowercase for ConQuest to run.
 #' Default is NULL.
 #' @param vars Vector of length 2 such as c('girls','boys'). Its order corresponds
@@ -63,7 +62,7 @@
 
 DIF_dim_one <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
                         test, pid, n_cov, DIFVar, data=NULL, keys=NULL,
-                        wd=here::here(), vars=NULL, poly_facet=FALSE,
+                        vars=NULL, poly_facet=FALSE,
                         n_resp=NULL, regr_vec_char=NULL,
                         labels=NULL, quick=TRUE, section_extr=NULL,
                         miss_code=c('.', 'r', 'R', 'x', 'X', '', ' '),
@@ -81,7 +80,7 @@ DIF_dim_one <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
     }
     if (is.null(data)) data <- readxl::read_xlsx(here::here('data', paste0(test, '.xlsx')))
     if (is.null(n_resp)) n_resp <- ncol(data) - n_cov
-    if (is.null(keys)) keys <- rep(1, n_resp)
+    if (is.null(keys)) keys <- rep('1', n_resp)
     if (is.null(labels)) labels <- names(data)[(n_cov+1):(n_cov+n_resp)]
     if (DIFVar %in% regr_vec_char){
         print('Cannot use DIF variable as covariate! Will remove it...')
@@ -117,7 +116,7 @@ DIF_dim_one <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
                     pid=pid, n_cov=n_cov, n_resp=n_resp,
                     keys=keys, labels=labels)
 
-    arg_DIF <- list(method=method, wd=wd, delete=NULL, anchor=FALSE, domain=NULL,
+    arg_DIF <- list(method=method, delete=NULL, anchor=FALSE, domain=NULL,
                     section_extr=prep$section_extr, dbl_key=NULL, poly_key=poly_key,
                     quick=quick, step=step,
                     p_cut=p_cut, DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut,

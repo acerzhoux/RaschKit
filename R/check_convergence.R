@@ -1,8 +1,8 @@
 #' check_convergence
 #'
-#' This function checks convergence of the model by checking model deviance 
-#' change and maximum changes in estimates of delta's, covariance, and regressors. 
-#' This is associated with test named 'test'. A plot of the checks is saved in 
+#' This function checks convergence of the model by checking model deviance
+#' change and maximum changes in estimates of delta's, covariance, and regressors.
+#' This is associated with test named 'test'. A plot of the checks is saved in
 #' 'output' folder in the working directory.
 #'
 #' @param cqs CQS output file from ConQuest.
@@ -40,7 +40,8 @@ check_convergence <- function(cqs, test){
     min_lik <- cq_hist %>%
         filter(stat=="Likelihood") %>%
         ungroup() %>%
-        filter(val==min(val))
+        filter(val==min(val)) |>
+        tail(1)
 
     p1 <- ggplot(data=cq_hist %>%
                    mutate(min_lik_iter=min_lik$Iter)%>%
@@ -69,8 +70,7 @@ check_convergence <- function(cqs, test){
 
     df_p2 <- plot_dat %>%
         filter(stat_group=='Beta_Est1_D1')
-    p2 <- ggplot(data=df_p2,
-               aes(x=Iter, y=Change)) +
+    p2 <- ggplot(data=df_p2, aes(x=Iter, y=Change)) +
         geom_line()+
         ggthemes::theme_tufte() +
         labs(title=str_c('(Max) Change: Regressors of ', test))
@@ -95,7 +95,7 @@ check_convergence <- function(cqs, test){
         plot_ls <- list(p1, p2, p3, p4)
     }
 
-    pdf(file=here::here('output', paste0(test, "_Convergence_check.pdf")), width = 10, height = 7)
+    pdf(file=paste0('output/', test, "_Convergence_check.pdf"), width = 10, height = 7)
     map(plot_ls, ~print(.x))
     dev.off()
 }

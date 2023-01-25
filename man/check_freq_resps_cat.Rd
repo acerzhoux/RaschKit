@@ -4,24 +4,22 @@
 \alias{check_freq_resps_cat}
 \title{check_freq_resps_cat}
 \usage{
-check_freq_resps_cat(folder, test, resp)
+check_freq_resps_cat(test, resp)
 }
 \arguments{
-\item{folder}{Place to find CQ output files.}
-
 \item{test}{Name of the test.}
 
 \item{resp}{Responses to items in the test.}
 }
 \value{
-Dataframe with information such as counts in CQ .txt file, counts 
+Dataframe with information such as counts in xxx_opt.txt file, counts
 from R function, and their difference.
 }
 \description{
-This function compares frequencies of item categories from CQ .txt output 
-file against those calculated with Function 'freq_resps_cat'. This is 
-associated with test named 'test'. An Excel file with comparison results 
-will be save in the 'folder' set in that argument.
+This function compares frequencies of item categories from CQ .txt output
+file against those calculated with Function 'freq_resps_cat'. This is
+associated with test named 'test'. An Excel file with comparison results
+will be save in the 'output' 'output'.
 }
 \examples{
 check_freq_resps_cat()
