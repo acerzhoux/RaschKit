@@ -46,6 +46,11 @@
     - install_packages_ls()
     - create_folders()
 
+===== v1.0.3 Updates =====
+1. DIF_dim_one() corrected order of reading data and checking input.
+2. poly_recode() outputs in 'data' folder a file showing which and how 
+   polytomous items not continuously scored are recoded.
+
 ===== v1.0.2 Updates =====
 1. Suppressed ConQuest, Rmd, and other unnecessary printing in R console.
 2. install_packages_ls() included packages needed to knit Rmd files.
@@ -63,7 +68,6 @@
    table to interpret results.
 
 ===== v1.0.1 Updates =====
-
 1. section_model() sets up correct model terms for group model used in DIF 
    analysis on polytomous variable.
 2. DIF_poly_shw() extracts from .shw files delta columns of all numeric.

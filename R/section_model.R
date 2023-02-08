@@ -31,7 +31,7 @@ section_model <- function(run_ls, run, regr_ls, codes, poly_key,
     },
 
     if (!is.null(regr_ls)) {str_c('Regression ', paste0(names(regr_ls), collapse=' '), ';\n')},
-    str_c('codes ', paste0(codes, collapse=','), '; /*09 scored zero*/\n'),
+    str_c('codes ', paste0(codes, collapse=','), '; /*MR scored zero*/\n'),
 
     if (poly_key){
         if (step){

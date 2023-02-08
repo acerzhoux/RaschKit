@@ -1,7 +1,7 @@
 #' poly_recode_one
 #'
-#' This function down codes a non-continuous polytomous item response to be 
-#' continuous and starting from 0. It will keep intact many possible missing 
+#' This function down codes a non-continuous polytomous item response to be
+#' continuous and starting from 0. It will keep intact many possible missing
 #' codes including c('r','R','m','M','9','x','X','.','',' ',NA).
 #'
 #' @param x0 A vector of non-continuous polytomous item response.
@@ -14,20 +14,26 @@
 #' @export
 
 poly_recode_one <- function(x0, miss_code=c('r','R','m','M','9','x','X','.','',' ',NA)) {
-    x <- setdiff(x0, miss_code) %>%
-        as.numeric()
+  x <- setdiff(x0, miss_code) |>
+    as.numeric()
 
-    if (all(x == (rank(x) - 1))){
-        x0
-    } else {
-        cat(paste(paste(x, collapse='_'), 'To', paste((rank(x) - 1), collapse='_'), '\n'))
-
-        # return processed continuous vector
-        x_same <- setdiff(x0, x)
-        tbl_check <- tibble(origin = x, new = rank(x) - 1) %>%
-            rbind(tibble(origin = x_same, new = x_same))
-        tibble(origin = x0) %>%
-            left_join(tbl_check, by = 'origin') %>%
-            pull(new)
-    }
+  if (all(x == (rank(x) - 1))){
+    list(x0, NULL)
+  } else {
+    # return processed continuous vector
+    x_same <- setdiff(x0, x)
+    tbl_check <- tibble(origin = x, new = rank(x) - 1) |>
+      rbind(
+        tibble(origin = x_same, new = x_same)
+      )
+    list(
+      tibble(origin = x0) |>
+        left_join(tbl_check, by = 'origin') |>
+        pull(new),
+      tibble(
+        Original = paste(sort(x), collapse=', '),
+        New = paste(sort((rank(x) - 1)), collapse=', ')
+      )
+    )
+  }
 }

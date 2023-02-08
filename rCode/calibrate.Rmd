@@ -102,11 +102,9 @@ Prepare key file (Refer to sample Sheet 'test' in keys.xlsx).
   argument of 'calibrate'.  
 - On the sheet, add columns below (row order same as response order in data).
   - Item: item labels; same as 'labels' argument of 'calibrate'.
-  - Key: key for MC items. Polytomous items can fill in any value or be left blank.
-    Can ignore if there is no MC item in test.
-  - Max_score: Maximum score for polytomous items. Simply, can use maximum item score 
-    (after recoding) in the test for all polytomous items.
-  - Key2: 2nd key. Can ignore if no double key.
+  - Key: key for MC items; maximum score for polytomous items.
+  - Max_score: maximum score for each item.
+  - Key2: 2nd key; remove if no double key.
 
 - Set poly_key = TRUE in 'calibrate'.
 

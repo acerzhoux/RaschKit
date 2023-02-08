@@ -61,84 +61,98 @@
 #' @export
 
 DIF_dim_one <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
-                        test, pid, n_cov, DIFVar, data=NULL, keys=NULL,
-                        vars=NULL, poly_facet=FALSE,
-                        n_resp=NULL, regr_vec_char=NULL,
-                        labels=NULL, quick=TRUE, section_extr=NULL,
-                        miss_code=c('.', 'r', 'R', 'x', 'X', '', ' '),
-                        poly_key=FALSE, prep_process=FALSE, save_xlsx=TRUE,
-                        p_cut=0.05, DIF_cut=0.5,
-                        DIF_adj_cut=4, chi_cut=10, facil_cut=10, iterative=FALSE,
-                        step=FALSE, desig_effect=1){
-    # ####### check inputs
-    cat('Checking inputs...\n')
-    if (length(method)!=1 || !(method %in% c('chi_square', 'Bonferroni', 'Facet'))) {
-        stop('Please set \'method\' as one of \'chi_square\', \'Bonferroni\', or \'Facet\'.')
-    }
-    if (!all(c(pid, regr_vec_char) %in% names(data))) {
-        stop('Pid or regressor is not in data column names!')
-    }
-    if (is.null(data)) data <- readxl::read_xlsx(here::here('data', paste0(test, '.xlsx')))
-    if (is.null(n_resp)) n_resp <- ncol(data) - n_cov
-    if (is.null(keys)) keys <- rep('1', n_resp)
-    if (is.null(labels)) labels <- names(data)[(n_cov+1):(n_cov+n_resp)]
-    if (DIFVar %in% regr_vec_char){
-        print('Cannot use DIF variable as covariate! Will remove it...')
-        regr_vec_char <- setdiff(regr_vec_char, DIFVar)
-    }
-    # change 'DIFVar' to all lower-case; otherwise, R cannot call CQC
-    if (method=='Bonferroni'){
-        if (DIFVar != tolower(DIFVar)){
-            print(paste0('\'', DIFVar, '\'', ' changed to ', '\'', tolower(DIFVar), '\'',
-                         ' as ConQuestr requires.\n'))
-            ID_DIFVar <- which(names(data) == DIFVar)
-            names(data)[ID_DIFVar] <- tolower(DIFVar)
-            DIFVar <- tolower(DIFVar)
-        }
-    }
+            test, pid, n_cov, DIFVar, data=NULL, keys=NULL,
+            vars=NULL, poly_facet=FALSE,
+            n_resp=NULL, regr_vec_char=NULL,
+            labels=NULL, quick=TRUE, section_extr=NULL,
+            miss_code=c('.', 'r', 'R', 'x', 'X', '', ' '),
+            poly_key=FALSE, prep_process=FALSE, save_xlsx=TRUE,
+            p_cut=0.05, DIF_cut=0.5,
+            DIF_adj_cut=4, chi_cut=10, facil_cut=10, iterative=FALSE,
+            step=FALSE, desig_effect=1){
+  # read data
+  if (is.null(data)) {
+    cat('Reading data...\n')
+    data <- readxl::read_xlsx(paste0('data/', test, '.xlsx'))
+  }
 
-    # ####### preprocess data
-    if (prep_process){
-        cat('Checking and removing items without data on any category of DIF variable...\n')
-        processed <- sparse_data_process(test=test, data=data, keys=keys, labels=labels,
-                                         n_cov=n_cov, n_dims=n_resp, miss_code=miss_code,
-                                         DIFVar=DIFVar)
-        data <- processed[['data']]
-        n_resp <- processed[['n_dims']]
-        keys <- processed[['keys']]
-        labels <- processed[['labels']]
-    }
+  # ####### check inputs
+  cat('Checking inputs...\n')
+  if (length(method)!=1 || !(method %in% c('chi_square', 'Bonferroni', 'Facet'))) {
+    stop('Please set \'method\' as one of \'chi_square\', \'Bonferroni\', or \'Facet\'.')
+  }
+  if (!all(c(pid, regr_vec_char) %in% names(data))) {
+    stop('Pid or regressor is not in data column names!')
+  }
 
-    # ####### prepare arguments
-    cat('Preparing ConQuest control file...\n')
-    prep <- df_key_lab_args(test=test, data=data, DIFVar=DIFVar,
-                    regr_vec_char=regr_vec_char, section_extr=section_extr,
-                    pid=pid, n_cov=n_cov, n_resp=n_resp,
-                    keys=keys, labels=labels)
+  # calculate arguments
+  cat('Using default arguments if not given...\n')
+  if (is.null(n_resp)) n_resp <- ncol(data) - n_cov
+  if (is.null(keys)) keys <- rep('1', n_resp)
+  if (is.null(labels)) labels <- names(data)[(n_cov+1):(n_cov+n_resp)]
+  if (DIFVar %in% regr_vec_char){
+    print('Cannot use DIF variable as covariate! Will remove it...')
+    regr_vec_char <- setdiff(regr_vec_char, DIFVar)
+  }
+  # change 'DIFVar' to all lower-case; otherwise, R cannot call CQC
+  if (method=='Bonferroni'){
+    if (DIFVar != tolower(DIFVar)){
+      print(paste0('\'', DIFVar, '\'', ' changed to ', '\'', tolower(DIFVar), '\'',
+             ' as ConQuestr requires.\n'))
+      ID_DIFVar <- which(names(data) == DIFVar)
+      names(data)[ID_DIFVar] <- tolower(DIFVar)
+      DIFVar <- tolower(DIFVar)
+    }
+  }
 
-    arg_DIF <- list(method=method, delete=NULL, anchor=FALSE, domain=NULL,
-                    section_extr=prep$section_extr, dbl_key=NULL, poly_key=poly_key,
-                    quick=quick, step=step,
-                    p_cut=p_cut, DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut,
-                    chi_cut=chi_cut,
-                    facil_cut=facil_cut, desig_effect=desig_effect,
-                    test=test, DIFVar=DIFVar,
-                    vars=vars, poly_facet=poly_facet, poly_group=FALSE,
-                    poly_catgrs=NULL, save_xlsx=save_xlsx, iterative=iterative) %>%
-        append(within(prep, rm(section_extr, pw_cols)))
+  # ####### preprocess data
+  if (poly_key){
+    cat('Checking polytomou-score items; recode if score are not continuous...\n')
+    keys <- readxl::read_xlsx(paste0('data/', 'keys.xlsx'), test)
+    data <- poly_recode(keys, data, n_cov, c('r','R','m','M','9','x','X','.','',' ',NA))
+  }
 
-    # ####### run models
-    if (method=='chi_square'){
-        do.call(DIF, arg_DIF)
-    }
-    if (method=='Bonferroni'){
-        cats <- sort(unique(data[[DIFVar]]))
-        cats <- cats[!is.na(cats)]
-        arg_DIF[['poly_catgrs']] <- cats
-        do.call(DIF, arg_DIF)
-    }
-    if (method=='Facet'){
-        arg_DIF[['poly_facet']] <- TRUE
-        do.call(DIF, arg_DIF)
-    }
+  if (prep_process){
+    cat('Checking and removing items without data on any category of DIF variable...\n')
+    processed <- sparse_data_process(test=test, data=data, keys=keys, labels=labels,
+                     n_cov=n_cov, n_dims=n_resp, miss_code=miss_code,
+                     DIFVar=DIFVar)
+    data <- processed[['data']]
+    n_resp <- processed[['n_dims']]
+    keys <- processed[['keys']]
+    labels <- processed[['labels']]
+  }
+
+  # ####### prepare arguments
+  cat('Preparing ConQuest control file...\n')
+  prep <- df_key_lab_args(test=test, data=data, DIFVar=DIFVar,
+          regr_vec_char=regr_vec_char, section_extr=section_extr,
+          pid=pid, n_cov=n_cov, n_resp=n_resp,
+          keys=keys, labels=labels)
+
+  arg_DIF <- list(method=method, delete=NULL, anchor=FALSE, domain=NULL,
+          section_extr=prep$section_extr, dbl_key=NULL, poly_key=poly_key,
+          quick=quick, step=step,
+          p_cut=p_cut, DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut,
+          chi_cut=chi_cut,
+          facil_cut=facil_cut, desig_effect=desig_effect,
+          test=test, DIFVar=DIFVar,
+          vars=vars, poly_facet=poly_facet, poly_group=FALSE,
+          poly_catgrs=NULL, save_xlsx=save_xlsx, iterative=iterative) %>%
+    append(within(prep, rm(section_extr, pw_cols)))
+
+  # ####### run models
+  if (method=='chi_square'){
+    do.call(DIF, arg_DIF)
+  }
+  if (method=='Bonferroni'){
+    cats <- sort(unique(data[[DIFVar]]))
+    cats <- cats[!is.na(cats)]
+    arg_DIF[['poly_catgrs']] <- cats
+    do.call(DIF, arg_DIF)
+  }
+  if (method=='Facet'){
+    arg_DIF[['poly_facet']] <- TRUE
+    do.call(DIF, arg_DIF)
+  }
 }

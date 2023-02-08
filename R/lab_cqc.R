@@ -50,25 +50,80 @@
 #' @export
 
 lab_cqc <- function(test, run=NULL, run_ls=NULL,
-                    codes, pid_cols=NULL, resps_cols, quick=FALSE, delete=NULL,
-                    dbl_key=NULL, poly_key=FALSE, anchor=FALSE, section_extr=NULL,
-                    step=FALSE, regr_ls=NULL,
-                    DIFVar=NULL, DIFVar_cols=NULL, #dich & poly
-                    poly_catgrs=NULL, #dich, poly
-                    poly_facet=FALSE, poly_group=FALSE, #poly: facet
-                    pweight=NULL, pw_cols=NULL){
-    # create folders
-    create_folders(DIFVar=DIFVar)
+         codes, pid_cols=NULL, resps_cols, quick=FALSE, delete=NULL,
+         dbl_key=NULL, poly_key=FALSE, anchor=FALSE, section_extr=NULL,
+         step=FALSE, regr_ls=NULL,
+         DIFVar=NULL, DIFVar_cols=NULL, #dich & poly
+         poly_catgrs=NULL, #dich, poly
+         poly_facet=FALSE, poly_group=FALSE, #poly: facet
+         pweight=NULL, pw_cols=NULL){
+  # run_ls: list(domain='3-11', grade='12-13', flag='36')
+  #   for testform; keys, labels differ; put in 'Keepcases'
+  # run: c('English2', 3, 1); used with `run_ls`
+  # poly_catgrs: poly DIF; keys, labels same for 'Keepcases'
+  # DIFVar: Lowercase to run 'conquestr'
 
-    # create label file
-    create_lab(test=test) # Item label file
+  # create folders
+  create_folders(DIFVar=DIFVar)
 
-    # create control file
-    create_cqc(test=test, run=run, resps_cols=resps_cols, pid_cols=pid_cols,
-               run_ls=run_ls, anchor=anchor, section_extr=section_extr,
-               regr_ls=regr_ls, codes=codes, delete=delete, dbl_key=dbl_key,
-               poly_key=poly_key, quick=quick, step=step, DIFVar=DIFVar,
-               DIFVar_cols=DIFVar_cols, poly_catgrs=poly_catgrs,
-               poly_facet=poly_facet, poly_group=poly_group,
-               pweight=pweight, pw_cols=pw_cols)
+  # create label file
+  create_lab(test=test) # Item label file
+
+  # ##### create control file # #####
+
+  # specify paths
+  path_output <- if (is.null(DIFVar)) 'Output' else paste0('DIF/', DIFVar)
+  path_lab <- paste0('input/', test, '_lab.txt')
+
+  if (is.null(DIFVar)){
+    path_df <- paste0('data/',
+            if (is.null(run_ls)) paste0(test, '_Data.txt') else
+              paste0('Data.txt'))
+  } else {
+    path_df <- paste0('data/', test, '_', DIFVar, '.txt')
+  }
+
+  # modify if last response col(s) has no data
+  if (length(delete)>0) {
+    resps_cols <- resps_modify(test=test,
+                 resps_cols=resps_cols, delete=delete)}
+  # compose CQC string
+  cqc <- c(section_intro(test, run_ls, path_output, DIFVar, poly_catgrs),
+      section_data(path_df, resps_cols, pid_cols, run_ls, regr_ls,
+            path_lab, DIFVar, DIFVar_cols, poly_group,
+            pweight, pw_cols),
+      section_keys(test=test, dbl_key=dbl_key,
+            poly_key=poly_key, delete=delete),
+      section_specs(anchor=anchor, test=test, DIFVar=DIFVar,
+             poly_catgrs=poly_catgrs, quick=quick),
+      if (!is.null(section_extr)) section_extr,
+      section_model(run_ls=run_ls, run=run, regr_ls=regr_ls, codes=codes,
+             poly_key=poly_key, DIFVar=DIFVar, step=step,
+             poly_group=poly_group),
+      section_estimate(quick=quick, poly_key=poly_key),
+      section_export(poly_key=poly_key, step=step, DIFVar=DIFVar,
+            poly_catgrs=poly_catgrs,
+            poly_facet=poly_facet, poly_group=poly_group),
+      'reset;',
+      if (!is.null(poly_catgrs)) 'enddo;',
+      'quit;') %>%
+    str_replace_all(c(' ;'=';', '  ;'=';', '   ;'=';', '  ;'=';', '   ;'=';'))
+
+  # write CQC into folder
+  cqc_path <-  paste0(
+    'input/',
+    if (is.null(DIFVar)) paste0(test, '.cqc')
+    else if (poly_facet) paste0(DIFVar, '_', test, '_facet.cqc')
+    else if (poly_group) paste0(DIFVar, '_', test, '_group.cqc')
+    else if (poly_key & step) paste0(DIFVar, '_', test, '_step.cqc')
+    else paste0(DIFVar, '_', test, '.cqc')
+  )
+  writeLines(cqc, cqc_path)
+
+  # run CQC
+  conquestr::ConQuestCall(
+    cqc = cqc_path,
+    cqExe = file.path('C:', 'Program Files', 'ACER ConQuest', 'ConQuestConsole.exe'),
+    stdout = NULL
+  )
 }

@@ -47,7 +47,7 @@ section_export <- function(poly_key, step, DIFVar,
           paste0('show 	parameters	!table=8 		 >> ', route, '_del.txt;')
       },
       paste0('show 	parameters	!table=7 		 >> ', route, '_thr.txt;'),
-      # paste0('show parameters!filetype=excel                   >> ', route, '.xls;'),
+      # paste0('show parameters!filetype=excel                   >> ', route, '.xlsx;'),
       paste0('fit                                              >> ', route, '_res.txt;'),
       paste0('show cases!estimates=wle,filetype=text           >> ', route, '_cas.txt;'),
       paste0('put                                              >> ', route, '_compressed.CQS;'),

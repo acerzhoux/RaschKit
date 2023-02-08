@@ -15,8 +15,8 @@ poly_recode_one(
 \item{miss_code}{Missing codes. Default is c('r','R','m','M','9','x','X','.','',' ',NA).}
 }
 \description{
-This function down codes a non-continuous polytomous item response to be 
-continuous and starting from 0. It will keep intact many possible missing 
+This function down codes a non-continuous polytomous item response to be
+continuous and starting from 0. It will keep intact many possible missing
 codes including c('r','R','m','M','9','x','X','.','',' ',NA).
 }
 \examples{

@@ -11,6 +11,8 @@
 #' @export
 
 keys_into_Data <- function(test, keys){
-   paste0(keys, collapse = '') %>%
-        write_lines(paste0('data/', test, "_Key.txt"))
+  if (length(keys) == 1){
+    paste0(keys, collapse = '') |>
+      write_lines(paste0('data/', test, "_Key.txt"))
+  }
 }
