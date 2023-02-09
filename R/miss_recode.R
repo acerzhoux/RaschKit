@@ -60,16 +60,16 @@ miss_recode <- function(df, begin, end, code_emd='M', code_trail='R',
                 function(x) conv_vec(x, code_emd=code_emd,
                                      code_trail=code_trail,
                                      code_allMiss=code_allMiss))
-    if ('list' %in% class(df_coded)){
-        df_coded <- df_coded %>%
-            reduce(bind_rows(.)) %>%
-            as_tibble(.name_repair = "minimal")
-    } else if ('matrix' %in% class(df_coded)){
-        df_coded <- df_coded %>%
-            as_tibble() %>%
-            t() %>%
-            as_tibble(.name_repair = "minimal")
-    }
+    # if ('list' %in% class(df_coded)){
+    #     df_coded <- df_coded %>%
+    #         reduce(bind_rows(.)) %>%
+    #         as_tibble(.name_repair = "minimal")
+    # } else if ('matrix' %in% class(df_coded)){
+    df_coded <- df_coded %>%
+        as_tibble() %>%
+        t() %>%
+        as_tibble(.name_repair = "minimal")
+    # }
 
     # merge together
     if (begin==1){

@@ -50,6 +50,8 @@
 1. DIF_dim_one() corrected order of reading data and checking input.
 2. poly_recode() outputs in 'data' folder a file showing which and how 
    polytomous items not continuously scored are recoded.
+3. freq_resps_cat() solved a bug of disappearing letter response types and 
+   supports NA frequencies now.
 
 ===== v1.0.2 Updates =====
 1. Suppressed ConQuest, Rmd, and other unnecessary printing in R console.

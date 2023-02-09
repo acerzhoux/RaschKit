@@ -13,13 +13,13 @@
 #' freq_resps_cat(resp, TRUE, TRUE)
 #' @export
 
-freq_resps_cat <- function(resp, wide=FALSE, prop=FALSE){
+freq_resps_cat <- function(resp=math3Recode, wide=FALSE, prop=FALSE){
     item_lookup <- tibble(Item = names(resp), qOrder = 1:ncol(resp))
-    frequencies <- lapply(resp, table) |>
+    frequencies <- map(resp, ~table(.x, useNA = 'always')) |>
         map(~as.data.frame(.)) |>
         imap(~mutate(.x, Item = .y)) |>
         reduce(bind_rows) |>
-        dplyr::rename(Cat = Var1) |>
+        dplyr::rename(Cat = .x) |>
         dplyr::select(Item, everything()) |>
         left_join(item_lookup, by = "Item")
 
@@ -31,7 +31,12 @@ freq_resps_cat <- function(resp, wide=FALSE, prop=FALSE){
         if (any(c('A','B','C','D') %in% cats)) {
             cats <- sort(cats)
         } else {
-            cats <- as.character(sort(as.numeric(cats)))
+            idNA <- which(is.na(as.numeric(cats)))
+            if (identical(idNA, integer(0))){
+                cats <- as.character(sort(as.numeric(cats)))
+            } else {
+                cats <- c(sort(as.numeric(cats[setdiff(1:length(cats), idNA)])), cats[idNA])
+            }
         }
         frequencies <- frequencies |>
             dplyr::select(qOrder, Item, all_of(cats))
