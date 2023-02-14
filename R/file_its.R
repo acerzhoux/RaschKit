@@ -14,7 +14,7 @@
 
 file_its <- function(folder='output', test, DIFVar=NULL){
     if (!is.null(DIFVar)) folder <- paste0('DIF/', DIFVar)
-    n_item <- N_item(folder, test)
+    n_item <- N_item2(folder, test)
     if (!is.null(DIFVar)) n_item <- n_item*2
     file <- Path(folder, test, 'its')
 

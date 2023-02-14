@@ -14,14 +14,14 @@
              library(x, character.only=TRUE)}}\
     )
 3.	Software compatibility.
-    - ACER ConQuest: 5.27.0\
+    - ACER ConQuest: 5.28.0\
       conquestr: 1.0.5\
-      Raschkit: 1.0.2
-    - Install ACER ConQuest 5.27.0.
+      Raschkit: 1.0.3
+    - Install ACER ConQuest 5.28.0.
         - From left bottom corner of Windows, 
             - Type in 'software centre' and click.
             - click 'Applications'.
-            - click 'ACER ConQuest v5.27.0' and install.
+            - click 'ACER ConQuest v5.28.0' and install.
     - Install 'conquestr' 1.0.5 (packageVersion('conquestr')).
         - From bottom right pane of 'xxx.Rproj' (Step 1).    
             - click 'Packages' (3rd button after 'Files', 'Plots').
@@ -31,13 +31,13 @@
             - Select 'conquestr_1.0.5.zip'. 
             - Click 'Open'. 
             - Click 'Install'.
-    - Install 'RaschKit' 1.0.2 (packageVersion('RaschKit')).
+    - Install 'RaschKit' 1.0.3 (packageVersion('RaschKit')).
         - From bottom right pane of 'xxx.Rproj' (Step 1).    
             - click 'Packages' (3rd button after 'Files', 'Plots').
             - click 'Install'. From 'Install from', select 'Package Archive File...'.
             - Click 'Browse'. Enter into 'File name' file path\
                 T:\Xiaoliang Zhou
-            - Select 'RaschKit_1.0.2.tar.gz'. 
+            - Select 'RaschKit_1.0.3.tar.gz'. 
             - Click 'Open'. 
             - Click 'Install'.
 4.  In 'xxx.Rproj', run code below and explore .Rmd files in ‘rCode’ folder for 
@@ -52,6 +52,7 @@
    polytomous items not continuously scored are recoded.
 3. freq_resps_cat() solved a bug of disappearing letter response types and 
    supports NA frequencies now.
+4. Added output types of ConQuest results in .xls format.
 
 ===== v1.0.2 Updates =====
 1. Suppressed ConQuest, Rmd, and other unnecessary printing in R console.
