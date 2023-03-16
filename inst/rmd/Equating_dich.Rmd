@@ -1,11 +1,19 @@
 ---
-output: bookdown::html_document2
+output: 
+  bookdown::html_document2:
+    toc: true
+    toc_float: 
+      collapsed: true
+    toc_depth: 3
+    number_sections: true
+    theme: paper
+
 params:
-    test: 'test'
-    vars: c('Test1', 'Test2')
-    step: FALSE
-    DIF: FALSE
-    output: output
+  test: 'test'
+  vars: c('Test1', 'Test2')
+  step: FALSE
+  DIF: FALSE
+  output: output
 title: Analysis of `r if (DIF) 'DIF' else 'Equating'` on `r test` Between `r vars[[1]]` and `r vars[[2]]` `r if (step) 'Steps'`
 ---
 
@@ -30,8 +38,8 @@ Table \@ref(tab:steps) shows the steps taken to do the
 `r if (DIF) 'DIF' else 'Equating'` analysis.
 
 ```{r steps, echo=FALSE}
-output[['step']] %>% 
-    knitr::kable(caption = "Steps used to detec DIF parameters")
+output[['step']] |> 
+  knitr::kable(caption = "Steps used to detec DIF parameters")
 ```
 
 # Shift Method
@@ -41,19 +49,19 @@ after review. It shows that removal of DIF parameters has improved correlation,
 mean shift, and ratio of standard deviation.
 
 ```{r shift-stats}
-output[['shift']] %>% 
-    knitr::kable(caption = "Shifts of statistics before and after review")
+output[['shift']] |> 
+  knitr::kable(caption = "Shifts of statistics before and after review")
 ```
 
 # Statistics Before Review
 
 Table \@ref(tab:bfr-rvw) shows the parameter estimates before review. From the table, 
-we can see that `r output[['flag']] %>% filter(flag==1) %>% nrow()` parameter estimates 
+we can see that `r output[['flag']] |> filter(flag==1) |> nrow()` parameter estimates 
 show DIF between `r vars[[1]]` and `r vars[[2]]`.
 
 ```{r bfr-rvw}
-output[['flag']] %>% 
-    knitr::kable(caption = "Parameter estimates before review")
+output[['flag']] |> 
+  knitr::kable(caption = "Parameter estimates before review")
 ```
 
 # Statistics After Review
@@ -62,8 +70,8 @@ Table \@ref(tab:afr-rvw) shows the parameter estimates after review. Now, the st
 satisfy all the criteria.
 
 ```{r afr-rvw}
-output[['final']] %>% 
-    knitr::kable(caption = "Parameter estimates after review") 
+output[['final']] |> 
+  knitr::kable(caption = "Parameter estimates after review") 
 ```
 
 # Scatterplot of Difficulty Estimates

@@ -18,14 +18,10 @@
 #' response columns, e.g., 30.
 #' @param dim_names Vector of the dimensions' names. Default is NULL.
 #' Define this vector if multi-dimensional model is to be run.
-#' @param keys Vector of keys in the test. Default is NULL.
-#' @param labels Vector of item labels that correspond to order of item
-#' response columns in data.
-#' @param quick TRUE when testing. Default is FALSE.
+#' @param keys Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).
+#' @param quick TRUE if empirical error is not needed. Default is TRUE
 #' @param delete Vector of orders or labels of items to be removed. Default is NULL.
 #' @param dbl_key TRUE if any item has polytomous scoring. Default is NULL.
-#' @param poly_key TRUE if the key of any item has polytomous scoring.
-#' Default is FALSE.
 #' @param anchor TRUE when anchor is to be done. Default is FALSE.
 #' @param section_extr Extra sections to be added to 'test.cqc' file in
 #' 'input' folder. Default is NULL.
@@ -45,13 +41,13 @@
 #' @param recode_poly TRUE if polytomous items have non-continuous scores.
 #' Note that code in c('r','R','m','M','9','x','X','.','',' ',NA) will be kept
 #' intact while other codes will be down scored to be continuous. Default is FALSE.
-#' @param long_label Whether item labels are longer than 16 characters' fixed
-#' width. Default is FALSE.
-#' @param missCode2Conv Missing codes that need to be converted to embedded and
-#' trailing missing symbols such as 'M' and 'R'. Commonly used missing symbols are
-#' '@@' (less or more),'7','8','9','88','99','.','',' ', and '-'.
+#' @param missCode2Conv Response codes to convert to embedded/trailing missing
+#' ('M' or 'R'). Use freq_resps_cat() to explore response distribution
+#' and determine which codes need recoding. Commonly found missing symbols
+#' are '@@' (less or more), 7, 8, 9, 88, 99, '.', '-', '', NA. Default is NULL
+#' when responses have been recoded.
 #' @param filetype Format for input dataset. Default is 'sav'. Also support
-#' csv and xlsx formats.
+#' csv format.
 #' @param slope Slope to multiply ability estimates. Default is NULL
 #' @param intercept Value/intercept to add to ability estimates. Default is NULL.
 #' @param extrapolation Whether to extrapolate the minimum and maximum estimates.
@@ -59,10 +55,6 @@
 #' @param save_xlsx Whether to save summary file. Default is TRUE (single test).
 #' @param est_type Type of ability estimate to use for score equivalence table,
 #' 'wle' or 'mle'. Default is 'wle'.
-#' @param anchor_read Whether to read from an anchor file in 'input' folder.
-#' Default is FALSE. Then, should put anchors tbl (Item, Delta) on a sheet of
-#' 'anchors.xlsx' in 'data' folder. If TRUE, an anchor .anc file should exist
-#' in 'input' folder.
 #' @param sparse_check Whether to check response column sparsity in general or
 #'  regarding any DIF variable category. Default is FALSE. If TRUE, sparse
 #'  response columns will be removed.
@@ -70,25 +62,32 @@
 #' is FALSE.
 #' @param pweight Variable name of person weights in response dataframe. Should
 #' be specified if weight is used for modeling. Default is NULL.
+#' @param dfAnc Dataframe of 'Item' and 'Delta' for anchors. Default is NULL.
+#'  If NULL, an xxx_anc.txt file with anchor tbl (Item, Delta) should be put
+#'  in 'input' folder beforehand. Check output 'xxx_anc.txt' file from previous run
+#'  for correct anchor order, especially for polytomous items with step parameters.
 #' @examples
 #' # Not run
-#' # calibrate(data=racp, test='RACP', pid="V1", n_cov=1, keys=cd$`Correct options`,
-#' # labels=cd$`Question ID`, delete=c(3,4,5,36), dbl_key=list(`7`=c(1,3), `9`=c(3,4)))
+#' # calibrate(data=racp, test='RACP', pid="V1", n_cov=1, keys=cd,
+#' # delete=c(3,4,5,36), dbl_key=list(`7`=c(1,3), `9`=c(3,4)))
 #' @export
 
-calibrate <- function(test, data=NULL,
-            pid, n_cov, regr_vec_char=NULL, n_dims=NULL, dim_names=NULL,
-            keys=NULL, labels=NULL, quick=FALSE, delete=NULL,
-            dbl_key=NULL, poly_key=FALSE, anchor=FALSE, section_extr=NULL,
-            easy=90, hard=10, iRst=.11, fit_w=1.1, fit_uw=1.2,
-            dFallThr=.5, dRiseThr=.1,
-            numAbilGrps=NULL, recode_poly=FALSE, long_label=FALSE,
-            missCode2Conv=c('@','@@','@@@','@@@@','7','8','9','88','99','.','',' ', '-'),
-            filetype='sav', slope=NULL, intercept=NULL,
-            extrapolation=FALSE, save_xlsx=TRUE, est_type='wle',
-            anchor_read=FALSE, sparse_check=FALSE, CCCip2Wd=FALSE,
-            pweight=NULL){
+calibrate <- function(test, data=NULL, keys, pid, n_cov,
+                      regr_vec_char=NULL, n_dims=NULL, dim_names=NULL,
+                      quick=TRUE, delete=NULL,
+                      dbl_key=NULL, anchor=FALSE, section_extr=NULL,
+                      easy=90, hard=10, iRst=.11, fit_w=1.1, fit_uw=1.2,
+                      dFallThr=.5, dRiseThr=.1,
+                      numAbilGrps=NULL, recode_poly=FALSE,
+                      missCode2Conv=NULL,
+                      filetype='sav', slope=NULL, intercept=NULL,
+                      extrapolation=FALSE, save_xlsx=TRUE, est_type='wle',
+                      sparse_check=FALSE, CCCip2Wd=FALSE,
+                      pweight=NULL, dfAnc=NULL){
   options(warn=-1)
+
+  cat('\n============', if (anchor) 'Anchoring' else 'Calibrating', ':', test, '============\n\n')
+
   # read data
   save_data <- TRUE
   if (is.null(data)) {
@@ -102,10 +101,8 @@ calibrate <- function(test, data=NULL,
       }
     } else if (filetype == 'csv') {
       data <- read.csv(paste0('data/', test, '.csv'))
-    } else if (filetype == 'xlsx'){
-      data <- readxl::read_xlsx(paste0('data/', test, '.xlsx'))
     } else {
-      stop('Data must use sav, csv, or xlsx.')
+      stop('Data must use sav or csv.')
     }
     save_data <- FALSE
   }
@@ -115,20 +112,19 @@ calibrate <- function(test, data=NULL,
   if (!all(c(pid, regr_vec_char) %in% names(data))) {
     stop('Pid or regressor is not in data column names!')
   }
+  if (length(data[[pid]]) != length(unique(data[[pid]]))){
+    stop('Please use unique pid for cases!')
+  }
 
   # calculate arguments
   cat('Using default arguments if not given...\n')
   if (is.null(n_dims)) n_dims <- ncol(data) - n_cov
-  if (is.null(keys) & !poly_key) keys <- rep('1', sum(n_dims))
-  if (is.null(labels)) {
-    labels <- names(data)[(n_cov+1):(n_cov+sum(n_dims))]
-  } else {
-    names(data)[(n_cov+1):(n_cov+sum(n_dims))] <- labels
-  }
+  labels <- keys$Item
+  names(data)[(n_cov+1):(n_cov+sum(n_dims))] <- labels
 
   # ####### check folders that may contain files related to 'test'
   cat('Move existing files with test name into new folder if any...\n')
-  if (anchor_read){
+  if (is.null(dfAnc)){
     folders_mov <- c('output', 'results')
   } else {
     folders_mov <- c('input', 'output', 'results')
@@ -136,9 +132,10 @@ calibrate <- function(test, data=NULL,
   map(folders_mov, ~move_into_folder(folder=.x, test=test))
 
   # ####### preprocess data
+  poly_key <- ifelse(any(keys$Max_score > 1), TRUE, FALSE)
+
   if (poly_key){
     cat('Checking polytomou-score items; recode if score are not continuous...\n')
-    keys <- readxl::read_xlsx(paste0('data/', 'keys.xlsx'), test)
     if (recode_poly) {
       data <- poly_recode(keys, data, n_cov, c('r','R','m','M','9','x','X','.','',' ',NA))
     }
@@ -181,8 +178,8 @@ calibrate <- function(test, data=NULL,
 
   # save data
   if (save_data) {
-    cat('Saving data into xlsx and sav...\n')
-    writexl::write_xlsx(data, paste0('data/', test, '.xlsx'))
+    cat('Saving data into csv and sav...\n')
+    write.csv(data, paste0('data/', test, '.csv'), row.names=FALSE)
     # for .sav data
     tryCatch({
       haven::write_sav(data, paste0('data/', test, '.sav'))
@@ -210,11 +207,8 @@ calibrate <- function(test, data=NULL,
 
   # prepare arguments
   cat('Preparing ConQuest control file...\n')
-  prep <- df_key_lab_args(test=test, data=data, DIFVar=NULL,
-              regr_vec_char=regr_vec_char, section_extr=section_extr,
-              pid=pid, n_cov=n_cov, n_resp=sum(n_dims),
-              keys=keys, labels=labels, anchor=anchor,
-              pweight=pweight)
+  prep <- df_key_lab_args(test, data, pid, n_cov, sum(n_dims), NULL,
+                          regr_vec_char, section_extr, labels, anchor, pweight)
   if (length(n_dims) > 1){
     if(is.null(dim_names)) stop('Please set dimension names \'dim_names\'!')
     if (poly_key) scrs <- 0:max(keys$Max_score) else scrs <- 0:1
@@ -224,20 +218,17 @@ calibrate <- function(test, data=NULL,
 
   # ####### process anchor file
   if (anchor) {
-    cat('Processing anchor file...\n')
-    if (anchor_read){
-      # put anchor file into 'input' folder beforehand
-      # good when to use output '.anc' file from previous run
+    if (is.null(dfAnc) || poly_key){ # poly: use previous, or manually prepare
+      # read from 'input' folder
     } else {
-      anchor_process(test=test, data=data, keys=keys, labels=labels,
-               delete=delete, poly_key=poly_key,
-               n_cov=n_cov, n_dims=n_dims)
+      cat('Processing anchor file...\n')
+      anchor_process(test, data, keys, labels, delete, poly_key, n_cov, n_dims, dfAnc)
     }
   }
 
   # ####### calibrate
   cat('Calibrating test items...\n')
-  lab_cqc(test=test, run=NULL, run_ls=NULL,
+  lab_cqc(test=test, keys=keys, run=NULL, run_ls=NULL,
       codes=prep$codes, pid_cols=prep$pid_cols, resps_cols=prep$resps_cols,
       quick=quick, delete=delete, dbl_key=dbl_key, poly_key=poly_key,
       anchor=anchor, step=FALSE, regr_ls=prep$regr_ls,
@@ -257,33 +248,37 @@ calibrate <- function(test, data=NULL,
 
   if (anchor){
     # check: input .anc file vs. output .anc file
-    anchor_dif <- read.table(paste0('input/', test, '_anc.txt')) |>
-      dplyr::select(anchor=V3, input=V2) |>
-      left_join(
-        read.table(paste0('output/', test, '_anc.txt')) |>
-          mutate(output=V2, anchor=str_c(V3,V5,V6)) |>
-          dplyr::select(anchor, output),
-        by = "anchor"
-      ) |>
-      mutate(
-        dif = input - output,
-        anchor = str_remove_all(anchor, '[(//)(/*)]')
-      ) |>
-      dplyr::filter(abs(dif) > 0.0001)
-    if (nrow(anchor_dif) != 0){
-      print(anchor_dif)
-      stop('Anchor order was messed up! Check printed difference above.')
+    if (!poly_key & !is.null(dfAnc)){
+      anchor_dif <- read.table(paste0('input/', test, '_anc.txt')) |>
+        dplyr::select(anchor=V3, input=V2) |>
+        left_join(
+          read.table(paste0('output/', test, '_anc.txt')) |>
+            mutate(output=V2, anchor=str_c(V3,V5,V6)) |>
+            dplyr::select(anchor, output),
+          by = "anchor"
+        ) |>
+        mutate(
+          dif = input - output,
+          anchor = str_remove_all(anchor, '[(//)(/*)]')
+        ) |>
+        dplyr::filter(abs(dif) > 0.0001)
+      if (nrow(anchor_dif) != 0 & !poly_key){
+        print(anchor_dif)
+        stop('Anchor order was messed up! Check printed difference above.')
+      }
+    } else {
+      cat('Please ensure equality of anchor values in input and output folders.\n')
     }
 
     # get equivalence table
     cat('Generating equivalence table...\n')
     equiva_tbl(test, est_type, slope, intercept, extrapolation)
-    est_cas(test)
+    # est_cas(test)
     rm(cqs)
 
     # point users to files of varying purposes
     writeLines(c(
-      paste0('\n========= Output Files =========\n'),
+      paste0('\n===== Output Files\n'),
       paste0('Anchoring and scaling of ', toupper(test), ':'),
       paste0('\tScore equivalence table:\t', 'results/', 'eqv_tbl_', test, '.xlsx'),
       paste0('\tRaw and logit score table:\t', 'results/', 'estimates_', test, '.xlsx'),
@@ -295,7 +290,14 @@ calibrate <- function(test, data=NULL,
   } else { # summarize item calibration
     # ####### check: Option frequencies
     cat('Checking option frequencies...\n')
-    check_freq_resps_cat(test, data[(n_cov+1):(n_cov+sum(n_dims))])
+    tryCatch(
+      {
+        check_freq_resps_cat(test, data[(n_cov+1):(n_cov+sum(n_dims))])
+      },
+      error = function(e){
+        invisible()
+      }
+    )
 
     # ####### TODO: Plotting, summary stats for multi-dim models #######
     if (length(n_dims)>1) return('Results are in output folder.')
@@ -305,7 +307,7 @@ calibrate <- function(test, data=NULL,
     # determine whether to use wle or pv1
     n_min <- min(map_int(data[-c(1:n_cov)], ~length(str_remove_all(na.omit(.x), 'R'))))
     abilEst2use <- ifelse(n_min >= 200, 'pv1', 'wle')
-    plot_data <- CCC_ipMap(test, cqs, abilEst2use, numAbilGrps, long_label, poly_key)
+    plot_data <- CCC_ipMap(test, cqs, abilEst2use, numAbilGrps, poly_key)
     ccc_data <- plot_data[['ccc_data']]
     iType <- plot_data[['itype']]
 
@@ -325,7 +327,7 @@ calibrate <- function(test, data=NULL,
     # ####### item summary
     cat('Putting together item analysis summaries...\n')
     smry <- itn_summary(test, easy, hard, iRst, fit_w, fit_uw,
-              dFallThr, dRiseThr, ccc_data, iType, quick)
+              dFallThr, dRiseThr, ccc_data, iType, keys)
     rm(cqs)
     if (save_xlsx){
       file_saved <- paste0('results/', paste0('itn_', test, '.xlsx'))
@@ -333,7 +335,7 @@ calibrate <- function(test, data=NULL,
 
       # point users to files of varying purposes
       writeLines(c(
-        paste0('\n========= Output Files =========\n'),
+        paste0('\n===== Output Files\n'),
         paste0('Item calibration of ', toupper(test), ':'),
         paste0('\tCQ output:\t', 'output/', ' (Files with \'', test, '\' in name)'),
         if (recode_poly & file.exists(paste0('data/', test, '_recode_score.csv'))){

@@ -4,15 +4,12 @@
 \alias{facil_DIF}
 \title{facil_DIF}
 \usage{
-facil_DIF(test, DIFVar = NULL, long_label = FALSE)
+facil_DIF(test, DIFVar = NULL)
 }
 \arguments{
 \item{test}{Name of test.}
 
 \item{DIFVar}{Name of dichotomous DIF variable, e.g., 'gender'.}
-
-\item{long_label}{Whether item labels are longer than 15 characters' fixed
-width. Default is FALSE.}
 }
 \value{
 Tibble of facilities of the two categories of the dichotomous DIF

@@ -1,9 +1,9 @@
 #' chi_square_test
 #'
-#' This function does chi-square test on two groups of delta estimates. 
+#' This function does chi-square test on two groups of delta estimates.
 #' This is used for equating between anchors of two tests.
 #'
-#' @param df Datarame of anchors' delta and error estimates in two tests 
+#' @param df Datarame of anchors' delta and error estimates in two tests
 #' (.x, .y), with variable names of 'delta.x', 'delta.y', 'error.x', and 'error.y'.
 #' @return Dataframe of chi-square test results.
 #' @examples
@@ -12,10 +12,11 @@
 
 chi_square_test <- function(df){
     df <- df %>%
-        modify_at(c('delta.x', 'delta.y', 'error.x', 'error.y'), as.numeric)
-    
+      modify_at(c('delta.x', 'delta.y', 'error.x', 'error.y'), as.numeric)
+
     shift <- mean(df$delta.x) - mean(df$delta.y)
-    df %>% mutate(
+    df %>%
+      mutate(
         delta.y_adj=delta.y + shift,
         delta_ave=(delta.x + delta.y_adj)/2,
         error=sqrt(error.x^2 + error.y^2),
@@ -24,8 +25,9 @@ chi_square_test <- function(df){
         DIF=delta.x - delta.y_adj,
         DIF_std=DIF/error,
         chisq=DIF_std^2,
-        p=pchisq(chisq, df=1, lower.tail=FALSE)) %>%
-        select(-delta_ave, -error) %>%
-        select(item, everything()) %>%
-        modify_at(-1, ~round(., digits=3))
+        p=pchisq(chisq, df=1, lower.tail=FALSE)
+      ) %>%
+      select(-delta_ave, -error) %>%
+      select(item, everything()) %>%
+      modify_at(-1, ~round(., digits=3))
 }

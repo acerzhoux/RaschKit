@@ -7,13 +7,13 @@
 #' @param folder Place to find CQ output files. Default is 'output' folder.
 #' @param test Name of the test.
 #' @examples
-#' move_into_folder(test='randomData1')
+#' move_into_folder(test=test)
 #' @export
 
 move_into_folder <- function(folder='output', test){
     # get folder and file names in folder
     file_frd <- list.files(folder)
-    file_frd_test <- list.files(folder, pattern=test)
+    file_frd_test <- list.files(folder, pattern=paste0(test, '_', '|', test, '\\.'))
     file_test <- file_frd_test[str_detect(file_frd_test, '\\.')]
 
     if (!any(str_detect(file_test, test))){
@@ -37,7 +37,7 @@ move_into_folder <- function(folder='output', test){
         dir.create(frd_test_new)
 
         # get full file names related to 'test'
-        file_frd_test_full <- list.files(folder, pattern=test, full.names=TRUE)
+        file_frd_test_full <- list.files(folder, pattern=paste0(test, '_', '|', test, '\\.'), full.names=TRUE)
         file_test_full <- file_frd_test_full[str_detect(file_frd_test_full, '\\.')]
 
         # move files

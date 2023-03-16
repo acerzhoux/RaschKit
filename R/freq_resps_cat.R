@@ -13,7 +13,7 @@
 #' freq_resps_cat(resp, TRUE, TRUE)
 #' @export
 
-freq_resps_cat <- function(resp=math3Recode, wide=FALSE, prop=FALSE){
+freq_resps_cat <- function(resp, wide=FALSE, prop=FALSE){
     item_lookup <- tibble(Item = names(resp), qOrder = 1:ncol(resp))
     frequencies <- map(resp, ~table(.x, useNA = 'always')) |>
         map(~as.data.frame(.)) |>

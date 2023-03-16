@@ -55,7 +55,7 @@ sparse_data_process <- function(test, data, keys, labels, n_cov, n_dims,
         vars_miss_DIFVar <- data %>%
             split(data[DIFVar]) %>%
             map(~select(., (n_cov+1):length(data))) %>%
-            map2(rep(list(keys), N_DIFVar_cat), ~colSums((is.na(.x)|.x==.y))== nrow(.x) |
+            map2(rep(list(keys$Key), N_DIFVar_cat), ~colSums((is.na(.x)|.x==.y))== nrow(.x) |
                      colSums((is.na(.x)|.x!=.y))== nrow(.x)) %>%
             map(., ~which(.)) %>%
             reduce(c) %>%
@@ -91,7 +91,7 @@ sparse_data_process <- function(test, data, keys, labels, n_cov, n_dims,
     Removed <- Removed %>%
         filter(!is.na(Item))
     if (!identical(items_rmved_order, integer(0))){
-        keys <- keys[-items_rmved_order]
+        keys <- keys[-items_rmved_order, ]
         labels <- labels[-items_rmved_order]
     }
 

@@ -4,7 +4,7 @@
 \alias{df_del_shw_Step}
 \title{df_del_shw_Step}
 \usage{
-df_del_shw_Step(folder = "output", test, long_label = FALSE)
+df_del_shw_Step(folder = "output", test)
 }
 \arguments{
 \item{folder}{Folder where xxx_shw.txt file is located. Default is 'output' folder.}
@@ -19,11 +19,8 @@ Dataframe of item name_step, delta, and error.
 }
 \description{
 This function extract item steps' delta estimates from .shw file. This is
-associated with test named 'test'. If any item label is longer than 13
-characters' fixed width, use long_label=TRUE to read complete labels from
-'test_Labels.txt' file in 'data' folder.
+associated with test named 'test'.
 }
 \examples{
 df_del_shw_Step(test='elana_poly_score')
-df_del_shw_Step(test='elana_poly_score', long_label=TRUE)
 }

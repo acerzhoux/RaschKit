@@ -13,7 +13,7 @@ Equate_Vrt(
   DIF_cut = 0.5,
   DIF_adj_cut = 4,
   step = FALSE,
-  long_label = FALSE
+  iterative = FALSE
 )
 }
 \arguments{
@@ -38,18 +38,16 @@ between two tests. Default is 4.}
 \item{step}{TRUE if DIF analysis is performed on step parameters.
 Default is FALSE.}
 
-\item{long_label}{Whether item labels are longer than 15 characters' fixed
-width. Default is FALSE.}
+\item{iterative}{TRUE to iteratively remove DIF items. Default is FALSE.}
 }
 \value{
 List of chi-square test results for anchors between two adjacent grades.
 }
 \description{
-This function performs vertical equating. An Excel file with 'Equating_Vertical'
-in name is saved in 'equating' folder, each sheet of which is for two
-adjacent grades. Also, one plot is saved in subfolder 'plot' inside
-'equating' folder for two adjacent grades.
+This function performs vertical equating. An Excel file named 'Vrt_xxx.xlsx'
+is saved in 'equating' folder, each sheet of which is for two
+adjacent grades. Also saved are scatterplots named 'Vrt_xxx.pdf'.
 }
 \examples{
-Equate_Vrt(test='ArabicA', grades=c(3:10))
+Equate_Vrt(test='bang', grades=c(3, 5))
 }

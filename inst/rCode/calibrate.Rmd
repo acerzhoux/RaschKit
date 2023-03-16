@@ -22,32 +22,21 @@ Read data to be used for 'data' argument of Function calibrate.
 Note that data should have covariates followed by responses.
 
 ```{r}
-resp <- readxl::read_xlsx(list.files(here::here('dataRaw'), 
-        'data', # revise to unique string in file name
-         full.names = TRUE)) %>% 
-    map_df(~toupper(.x))
+resp <- haven::read_sav('data/test.sav')
 ```
 
 Check whether columns have responses other than valid ones like A,B,C,D....
 If there is invalid one, put that into 'missCode2Conv' argument of Function 
-calibrate to recode them. If default of 'missCode2Conv' includes non-response 
-symbol found in items, can ignore missCode2Conv below.
-
-```{r}
-lapply(resp[-1], table)
-```
+calibrate to recode them. If data is recoded already, set missCode2Conv=NULL.
 
 ## Codebook
 
 ```{r}
-cd <- readxl::read_xlsx(list.files(here::here('dataRaw'), 
+# To be used as 'keys' for 'calibrate' (below)
+keys <- readxl::read_xlsx(list.files(here::here('dataRaw'), 
         'codebook', # revise to unique string in file name
-         full.names = TRUE)) %>% 
-    row_to_names(1) 
-keys <- cd %>% 
-    pull(Key) # To be used as 'keys' for'calibrate' (below)
-labels <- cd %>% 
-    pull(Item) # To be used as 'labels' for'calibrate' (below)
+         full.names = TRUE)) |> 
+  select(Item, Key, Max_score) 
 ```
 
 ## Update key after review
@@ -56,15 +45,13 @@ This may occur when you send 1st round of item analysis results to test develope
 and they advise psychometricians to change key, use double key, or remove items.
 
 ```{r}
-keys[25] <- 'A' 
-keys[53] <- 'B'
-keys[67] <- 'C'
+keys[25, 'Key'] <- 'A'
 ```
 
 # Explore function
 
 ```{r}
-calibrate(test='FPA', data=resp, pid='pid', n_cov=1, keys=keys, labels=labels)
+calibrate(test='FPA', data=resp, pid='pid', n_cov=1, keys=keys)
 ```
 
 Below are useful arguments of 'calibrate'. 
@@ -74,12 +61,11 @@ Below are useful arguments of 'calibrate'.
 test: Test name, e.g., 'GAT'; any meaningful name; 'xxx' below.
 pid: Candidate ID variable name in data.
 n_cov: Number of covariates before responses.
+Keys: Have Item, Key, Max_score.
 
 ## May ignore
 
 data: Ignore if 'xxx.sav' (or xxx.xlsx) is in 'data' folder.
-keys: Ignore if correct answers all coded as 1 in data.
-labels: Ignore if column names are same as labels.
 
 ## Set if test developer advises so after review
 
@@ -97,18 +83,11 @@ dim_names: dimension names (e.g., c('Literacy', 'Numeracy')); any meaningful nam
 
 ## Polytomous items
 
-Prepare key file (Refer to sample Sheet 'test' in keys.xlsx).
-- In keys.xlsx in 'data' folder, add a sheet with name same as 'test' 
-  argument of 'calibrate'.  
-- On the sheet, add columns below (row order same as response order in data).
-  - Item: item labels; same as 'labels' argument of 'calibrate'.
-  - Key: key for MC items. Polytomous items can fill in any value or be left blank.
-    Can ignore if there is no MC item in test.
-  - Max_score: Maximum score for MC and CR items. Simply, can use maximum item score 
-    (after recoding) in the test for all polytomous items.
-  - Key2: 2nd key. Can ignore if no double key.
-
-- Set poly_key = TRUE in 'calibrate'.
+Prepare dataframe keys as 'keys' argument of calibrate(). It has variables
+  - Item: item labels.
+  - Key: key for MC items. Use 1 for constructed responses (CR).
+  - Max_score: Maximum score for MC (and CR items). 
+  - Key2: 2nd key for polytomous items. Can ignore if no double key.
 
 ## Extra lines in CQ control file
 

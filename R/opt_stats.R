@@ -6,35 +6,28 @@
 #' @param test Name of test.
 #' @return Dataframe of option statistics.
 #' @examples
-#' opt_stats(test='FPA')
+#' b <- opt_stats(test='math_35')
 #' @export
 
 opt_stats <- function(test){
-    n_item <- N_item2('output', test)
-    opt_lines <- Lines('output', test, 'opt', '===============')
-    n_opt <- (opt_lines[3] - opt_lines[2] - 1)
-    n_cat <- n_opt / n_item
-    qids <- as.character(qid_its('output', test))
+  options(warn=-1)
 
-    read_fwf(
-        Path('output', test, 'opt'),
-        fwf_cols(
-            resp = c(1, 6),
-            iScore = c(11, 17),
-            count = c(18, 29),
-            `%correct` = c(30, 37),
-            ptBis = c(38, 47),
-            t = c(48, 52),
-            p = c(54, 57),
-            pv1Avg = c(60, 65)
-        ),
-        skip = opt_lines[2],
-        n_max = n_opt,
-        na = c('', 'NA'),
-        show_col_types = FALSE
+  n_item <- N_item2('output', test)
+  opt_lines <- Lines('output', test, 'opt', '===============')
+  n_opt <- (opt_lines[3] - opt_lines[2] - 1)
+  n_cat <- n_opt / n_item
+
+  readxl::read_xls(
+      paste0('output/', test, '_opt.xls'),
+      skip=4,
+      n_max=n_opt,
+      # col_types='numeric',
+      .name_repair = "unique_quiet"
     ) |>
+    `names<-`(c('resp', 'iScore', 'count', '%correct',
+          'ptBis', 't', 'p', 'pv1Avg', 'pvSD')) |>
     mutate(
-        qOrder = rep(qids, times=1, each=n_cat)
+      seqNo = rep(1:n_item, times=1, each=n_cat)
     )
 }
 

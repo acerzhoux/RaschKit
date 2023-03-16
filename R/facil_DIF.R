@@ -5,17 +5,15 @@
 #'
 #' @param test Name of test.
 #' @param DIFVar Name of dichotomous DIF variable, e.g., 'gender'.
-#' @param long_label Whether item labels are longer than 15 characters' fixed
-#' width. Default is FALSE.
 #' @return Tibble of facilities of the two categories of the dichotomous DIF
 #' variable.
 #' @examples
 #' facil_DIF(test=test, DIFVar='gender')
 #' @export
 
-facil_DIF <- function(test, DIFVar=NULL, long_label=FALSE){
+facil_DIF <- function(test, DIFVar=NULL){
     folder <- paste0('DIF/', DIFVar)
-    labels <- df_shw(folder, test, long_label) |>
+    labels <- df_shw(folder, test) |>
         pull(item) |>
         unique()
 

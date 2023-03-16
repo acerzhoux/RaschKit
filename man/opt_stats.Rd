@@ -17,5 +17,5 @@ This function extracts option statistics from 'test.txt' file.
 This is associated with test named 'test'.
 }
 \examples{
-opt_stats(test='FPA')
+b <- opt_stats(test='math_35')
 }

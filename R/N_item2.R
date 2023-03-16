@@ -10,6 +10,8 @@
 #' @export
 
 N_item2 <- function(folder, test){
-    Lines(folder, test, 'its', '=====')[[3]] -
-    Lines(folder, test, 'its', '-----') - 1
+    # Lines(folder, test, 'its', '=====')[[3]] -
+    # Lines(folder, test, 'its', '-----') - 1
+
+    nrow(read.table(paste0('input/', test, '_lab.txt')))-1
 }

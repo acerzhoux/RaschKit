@@ -5,7 +5,7 @@
 #'
 #' @param test Name of test.
 #' @examples
-#' itn_poly_comment('Numeracy_item')
+#' itn_poly_comment('math_35')
 #' @export
 
 itn_poly_comment <- function(test){
@@ -14,14 +14,14 @@ itn_poly_comment <- function(test){
 
     # check ability estimate difference of neighbor categories
     n_cat <- map(itn_items, nrow)
-    thrshold <- map2(itn_items, n_cat, ~(.x$PV1[.y]-.x$PV1[1])/(.y-1)) %>%
+    thrshold <- map2(itn_items, n_cat, ~(.x$PV1[.y]-.x$PV1[1])/(.y-1)) |>
         map(~.-(.)/3)
-    diff_ls <- itn_items %>%
-        map(~diff(.$PV1)) %>%
+    diff_ls <- itn_items |>
+        map(~diff(.$PV1)) |>
         map2(thrshold, ~which(.x < min(.y, .3))) # may change magnitude
 
     # items to collapse
-    i_max_score <- map_dbl(itn_items, ~.['Score'] %>% max())
+    i_max_score <- map_dbl(itn_items, ~.['Score'] |> max())
     iColps <- intersect(which(map_lgl(diff_ls, ~!identical(., integer(0)))),
         which(i_max_score > 1))
     for (i in iColps){

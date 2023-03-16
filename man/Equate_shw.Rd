@@ -14,7 +14,7 @@ Equate_shw(
   DIF_adj_cut = 4,
   sav_results = TRUE,
   step = FALSE,
-  long_label = FALSE
+  iterative = FALSE
 )
 }
 \arguments{
@@ -43,8 +43,7 @@ a plot are desired. Default is TRUE.}
 \item{step}{TRUE if DIF analysis is performed on step parameters.
 Default is FALSE.}
 
-\item{long_label}{Whether item labels are longer than 15 characters' fixed
-width. Default is FALSE.}
+\item{iterative}{TRUE to iteratively remove DIF items. Default is FALSE.}
 }
 \value{
 Dataframe of chi-square test results for anchors between two tests.
@@ -58,8 +57,4 @@ plot is saved in subfolder 'plot' inside 'equating' folder.
 }
 \examples{
 Equate_shw(test='elana_math', vars=c('NSW', 'VIC'))
-Equate_shw(test='elana_math', vars=c('NSW', 'VIC'), long_label=TRUE)
-Equate_shw(test='elana_math', vars=c('NSW', 'VIC'), step=TRUE)
-Equate_shw(test='elana_math', vars=c('NSW', 'VIC'), step=TRUE, long_label=TRUE)
-Equate_shw(test='ArabicA', vars=c('3', '4'))
 }

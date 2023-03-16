@@ -9,7 +9,7 @@
 #' @return Dataframe of delta, facility, etc..
 #' @examples
 #' # Not run
-#' # file_its(test=test)
+#' # file_its(test=t1)
 #' @export
 
 file_its <- function(folder='output', test, DIFVar=NULL){

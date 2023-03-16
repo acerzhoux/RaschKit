@@ -14,5 +14,5 @@ This function checks whether polytomous items' neighbor categories' ability
 estimates are too small. This is associated with test named 'test'.
 }
 \examples{
-itn_poly_comment('Numeracy_item')
+itn_poly_comment('math_35')
 }

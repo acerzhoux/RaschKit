@@ -8,24 +8,31 @@
 #' @export
 
 CCC_fine_flag4 <- function(iflag123, comments){
-  qorders <- unique(comments$iNum)
-  for (i in qorders) {
-     if (!(iflag123$Priority[[i]] %in% c(NA, '', ' '))){
-       if (comments$Comment[[i]] %in% c(NA, '', ' ')){
-         if (comments[i, ]$itype %in% c('dich', 'score')){
-           comments$Comment[[i]] <- 'CCC indicates item functioned appropriately at high ability levels.'
+  for (i in 1:nrow(iflag123)) {
+     iNumInCom <- which(comments$iNum==i)
+     if (identical(iNumInCom, integer(0))){
+       next
+     }
+     if (!(iflag123[i, ]$Priority %in% c(NA, '', ' '))){
+       if (comments[iNumInCom, ]$Comment %in% c(NA, '', ' ')){
+         if (comments[iNumInCom, ]$itype %in% c('dich', 'score')){
+           comments[iNumInCom, ]$Comment <- 'CCC indicates item functioned appropriately at high ability levels.'
          }
-         if (comments[i, ]$itype=='poly'){
-           comments$Comment[[i]] <- 'Categories separated well.'
+         if (comments[iNumInCom, ]$itype=='poly'){
+           comments[iNumInCom, ]$Comment <- 'Categories separated well.'
          }
        }
      }
-     if (!(comments$Comment[[i]] %in% c(NA, '', ' '))){
-       if (iflag123$Priority[[i]] %in% c(NA, '', ' ')){
-         iflag123$Priority[[i]] <- '4'
+     if (!(comments[iNumInCom, ]$Comment %in% c(NA, '', ' '))){
+       if (iflag123[i, ]$Priority %in% c(NA, '', ' ')){
+         iflag123[i, ]$Priority <- 4
        }
      }
   }
-  iflag123$Comments <- comments$Comment
-  iflag123
+
+  iflag123 |>
+    left_join(
+      comments |> dplyr::select(seqNo=iNum, Comment),
+      by='seqNo'
+    )
 }

@@ -22,5 +22,5 @@ This is associated with test named 'test'.
 }
 \examples{
 # Not run
-# file_its(test=test)
+# file_its(test=t1)
 }

@@ -4,7 +4,17 @@
 \alias{anchor_process}
 \title{anchor_process}
 \usage{
-anchor_process(test, data, keys, labels, delete, poly_key, n_cov, n_dims)
+anchor_process(
+  test,
+  data,
+  keys,
+  labels,
+  delete,
+  poly_key,
+  n_cov,
+  n_dims,
+  dfAnc
+)
 }
 \arguments{
 \item{test}{Name of test.}
@@ -25,8 +35,10 @@ Default is NULL where Excel file with name 'test' in 'data' folder is used.}
 \item{n_dims}{Vector of numbers of responses the dimensions have. Default is NULL.
 Define this vector if multi-dimensional model is to be run, e.g., c(30, 45).
 Also should define this if there are variables after response columns, e.g., 30.}
+
+\item{dfAnc}{Dataframe of 'Item' and 'Delta' for anchors.}
 }
 \description{
-This function processes anchor file to be input into ConQuest. This is
+This function processes anchor file of all-MC test to be input into ConQuest. This is
 associated with test named 'test'.
 }

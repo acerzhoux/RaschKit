@@ -1,11 +1,19 @@
 ---
-output: bookdown::html_document2
+output: 
+  bookdown::html_document2:
+    toc: true
+    toc_float: 
+      collapsed: true
+    toc_depth: 3
+    number_sections: true
+    theme: paper
+    
 params:
-    test: 'test'
-    DIFVar: 'Gender'
-    vars: c('Girls', 'Boys')
-    facil_cut: 10
-    output: output
+  test: 'test'
+  DIFVar: 'Gender'
+  vars: c('Girls', 'Boys')
+  facil_cut: 10
+  output: output
 title: DIF Analysis of `r DIFVar` on `r test`
 ---
 
@@ -29,8 +37,8 @@ options(knitr.table.format = "simple")
 Table \@ref(tab:steps) shows the steps taken to do the DIF analysis.
 
 ```{r steps, echo=FALSE}
-output[['step']] %>% 
-    knitr::kable(caption = "Steps used to detec DIF parameters")
+output[['step']] |>
+  knitr::kable(caption = "Steps used to detec DIF parameters")
 ```
 
 # Shift Method
@@ -40,19 +48,19 @@ after review. It shows that removal of DIF items has improved correlation,
 mean shift, and ratio of standard deviation.
 
 ```{r shift-stats}
-output[['shift']] %>% 
-    knitr::kable(caption = "Shifts of statistics before and after review")
+output[['shift']] |>
+  knitr::kable(caption = "Shifts of statistics before and after review")
 ```
 
 # Statistics Before Review
 
 Table \@ref(tab:bfr-rvw) shows the item statistics before review. From the table, 
-we can see that `r output[['flag']] %>% filter(flag==1) %>% nrow()` items 
+we can see that `r output[['flag']] |> filter(flag==1) |> nrow()` items 
 show DIF between `r vars[[1]]` and `r vars[[2]]`.
 
 ```{r bfr-rvw}
-output[['flag']] %>% 
-    knitr::kable(caption = "Item statistics before review")
+output[['flag']] |>
+  knitr::kable(caption = "Item statistics before review")
 ```
 
 # Statistics After Review
@@ -61,8 +69,8 @@ Table \@ref(tab:afr-rvw) shows the item statistics after review. Now, the statis
 satisfy all the criteria.
 
 ```{r afr-rvw}
-output[['final']] %>% 
-    knitr::kable(caption = "Item statistics after review") 
+output[['final']] |>
+  knitr::kable(caption = "Item statistics after review") 
 ```
 
 # Scatterplot of Difficulty Estimates

@@ -35,5 +35,5 @@ and puts them into one file.
 }
 \examples{
 # Not run
-# read2one(folder='equating', tests=c('AHU','MST','R','N'))
+# read2one(folder='results', tests=c('bang_35', 'math_35'), prefix='itn')
 }

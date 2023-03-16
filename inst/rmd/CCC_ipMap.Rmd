@@ -1,5 +1,13 @@
 ---
-output: bookdown::word_document2
+output: 
+  bookdown::word_document2:
+    toc: true
+    toc_float: 
+      collapsed: true
+    toc_depth: 3
+    number_sections: true
+    theme: paper
+
 params:
     test: 'test'
     plot_data: plot_data

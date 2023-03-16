@@ -7,17 +7,15 @@
 calibrate(
   test,
   data = NULL,
+  keys,
   pid,
   n_cov,
   regr_vec_char = NULL,
   n_dims = NULL,
   dim_names = NULL,
-  keys = NULL,
-  labels = NULL,
-  quick = FALSE,
+  quick = TRUE,
   delete = NULL,
   dbl_key = NULL,
-  poly_key = FALSE,
   anchor = FALSE,
   section_extr = NULL,
   easy = 90,
@@ -29,19 +27,17 @@ calibrate(
   dRiseThr = 0.1,
   numAbilGrps = NULL,
   recode_poly = FALSE,
-  long_label = FALSE,
-  missCode2Conv = c("@", "@@", "@@@", "@@@@", "7", "8", "9", "88", "99", ".", "", " ",
-    "-"),
+  missCode2Conv = NULL,
   filetype = "sav",
   slope = NULL,
   intercept = NULL,
   extrapolation = FALSE,
   save_xlsx = TRUE,
   est_type = "wle",
-  anchor_read = FALSE,
   sparse_check = FALSE,
   CCCip2Wd = FALSE,
-  pweight = NULL
+  pweight = NULL,
+  dfAnc = NULL
 )
 }
 \arguments{
@@ -50,6 +46,8 @@ calibrate(
 \item{data}{Dataframe with pid, covariables (e.g,, DIF variable), and
 responses. Default is NULL where Excel file with name 'test' in 'data'
 folder is used.}
+
+\item{keys}{Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).}
 
 \item{pid}{Name of candidates' ID variable.}
 
@@ -65,19 +63,11 @@ response columns, e.g., 30.}
 \item{dim_names}{Vector of the dimensions' names. Default is NULL.
 Define this vector if multi-dimensional model is to be run.}
 
-\item{keys}{Vector of keys in the test. Default is NULL.}
-
-\item{labels}{Vector of item labels that correspond to order of item
-response columns in data.}
-
-\item{quick}{TRUE when testing. Default is FALSE.}
+\item{quick}{TRUE if empirical error is not needed. Default is TRUE}
 
 \item{delete}{Vector of orders or labels of items to be removed. Default is NULL.}
 
 \item{dbl_key}{TRUE if any item has polytomous scoring. Default is NULL.}
-
-\item{poly_key}{TRUE if the key of any item has polytomous scoring.
-Default is FALSE.}
 
 \item{anchor}{TRUE when anchor is to be done. Default is FALSE.}
 
@@ -106,17 +96,17 @@ Default is 0.1.}
 \item{numAbilGrps}{Number of ability groups. Default is NULL.}
 
 \item{recode_poly}{TRUE if polytomous items have non-continuous scores.
-Default is FALSE.}
+Note that code in c('r','R','m','M','9','x','X','.','',' ',NA) will be kept
+intact while other codes will be down scored to be continuous. Default is FALSE.}
 
-\item{long_label}{Whether item labels are longer than 16 characters' fixed
-width. Default is FALSE.}
-
-\item{missCode2Conv}{Missing codes that need to be converted to embedded and
-trailing missing symbols such as 'M' and 'R'. Commonly used missing symbols are
-'@' (less or more),'7','8','9','88','99','.','',' ', and '-'.}
+\item{missCode2Conv}{Response codes to convert to embedded/trailing missing
+('M' or 'R'). Use freq_resps_cat() to explore response distribution
+and determine which codes need recoding. Commonly found missing symbols
+are '@' (less or more), 7, 8, 9, 88, 99, '.', '-', '', NA. Default is NULL
+when responses have been recoded.}
 
 \item{filetype}{Format for input dataset. Default is 'sav'. Also support
-csv and xlsx formats.}
+csv format.}
 
 \item{slope}{Slope to multiply ability estimates. Default is NULL}
 
@@ -130,11 +120,6 @@ Default is FALSE.}
 \item{est_type}{Type of ability estimate to use for score equivalence table,
 'wle' or 'mle'. Default is 'wle'.}
 
-\item{anchor_read}{Whether to read from an anchor file in 'input' folder.
-Default is FALSE. Then, should put anchors tbl (Item, Delta) on a sheet of
-'anchors.xlsx' in 'data' folder. If TRUE, an anchor .anc file should exist
-in 'input' folder.}
-
 \item{sparse_check}{Whether to check response column sparsity in general or
 regarding any DIF variable category. Default is FALSE. If TRUE, sparse
 response columns will be removed.}
@@ -144,6 +129,11 @@ is FALSE.}
 
 \item{pweight}{Variable name of person weights in response dataframe. Should
 be specified if weight is used for modeling. Default is NULL.}
+
+\item{dfAnc}{Dataframe of 'Item' and 'Delta' for anchors. Default is NULL.
+If NULL, an xxx_anc.txt file with anchor tbl (Item, Delta) should be put
+in 'input' folder beforehand. Check output 'xxx_anc.txt' file from previous run
+for correct anchor order, especially for polytomous items with step parameters.}
 }
 \description{
 This function calibrates items in a test and adds comments and flags of
@@ -153,6 +143,6 @@ will be saved in 'results' folder in the working directory.
 }
 \examples{
 # Not run
-# calibrate(data=racp, test='RACP', pid="V1", n_cov=1, keys=cd$`Correct options`,
-# labels=cd$`Question ID`, delete=c(3,4,5,36), dbl_key=list(`7`=c(1,3), `9`=c(3,4)))
+# calibrate(data=racp, test='RACP', pid="V1", n_cov=1, keys=cd,
+# delete=c(3,4,5,36), dbl_key=list(`7`=c(1,3), `9`=c(3,4)))
 }

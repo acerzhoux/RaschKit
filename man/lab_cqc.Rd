@@ -6,6 +6,7 @@
 \usage{
 lab_cqc(
   test,
+  keys,
   run = NULL,
   run_ls = NULL,
   codes,
@@ -30,6 +31,8 @@ lab_cqc(
 }
 \arguments{
 \item{test}{Name of the test.}
+
+\item{keys}{Dataframe of 'Item', 'Key', and 'Max_score'.}
 
 \item{run}{Vector of specific categories of variables to select from
 'test_Data.txt' in 'data' folder, e.g., c('English2', 3, 1). This corresponds

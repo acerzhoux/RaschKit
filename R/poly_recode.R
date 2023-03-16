@@ -7,7 +7,7 @@
 #' @param data Dataframe with pid, covariables (e.g,, DIF variable), and
 #' responses. Default is NULL where Excel file with name 'test' in 'data'
 #' folder is used.
-#' @param keys Vector of keys in the test. Default is NULL.
+#' @param keys Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).
 #' @param n_cov Number of covariates before responses.
 #' @param miss_code Missing codes. Default is c('r','R','m','M','9','x','X','.','',' ',NA).
 #' @export

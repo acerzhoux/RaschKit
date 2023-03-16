@@ -7,7 +7,7 @@
           'ggthemes', 'ggrepel', 'patchwork','rmarkdown',\
           'gdata', 'janitor', 'data.table','knitr',\
           'RColorBrewer', 'fs', 'here', 'lazyeval',\
-          'writexl', 'ggpubr', 'qpdf', 'tidyverse'), \
+          'writexl', 'ggpubr', 'qpdf', 'tidyverse', 'openxlsx'), \
         function(x){\
           if (!require(x, character.only=TRUE)){\
              install.packages(x)\
@@ -52,7 +52,16 @@
    polytomous items not continuously scored are recoded.
 3. freq_resps_cat() solved a bug of disappearing letter response types and 
    supports NA frequencies now.
-4. Added output types of ConQuest results in .xls format.
+4. Added output types of ConQuest results in .xls format. This allows for 
+   extracting model results from .xls files to solve column reading issues.
+5. Used openxlsx to add format, hyperlink, and flag color in item summary file.
+6. Add fit indexes such as facility, discrimination, and Infit, and their plots 
+   to DIF and equating analysis wherever possible. 
+7. Added floating table of contents to equating html reports.
+8. Added dotted lines of 1.96 times average SE to delta scatterplots in DIF and 
+   equating.
+9. Removed anchor.xlsx and keys.xlsx files from 'data' folder. Now, users need to 
+   prepare a dataframe with needed information.
 
 ===== v1.0.2 Updates =====
 1. Suppressed ConQuest, Rmd, and other unnecessary printing in R console.

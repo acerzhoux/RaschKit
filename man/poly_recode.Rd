@@ -12,7 +12,7 @@ poly_recode(
 )
 }
 \arguments{
-\item{keys}{Vector of keys in the test. Default is NULL.}
+\item{keys}{Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).}
 
 \item{data}{Dataframe with pid, covariables (e.g,, DIF variable), and
 responses. Default is NULL where Excel file with name 'test' in 'data'
@@ -24,5 +24,6 @@ folder is used.}
 }
 \description{
 This function down ranks non-continuous polytomous item response vectors
-in a dataframe.
+in a dataframe. If any item is recoded, a file with recoding ways is saved
+into 'data' folder.
 }

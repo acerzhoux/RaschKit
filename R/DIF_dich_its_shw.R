@@ -21,8 +21,6 @@
 #' @param step TRUE if DIF analysis is performed on step parameters. Default is FALSE.
 #' @param facil_cut Threshold of number of percent to flag an item with large
 #' facility difference between two groups of test takers. Default is 10.
-#' @param long_label Whether item labels are longer than 11 characters' fixed
-#' width. Default is FALSE.
 #' @param save_xlsx Whether to save summary file and plots. Default is TRUE
 #' (one DIF variable).
 #' @param iterative TRUE to iteratively remove DIF items. Default is FALSE
@@ -36,33 +34,28 @@
 #' @export
 
 DIF_dich_its_shw <- function(DIFVar, test, vars,
-                             p_cut=0.05, chi_cut=10, DIF_cut=0.5, DIF_adj_cut=4,
-                             desig_effect=1, step=FALSE, facil_cut=10,
-                             long_label=FALSE, save_xlsx=TRUE,
-                             iterative=FALSE, quick=TRUE){
-    # DIF: delta
-    if (step){
-        # use item*step*DIFVar estimates
-        df <- delta_DIF_dich_step(test, DIFVar, quick)
-    } else {
-        df <- delta_DIF_dich(test, DIFVar, quick) %>%
-            bind_cols(
-                delta_error_DIF_dich(paste0('DIF/', DIFVar), test, long_label)
-            ) %>%
-            select(item, everything())
+               p_cut=0.05, chi_cut=10, DIF_cut=0.5, DIF_adj_cut=4,
+               desig_effect=1, step=FALSE, facil_cut=10,
+               save_xlsx=TRUE, iterative=FALSE, quick=TRUE){
+  # DIF: delta
+  if (step){
+    # use item*step*DIFVar estimates
+    df <- delta_DIF_dich_step(test, DIFVar, quick)
+  } else {
+    df <- delta_DIF_dich(test, DIFVar, quick) %>%
+      bind_cols(
+        delta_error_DIF_dich(paste0('DIF/', DIFVar), test)
+      ) %>%
+      select(item, everything())
 
-        id_na <- which(apply(select(df, -item), 1, function(x) any(is.na(x))))
-        if (length(id_na)){
-            df[id_na,] %>%
-                write_xlsx(paste0('DIF/', DIFVar, '_', test, '_iRemoved', '.xlsx'))
-            df <- na.omit(df)
-        }
+    id_na <- which(apply(select(df, -item), 1, function(x) any(is.na(x))))
+    if (length(id_na)){
+      df[id_na,] %>%
+        write_xlsx(paste0('DIF/', DIFVar, '_', test, '_iRemoved', '.xlsx'))
+      df <- na.omit(df)
     }
+  }
 
-    DIF_dich(DIFVar=DIFVar, test=test, vars=vars, df=df,
-             p_cut=p_cut, chi_cut=chi_cut, DIF_cut=DIF_cut,
-             DIF_adj_cut=DIF_adj_cut, desig_effect=desig_effect,
-             step=step, facil_cut=facil_cut,
-             long_label=long_label, save_xlsx=save_xlsx,
-             iterative=iterative, quick=quick)
+  DIF_dich(DIFVar, test, vars, df, p_cut, chi_cut, DIF_cut, DIF_adj_cut,
+       desig_effect, step, facil_cut, iterative, save_xlsx, quick)
 }

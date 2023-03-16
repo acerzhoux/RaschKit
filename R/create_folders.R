@@ -18,15 +18,15 @@
 #' @export
 
 create_folders <- function(DIFVar=NULL){
-    folders <- c('dataRaw', 'input', 'output',
+    folders <- c('data', 'dataRaw', 'input', 'output',
                  'results', 'equating', 'DIF',
                  if(!is.null(DIFVar)) paste0('DIF/', DIFVar))
     for(i in folders) if(!dir.exists(i)) dir.create(i)
 
     tryCatch({
         fs::dir_copy(system.file("rCode", package = "RaschKit"), getwd())
-        fs::dir_copy(system.file("data", package = "RaschKit"), getwd())
     },
     error = function(e){
+        invisible()
     })
 }

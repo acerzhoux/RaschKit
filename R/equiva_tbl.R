@@ -31,8 +31,9 @@ equiva_tbl <- function(test, est_type='wle', slope=NULL,
 
     # call CQ and generate equiv table
     conquestr::ConQuestCall(
-        cqc=cqc_path,
-        stdout=NULL
+        cqc = cqc_path,
+        cqExe = file.path('C:', 'Program Files', 'ACER ConQuest', 'ConQuestConsole.exe'),
+        stdout = NULL
     )
 
     # read equiv tbl

@@ -17,7 +17,7 @@ check_freq_resps_cat <- function(test, resp){
     opt_cq <- opt_stats(test)
     opt_R <- freq_resps_cat(resp)
     checked <- opt_cq |>
-        dplyr::select(qOrder, resp, count) |>
+        dplyr::select(qOrder=seqNo, resp, count) |>
         modify_at('qOrder', as.numeric) |>
         modify_at('resp', as.character) |>
         full_join(opt_R, by=c('qOrder', 'resp'='Cat')) |>

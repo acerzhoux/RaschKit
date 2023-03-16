@@ -4,15 +4,12 @@
 \alias{df_shw}
 \title{df_shw}
 \usage{
-df_shw(folder, test, long_label = FALSE)
+df_shw(folder = "output", test)
 }
 \arguments{
 \item{folder}{Folder where ConQuest output files are located.}
 
 \item{test}{Name of test.}
-
-\item{long_label}{Whether item labels are longer than 15 characters' fixed
-width. Default is FALSE.}
 }
 \value{
 Dataframe of item name, delta, and error.

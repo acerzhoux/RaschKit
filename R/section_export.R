@@ -32,15 +32,16 @@ section_export <- function(poly_key, step, DIFVar,
         route <- str_c(route, '_', 'step')
     }
 
-    c(paste0('export logfile                                   >> ',
+    c(
+      paste0('export logfile                                   >> ',
              if (!is.null(poly_catgrs)) paste0('%path%\\%test%_%', DIFVar, '%_log.txt;\n')
              else if (poly_facet) '%path%\\%name%_facet_log.txt;\n'
              else '%path%\\%name%_log.txt;\n'),
       paste0('export parameters                                >> ', route, '_anc.txt;'),
-      paste0('export reg_coefficients                          >> ', route, '_reg.txt;'),
-      paste0('export covariance                                >> ', route, '_cov.txt;'),
-      paste0('itanal !estimates=wle, format=summary            >> ', route, '_its.txt;'),
-      paste0('itanal !estimates=wle, format=summary, filetype=excel >> ', route, '_its.xls;'),
+      # paste0('export reg_coefficients                          >> ', route, '_reg.txt;'),
+      # paste0('export covariance                                >> ', route, '_cov.txt;'),
+      paste0('itanal !estimates=wle,format=summary             >> ', route, '_its.txt;'),
+      paste0('itanal !estimates=wle,format=summary,filetype=excel >> ', route, '_its.xls;'),
       paste0('itanal !estimates=latent                         >> ', route, '_itn.txt;'),
       paste0('itanal !estimates=latent,filetype=excel          >> ', route, '_itn.xls;'),
       paste0('itanal !estimates=latent,format=export           >> ', route, '_opt.txt;'),
@@ -49,16 +50,18 @@ section_export <- function(poly_key, step, DIFVar,
       paste0('show !estimates=wle,Expanded=no,itemlabels=yes,filetype=excel  >> ', route, '_shw.xls;'),
       if (poly_key & !step){
           c(paste0('show parameters !table=8                         >> ', route, '_del.txt;'),
-            paste0('show parameters !table=8,filetype=excel          >> ', route, '_del.xls;'))
+            paste0('show parameters !table=8,filetype=excel          >> ', route, '_del.xls;')
+          )
       },
       paste0('show parameters !table=7                         >> ', route, '_thr.txt;'),
       paste0('show parameters !table=7,filetype=excel          >> ', route, '_thr.xls;'),
       paste0('fit                                              >> ', route, '_res.txt;'),
-      paste0('show cases !estimates=wle,filetype=text          >> ', route, '_cas.txt;'),
+      # paste0('show cases !estimates=wle,filetype=text          >> ', route, '_cas.txt;'),
       paste0('show cases !estimates=wle,filetype=excel         >> ', route, '_cas.xls;'),
       paste0('put                                              >> ', route, '_compressed.CQS;'),
       'itanal ! matrixout=i;\n',
       if (is.null(DIFVar) | (!is.null(DIFVar) & is_true(poly_group))) {
           paste0('put ! compress=no                                >> ', route, '.CQS;\n')
-      })
+      }
+    )
 }

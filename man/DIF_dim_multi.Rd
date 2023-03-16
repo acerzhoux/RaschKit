@@ -13,16 +13,14 @@ DIF_dim_multi(
   n_dims,
   dim_names,
   data = NULL,
-  keys = NULL,
-  labels = NULL,
+  filetype = "sav",
+  keys,
   vars = NULL,
   regr_vec_char = NULL,
   quick = TRUE,
   step = FALSE,
   delete = NULL,
   dbl_key = FALSE,
-  poly_key = FALSE,
-  anchor = FALSE,
   section_extr = NULL,
   p_cut = 0.05,
   DIF_cut = 0.5,
@@ -32,8 +30,8 @@ DIF_dim_multi(
   desig_effect = 1,
   dim_multi = FALSE,
   scores = NULL,
-  miss_code = c(".", "r", "R", "x", "X", "", " "),
-  prep_process = FALSE
+  prep_process = FALSE,
+  pweight = NULL
 )
 }
 \arguments{
@@ -55,10 +53,10 @@ Default is NULL.}
 \item{data}{Dataframe with pid, covariables (e.g,, DIF variable), and responses.
 Default is NULL where Excel file with name 'test' in 'data' folder is used.}
 
-\item{keys}{Vector of keys in the test. Default is NULL.}
+\item{filetype}{Format for input dataset. Default is 'sav'. Also support
+csv format.}
 
-\item{labels}{Vector of item labels that correspond to order of item response
-columns in data.}
+\item{keys}{Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).}
 
 \item{vars}{Vector of length 2 such as c('girls','boys'). Its order
 corresponds to the alphabetic/numeric order of DIF variables' two categories in data.}
@@ -73,11 +71,6 @@ Make sure to check colinearity of the regressors.}
 \item{delete}{Vector of orders of items to be removed.}
 
 \item{dbl_key}{TRUE if any item has polytomous scoring. Default is FALSE.}
-
-\item{poly_key}{TRUE if the key of any item has polytomous scoring.
-Default is FALSE.}
-
-\item{anchor}{TRUE when anchor is to be done. Default is FALSE.}
 
 \item{section_extr}{Extra sections to be added to 'test.cqc' file in 'input'
 folder. Default is NULL.}
@@ -102,11 +95,11 @@ facility difference between two groups of test takers. Default is 10.}
 
 \item{scores}{Scores possible in the test, e.g., 0:3. Default is NULL.}
 
-\item{miss_code}{Code for missing data that should be converted to NA.
-Default is c('.', 'r', 'R', 'x', 'X', '', ' ').}
-
 \item{prep_process}{TRUE if it is needed to remove items without data on
 some categories of DIF variable. Default is FALSE.}
+
+\item{pweight}{Variable name of person weights in response dataframe. Should
+be specified if weight is used for modeling. Default is NULL.}
 }
 \description{
 This function can perform DIF analysis on either dichotomous or polytomous
@@ -122,14 +115,4 @@ item responses with all missing values. Third, remove items that have no data
 on any category of the DIF variable. An Excel with processed data and
 removed items is saved in 'data' folder. Its name has both test name and
 DIF variable.
-}
-\examples{
-DIF_dim_multi(method='chi_square', vars=c('Girls', 'Boys'), DIFVar="studGender",
-data=df_DIF, test='ELANA', pid='studentId', n_cov=5, n_dims=c(901, 171),
-dim_names=c('HUM', 'Maths'), regr_vec_char=c('countryName', 'studAge'),
-section_extr='group countryName;\n')
-DIF_dim_multi(method='Bonferroni', DIFVar="studAge", data=df_DIF,
-test='ELANA', pid='studentId', n_cov=5, n_dims=c(901, 171),
-dim_names=c('HUM', 'Maths'), regr_vec_char=c('countryName', 'studGender'),
-quick=TRUE, section_extr='group countryName;\n')
 }

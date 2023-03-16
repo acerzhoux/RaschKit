@@ -7,6 +7,7 @@
 DIF(
   method = c("chi_square", "Bonferroni", "Facet"),
   test,
+  keys,
   codes,
   pid_cols = NULL,
   resps_cols,
@@ -32,13 +33,17 @@ DIF(
   desig_effect = 1,
   domain = NULL,
   save_xlsx = TRUE,
-  iterative = TRUE
+  iterative = TRUE,
+  pweight = NULL,
+  pw_cols = NULL
 )
 }
 \arguments{
 \item{method}{One of 'chi_square', 'Bonferroni', or 'Facet'.}
 
 \item{test}{Name of the test.}
+
+\item{keys}{Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).}
 
 \item{codes}{Vector of valid codes for item responses,
 e.g., c(1, 2, 3, 4, 5, 6, 7, 8, 9).}
@@ -102,6 +107,11 @@ facility difference between two groups of test takers. Default is 10.}
 (one DIF variable).}
 
 \item{iterative}{TRUE to iteratively remove DIF items. Default is TRUE.}
+
+\item{pweight}{Variable name of person weights in response dataframe. Should
+be specified if weight is used for modeling. Default is NULL.}
+
+\item{pw_cols}{String of column numbers of case weight, e.g., '5-15'.}
 }
 \value{
 Dataframe of students' ID, raw score, max test score, estimate,

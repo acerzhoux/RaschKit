@@ -4,16 +4,13 @@
 \alias{delta_error_DIF_dich}
 \title{delta_error_DIF_dich}
 \usage{
-delta_error_DIF_dich(folder, test, long_label = FALSE)
+delta_error_DIF_dich(folder, test)
 }
 \arguments{
 \item{folder}{Folder where xxx_shw.txt file is located with delta estimates for
 interaction term between dichotomous DIF variable and item. Default is 'DIF' folder.}
 
 \item{test}{Name of test.}
-
-\item{long_label}{Whether item labels are longer than 15 characters' fixed
-width. Default is FALSE.}
 }
 \value{
 Dataframe of three variables of 'item', 'error.x', 'error.y'.
@@ -24,5 +21,4 @@ DIF variable.
 }
 \examples{
 delta_error_DIF_dich(folder=folder, test='RandD2')
-delta_error_DIF_dich(folder=folder, test='RandD2', long_label=TRUE)
 }

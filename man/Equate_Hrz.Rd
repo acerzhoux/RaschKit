@@ -13,7 +13,7 @@ Equate_Hrz(
   DIF_cut = 0.5,
   DIF_adj_cut = 4,
   step = FALSE,
-  long_label = FALSE
+  iterative = FALSE
 )
 }
 \arguments{
@@ -37,8 +37,7 @@ between two tests. Default is 4.}
 \item{step}{TRUE if DIF analysis is performed on step parameters.
 Default is FALSE.}
 
-\item{long_label}{Whether item labels are longer than 15 characters' fixed
-width. Default is FALSE.}
+\item{iterative}{TRUE to iteratively remove DIF items. Default is FALSE.}
 }
 \value{
 List of chi-square test results on Form A and Form B for each grade.
@@ -50,5 +49,5 @@ which is for one grade. Also, one plot is saved in subfolder 'plot' inside
 'equating' folder for each grade.
 }
 \examples{
-Equate_Hrz(test='ArabicA', grades=c(3:6))
+Equate_Hrz(test='bang', grades=c(3, 5), long_label=T)
 }

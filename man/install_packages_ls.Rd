@@ -7,11 +7,11 @@
 install_packages_ls(
   packages = c("plyr", "conquestr", "rlang", "bookdown", "ggthemes", "ggrepel",
     "patchwork", "rmarkdown", "gdata", "janitor", "data.table", "knitr", "RColorBrewer",
-    "fs", "here", "lazyeval", "writexl", "ggpubr", "qpdf", "tidyverse")
+    "fs", "here", "lazyeval", "writexl", "ggpubr", "qpdf", "tidyverse", "openxlsx")
 )
 }
 \arguments{
-\item{packages}{Vector of package names (character). Default is the vector 
+\item{packages}{Vector of package names (character). Default is the vector
 of packages needed for Package RaschKit.}
 }
 \description{

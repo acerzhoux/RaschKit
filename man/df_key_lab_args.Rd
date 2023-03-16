@@ -10,7 +10,6 @@ df_key_lab_args(
   pid,
   n_cov,
   n_resp,
-  keys,
   DIFVar = NULL,
   regr_vec_char = NULL,
   section_extr = NULL,
@@ -29,8 +28,6 @@ df_key_lab_args(
 \item{n_cov}{Number of covariates before responses.}
 
 \item{n_resp}{Number of items in the data.}
-
-\item{keys}{Item keys.}
 
 \item{DIFVar}{DIF variable. Default is NULL.}
 

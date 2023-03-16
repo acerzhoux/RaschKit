@@ -17,5 +17,5 @@ it establishes a new folder and moves files inside. This is associated
 with test named 'test'.
 }
 \examples{
-move_into_folder(test='randomData1')
+move_into_folder(test=test)
 }

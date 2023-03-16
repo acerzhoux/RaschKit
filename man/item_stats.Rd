@@ -4,16 +4,19 @@
 \alias{item_stats}
 \title{item_stats}
 \usage{
-item_stats(test)
+item_stats(folder = "outoput", test)
 }
 \arguments{
-\item{test}{Name of test.}
+\item{folder}{Folder where ConQuest output files are located.}
+
+\item{test}{Name of test. Default is 'output'.}
 }
 \description{
 This function extracts item statistics such as item-rest correlation,
-facility, delta, and case number from 'test.its' file. This is associated
+facility, delta, and case number from 'xxx_its.txt' and 'xxx_shw.txt' files
+and merge them into one dataframe. This is associated
 with test named 'test'.
 }
 \examples{
-item_stats(test='FPA')
+a <- item_stats(test='math_35')
 }

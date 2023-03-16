@@ -51,7 +51,7 @@ Default is FALSE.}
 \item{DIF}{TRUE if DIF analysis is performed on a dichotomous DIF variable.
 Default is FALSE (anchor check).}
 
-\item{iterative}{TRUE to iteratively remove DIF items. Default is FALSE}
+\item{iterative}{TRUE to iteratively remove DIF items. Default is FALSE.}
 }
 \value{
 Dataframe of chi-square test results for anchors between two tests.

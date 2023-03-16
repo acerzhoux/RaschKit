@@ -21,8 +21,6 @@
 #' @param step TRUE if DIF analysis is performed on step parameters. Default is FALSE.
 #' @param facil_cut Threshold of number of percent to flag an item with large
 #' facility difference between two groups of test takers. Default is 10.
-#' @param long_label Whether item labels are longer than 11 characters' fixed
-#' width. Default is FALSE.
 #' @param iterative TRUE to iteratively remove DIF items. Default is FALSE
 #' @param save_xlsx Whether to save summary file and plots. Default is TRUE
 #' (one DIF variable).
@@ -38,7 +36,7 @@
 DIF_dich <- function(DIFVar, test, vars, df,
                      p_cut=0.05, chi_cut=10, DIF_cut=0.5, DIF_adj_cut=4,
                      desig_effect=1, step=FALSE, facil_cut=10,
-                     long_label=FALSE, iterative=FALSE, save_xlsx=TRUE,
+                     iterative=FALSE, save_xlsx=TRUE,
                      quick=TRUE){
     if (!dir.exists('DIF')) dir.create('DIF')
 
@@ -99,11 +97,11 @@ DIF_dich <- function(DIFVar, test, vars, df,
         while (dim(iDIF)[1] != 0){
             if (step){
                 updated <- chi_square_test_step(df={updated |>
-                        filter(chisq!=max(chisq))},
+                        filter(abs(DIF_std)!=max(abs(DIF_std)))},
                         desig_effect=desig_effect)
             } else {
                 updated <- chi_square_test(df={updated |>
-                        filter(chisq!=max(chisq))})
+                        filter(abs(DIF_std)!=max(abs(DIF_std)))})
             }
             iDIF <- DIF_items(df=updated, p_cut=p_cut, chi_cut=chi_cut,
                               DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut)
@@ -172,7 +170,7 @@ DIF_dich <- function(DIFVar, test, vars, df,
     if(!step){
         sht_facil <- paste0(DIFVar, if(step) '_step', '_', test, '_Facility')
         p_DIF_facil <- plot_facil(test=test, vars=vars, facil_cut=facil_cut,
-                                  facil_dif=facil_DIF(test, DIFVar, long_label),
+                                  facil_dif=facil_DIF(test, DIFVar),
                                   DIFVar=DIFVar)
     }
 

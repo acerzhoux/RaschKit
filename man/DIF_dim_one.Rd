@@ -11,16 +11,14 @@ DIF_dim_one(
   n_cov,
   DIFVar,
   data = NULL,
-  keys = NULL,
+  filetype = "sav",
+  keys,
   vars = NULL,
   poly_facet = FALSE,
   n_resp = NULL,
   regr_vec_char = NULL,
-  labels = NULL,
   quick = TRUE,
   section_extr = NULL,
-  miss_code = c(".", "r", "R", "x", "X", "", " "),
-  poly_key = FALSE,
   prep_process = FALSE,
   save_xlsx = TRUE,
   p_cut = 0.05,
@@ -30,7 +28,8 @@ DIF_dim_one(
   facil_cut = 10,
   iterative = FALSE,
   step = FALSE,
-  desig_effect = 1
+  desig_effect = 1,
+  pweight = NULL
 )
 }
 \arguments{
@@ -48,7 +47,10 @@ Default is NULL.}
 \item{data}{Dataframe with pid, covariables (e.g,, DIF variable), and responses.
 Default is NULL where Excel file with name 'test' in 'data' folder is used.}
 
-\item{keys}{Vector of keys in the test. Default is NULL.}
+\item{filetype}{Format for input dataset. Default is 'sav'. Also support
+csv format.}
+
+\item{keys}{Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).}
 
 \item{vars}{Vector of length 2 such as c('girls','boys'). Its order corresponds
 to the alphabetic/numeric order of DIF variables' two categories in data.}
@@ -60,19 +62,10 @@ Default is FALSE.}
 
 \item{regr_vec_char}{Vector of character regressors' names.}
 
-\item{labels}{Vector of item labels that correspond to order of item response
-columns in data.}
-
 \item{quick}{Whether quick error is needed. Default is TRUE for DIF analysis.}
 
 \item{section_extr}{Extra sections to be added to .cqc file in 'input' folder.
 Default is NULL.}
-
-\item{miss_code}{Code for missing data that should be converted to NA.
-Default is c('.', 'r', 'R', 'x', 'X', '', ' ').}
-
-\item{poly_key}{TRUE if the key of any item has polytomous scoring.
-Default is FALSE.}
 
 \item{prep_process}{TRUE if it is needed to remove items without data on
 some categories of DIF variable. Default is FALSE.}
@@ -99,6 +92,9 @@ facility difference between two groups of test takers. Default is 10.}
 \item{step}{TRUE if polytomous items are involved. Default is FALSE.}
 
 \item{desig_effect}{Value to adjust errors. Default is 1.}
+
+\item{pweight}{Variable name of person weights in response dataframe. Should
+be specified if weight is used for modeling. Default is NULL.}
 }
 \description{
 This function can perform DIF analysis on either dichotomous or polytomous
@@ -109,15 +105,4 @@ Should preprocess data in three ways. First, convert non-used categories and
 missing values to NA. Second, remove item responses with all missing values.
 Third, remove items that have all missing values or all correct/incorrect
 responses on any category of the DIF variable.
-}
-\examples{
-DIF_dim_one(method='chi_square', vars=c('Girls', 'Boys'), data=elena,
-test='ELNA', DIFVar="gender", pid="IDSTUD", n_cov=9,
-regr_vec_char=c('province', 'quintile'), quick=TRUE, miss_code=NULL)
-DIF_dim_one(method='Bonferroni', data=elena, test='ELNA', DIFVar="quintile",
-pid="IDSTUD", n_cov=9, regr_vec_char=c('province', 'gender'), quick=TRUE,
-miss_code=NULL)
-DIF_dim_one(method='Facet', data=elena, test='ELNA', DIFVar="quintile",
-pid="IDSTUD", n_cov=9, regr_vec_char=c('province', 'gender'), quick=TRUE,
-miss_code=NULL)
 }

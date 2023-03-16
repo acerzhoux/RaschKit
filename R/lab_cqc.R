@@ -14,6 +14,7 @@
 #' 'DIFVar_cols', and 'poly_facet'.
 #'
 #' @param test Name of the test.
+#' @param keys Dataframe of 'Item', 'Key', and 'Max_score'.
 #' @param run Vector of specific categories of variables to select from
 #' 'test_Data.txt' in 'data' folder, e.g., c('English2', 3, 1). This corresponds
 #' to the previous argument `run_ls`. Default is NULL.
@@ -49,7 +50,7 @@
 #' lab_cqc()
 #' @export
 
-lab_cqc <- function(test, run=NULL, run_ls=NULL,
+lab_cqc <- function(test, keys, run=NULL, run_ls=NULL,
          codes, pid_cols=NULL, resps_cols, quick=FALSE, delete=NULL,
          dbl_key=NULL, poly_key=FALSE, anchor=FALSE, section_extr=NULL,
          step=FALSE, regr_ls=NULL,
@@ -92,7 +93,7 @@ lab_cqc <- function(test, run=NULL, run_ls=NULL,
       section_data(path_df, resps_cols, pid_cols, run_ls, regr_ls,
             path_lab, DIFVar, DIFVar_cols, poly_group,
             pweight, pw_cols),
-      section_keys(test=test, dbl_key=dbl_key,
+      section_keys(test=test, keys, dbl_key=dbl_key,
             poly_key=poly_key, delete=delete),
       section_specs(anchor=anchor, test=test, DIFVar=DIFVar,
              poly_catgrs=poly_catgrs, quick=quick),

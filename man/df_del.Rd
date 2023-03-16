@@ -4,24 +4,19 @@
 \alias{df_del}
 \title{df_del}
 \usage{
-df_del(folder = "output", test, long_label = FALSE)
+df_del(folder = "output", test)
 }
 \arguments{
 \item{folder}{Folder where ConQuest output files are located.}
 
 \item{test}{Name of test.}
-
-\item{long_label}{Whether item labels are longer than 16 characters' fixed
-width. Default is FALSE.}
 }
 \value{
 Dataframe of item name_step and delta.
 }
 \description{
 This function extracts step parameter estimates from .del file. This is
-associated with test named 'test'. If any item label is longer than 16
-characters' fixed width, use long_label=TRUE to read complete labels from
-'test_Labels.txt' file in 'data' folder.
+associated with test named 'test'.
 }
 \examples{
 df_del(test='elana_math_NSW')

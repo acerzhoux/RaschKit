@@ -1,6 +1,6 @@
 #' DIF_steps_dich
 #'
-#' This function generates a tibble of steps to follow when performing DIF 
+#' This function generates a tibble of steps to follow when performing DIF
 #' analysis on a dichotomous DIF variable.
 #'
 #' @param iterative TRUE to iteratively remove DIF items. Default is FALSE
@@ -18,7 +18,7 @@ DIF_steps_dich <- function(iterative=FALSE){
       'Adjust each delta difference (Step 3) by dividing it by adjusted error, i.e., sqrt(error.x^2 + error.y^2).',
       'Perform two-side df-1 Chi-squared test on each squared adjusted delta difference (Step 4).',
       if (iterative){
-        'Iteratively perform Step 5 and each time remove the item of largest Chi-squared value until items all satisfy thresholds of p value, Chi-squared value, delta difference, and adjusted delta difference.'
+        'Iteratively perform Step 5 and each time remove the item of largest absolute adjusted delta difference until items all satisfy thresholds of p value, Chi-squared value, delta difference, and adjusted delta difference.'
       }),
     Steps = 1:length(Details)) %>%
         select(Steps, Details)

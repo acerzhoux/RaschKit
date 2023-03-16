@@ -48,22 +48,27 @@ plot_DIF <- function(df, wh, vars, p_cut=0.05, chi_cut=10,
     txt2 <- tibble(delta.x=Inf, delta.y_adj=-Inf,
                    label=paste0('Easier for ',vars[2]))
 
+    error <- mean(sqrt(df$error.x^2 + df$error.y^2))
+
     p <- ggplot(df, aes(x=delta.x, y=delta.y_adj)) +
         geom_point() +
         lims(x= c(ax_min, ax_max), y = c(ax_min, ax_max)) +
         geom_abline(intercept=0, slope=1, colour='gray') +
+        geom_abline(intercept=-1.96*error, slope=1, colour='gray', linetype="dotted") +
+        geom_abline(intercept=1.96*error, slope=1, colour='gray', linetype="dotted") +
         geom_ribbon(aes(ymin=LB, ymax=UB), alpha=0.2) +
         geom_text(aes(label=label), data=txt1, vjust='top', hjust='left') +
         geom_text(aes(label=label), data=txt2, vjust='bottom', hjust='right') +
-        labs(title=paste0(wh, ' Review: ', dim(df)[1],
-                          if (step) ' Steps' else if (DIF) ' Items' else ' Anchors',
-                          ' (cor. = ', cor, ', ',
-                          'mean shift = ', shift, ', ',
-                          'SD ratio = ', sdr, ')'),
-             x=paste0('Item Difficulty (Logits) for ', vars[1],
-                      if (step | quick) ' (delta-centred)'),
-             y=paste0('Item Difficulty (Logits) for ', vars[2],
-                      ' (delta-centred)')) +
+        labs(
+          title=paste0(wh, ' Review: ', dim(df)[1],
+                       if (step) ' Steps' else if (DIF) ' Items' else ' Anchors',
+                       ' (cor. = ', cor, ', ', 'mean shift = ', shift, ', ',
+                       'SD ratio = ', sdr, ')'),
+          x=paste0('Item Difficulty (Logits) for ', vars[1],
+                  if (step) ' (delta-centred)'),
+          y=paste0('Item Difficulty (Logits) for ', vars[2],
+                  if (step) ' (delta-centred)' else ' (+ Mean shift)')
+        ) +
         ggthemes::theme_tufte()
 
     if (wh=='Before'){

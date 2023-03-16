@@ -15,7 +15,7 @@ itn_summary(
   dRiseThr = 0.1,
   ccc_data,
   iType,
-  quick = FALSE
+  keys
 )
 }
 \arguments{
@@ -45,7 +45,7 @@ Default is 0.1.}
 \item{iType}{Dataframe with columns of iNum and itype. One element of list
 output from Function 'CCC_Vernon'.}
 
-\item{quick}{TRUE when testing. Default is FALSE.}
+\item{keys}{Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).}
 }
 \value{
 Dataframe of item statistics with flags.
@@ -55,5 +55,5 @@ This function produces item analysis results with flags based on item
 statistics and CCC. This is associated with test named 'test'.
 }
 \examples{
-itn_summary(test='AACA_202208_PRE_Meeting')
+a <- itn_summary(test='math_35', ccc_data=ccc_data, iType=iType)
 }

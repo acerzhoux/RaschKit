@@ -4,14 +4,7 @@
 \alias{CCC_ipMap}
 \title{CCC_ipMap}
 \usage{
-CCC_ipMap(
-  test,
-  cqs,
-  abilEst2use = "pv1",
-  numAbilGrps = NULL,
-  long_label = FALSE,
-  poly_key = FALSE
-)
+CCC_ipMap(test, cqs, abilEst2use = "pv1", numAbilGrps = NULL, poly_key)
 }
 \arguments{
 \item{test}{Name of the test.}
@@ -23,11 +16,7 @@ Use 'wle' for smaller samples.}
 
 \item{numAbilGrps}{Number of ability groups. Default is NULL.}
 
-\item{long_label}{Whether item labels are longer than 16 characters' fixed width.
-Default is FALSE.}
-
-\item{poly_key}{TRUE if the key of any item has polytomous scoring.
-Default is FALSE.}
+\item{poly_key}{TRUE if the key of any item has polytomous scoring.}
 }
 \value{
 Plots of CCC by category and score.

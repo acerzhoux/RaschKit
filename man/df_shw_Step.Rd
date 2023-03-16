@@ -4,23 +4,17 @@
 \alias{df_shw_Step}
 \title{df_shw_Step}
 \usage{
-df_shw_Step(folder = "output", test, long_label = FALSE)
+df_shw_Step(folder = "output", test)
 }
 \arguments{
 \item{folder}{Folder where xxx_shw.txt file is located.}
 
 \item{test}{Name of test.}
-
-\item{long_label}{Whether item labels are longer than 15 characters' fixed
-width. Default is FALSE.}
 }
 \description{
 This function extracts step parameter estimates from .shw file. This is
-associated with test named 'test'. If any item label is longer than 13
-characters' fixed width, use long_label=TRUE to read complete labels from
-'test_Labels.txt' file in 'data' folder.
+associated with test named 'test'.
 }
 \examples{
 df_shw_Step(test='elana_poly_score')
-df_shw_Step(test='elana_poly_score', long_label=TRUE)
 }

@@ -19,7 +19,6 @@
 #' @export
 
 CCC_comments <- function(test, dFallThr=.5, dRiseThr=.1, ccc_data, iType){
-  q_oders <- sort(unique(ccc_data$iNum))
   iType <- iType %>% mutate(Comment='')
 
   # If there is any poly item, get comments
@@ -27,9 +26,9 @@ CCC_comments <- function(test, dFallThr=.5, dRiseThr=.1, ccc_data, iType){
     comment_poly <- itn_poly_comment(test)
   }
 
-  for(i in q_oders){
+  for(i in 1:nrow(iType)){
     Q_vec <- NULL
-    kkk <- ccc_data %>% filter(iNum == i)
+    kkk <- ccc_data %>% filter(iNum == iType[i, ]$iNum)
 
     # dichotomous items
     if (iType[i, ]$itype %in% c('dich', 'score')){
@@ -58,7 +57,7 @@ CCC_comments <- function(test, dFallThr=.5, dRiseThr=.1, ccc_data, iType){
       dis_ck <- NULL
       miskey <- double_key <- FALSE
       # check distractors
-      for (distr in setdiff(setdiff(distrs, key), c(9,'9'))) {
+      for (distr in setdiff(setdiff(distrs, key), c('9', '0'))) {
         a <- kkk %>%
           filter(group == nBin, str_detect(Option, distr)) %>%
           pull(prop)
@@ -137,8 +136,8 @@ CCC_comments <- function(test, dFallThr=.5, dRiseThr=.1, ccc_data, iType){
 
     # polytomous items
     if (iType[i, ]$itype %in% 'poly'){
-      if (i %in% comment_poly$qOrder){
-        iType[i, 'Comment'] <- comment_poly[i, ]$Comment
+      if (iType[i, ]$iNum %in% comment_poly$qOrder){
+        iType[i, 'Comment'] <- filter(comment_poly, qOrder==iType[i, ]$iNum)$Comment
       }
     }
 

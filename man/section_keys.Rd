@@ -4,10 +4,12 @@
 \alias{section_keys}
 \title{section_keys}
 \usage{
-section_keys(test, dbl_key = NULL, poly_key = FALSE, delete = NULL)
+section_keys(test, keys, dbl_key = NULL, poly_key = FALSE, delete = NULL)
 }
 \arguments{
 \item{test}{Name of the test.}
+
+\item{keys}{Dataframe of 'Item', 'Key', and 'Max_score'.}
 
 \item{dbl_key}{TRUE if the key of any item is double key. Default is NULL.}
 
@@ -16,9 +18,6 @@ Default is FALSE.}
 
 \item{delete}{Vector of to-be-removed items' order numbers in the test,
 e.g., c(4, 7, 65, 114). Default is NULL.}
-
-\item{folder}{The 'data' folder where key 'test_Key.txt' file is located.
-Default is 'data' folder in working directory.}
 }
 \value{
 String of characters used in key section of 'test.cqc' file in

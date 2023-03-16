@@ -15,7 +15,6 @@ DIF_dich_its_shw(
   desig_effect = 1,
   step = FALSE,
   facil_cut = 10,
-  long_label = FALSE,
   save_xlsx = TRUE,
   iterative = FALSE,
   quick = TRUE
@@ -46,9 +45,6 @@ between two tests. Default is 4.}
 
 \item{facil_cut}{Threshold of number of percent to flag an item with large
 facility difference between two groups of test takers. Default is 10.}
-
-\item{long_label}{Whether item labels are longer than 11 characters' fixed
-width. Default is FALSE.}
 
 \item{save_xlsx}{Whether to save summary file and plots. Default is TRUE
 (one DIF variable).}

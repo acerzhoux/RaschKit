@@ -9,7 +9,6 @@
 #' @param pid Name of candidates' ID variable.
 #' @param n_cov Number of covariates before responses.
 #' @param n_resp Number of items in the data.
-#' @param keys Item keys.
 #' @param DIFVar DIF variable. Default is NULL.
 #' @param regr_vec_char Vector of character regressors' names.
 #' @param section_extr Sections to be included in the .cqc file. Default is NULL.
@@ -25,7 +24,7 @@
 #' # regr_vec_char=c('nation', 'language', 'grade'))
 #' @export
 
-df_key_lab_args <- function(test, data, pid, n_cov, n_resp, keys,
+df_key_lab_args <- function(test, data, pid, n_cov, n_resp,
                             DIFVar=NULL, regr_vec_char=NULL,
                             section_extr=NULL, labels=NULL, anchor=FALSE,
                             pweight=NULL){
@@ -43,9 +42,8 @@ df_key_lab_args <- function(test, data, pid, n_cov, n_resp, keys,
     data <- data %>%
         modify_at(1:(n_cov+n_resp), ~as.character(.))
 
-    # save data, label, keys
+    # save data, label
     data_into_Data(test=test, data=data, DIFVar=DIFVar)
-    if(!is.null(keys)) keys_into_Data(test=test, keys=keys)
     labels_into_Data(test=test, labels=labels)
 
     # prepare arguments

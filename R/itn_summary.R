@@ -19,32 +19,61 @@
 #' @param ccc_data Data to draw CCC. One element of list output from Function 'CCC_Vernon'.
 #' @param iType Dataframe with columns of iNum and itype. One element of list
 #' output from Function 'CCC_Vernon'.
-#' @param quick TRUE when testing. Default is FALSE.
+#' @param keys Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).
 #' @return Dataframe of item statistics with flags.
 #' @examples
-#' itn_summary(test='AACA_202208_PRE_Meeting')
+#' a <- itn_summary(test='math_35', ccc_data=ccc_data, iType=iType)
 #' @export
 
 itn_summary <- function(test, easy=90, hard=10, iRst=.11, fit_w=1.1, fit_uw=1.2,
-                        dFallThr=.5, dRiseThr=.1, ccc_data, iType, quick=FALSE){
-    istats_flagged <- item_fit_opt_flag123(test, easy, hard, iRst, fit_w, fit_uw)
-    if (quick) istats_flagged <- mutate(istats_flagged, delta = delta-mean(delta))
+                        dFallThr=.5, dRiseThr=.1, ccc_data, iType, keys){
+  right_join(
+      keys,
+      CCC_fine_flag4(
+        itnFlag123(test, easy, hard, iRst, fit_w, fit_uw),
+        CCC_comments(test, dFallThr, dRiseThr, ccc_data, iType)
+      ),
+      by=c('Item'='Item Title')
+    ) |>
+    bind_cols(
+      tibble(
+        `ICC Path`=c(paste0(getwd(), '/output/', test, '_CCC.pdf'), rep(NA, nrow(keys)-1))
+      ),
+    ) |>
+    dplyr::mutate(
+      Test=test,
+      ICC=paste0('output/', test, '_CCC.pdf')
+    ) |>
+    dplyr::select(
+      Test,
+      seqNo,
+      ICC,
+      `Item Title`=Item,
+      Key,
+      `Max Score`=Max_score,
+      `Item Estimate (case centred)`,
+      `Item Estimate (item centred)`,
+      `Item Error`,
+      Facility,
+      `Item-Rest Corr.`,
+      `Item-Total Corr.`,
+      Outfit,
+      Infit,
+      `C.I. (L)`,
+      `C.I. (H)`,
+      `T`,
+      `Number of Students`,
+      Priority,
+      Comment,
+      `ICC Path`
+    ) |>
+    dplyr::mutate(
+      Priority=ifelse(is.na(`Item Estimate (item centred)`), NA, Priority),
+      Comment=ifelse(is.na(`Item Estimate (item centred)`), 'Deleted.', Comment),
+      Key=ifelse(`Max Score`>1, 'CR', Key),
+      `Max Score`=ifelse(is.na(`Item Estimate (item centred)`), NA, `Max Score`),
+      Facility=ifelse(is.na(`Item Estimate (item centred)`), NA, Facility)
+    ) |>
+    dplyr::filter(Comment!='Deleted.')
 
-    # generate comments
-    comments <- CCC_comments(test, dFallThr, dRiseThr, ccc_data, iType)
-
-    #solve error in CCC_comments(): e.g., extra row from double key
-    tryCatch({
-        istats_flagged <- CCC_fine_flag4(istats_flagged, comments)
-    },
-    error = function(e) {
-        istats_flagged <- left_join(
-            istats_flagged,
-            comments,
-            by = c('qOrder'='iNum')
-        )
-    })
-
-    # save results
-    istats_flagged
 }

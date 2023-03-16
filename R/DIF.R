@@ -51,6 +51,10 @@
 #' @return Dataframe of students' ID, raw score, max test score, estimate,
 #' and standard error.
 #' @param iterative TRUE to iteratively remove DIF items. Default is TRUE.
+#' @param pweight Variable name of person weights in response dataframe. Should
+#' be specified if weight is used for modeling. Default is NULL.
+#' @param pw_cols String of column numbers of case weight, e.g., '5-15'.
+#' @param keys Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).
 #' @examples
 #' # Not run
 #' # DIF(vars=c('girls', 'boys'), test='literacy', codes=c(1:4, 9),
@@ -65,7 +69,7 @@
 #' @export
 
 DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
-                test, #### CQC #####
+                test, keys, #### CQC #####
                 codes, pid_cols=NULL, resps_cols, regr_ls=NULL, delete=NULL, anchor=FALSE,
                 section_extr=NULL, dbl_key=FALSE,
                 poly_key=FALSE, quick=TRUE, step=FALSE,
@@ -74,18 +78,19 @@ DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
                 vars=NULL, p_cut=0.05, DIF_cut=0.5,
                 DIF_adj_cut=4, chi_cut=10, facil_cut=10,
                 desig_effect=1, domain=NULL,
-                save_xlsx=TRUE, iterative=TRUE){
+                save_xlsx=TRUE, iterative=TRUE, pweight=NULL, pw_cols=NULL){
     # check inputs
     if (length(method)!=1 || !(method %in% c('chi_square', 'Bonferroni', 'Facet'))) {
         stop('Please set \'method\' as one of \'chi_square\', \'Bonferroni\', or \'Facet\'.')
     }
 
-    arg_cqc <- list(test=test, run=NULL, run_ls=NULL, ####CQC
+    arg_cqc <- list(test=test, run=NULL, run_ls=NULL, keys=keys, ####CQC
         codes=codes, pid_cols=pid_cols, resps_cols=resps_cols,
         quick=quick, delete=delete, dbl_key=dbl_key, poly_key=poly_key,
         anchor=anchor, step=step, regr_ls=regr_ls, section_extr=section_extr,
         DIFVar=DIFVar, DIFVar_cols=DIFVar_cols, poly_catgrs=poly_catgrs,
-        poly_facet=poly_facet, poly_group=poly_group)
+        poly_facet=poly_facet, poly_group=poly_group,
+        pweight=pweight, pw_cols=pw_cols)
     arg_DIF <- list(DIFVar=DIFVar, test=test, p_cut=p_cut, step=step)
 
     if (method=='chi_square'){
@@ -105,8 +110,7 @@ DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
                     vars=vars,
                     DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut,
                     chi_cut=chi_cut, facil_cut=facil_cut,
-                    desig_effect=desig_effect,
-                    long_label=TRUE, save_xlsx=save_xlsx,
+                    desig_effect=desig_effect, save_xlsx=save_xlsx,
                     iterative=iterative, quick=quick
                 )
             )

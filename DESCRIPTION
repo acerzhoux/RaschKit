@@ -40,5 +40,6 @@ Imports:
     writexl,
     ggpubr,
     qpdf,
-    tidyverse
+    tidyverse,
+    openxlsx
 RoxygenNote: 7.2.3

@@ -16,7 +16,6 @@ DIF_dich(
   desig_effect = 1,
   step = FALSE,
   facil_cut = 10,
-  long_label = FALSE,
   iterative = FALSE,
   save_xlsx = TRUE,
   quick = TRUE
@@ -49,9 +48,6 @@ between two tests. Default is 4.}
 
 \item{facil_cut}{Threshold of number of percent to flag an item with large
 facility difference between two groups of test takers. Default is 10.}
-
-\item{long_label}{Whether item labels are longer than 11 characters' fixed
-width. Default is FALSE.}
 
 \item{iterative}{TRUE to iteratively remove DIF items. Default is FALSE}
 

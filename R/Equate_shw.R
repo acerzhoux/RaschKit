@@ -22,42 +22,38 @@
 #' a plot are desired. Default is TRUE.
 #' @param step TRUE if DIF analysis is performed on step parameters.
 #' Default is FALSE.
-#' @param long_label Whether item labels are longer than 15 characters' fixed
-#' width. Default is FALSE.
+#' @param iterative TRUE to iteratively remove DIF items. Default is FALSE.
 #' @return Dataframe of chi-square test results for anchors between two tests.
 #' @examples
 #' Equate_shw(test='elana_math', vars=c('NSW', 'VIC'))
-#' Equate_shw(test='elana_math', vars=c('NSW', 'VIC'), long_label=TRUE)
-#' Equate_shw(test='elana_math', vars=c('NSW', 'VIC'), step=TRUE)
-#' Equate_shw(test='elana_math', vars=c('NSW', 'VIC'), step=TRUE, long_label=TRUE)
-#' Equate_shw(test='ArabicA', vars=c('3', '4'))
 #' @export
 
 Equate_shw <- function(test, vars, var_name=NULL, p_cut=0.05,
                        chi_cut=10, DIF_cut=0.5, DIF_adj_cut=4,
-                       sav_results=TRUE, step=FALSE, long_label=FALSE){
-    if (!dir.exists('equating')) dir.create('equating')
+                       sav_results=TRUE, step=FALSE, iterative=FALSE){
+  if (!dir.exists('equating')) dir.create('equating')
 
-    r1 <- vars[[1]]
-    r2 <- vars[[2]]
-    if (!is.null(var_name)) vars <- str_c(var_name, vars)
+  r1 <- vars[[1]]
+  r2 <- vars[[2]]
+  if (!is.null(var_name)) vars <- str_c(var_name, vars)
 
-    # merge data
-    if (step){
-        df <- inner_join(
-                df_del_shw_Step('output', paste0(test, '_', r1), long_label),
-                df_del_shw_Step('output', paste0(test, '_', r2), long_label),
-                by="iStep"
-              )
-    } else {
-        df <- inner_join(
-                df_shw('output', paste0(test, '_', r1), long_label),
-                df_shw('output', paste0(test, '_', r2), long_label),
-                by='item'
-              )
-    }
+  # merge data
+  if (step){
+    df <- inner_join(
+      df_del_shw_Step('output', paste0(test, '_', r1)),
+      df_del_shw_Step('output', paste0(test, '_', r2)),
+      by="iStep"
+    ) |>
+    na.omit()
+  } else {
+    df <- inner_join(
+      df_shw('output', paste0(test, '_', r1)),
+      df_shw('output', paste0(test, '_', r2)),
+      by='item'
+    ) |>
+    na.omit()
+  }
 
-    Equate(df=df, test=test, vars=vars, p_cut=p_cut, chi_cut=chi_cut,
-           DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut, sav_results=sav_results,
-           step=step)
+  Equate(df, test, vars, p_cut, chi_cut, DIF_cut, DIF_adj_cut,
+         sav_results, 1, step, FALSE, iterative)
 }

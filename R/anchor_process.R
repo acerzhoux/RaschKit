@@ -1,6 +1,6 @@
 #' anchor_process
 #'
-#' This function processes anchor file to be input into ConQuest. This is
+#' This function processes anchor file of all-MC test to be input into ConQuest. This is
 #' associated with test named 'test'.
 #'
 #' @param test Name of test.
@@ -14,10 +14,11 @@
 #' @param n_dims Vector of numbers of responses the dimensions have. Default is NULL.
 #' Define this vector if multi-dimensional model is to be run, e.g., c(30, 45).
 #' Also should define this if there are variables after response columns, e.g., 30.
+#' @param dfAnc Dataframe of 'Item' and 'Delta' for anchors.
 #' @export
 
 anchor_process <- function(test, data, keys, labels, delete, poly_key,
-                           n_cov, n_dims){
+                           n_cov, n_dims, dfAnc){
     # id of removed item
     id_x <- unique(c(which({if (poly_key) keys$Key else keys} %in% c('x', 'X')), delete))
     # id of item with one score category
@@ -41,16 +42,13 @@ anchor_process <- function(test, data, keys, labels, delete, poly_key,
     )
     id <- unique(c(id_x, id_no_data))
 
-    # given anchor file (cols: Item, Delta)
-    anchors <- readxl::read_xlsx(paste0('data/', 'anchors.xlsx'), test)
-
     # remove deleted or no-data items, reorder items
     # extrac anchors with new orders, save into 'input' folder
     tibble(
         iNum = 1:length(labels),
         Item = labels
     ) %>%
-    left_join(anchors, by = "Item") %>%
+    left_join(dfAnc, by = "Item") %>%
     dplyr::filter(!(iNum %in% id)) %>%
     rowid_to_column('iNum') %>%
     dplyr::filter(!is.na(Delta)) %>%
