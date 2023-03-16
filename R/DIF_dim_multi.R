@@ -37,8 +37,6 @@
 #' @param section_extr Extra sections to be added to 'test.cqc' file in 'input'
 #' folder. Default is NULL.
 #' @param p_cut p value of chi-square test. Default is 0.05.
-#' @param chi_cut Threshold of chi-square difference between two items.
-#' Default is 10.
 #' @param DIF_cut Threshold of an item's delta estimate difference between
 #' two tests. Default is 0.5.
 #' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference
@@ -59,7 +57,7 @@ DIF_dim_multi <- function(method=c('chi_square', 'Bonferroni'), test, DIFVar,
               keys, vars=NULL, regr_vec_char=NULL,
               quick=TRUE, step=FALSE, delete=NULL,
               dbl_key=FALSE, section_extr=NULL,
-              p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4, chi_cut=10, facil_cut=10,
+              p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4, facil_cut=10,
               desig_effect=1, dim_multi=FALSE, scores=NULL,
               prep_process=FALSE, pweight=NULL){
   # read data
@@ -159,7 +157,7 @@ DIF_dim_multi <- function(method=c('chi_square', 'Bonferroni'), test, DIFVar,
       do.call(DIF_dich,
           arg_DIF %>% append(list(vars=vars, df=dat,
                       DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut,
-                      chi_cut=chi_cut, facil_cut=facil_cut,
+                      facil_cut=facil_cut,
                       desig_effect=desig_effect)))
       strt <- strt+n_dims[[i]]
     }

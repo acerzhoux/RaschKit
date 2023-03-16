@@ -9,8 +9,6 @@
 #' @param grade_name Character to add before grade in plots. Default is 'L'
 #' (for 'level').
 #' @param p_cut p value of chi-square test. Default is 0.05.
-#' @param chi_cut Threshold of chi-square difference between two tests.
-#' Default is 10.
 #' @param DIF_cut Threshold of an item's delta estimate difference between two
 #' tests. Default is 0.5.
 #' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference
@@ -23,7 +21,7 @@
 #' Equate_Vrt(test='bang', grades=c(3, 5))
 #' @export
 
-Equate_Vrt <- function(test, grades=c(2:10), grade_name='L', p_cut=0.05, chi_cut=10,
+Equate_Vrt <- function(test, grades=c(2:10), grade_name='L', p_cut=0.05,
                        DIF_cut=0.5, DIF_adj_cut=4, step=FALSE, iterative=FALSE){
   if (!dir.exists('equating')) dir.create('equating')
 
@@ -49,7 +47,7 @@ Equate_Vrt <- function(test, grades=c(2:10), grade_name='L', p_cut=0.05, chi_cut
 
     pstats <- plot_facilDiscrFitw(facilDiscrFitw, paste0('L', test_2), c(3, 7), 3)
 
-    statsEqu <- Equate_shw(test, test_2, grade_name, p_cut, chi_cut, DIF_cut,
+    statsEqu <- Equate_shw(test, test_2, grade_name, p_cut, DIF_cut,
                            DIF_adj_cut, FALSE, step, iterative)
 
     statsEqu[['flag']] <- left_join(

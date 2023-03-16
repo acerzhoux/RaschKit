@@ -11,8 +11,6 @@
 #' @param vars Vector of DIF categories, e.g., c('Girls','Boys'). Order should
 #' correspond to alphabetic/numeric order of DIF variables' two categories' code in data.
 #' @param p_cut p value of chi-square test. Default is 0.05.
-#' @param chi_cut Threshold of chi-square difference between two tests.
-#' Default is 10.
 #' @param DIF_cut Threshold of an item's delta estimate difference between two
 #' tests. Default is 0.5.
 #' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference
@@ -34,7 +32,7 @@
 #' @export
 
 DIF_dich_its_shw <- function(DIFVar, test, vars,
-               p_cut=0.05, chi_cut=10, DIF_cut=0.5, DIF_adj_cut=4,
+               p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4,
                desig_effect=1, step=FALSE, facil_cut=10,
                save_xlsx=TRUE, iterative=FALSE, quick=TRUE){
   # DIF: delta
@@ -56,6 +54,6 @@ DIF_dich_its_shw <- function(DIFVar, test, vars,
     }
   }
 
-  DIF_dich(DIFVar, test, vars, df, p_cut, chi_cut, DIF_cut, DIF_adj_cut,
+  DIF_dich(DIFVar, test, vars, df, p_cut, DIF_cut, DIF_adj_cut,
        desig_effect, step, facil_cut, iterative, save_xlsx, quick)
 }

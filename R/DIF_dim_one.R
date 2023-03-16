@@ -33,8 +33,6 @@
 #' @param save_xlsx Whether to save summary file and plots. Default is TRUE
 #' (one DIF variable).
 #' @param p_cut p value of chi-square test. Default is 0.05.
-#' @param chi_cut Threshold of chi-square difference between two tests.
-#' Default is 10.
 #' @param DIF_cut Threshold of an item's delta estimate difference between
 #' two tests. Default is 0.5.
 #' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference
@@ -55,7 +53,7 @@ DIF_dim_one <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
             quick=TRUE, section_extr=NULL,
             prep_process=FALSE, save_xlsx=TRUE,
             p_cut=0.05, DIF_cut=0.5,
-            DIF_adj_cut=4, chi_cut=10, facil_cut=10, iterative=FALSE,
+            DIF_adj_cut=4, facil_cut=10, iterative=FALSE,
             step=FALSE, desig_effect=1, pweight=NULL){
   # read data
   if (is.null(data)) {
@@ -131,7 +129,6 @@ DIF_dim_one <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
           section_extr=prep$section_extr, dbl_key=NULL, poly_key=poly_key,
           quick=quick, step=step, keys=keys,
           p_cut=p_cut, DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut,
-          chi_cut=chi_cut,
           facil_cut=facil_cut, desig_effect=desig_effect,
           test=test, DIFVar=DIFVar,
           vars=vars, poly_facet=poly_facet, poly_group=FALSE,

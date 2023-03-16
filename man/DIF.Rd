@@ -28,7 +28,6 @@ DIF(
   p_cut = 0.05,
   DIF_cut = 0.5,
   DIF_adj_cut = 4,
-  chi_cut = 10,
   facil_cut = 10,
   desig_effect = 1,
   domain = NULL,
@@ -93,8 +92,6 @@ tests. Default is 0.5.}
 
 \item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference
 between two tests. Default is 4.}
-
-\item{chi_cut}{Threshold of chi-square difference between two tests. Default is 10.}
 
 \item{facil_cut}{Threshold of number of percent to flag an item with large
 facility difference between two groups of test takers. Default is 10.}

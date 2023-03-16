@@ -12,8 +12,6 @@
 #' This will also be used in plotting. Order is flexible.
 #' @param var_name Character to add before vars in plots. Default is NULL.
 #' @param p_cut p value of chi-square test. Default is 0.05.
-#' @param chi_cut Threshold of chi-square difference between two tests.
-#' Default is 10.
 #' @param DIF_cut Threshold of an item's delta estimate difference between two
 #' tests. Default is 0.5.
 #' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference
@@ -29,7 +27,7 @@
 #' @export
 
 Equate_shw <- function(test, vars, var_name=NULL, p_cut=0.05,
-                       chi_cut=10, DIF_cut=0.5, DIF_adj_cut=4,
+                       DIF_cut=0.5, DIF_adj_cut=4,
                        sav_results=TRUE, step=FALSE, iterative=FALSE){
   if (!dir.exists('equating')) dir.create('equating')
 
@@ -54,6 +52,6 @@ Equate_shw <- function(test, vars, var_name=NULL, p_cut=0.05,
     na.omit()
   }
 
-  Equate(df, test, vars, p_cut, chi_cut, DIF_cut, DIF_adj_cut,
+  Equate(df, test, vars, p_cut, DIF_cut, DIF_adj_cut,
          sav_results, 1, step, FALSE, iterative)
 }

@@ -16,7 +16,6 @@ DIF_domain(
   p_cut = 0.05,
   DIF_cut = 0.5,
   DIF_adj_cut = 4,
-  chi_cut = 10,
   facil_cut = 10,
   desig_effect = 1,
   step = FALSE,
@@ -31,7 +30,7 @@ DIF_domain(
 
 \item{data}{Dataframe of DIF variables and responses.}
 
-\item{var_ls}{List of DIF variables. Name is variable name. Element is name 
+\item{var_ls}{List of DIF variables. Name is variable name. Element is name
 of categories which corresponds to data coding order.}
 
 \item{n_cov}{Number of covariates before responses.}
@@ -40,29 +39,26 @@ of categories which corresponds to data coding order.}
 
 \item{keys}{Vector of keys in the test.}
 
-\item{labels}{Vector of item labels that correspond to order of item response 
+\item{labels}{Vector of item labels that correspond to order of item response
 columns in data.}
 
-\item{poly_key}{TRUE if the key of any item has polytomous scoring. 
+\item{poly_key}{TRUE if the key of any item has polytomous scoring.
 Default is FALSE.}
 
 \item{p_cut}{p value of chi-square test. Default is 0.05.}
 
-\item{DIF_cut}{Threshold of an item's delta estimate difference between two 
+\item{DIF_cut}{Threshold of an item's delta estimate difference between two
 tests. Default is 0.5.}
 
-\item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference 
+\item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference
 between two tests. Default is 4.}
 
-\item{chi_cut}{Threshold of chi-square difference between two tests. 
-Default is 10.}
-
-\item{facil_cut}{Threshold of number of percent to flag an item with large 
+\item{facil_cut}{Threshold of number of percent to flag an item with large
 facility difference between two groups of test takers. Default is 10.}
 
 \item{desig_effect}{Value to adjust errors. Default is 1.}
 
-\item{step}{TRUE if DIF analysis is performed on step parameters. Default 
+\item{step}{TRUE if DIF analysis is performed on step parameters. Default
 is FALSE.}
 
 \item{output_ready}{TRUE if results are ready. Default is FALSE.}
@@ -74,10 +70,10 @@ is FALSE.}
 \item{quick}{Whether quick error is needed. Default is TRUE for DIF analysis.}
 }
 \description{
-This function performs DIF analysis on variables and responses in the data. 
-Data should be processed to have DIF variables of only categories needed. 
-This is associated with test named 'test'. An Excel file with a summary of 
-the DIF analysis results and plots will be saved in 'DIF' folder in the 
+This function performs DIF analysis on variables and responses in the data.
+Data should be processed to have DIF variables of only categories needed.
+This is associated with test named 'test'. An Excel file with a summary of
+the DIF analysis results and plots will be saved in 'DIF' folder in the
 working directory.
 }
 \examples{

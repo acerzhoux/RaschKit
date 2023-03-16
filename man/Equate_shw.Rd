@@ -9,7 +9,6 @@ Equate_shw(
   vars,
   var_name = NULL,
   p_cut = 0.05,
-  chi_cut = 10,
   DIF_cut = 0.5,
   DIF_adj_cut = 4,
   sav_results = TRUE,
@@ -27,9 +26,6 @@ This will also be used in plotting. Order is flexible.}
 \item{var_name}{Character to add before vars in plots. Default is NULL.}
 
 \item{p_cut}{p value of chi-square test. Default is 0.05.}
-
-\item{chi_cut}{Threshold of chi-square difference between two tests.
-Default is 10.}
 
 \item{DIF_cut}{Threshold of an item's delta estimate difference between two
 tests. Default is 0.5.}

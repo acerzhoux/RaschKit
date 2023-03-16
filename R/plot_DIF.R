@@ -9,8 +9,6 @@
 #' @param vars Vector of length 2 such as c('VIC','NSW'). Its order corresponds
 #' to .x and .y (delta, error).
 #' @param p_cut p value of chi-square test. Default is 0.05.
-#' @param chi_cut Threshold of chi-square difference between two tests.
-#' Default is 10.
 #' @param DIF_cut Threshold of an item's delta estimate difference between two
 #' tests. Default is 0.5.
 #' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference
@@ -21,16 +19,15 @@
 #' @param cor Correlation of two categories' delta estimates.
 #' @param shift Shift of two categories' average delta estimates.
 #' @param sdr SD ratio of two categories' delta estimates.
-#' @param ax_min Minimum value of x and y axis.
-#' @param ax_max Maximum value of x and y axis.
+#' @param axRange Vector of range of x and y axis.
 #' @param quick Whether quick error is needed. Default is TRUE for DIF analysis.
 #' @return Plot of DIF analysis.
 #' @export
 
-plot_DIF <- function(df, wh, vars, p_cut=0.05, chi_cut=10,
+plot_DIF <- function(df, wh, vars, p_cut=0.05,
                      DIF_cut=0.5, DIF_adj_cut=4, step=FALSE,
                      DIF=FALSE, cor, shift, sdr,
-                     ax_min, ax_max, quick=TRUE) {
+                     axRange, quick=TRUE) {
 
     if (step){
         df <- df %>%
@@ -52,7 +49,7 @@ plot_DIF <- function(df, wh, vars, p_cut=0.05, chi_cut=10,
 
     p <- ggplot(df, aes(x=delta.x, y=delta.y_adj)) +
         geom_point() +
-        lims(x= c(ax_min, ax_max), y = c(ax_min, ax_max)) +
+        lims(x=axRange, y=axRange) +
         geom_abline(intercept=0, slope=1, colour='gray') +
         geom_abline(intercept=-1.96*error, slope=1, colour='gray', linetype="dotted") +
         geom_abline(intercept=1.96*error, slope=1, colour='gray', linetype="dotted") +
@@ -72,8 +69,7 @@ plot_DIF <- function(df, wh, vars, p_cut=0.05, chi_cut=10,
         ggthemes::theme_tufte()
 
     if (wh=='Before'){
-        DIF_txt <- DIF_items(df=df, p_cut=p_cut, chi_cut=chi_cut,
-                             DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut) %>%
+        DIF_txt <- DIF_items(df=df, p_cut=p_cut, DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut) |>
             dplyr::select(item, delta.x, delta.y_adj)
         p <- p +
             ggrepel::geom_label_repel(data=DIF_txt, aes(label=item),
@@ -81,7 +77,6 @@ plot_DIF <- function(df, wh, vars, p_cut=0.05, chi_cut=10,
                                       max.overlaps=100) +
             labs(caption=paste0('DIF: abs(delta_dif)>', DIF_cut,
                                 ', abs(delta_dif_adj)>', DIF_adj_cut,
-                                ', abs(chisq)>', chi_cut,
                                 ', p<', p_cut))
     }
     p

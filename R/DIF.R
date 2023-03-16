@@ -37,7 +37,6 @@
 #' @param vars Vector of length 2 such as c('girls','boys'). Its order corresponds
 #' to the alphabetic/numeric order of DIF variables' two categories in data.
 #' @param p_cut p value of chi-square test. Default is 0.05.
-#' @param chi_cut Threshold of chi-square difference between two tests. Default is 10.
 #' @param DIF_cut Threshold of an item's delta estimate difference between two
 #' tests. Default is 0.5.
 #' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference
@@ -76,7 +75,7 @@ DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
                 DIFVar=NULL, DIFVar_cols=NULL, poly_catgrs=NULL, ##### DIF part #####
                 poly_facet=FALSE, poly_group=FALSE,
                 vars=NULL, p_cut=0.05, DIF_cut=0.5,
-                DIF_adj_cut=4, chi_cut=10, facil_cut=10,
+                DIF_adj_cut=4, facil_cut=10,
                 desig_effect=1, domain=NULL,
                 save_xlsx=TRUE, iterative=TRUE, pweight=NULL, pw_cols=NULL){
     # check inputs
@@ -109,7 +108,7 @@ DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
                 list(
                     vars=vars,
                     DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut,
-                    chi_cut=chi_cut, facil_cut=facil_cut,
+                    facil_cut=facil_cut,
                     desig_effect=desig_effect, save_xlsx=save_xlsx,
                     iterative=iterative, quick=quick
                 )

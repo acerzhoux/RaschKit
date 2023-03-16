@@ -12,7 +12,6 @@
 #' @param df Dataframe with delta estimates and errors of items for both
 #' categories of dichomomous variable in a test.
 #' @param p_cut p value of chi-square test. Default is 0.05.
-#' @param chi_cut Threshold of chi-square difference between two tests. Default is 10.
 #' @param DIF_cut Threshold of an item's delta estimate difference between
 #' two tests. Default is 0.5.
 #' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference
@@ -34,10 +33,19 @@
 #' @export
 
 DIF_dich <- function(DIFVar, test, vars, df,
-                     p_cut=0.05, chi_cut=10, DIF_cut=0.5, DIF_adj_cut=4,
+                     p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4,
                      desig_effect=1, step=FALSE, facil_cut=10,
                      iterative=FALSE, save_xlsx=TRUE,
                      quick=TRUE){
+    # function to get range of x, y axis
+    getRange <-  function(data, step){
+        if (step){
+            range(data[['delta.x_dev']], data[['delta.y_dev']]) + c(-.3, .3)
+        } else {
+            range(data[['delta.x']], data[['delta.y_adj']]) + c(-.3, .3)
+        }
+    }
+
     if (!dir.exists('DIF')) dir.create('DIF')
 
     # read N and facilities from .its file
@@ -58,38 +66,31 @@ DIF_dich <- function(DIFVar, test, vars, df,
         modify_at(4:5, ~round(., digits = 3))
 
     # DIF: delta
-    results <- chi_square_test(df=df)
-    iDIF <- DIF_items(df=results, p_cut=p_cut, chi_cut=chi_cut,
-                      DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut) |>
+    results <- chi_square_test(df)
+    iDIF <- DIF_items(results, p_cut, DIF_cut, DIF_adj_cut) |>
         pull(item)
 
     # DIF check
     if (step){
         results <- chi_square_test_step(df=df, desig_effect=desig_effect)
-        ax_min <- min(results$delta.x_dev, results$delta.y_dev)
-        ax_max <- max(results$delta.x_dev, results$delta.y_dev)
         shift <- tibble(cor_bfr = round(cor(results$delta.x_dev, results$delta.y_dev), 3),
                         shift_bfr = round(mean(results$delta.x_dev)-mean(results$delta.y_dev), 3),
                         sdr_bfr = round(sd(results$delta.y_dev)/sd(results$delta.x_dev), 3))
     } else {
         results <- chi_square_test(df=df)
-        ax_min <- min(results$delta.x, results$delta.y_adj)
-        ax_max <- max(results$delta.x, results$delta.y_adj)
         shift <- tibble(cor_bfr = round(cor(results$delta.x, results$delta.y_adj), 3),
                         shift_bfr = round(mean(results$delta.x)-mean(results$delta.y), 3),
                         sdr_bfr = round(sd(results$delta.y)/sd(results$delta.x), 3))
     }
 
-    p1 <- plot_DIF(df=error_band(results), wh='Before', vars=vars,
-                   p_cut=p_cut, chi_cut=chi_cut, DIF_cut=DIF_cut,
-                   DIF_adj_cut=DIF_adj_cut, step=step, DIF=TRUE,
-                   cor=shift$cor_bfr, shift=shift$shift_bfr, sdr=shift$sdr_bfr,
-                   ax_min=ax_min, ax_max=ax_max, quick=quick)
+    p1 <- plot_DIF(error_band(results), 'Before', vars, p_cut, DIF_cut,
+             DIF_adj_cut, step, TRUE, shift$cor_bfr, shift$shift_bfr,
+             shift$sdr_bfr, getRange(results, step), quick)
+
 
     # iteraively remove DIF anchor of max chi-sq
     updated <- results
-    iDIF <- DIF_items(df=updated, p_cut=p_cut, chi_cut=chi_cut,
-                      DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut)
+    iDIF <- DIF_items(results, p_cut, DIF_cut, DIF_adj_cut)
 
     # two ways of dealing with DIF items
     if (iterative){
@@ -103,8 +104,7 @@ DIF_dich <- function(DIFVar, test, vars, df,
                 updated <- chi_square_test(df={updated |>
                         filter(abs(DIF_std)!=max(abs(DIF_std)))})
             }
-            iDIF <- DIF_items(df=updated, p_cut=p_cut, chi_cut=chi_cut,
-                              DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut)
+            iDIF <- DIF_items(updated, p_cut, DIF_cut, DIF_adj_cut)
         }
     } else {
         # filter once with all conditions
@@ -126,10 +126,10 @@ DIF_dich <- function(DIFVar, test, vars, df,
     }
 
     # plot non-DIF anchors
-    p2 <- plot_DIF(df=error_band(updated), wh='After', vars=vars,
-                   step=step, DIF=TRUE,
-                   cor=shift$cor_afr, shift=shift$shift_afr, sdr=shift$sdr_afr,
-                   ax_min=ax_min, ax_max=ax_max, quick=quick)
+    p2 <- plot_DIF(error_band(updated), 'After', vars, p_cut, DIF_cut,
+             DIF_adj_cut, step, TRUE, shift$cor_afr, shift$shift_afr,
+             shift$sdr_afr, getRange(updated, step), quick)
+
     p_save <- p1 / p2 +
         plot_annotation(title=paste0('Number of DIF ',
                                      if(step) 'Steps ' else 'Items ', 'in ',

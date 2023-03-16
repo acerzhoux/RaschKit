@@ -4,20 +4,18 @@
 \alias{DIF_items}
 \title{DIF_items}
 \usage{
-DIF_items(df, p_cut, chi_cut, DIF_cut, DIF_adj_cut)
+DIF_items(df, p_cut, DIF_cut, DIF_adj_cut)
 }
 \arguments{
-\item{df}{Dataframe with results of chi-square tests on items that 
+\item{df}{Dataframe with results of chi-square tests on items that
 appeared in two tests.}
 
 \item{p_cut}{p value of chi-square test.}
 
-\item{chi_cut}{Threshold of chi-square difference between two tests.}
-
-\item{DIF_cut}{Threshold of an item's delta estimate difference between 
+\item{DIF_cut}{Threshold of an item's delta estimate difference between
 two tests.}
 
-\item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference 
+\item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference
 between two tests.}
 }
 \value{

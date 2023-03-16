@@ -9,8 +9,6 @@
 #' @param grades Vector of all grades. Default is c(2:10).
 #' @param forms Forms used in a test. Default is c('A','B')
 #' @param p_cut p value of chi-square test. Default is 0.05.
-#' @param chi_cut Threshold of chi-square difference between two tests.
-#' Default is 10.
 #' @param DIF_cut Threshold of an item's delta estimate difference between
 #' two tests. Default is 0.5.
 #' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference
@@ -23,8 +21,7 @@
 #' Equate_Hrz(test='bang', grades=c(3, 5), long_label=T)
 #' @export
 
-Equate_Hrz <- function(test, grades=c(2:10),
-          forms=c('A','B'), p_cut=0.05, chi_cut=10,
+Equate_Hrz <- function(test, grades=c(2:10), forms=c('A','B'), p_cut=0.05,
           DIF_cut=0.5, DIF_adj_cut=4, step=FALSE, iterative=FALSE){
   # grades, forms: combined in file names (Test_2A,Test_2B, ...)
   if (!dir.exists('equating')) dir.create('equating')
@@ -56,7 +53,7 @@ Equate_Hrz <- function(test, grades=c(2:10),
 
     pstats <- plot_facilDiscrFitw(facilDiscrFitw, test_2, c(3, 7), 3)
 
-    statsEqu <- Equate_shw(test, test_2, NULL, p_cut, chi_cut, DIF_cut,
+    statsEqu <- Equate_shw(test, test_2, NULL, p_cut, DIF_cut,
                            DIF_adj_cut, FALSE, step, iterative)
 
     statsEqu[['flag']] <- left_join(

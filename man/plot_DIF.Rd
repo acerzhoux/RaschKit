@@ -9,7 +9,6 @@ plot_DIF(
   wh,
   vars,
   p_cut = 0.05,
-  chi_cut = 10,
   DIF_cut = 0.5,
   DIF_adj_cut = 4,
   step = FALSE,
@@ -17,8 +16,7 @@ plot_DIF(
   cor,
   shift,
   sdr,
-  ax_min,
-  ax_max,
+  axRange,
   quick = TRUE
 )
 }
@@ -33,9 +31,6 @@ DIF analysis.}
 to .x and .y (delta, error).}
 
 \item{p_cut}{p value of chi-square test. Default is 0.05.}
-
-\item{chi_cut}{Threshold of chi-square difference between two tests.
-Default is 10.}
 
 \item{DIF_cut}{Threshold of an item's delta estimate difference between two
 tests. Default is 0.5.}
@@ -54,9 +49,7 @@ Default is FALSE (anchor check).}
 
 \item{sdr}{SD ratio of two categories' delta estimates.}
 
-\item{ax_min}{Minimum value of x and y axis.}
-
-\item{ax_max}{Maximum value of x and y axis.}
+\item{axRange}{Vector of range of x and y axis.}
 
 \item{quick}{Whether quick error is needed. Default is TRUE for DIF analysis.}
 }
