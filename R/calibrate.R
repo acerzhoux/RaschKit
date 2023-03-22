@@ -54,7 +54,7 @@
 #' Default is FALSE.
 #' @param save_xlsx Whether to save summary file. Default is TRUE (single test).
 #' @param est_type Type of ability estimate to use for score equivalence table,
-#' 'wle' or 'mle'. Default is 'wle'.
+#' 'wle' or 'mle'. 'wle' is commonly used. Default is NULL (equiv table not needed).
 #' @param sparse_check Whether to check response column sparsity in general or
 #'  regarding any DIF variable category. Default is FALSE. If TRUE, sparse
 #'  response columns will be removed.
@@ -81,7 +81,7 @@ calibrate <- function(test, data=NULL, keys, pid, n_cov,
                       numAbilGrps=NULL, recode_poly=FALSE,
                       missCode2Conv=NULL,
                       filetype='sav', slope=NULL, intercept=NULL,
-                      extrapolation=FALSE, save_xlsx=TRUE, est_type='wle',
+                      extrapolation=FALSE, save_xlsx=TRUE, est_type=NULL,
                       sparse_check=FALSE, CCCip2Wd=FALSE,
                       pweight=NULL, dfAnc=NULL){
   options(warn=-1)
@@ -114,6 +114,14 @@ calibrate <- function(test, data=NULL, keys, pid, n_cov,
   }
   if (length(data[[pid]]) != length(unique(data[[pid]]))){
     stop('Please use unique pid for cases!')
+  }
+  if (!is.null(dfAnc)){
+    if (!all(names(dfAnc) %in% c('Item', 'Delta'))){
+      stop('dfAnc should have names as \'Item\' and \'Delta\'!')
+    }
+  }
+  if (!all(names(keys) %in% c('Item', 'Key', 'Max_score', 'Key2'))){
+    stop('keys should have names as \'Item\', \'Key\', \'Max_score\', \'Key2 (if double key)\'!')
   }
 
   # calculate arguments
@@ -248,7 +256,7 @@ calibrate <- function(test, data=NULL, keys, pid, n_cov,
 
   if (anchor){
     # check: input .anc file vs. output .anc file
-    if (!poly_key & !is.null(dfAnc)){
+    if (!poly_key){
       anchor_dif <- read.table(paste0('input/', test, '_anc.txt')) |>
         dplyr::select(anchor=V3, input=V2) |>
         left_join(
@@ -271,8 +279,10 @@ calibrate <- function(test, data=NULL, keys, pid, n_cov,
     }
 
     # get equivalence table
-    cat('Generating equivalence table...\n')
-    equiva_tbl(test, est_type, slope, intercept, extrapolation)
+    if (!is.null(est_type)) {
+      cat('Generating equivalence table...\n')
+      equiva_tbl(test, est_type, slope, intercept, extrapolation)
+    }
     # est_cas(test)
     rm(cqs)
 
@@ -280,12 +290,10 @@ calibrate <- function(test, data=NULL, keys, pid, n_cov,
     writeLines(c(
       paste0('\n===== Output Files\n'),
       paste0('Anchoring and scaling of ', toupper(test), ':'),
-      paste0('\tScore equivalence table:\t', 'results/', 'eqv_tbl_', test, '.xlsx'),
-      paste0('\tRaw and logit score table:\t', 'results/', 'estimates_', test, '.xlsx'),
-      if (!is.null(intercept) | !is.null(slope)){
-        paste0('\tScaled score table:\t\t', 'results/', 'scaled_tbl_', test, '.xlsx')
-
-      }
+      if (!is.null(est_type)) {
+        paste0('\tScore equivalence table:\t', 'results/', 'eqv_tbl_', test, '.xlsx')
+      },
+      paste0('\tRaw and logit score table:\t', 'output/', test, '_cas',  '.xls')
     ))
   } else { # summarize item calibration
     # ####### check: Option frequencies

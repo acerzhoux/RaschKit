@@ -68,99 +68,99 @@
 #' @export
 
 DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
-                test, keys, #### CQC #####
-                codes, pid_cols=NULL, resps_cols, regr_ls=NULL, delete=NULL, anchor=FALSE,
-                section_extr=NULL, dbl_key=FALSE,
-                poly_key=FALSE, quick=TRUE, step=FALSE,
-                DIFVar=NULL, DIFVar_cols=NULL, poly_catgrs=NULL, ##### DIF part #####
-                poly_facet=FALSE, poly_group=FALSE,
-                vars=NULL, p_cut=0.05, DIF_cut=0.5,
-                DIF_adj_cut=4, facil_cut=10,
-                desig_effect=1, domain=NULL,
-                save_xlsx=TRUE, iterative=TRUE, pweight=NULL, pw_cols=NULL){
-    # check inputs
-    if (length(method)!=1 || !(method %in% c('chi_square', 'Bonferroni', 'Facet'))) {
-        stop('Please set \'method\' as one of \'chi_square\', \'Bonferroni\', or \'Facet\'.')
-    }
+        test, keys, #### CQC #####
+        codes, pid_cols=NULL, resps_cols, regr_ls=NULL, delete=NULL, anchor=FALSE,
+        section_extr=NULL, dbl_key=FALSE,
+        poly_key=FALSE, quick=TRUE, step=FALSE,
+        DIFVar=NULL, DIFVar_cols=NULL, poly_catgrs=NULL, ##### DIF part #####
+        poly_facet=FALSE, poly_group=FALSE,
+        vars=NULL, p_cut=0.05, DIF_cut=0.5,
+        DIF_adj_cut=4, facil_cut=10,
+        desig_effect=1, domain=NULL,
+        save_xlsx=TRUE, iterative=TRUE, pweight=NULL, pw_cols=NULL){
+  # check inputs
+  if (length(method)!=1 || !(method %in% c('chi_square', 'Bonferroni', 'Facet'))) {
+    stop('Please set \'method\' as one of \'chi_square\', \'Bonferroni\', or \'Facet\'.')
+  }
 
-    arg_cqc <- list(test=test, run=NULL, run_ls=NULL, keys=keys, ####CQC
-        codes=codes, pid_cols=pid_cols, resps_cols=resps_cols,
-        quick=quick, delete=delete, dbl_key=dbl_key, poly_key=poly_key,
-        anchor=anchor, step=step, regr_ls=regr_ls, section_extr=section_extr,
-        DIFVar=DIFVar, DIFVar_cols=DIFVar_cols, poly_catgrs=poly_catgrs,
-        poly_facet=poly_facet, poly_group=poly_group,
-        pweight=pweight, pw_cols=pw_cols)
-    arg_DIF <- list(DIFVar=DIFVar, test=test, p_cut=p_cut, step=step)
+  arg_cqc <- list(test=test, run=NULL, run_ls=NULL, keys=keys, ####CQC
+    codes=codes, pid_cols=pid_cols, resps_cols=resps_cols,
+    quick=quick, delete=delete, dbl_key=dbl_key, poly_key=poly_key,
+    anchor=anchor, step=step, regr_ls=regr_ls, section_extr=section_extr,
+    DIFVar=DIFVar, DIFVar_cols=DIFVar_cols, poly_catgrs=poly_catgrs,
+    poly_facet=poly_facet, poly_group=poly_group,
+    pweight=pweight, pw_cols=pw_cols)
+  arg_DIF <- list(DIFVar=DIFVar, test=test, p_cut=p_cut, step=step)
 
-    if (method=='chi_square'){
-        if (is.null(vars)) stop('Please set \'vars\' as name vector of DIF variable\'s two categories.
-          Order should correspond to their alphebetic/numerical orders in data coding.')
+  if (method=='chi_square'){
+    if (is.null(vars)) stop('Please set \'vars\' as name vector of DIF variable\'s two categories.
+      Order should correspond to their alphebetic/numerical orders in data coding.')
 
-        cat('Running ConQuest for facet model...\n')
-        do.call(lab_cqc, arg_cqc)
+    cat('Running ConQuest for facet model...\n')
+    do.call(lab_cqc, arg_cqc)
 
-        cat('Performing', 'chi_square tests with facet model results',
-            if (iterative) 'iteratively' else 'once and for all', '...\n')
-        do.call(
-            DIF_dich_its_shw,
-            append(
-                arg_DIF,
-                list(
-                    vars=vars,
-                    DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut,
-                    facil_cut=facil_cut,
-                    desig_effect=desig_effect, save_xlsx=save_xlsx,
-                    iterative=iterative, quick=quick
-                )
-            )
+    cat('Performing', 'chi_square tests with facet model results',
+      if (iterative) 'iteratively' else 'once and for all', '...\n')
+    do.call(
+      DIF_dich_its_shw,
+      append(
+        arg_DIF,
+        list(
+          vars=vars,
+          DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut,
+          facil_cut=facil_cut,
+          desig_effect=desig_effect, save_xlsx=save_xlsx,
+          iterative=iterative, quick=quick
         )
-    }
+      )
+    )
+  }
 
-    if (method=='Bonferroni'){
-        if (is.null(poly_catgrs)) stop('Please set \'poly_catgrs\' as vector of DIF variable\'s categories\' integer code.')
+  if (method=='Bonferroni'){
+    if (is.null(poly_catgrs)) stop('Please set \'poly_catgrs\' as vector of DIF variable\'s categories\' integer code.')
 
-        cat('Running ConQuest: Item calibration for each subgroup...\n')
-        do.call(lab_cqc, arg_cqc)
+    cat('Running ConQuest: Item calibration for each subgroup...\n')
+    do.call(lab_cqc, arg_cqc)
 
-        cat('Performing Bonferroni adjusted comparison...\n')
-        labels <- read.table(paste0('data/', test, '_Labels.txt')) |>
-            rownames_to_column() |>
-            `colnames<-`(c('item', 'label'))
-        do.call(
-            DIF_poly_shw,
-            append(arg_DIF, list(labels=labels, domain=domain))
-        )
-    }
+    cat('Performing Bonferroni adjusted comparison...\n')
+    labels <- read.table(paste0('data/', test, '_Labels.txt')) |>
+      rownames_to_column() |>
+      `colnames<-`(c('item', 'label'))
+    do.call(
+      DIF_poly_shw,
+      append(arg_DIF, list(labels=labels, domain=domain))
+    )
+  }
 
-    if (method=='Facet'){
-        # facet model
-        cat('Running ConQuest for facet model...\n')
-        arg_cqc[['poly_facet']] <- TRUE
-        do.call(lab_cqc, arg_cqc)
+  if (method=='Facet'){
+    # facet model
+    cat('Running ConQuest for facet model...\n')
+    arg_cqc[['poly_facet']] <- TRUE
+    do.call(lab_cqc, arg_cqc)
 
-        # group model
-        cat('Running ConQuest for group model...\n')
-        arg_cqc[['poly_group']] <- TRUE
-        arg_cqc[['poly_facet']] <- FALSE
-        arg_cqc[['quick']] <- FALSE
-        do.call(lab_cqc, arg_cqc)
+    # group model
+    cat('Running ConQuest for group model...\n')
+    arg_cqc[['poly_group']] <- TRUE
+    arg_cqc[['poly_facet']] <- FALSE
+    arg_cqc[['quick']] <- FALSE
+    do.call(lab_cqc, arg_cqc)
 
-        # summarise and plot results
-        cat('Summarising results from facet model...\n')
-        df_shw_Term3(DIFVar, test) |>
-            writexl::write_xlsx(
-                paste0('DIF/', DIFVar, if(step) '_step', '_', test, '_Facet.xlsx')
-            )
+    # summarise and plot results
+    cat('Summarising results from facet model...\n')
+    df_shw_Term3(DIFVar, test) |>
+      writexl::write_xlsx(
+        paste0('DIF/', DIFVar, if(step) '_step', '_', test, '_Facet.xlsx')
+      )
 
-        cat('Plotting results from group model...\n')
-        plot_DIF_group(test=test, DIFVar=DIFVar)
+    cat('Plotting results from group model...\n')
+    plot_DIF_group(test=test, DIFVar=DIFVar)
 
-        # point users to files of varying purposes
-        writeLines(c(
-            paste0('\n========= Output Files =========\n'),
-            paste0(toupper(DIFVar), ' DIF analysis for ', test, if (step) ' (step)', ' (Facet model & group model):'),
-            paste0('\tSummary:\t\t', 'DIF/', DIFVar, if(step) '_step', '_', test, '_Facet.xlsx'),
-            paste0('\tExpected Score Curves:\t', 'DIF/', DIFVar, if(step) '_step', '_', test, '_Group.pdf')
-        ))
-    }
+    # point users to files of varying purposes
+    writeLines(c(
+      paste0('\n========= Output Files =========\n'),
+      paste0(toupper(DIFVar), ' DIF analysis for ', test, if (step) ' (step)', ' (Facet model & group model):'),
+      paste0('\tSummary:\t\t', 'DIF/', DIFVar, if(step) '_step', '_', test, '_Facet.xlsx'),
+      paste0('\tExpected Score Curves:\t', 'DIF/', DIFVar, if(step) '_step', '_', test, '_Group.pdf')
+    ))
+  }
 }

@@ -1,0 +1,33 @@
+---
+title: "anchor"
+author: "Xiaoliang Zhou"
+date: `r format(Sys.time(), "%d %B, %Y")`
+output: html_document
+---
+
+```{r}
+library(RaschKit)
+install_packages_ls()
+```
+
+# Explore functions
+
+Open this .Rmd file via 'xxx.Rproj' in working directory.
+Select function below for different cases. Functions would output instructions 
+on where to find report and/or result files.
+
+Prepare dataframe dfAnc as 'dfAnc' argument of calibrate(). It has variables
+  - Item: item labels.
+  - Delta: anchor estimates.  
+  
+If you're using an xxx_anc.txt file from previous run, copy that file from 'output'
+  folder into 'input' folder and set dfAnc=NULL. 
+
+Note that anchors' logit difficulty estimates in Column 'Delta' would be used to 
+anchor current cycle/run's items and candidates onto previous cycle/run. 
+Also produced are equivalence table and anchored ability estimates.
+
+```{r}
+# Set 'anchor' as TRUE to do anchoring
+calibrate(anchor=TRUE, test='FPA', pid='pid', n_cov=1, keys=keys, dfAnc=dfAnc)
+```

@@ -21,8 +21,6 @@
 
 read2one <- function (folder = c('results', 'DIF', 'equating'), tests, prefix=NULL,
             file_name = NULL, vars=NULL){
-  # if (!exists(paste0(folder, '/', prefix))) dir.create(paste0(folder, '/', prefix))
-
   # Excel names to read files from
   if (folder == 'equating'){
     file_ls <- map(tests, ~list.files(folder, pattern=.x, full.names=TRUE))
@@ -30,47 +28,49 @@ read2one <- function (folder = c('results', 'DIF', 'equating'), tests, prefix=NU
       map(~str_subset(.x, '.xlsx')) |>
       unlist()
     in_dif <- file_ls |>
-      map(~str_subset(.x, '.pdf')) |>
+      map(~str_subset(.x, '.png')) |>
       unlist()
   } else {
     files <- file.path(folder, str_c(prefix, '_', tests, '.xlsx'))
   }
 
   # sheet name to read from
-  sheetNm <- ifelse(folder %in% c('DIF', 'equating'), 'flag', 1)
+  sheetNm <- ifelse(folder %in% c('DIF', 'equating'), 'final', 1)
   ex_ls <- map(files, ~readxl::read_xlsx(.x, sheetNm))
 
   # Excel name to save files into one
-  if (is.null(file_name)) {
-    if (folder == 'equating'){
-      file_name <- list.files(folder, pattern=tests[[1]]) |>
-        str_subset('.pdf') |>
-        strsplit('_') |>
-        unlist()
-      file_name <- file_name[length(file_name)] |>
-        str_sub(1, -5)
-      file <- file.path(folder, str_c(file_name, ".xlsx"))
-    } else {
-      file <- file.path(folder, str_c(prefix, ".xlsx"))
-    }
+  if (folder == 'equating'){
+    file_name <- list.files(folder, pattern=tests[[1]]) |>
+      str_subset('.xlsx') |>
+      strsplit('_') |>
+      unlist()
+    file_name <- file_name[length(file_name)] |>
+      str_sub(1, -6)
+    file <- file.path(folder, str_c(file_name, ".xlsx"))
+  } else if (!is.null(file_name)) {
+    file <- ifelse(
+      is.null(prefix),
+      file.path(folder, str_c(file_name, '.xlsx')),
+      file.path(folder, str_c(prefix, '_', file_name, '.xlsx'))
+    )
   } else {
-    file <- file.path(folder, str_c(prefix, '_', file_name, '.xlsx'))
+    file <- file.path(folder, str_c(prefix, ".xlsx"))
   }
 
   # save results: equating, DIF
-  if (sheetNm == 'flag'){
+  if (sheetNm == 'final'){
     # combine excels
     names(ex_ls) <- tests
     if (folder == 'equating'){
       summary <- map(files, ~readxl::read_xlsx(.x, 'shift'))  |>
         map2(tests, ~mutate(.x, Domain=.y)) |>
-        map2(map(files, ~readxl::read_xlsx(.x, 'flag')),
+        map2(map(files, ~readxl::read_xlsx(.x, 'final')),
            ~mutate(.x, Links_bfr=nrow(.y),
-               Links_afr=nrow(filter(.y, is.na(flag))),
+               Links_afr=nrow(filter(.y, flag==0)),
                Links_retained_perc=str_c(round(Links_afr/Links_bfr*100), '%'))) |>
         reduce(bind_rows) |>
         select(Domain, everything())
-      sum_ls <- list(Shift=summary) |>
+      ls_save <- list(Shift=summary) |>
         append(ex_ls)
     } else {
       summary <- map(ex_ls, ~.x |> filter(flag==1)) |>
@@ -79,11 +79,9 @@ read2one <- function (folder = c('results', 'DIF', 'equating'), tests, prefix=NU
         reduce(bind_rows) |>
         select(Domain, favor, everything()) |>
         arrange(Domain, favor, desc(chisq))
-      sum_ls <- list(Summary=summary) |>
+      ls_save <- list(Summary=summary) |>
         append(ex_ls)
     }
-    sum_ls |>
-      writexl::write_xlsx(file)
 
     # combine pdf's
     if (folder == 'DIF') {
@@ -95,18 +93,96 @@ read2one <- function (folder = c('results', 'DIF', 'equating'), tests, prefix=NU
       out_facil <- file.path(folder, str_c(prefix, '_Facility.pdf'))
       qpdf::pdf_combine(input = in_facil, output = out_facil)
     } else {
-      out_dif <- file.path(folder, str_c(file_name, ".pdf"))
-      qpdf::pdf_combine(input = in_dif, output = out_dif)
+      # out_dif <- file.path(folder, str_c(file_name, ".pdf"))
+      # qpdf::pdf_combine(input = in_dif, output = out_dif)
     }
 
+    # move into folder of 'file_name'
+    new_path <- file.path(folder, file_name)
+    dir.create(new_path)
+    map(
+      file.path(
+        getwd(), folder,
+        c(str_sub(c(in_dif, files), 10, -1),
+          list.files(folder, '.html'))
+      ),
+      ~fs::file_move(path=.x, new_path=new_path)
+    )
+
+    # add note sheet
+    wb <- createWorkbook()
+    addWorksheet(wb, names(ls_save)[[1]])
+    writeData(wb, sheet = names(ls_save)[[1]], x = ls_save[[1]])
+
+    # add flagged and test sheets
+    for (i in 2:length(ls_save)){
+      sheet <- names(ls_save)[[i]]
+      n_case <- nrow(ls_save[[i]])+1
+      n_col <- ncol(ls_save[[i]])
+      addWorksheet(wb, sheet)
+      writeData(
+        wb,
+        sheet = sheet,
+        x = ls_save[[i]] |>
+          dplyr::mutate(
+            `Files`=c(
+              file.path(getwd(), folder, file_name, paste0(sheet, '_', file_name, '.html')),
+              file.path(getwd(), folder, file_name, paste0(sheet, '_', file_name, '.xlsx')),
+              rep(NA, n_case-2-1)
+            )
+          )
+      )
+
+      # header, body style
+      wb <- add_format()[['addHeaderStyle']](wb, n_col, sheet) |>
+        add_format()[['addBodyStyle']]('left', n_case, 1, sheet) |>
+        add_format()[['addBodyStyle']]('right', n_case, 2:n_col, sheet)
+
+      setColWidths(wb, sheet, cols = 1, widths = 16)
+      setColWidths(wb, sheet, cols = 2:n_col, widths = 7)
+
+      # add flag color and link
+      wb <- add_format()[['colorFlags']](
+          wb,
+          c(9, 10, 12, 13),
+          c('>.5', '>4', '<.05', '=1'),
+          sheet,
+          n_case
+        ) |>
+        add_format()[['colorFlags']](
+          c(9, 10),
+          c('<-.5', '<-4'),
+          sheet,
+          n_case
+        )
+
+      writeFormula(wb, sheet, startRow = 2, startCol = 'O',
+                   x = '=HYPERLINK(N$2, "Report")')
+      writeFormula(wb, sheet, startRow = 3, startCol = 'O',
+                   x = '=HYPERLINK(N$3, "Process")')
+
+      ## Insert images
+      img <- file.path(folder, file_name, paste0(sheet, '_', file_name, '.png'))
+      insertImage(wb, sheet, img, startRow = 1, startCol = 'P', width = 5.5, height = 10)
+
+      setColWidths(wb, sheet, cols = 'N', widths = 12)
+      setColWidths(wb, sheet, cols = 'O', widths = 12)
+
+      # pageBreak(wb, sheet, i = 30, type = "row")
+    }
+    saveWorkbook(wb, file, overwrite = TRUE)
+
     writeLines(c(
-      paste0('Files and plots combined to:'),
+      paste0('\n\nFiles and plots combined to:'),
       paste0('\tDIF flags:\t', file),
-      paste0('\tDIF plots:\t', out_dif),
+      # paste0('\tDIF plots:\t', out_dif),
       if (folder == 'DIF') paste0('\tFacility plots:\t', out_facil)))
   }
 
-  # itn files
+  # #############################################
+  # ################ itn files ##################
+  # #############################################
+
   if (sheetNm == 1){
     names(ex_ls) <- tests
 
@@ -129,68 +205,6 @@ read2one <- function (folder = c('results', 'DIF', 'equating'), tests, prefix=NU
 
       # ###### use openxlsx to add hyperlink, color, format #######
 
-      colorFlags_link <- function(wb, i){
-        cols <- c(10, 11, 13, 14)
-        colWide <- ifelse(i==2, 20, 21)
-        rules <- c('<10', '<.11', '>1.2', '>1.1')
-        sheet <- names(ls_save)[[i]]
-        n_case <- nrow(ls_save[[i]])+1
-
-        posStyle <- createStyle(
-          halign = "left",
-          bgFill = "#FFC7CE",
-          wrapText=TRUE
-        )
-        for (j in 1:4){
-          conditionalFormatting(
-            wb=wb,
-            sheet=sheet,
-            cols=cols[[j]],
-            rows=2:n_case,
-            rule=rules[[j]],
-            type = "expression",
-            style = posStyle
-          )
-        }
-        setColWidths(wb, sheet, cols = 1, widths = 10)
-        setColWidths(wb, sheet, cols = 2:3, widths = 8)
-        setColWidths(wb, sheet, cols = 4, widths = 16)
-        setColWidths(wb, sheet, cols = 5:6, widths = 6)
-        setColWidths(wb, sheet, cols = 7:19, widths = 8)
-        setColWidths(wb, sheet, cols = 20, widths = 90)
-
-        if (colWide==21) setColWidths(wb, sheet, cols = colWide, widths = 50)
-
-        # add hyperlink
-        for (k in 2:n_case){
-          writeFormula(wb, sheet,
-                       startRow = k, startCol = 3,
-                       x = ls_save[[i]]$ICC[k-1]
-          )
-        }
-
-        return(wb)
-      }
-
-      addBodyStyle <- function(wb, halign, n_case, cols){
-        bodyStyle <- createStyle(
-          fontSize = 10,
-          halign = halign,
-          fontName='Arial',
-          border = "TopBottomLeftRight",
-          wrapText = TRUE
-        )
-        addStyle(
-          wb,
-          sheet = sheet,
-          bodyStyle,
-          rows = 2:n_case,
-          cols = cols,
-          gridExpand = TRUE
-        )
-        return(wb)
-      }
-
       # add note sheet
       wb <- createWorkbook()
       addWorksheet(wb, names(ls_save)[[1]])
@@ -204,34 +218,14 @@ read2one <- function (folder = c('results', 'DIF', 'equating'), tests, prefix=NU
         addWorksheet(wb, sheet)
         writeData(wb, sheet = sheet, x = ls_save[[i]])
 
-        # header style
-        headerStyle <- createStyle(
-          fontSize = 10,
-          textDecoration = 'bold',
-          halign = "center",
-          valign = 'bottom',
-          fgFill='blue',
-          fontColour='white',
-          fontName='Arial',
-          border = "TopBottomLeftRight",
-          wrapText = TRUE
-        )
-        addStyle(
-          wb,
-          sheet = sheet,
-          headerStyle,
-          rows = 1,
-          cols = 1:n_col,
-          gridExpand = FALSE
-        )
-        # body style
-        wb <- addBodyStyle(wb, 'left', n_case, c(4, 20)) |>
-          addBodyStyle('right', n_case, 7:8) |>
-          addBodyStyle('center', n_case, setdiff(1:20, c(4, 20, 7:8)))
+        # header, body style
+        wb <- add_format()[['addHeaderStyle']](wb, n_col, sheet) |>
+          add_format()[['addBodyStyle']]('left', n_case, c(4, 20), sheet) |>
+          add_format()[['addBodyStyle']]('right', n_case, 7:8, sheet) |>
+          add_format()[['addBodyStyle']]('center', n_case, setdiff(1:20, c(4, 20, 7:8)), sheet)
 
         # add flag color and link
-        wb <- colorFlags_link(wb, i)
-
+        wb <- add_format()[['colorFlags_link']](wb, i)
       }
 
       saveWorkbook(wb, file, overwrite = TRUE)

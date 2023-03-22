@@ -36,69 +36,69 @@
 #' @export
 
 DIF_domain <- function(test, data=NULL,
-                       var_ls=NULL, n_cov=NULL, pid=NULL,
-                       keys=NULL, labels=NULL, poly_key=FALSE,
-                       p_cut=0.05, DIF_cut=0.5,
-                       DIF_adj_cut=4, facil_cut=10,
-                       desig_effect=1, step=FALSE, output_ready=FALSE,
-                       miss_code=c('M', 'R'), iterative=TRUE, quick=TRUE){
-    if (test %in% c('Writing','writing','W','w','WA','wa','WB','wb')){
-        poly_key <- TRUE
+             var_ls=NULL, n_cov=NULL, pid=NULL,
+             keys=NULL, labels=NULL, poly_key=FALSE,
+             p_cut=0.05, DIF_cut=0.5,
+             DIF_adj_cut=4, facil_cut=10,
+             desig_effect=1, step=FALSE, output_ready=FALSE,
+             miss_code=c('M', 'R'), iterative=TRUE, quick=TRUE){
+  if (test %in% c('Writing','writing','W','w','WA','wa','WB','wb')){
+    poly_key <- TRUE
+  }
+
+  n_var <- length(var_ls)
+  vars_DIF <- names(var_ls)
+  ls <- list()
+  for (i in 1:n_var){
+    DIFVar <- vars_DIF[[i]]
+    var_D <- var_ls[[i]]
+    if (output_ready){
+      ls[[i]] <- DIF_dich_its_shw(DIFVar=DIFVar, test=test,
+        vars=var_D, p_cut=p_cut, DIF_cut=DIF_cut,
+        DIF_adj_cut=DIF_adj_cut,
+        desig_effect=desig_effect, step=step, facil_cut=facil_cut,
+        long_label=FALSE, save_xlsx=FALSE,
+        iterative=iterative, quick=quick)
+    } else {
+      ls[[i]] <- DIF_dim_one(method='chi_square', test=test,
+         pid=pid, n_cov=n_cov,
+         DIFVar=DIFVar, data=data, keys=keys, vars=var_D,
+         labels=labels, miss_code=miss_code,
+         save_xlsx=FALSE, poly_key=poly_key,
+         p_cut=p_cut, DIF_cut=DIF_cut,
+         DIF_adj_cut=DIF_adj_cut, facil_cut=facil_cut,
+         desig_effect=desig_effect, iterative=iterative,
+         step=step, quick=quick)
     }
+  }
 
-    n_var <- length(var_ls)
-    vars_DIF <- names(var_ls)
-    ls <- list()
-    for (i in 1:n_var){
-        DIFVar <- vars_DIF[[i]]
-        var_D <- var_ls[[i]]
-        if (output_ready){
-            ls[[i]] <- DIF_dich_its_shw(DIFVar=DIFVar, test=test,
-              vars=var_D, p_cut=p_cut, DIF_cut=DIF_cut,
-              DIF_adj_cut=DIF_adj_cut,
-              desig_effect=desig_effect, step=step, facil_cut=facil_cut,
-              long_label=FALSE, save_xlsx=FALSE,
-              iterative=iterative, quick=quick)
-        } else {
-            ls[[i]] <- DIF_dim_one(method='chi_square', test=test,
-               pid=pid, n_cov=n_cov,
-               DIFVar=DIFVar, data=data, keys=keys, vars=var_D,
-               labels=labels, miss_code=miss_code,
-               save_xlsx=FALSE, poly_key=poly_key,
-               p_cut=p_cut, DIF_cut=DIF_cut,
-               DIF_adj_cut=DIF_adj_cut, facil_cut=facil_cut,
-               desig_effect=desig_effect, iterative=iterative,
-               step=step, quick=quick)
-        }
-    }
+  # save to Excel file
+  ex_ls <- map(ls, 'final')
+  names(ex_ls) <- vars_DIF
+  summary <- map(ex_ls, ~.x |> filter(flag==1)) |>
+    imap(~.x |> mutate(variable=.y)) |>
+    map2(
+      var_ls,
+      ~.x |> mutate(favor=as.character(ifelse(DIF<0, .y[[1]], .y[[2]])))
+    ) |>
+    reduce(bind_rows) |>
+    select(variable, favor, everything()) |>
+    arrange(variable, favor, item)
+  sum_ls <- list(summary=summary) |>
+    append(ex_ls)
+  writexl::write_xlsx(sum_ls, here::here('DIF', paste0(test, if (step) '_step', '.xlsx')))
 
-    # save to Excel file
-    ex_ls <- map(ls, 'flag')
-    names(ex_ls) <- vars_DIF
-    summary <- map(ex_ls, ~.x %>%
-            filter(flag==1)) %>%
-        imap(~.x %>%
-                 mutate(variable=.y)) %>%
-        map2(var_ls, ~.x %>%
-                 mutate(favor=as.character(ifelse(DIF<0, .y[[1]], .y[[2]])))) %>%
-        reduce(bind_rows) %>%
-        select(variable, favor, everything()) %>%
-        arrange(variable, favor, item)
-    sum_ls <- list(summary=summary) %>%
-        append(ex_ls)
-    writexl::write_xlsx(sum_ls, here::here('DIF', paste0(test, if (step) '_step', '.xlsx')))
+  # ####### generate Difficulty scatterplot
+  pdf(file=file.path(here::here('DIF'), paste0(test, if (step) '_step', "_Difficulty.pdf")),
+    width=7, height=10)
+  map(map(ls, 'plot_DIF'), ~print(.x))
+  dev.off()
 
-    # ####### generate Difficulty scatterplot
-    pdf(file=file.path(here::here('DIF'), paste0(test, if (step) '_step', "_Difficulty.pdf")),
-        width=7, height=10)
-    map(map(ls, 'plot_DIF'), ~print(.x))
+  if (!step){
+    # ####### generate Facility scatterplot
+    pdf(file=file.path(here::here('DIF'), paste0(test, "_Facility.pdf")),
+      width = 7, height = 7)
+    map(map(ls, 'plot_facil'), ~print(.x))
     dev.off()
-
-    if (!step){
-        # ####### generate Facility scatterplot
-        pdf(file=file.path(here::here('DIF'), paste0(test, "_Facility.pdf")),
-            width = 7, height = 7)
-        map(map(ls, 'plot_facil'), ~print(.x))
-        dev.off()
-    }
+  }
 }

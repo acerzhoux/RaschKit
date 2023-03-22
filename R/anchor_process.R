@@ -18,47 +18,48 @@
 #' @export
 
 anchor_process <- function(test, data, keys, labels, delete, poly_key,
-                           n_cov, n_dims, dfAnc){
-    # id of removed item
-    id_x <- unique(c(which({if (poly_key) keys$Key else keys} %in% c('x', 'X')), delete))
-    # id of item with one score category
-    id_no_data <- which(
-        {map_df(
-            data[(n_cov+1):(n_cov+sum(n_dims))],
-            ~as.character(.x) %>%
-            str_replace_all(
-                c('r' = NA_character_,
-                  'R' = NA_character_,
-                  'm' = NA_character_,
-                  'M' = NA_character_,
-                  'x' = NA_character_,
-                  'X' = NA_character_,
-                  ' ' = NA_character_,
-                  '9' = NA_character_)
-            )
-        ) %>%
-        map_int(~table(.x) %>% length())
-        } == 1
-    )
-    id <- unique(c(id_x, id_no_data))
+               n_cov, n_dims, dfAnc){
+  # id of removed item
+  id_x <- unique(c(which(keys$Key %in% c('x', 'X')), delete))
+  # id of item with one score category
+  id_no_data <- which(
+    {map_df(
+      data[(n_cov+1):(n_cov+sum(n_dims))],
+      ~as.character(.x) |>
+        str_replace_all(
+          c('r' = NA_character_,
+            'R' = NA_character_,
+            'm' = NA_character_,
+            'M' = NA_character_,
+            'x' = NA_character_,
+            'X' = NA_character_,
+            ' ' = NA_character_,
+            '9' = NA_character_)
+        )
+    ) |>
+    map_int(~table(.x) |> length())
+    } == 1
+  )
+  id <- unique(c(id_x, id_no_data))
 
-    # remove deleted or no-data items, reorder items
-    # extrac anchors with new orders, save into 'input' folder
-    tibble(
-        iNum = 1:length(labels),
-        Item = labels
-    ) %>%
-    left_join(dfAnc, by = "Item") %>%
-    dplyr::filter(!(iNum %in% id)) %>%
-    rowid_to_column('iNum') %>%
-    dplyr::filter(!is.na(Delta)) %>%
-    mutate(Item = str_c('/*', Item, '*/')) %>%
-    dplyr::select(iNum, Delta, Item) |>
-    write.table(
-        paste0('input/', test, '_anc.txt'),
-        quote=FALSE,
-        sep = "\t",
-        row.names=FALSE,
-        col.names=FALSE
-    )
+  # remove deleted or no-data items, reorder items
+  # extrac anchors with new orders, save into 'input' folder
+  tibble(
+    iNum = 1:length(labels),
+    Item = labels
+  ) |>
+  left_join(dfAnc, by = "Item") |>
+  unique() |>
+  dplyr::filter(!(iNum %in% id)) |>
+  rowid_to_column('iNumNew') |>
+  dplyr::filter(!is.na(Delta)) |>
+  mutate(Item = str_c('/*', Item, '*/')) |>
+  dplyr::select(iNumNew, Delta, Item) |>
+  write.table(
+    paste0('input/', test, '_anc.txt'),
+    quote=FALSE,
+    sep="\t",
+    row.names=FALSE,
+    col.names=FALSE
+  )
 }

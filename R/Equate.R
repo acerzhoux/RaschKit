@@ -63,32 +63,49 @@ Equate <- function(df, test, vars, p_cut=0.05,
 
   updated <- results
   iDIF <- DIF_items(updated, p_cut, DIF_cut, DIF_adj_cut)
+  iDIFFlag <- pull(iDIF, item)
 
   # two ways of dealing with DIF items
   if (iterative){
+    iFlag <- list()
     # iteraively remove DIF anchor of max abs(DIF_std)
     while (dim(iDIF)[1] != 0){
+      iFlag <- iFlag |>
+        append(list(updated |> filter(abs(DIF_std)==max(abs(DIF_std)))))
       if (step){
-        updated <- chi_square_test_step(df={updated %>%
+        updated <- chi_square_test_step(df={updated |>
             filter(abs(DIF_std)!=max(abs(DIF_std)))},
             desig_effect=desig_effect)
       } else {
-        updated <- chi_square_test(df={updated %>%
+        updated <- chi_square_test(df={updated |>
             filter(abs(DIF_std)!=max(abs(DIF_std)))})
       }
       iDIF <- DIF_items(updated, p_cut, DIF_cut, DIF_adj_cut)
     }
+    if (length(iFlag)>0){
+      iFlagDF <- reduce(iFlag, bind_rows)
+    } else {
+      iFlagDF <- NULL
+    }
   } else {
     # filter once with all conditions
-    if (nrow(iDIF)==0){
-
+    if (nrow(iDIF)!=0){
+      updated <- updated |> filter(!(item %in% iDIF$item))
+      iFlagDF <- updated |> filter(item %in% iDIF$item)
     } else {
-      updated <- updated %>%
-        filter(!(item %in% iDIF$item))
+      iFlagDF <- NULL
     }
   }
+  if (is.null(iFlagDF)){
+    final <- updated |> mutate(flag=0)
+  } else {
+    final <- bind_rows(
+      iFlagDF |> mutate(flag=1),
+      updated |> mutate(flag=0)
+    )
+  }
 
-  shift <- shift %>%
+  shift <- shift |>
     mutate(cor_afr = round(cor(updated$delta.x, updated$delta.y), 3),
          shift_afr = round(mean(updated$delta.x)-mean(updated$delta.y), 3),
          sdr_afr = round(sd(updated$delta.y)/sd(updated$delta.x), 3))
@@ -106,28 +123,27 @@ Equate <- function(df, test, vars, p_cut=0.05,
 
   # DIF anchors found
   # iDIF <- setdiff(results$iStep, updated$iStep)
-  # results_flag <- results %>%
+  # results_flag <- results |>
   #   mutate(flag=ifelse(iStep %in% iDIF, 1, NA))
 
   iDIF <- setdiff(results$item, updated$item)
-  results_flag <- results %>%
-    mutate(flag=ifelse(item %in% iDIF, 1, NA))
-
+  results_flag <- mutate(results, flag=ifelse(item %in% iDIFFlag, 1, 0))
 
   # change .x, .y in names
-  results_flag <- results_flag %>%
-    `names<-`(gsub("\\.x", str_c('_', vars[[1]]), names(.))) %>%
-    `names<-`(gsub("\\.y", str_c('_', vars[[2]]), names(.)))
-  updated <- updated %>%
-    `names<-`(gsub("\\.x", str_c('_', vars[[1]]), names(.))) %>%
-    `names<-`(gsub("\\.y", str_c('_', vars[[2]]), names(.)))
+  names(results_flag) <- gsub("\\.x", str_c(' ', vars[[1]]), names(results_flag))
+  names(results_flag) <- gsub("\\.y", str_c(' ', vars[[2]]), names(results_flag))
+  names(results_flag) <- gsub("_", ' ', names(results_flag))
+
+  names(final) <- gsub("\\.x", str_c(' ', vars[[1]]), names(final))
+  names(final) <- gsub("\\.y", str_c(' ', vars[[2]]), names(final))
+  names(final) <- gsub("_", ' ', names(final))
 
   output <- list(
     comments=DIF_comment_dich_equate(vars=vars, iDIF=iDIF, DIF=DIF),
     step=if (step) DIF_steps_dich_step(iterative=iterative) else DIF_steps_dich(iterative=iterative),
     shift=shift,
     flag=results_flag,
-    final=updated,
+    final=final,
     plot_DIF=p_save
   )
 
@@ -136,7 +152,7 @@ Equate <- function(df, test, vars, p_cut=0.05,
     sht <- paste0(test, '_', if(step) 'step_', vars[[1]], ' vs ', vars[[2]])
     path_xlsx <- paste0(folder, '/', sht, '.xlsx')
     writexl::write_xlsx(output[1:5], path_xlsx)
-    path_pdf <- paste0(folder, '/', sht, '.pdf')
+    path_pdf <- paste0(folder, '/', sht, '.png')
     ggsave(path_pdf, p_save, width=17, height=30, units="cm")
 
     rmd_file <- system.file("rmd", "Equating_dich.Rmd", package = "RaschKit")

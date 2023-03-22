@@ -82,17 +82,17 @@ Equate_Hrz <- function(test, grades=c(2:10), forms=c('A','B'), p_cut=0.05,
 
   summary <- map(equat_ls, 'shift') |>
     imap(~mutate(.x, Form=.y)) |>
-    map2(map(equat_ls, 'flag'),
+    map2(map(equat_ls, 'final'),
        ~mutate(
        .x,
        Links_bfr=nrow(.y),
-       Links_afr=nrow(filter(.y, is.na(flag))),
+       Links_afr=nrow(filter(.y, flag==0)),
        Links_retained_perc=str_c(round(Links_afr/Links_bfr*100), '%')
        )
     ) |>
     reduce(bind_rows) |>
     select(Form, everything())
-  sum_ls <- append(list(Summary=summary), map(equat_ls, 'flag'))
+  sum_ls <- append(list(Summary=summary), map(equat_ls, 'final'))
 
   # save results
   path_xlsx <- paste0('equating/', 'Hrz_', test, if(step) '_step', '.xlsx')

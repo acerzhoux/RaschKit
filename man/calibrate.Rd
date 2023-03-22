@@ -33,7 +33,7 @@ calibrate(
   intercept = NULL,
   extrapolation = FALSE,
   save_xlsx = TRUE,
-  est_type = "wle",
+  est_type = NULL,
   sparse_check = FALSE,
   CCCip2Wd = FALSE,
   pweight = NULL,
@@ -118,7 +118,7 @@ Default is FALSE.}
 \item{save_xlsx}{Whether to save summary file. Default is TRUE (single test).}
 
 \item{est_type}{Type of ability estimate to use for score equivalence table,
-'wle' or 'mle'. Default is 'wle'.}
+'wle' or 'mle'. 'wle' is commonly used. Default is NULL (equiv table not needed).}
 
 \item{sparse_check}{Whether to check response column sparsity in general or
 regarding any DIF variable category. Default is FALSE. If TRUE, sparse

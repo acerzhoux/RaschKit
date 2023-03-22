@@ -31,6 +31,6 @@ anchor_shift <- function(test, shift){
       quote=FALSE,
       col.names=FALSE,
       row.names=FALSE,
-      sep='\t\t'
+      sep='\t'
     )
 }
