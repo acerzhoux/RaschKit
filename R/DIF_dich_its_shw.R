@@ -17,8 +17,6 @@
 #' between two tests. Default is 4.
 #' @param desig_effect Value to adjust errors. Default is 1.
 #' @param step TRUE if DIF analysis is performed on step parameters. Default is FALSE.
-#' @param facil_cut Threshold of number of percent to flag an item with large
-#' facility difference between two groups of test takers. Default is 10.
 #' @param save_xlsx Whether to save summary file and plots. Default is TRUE
 #' (one DIF variable).
 #' @param iterative TRUE to iteratively remove DIF items. Default is FALSE
@@ -31,29 +29,20 @@
 #' # DIF_dich_its_shw(DIFVar='Gender', test='AHU', vars=c('Male', 'Female'))
 #' @export
 
-DIF_dich_its_shw <- function(DIFVar, test, vars,
-               p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4,
-               desig_effect=1, step=FALSE, facil_cut=10,
-               save_xlsx=TRUE, iterative=FALSE, quick=TRUE){
-  # DIF: delta
-  if (step){
+DIF_dich_its_shw <- function(DIFVar, test, vars, p_cut=0.05, DIF_cut=0.5,
+                             DIF_adj_cut=4, desig_effect=1, step=FALSE,
+                             save_xlsx=TRUE, iterative=FALSE, quick=TRUE){
+  # delta, indice dataframe
+  if (step) {
     # use item*step*DIFVar estimates
-    df <- delta_DIF_dich_step(test, DIFVar, quick)
+    dfDelta <- delta_DIF_dich_step(test, DIFVar, quick)
+    dfIndice <- NULL
   } else {
-    df <- delta_DIF_dich(test, DIFVar, quick) %>%
-      bind_cols(
-        delta_error_DIF_dich(paste0('DIF/', DIFVar), test)
-      ) %>%
-      select(item, everything())
-
-    id_na <- which(apply(select(df, -item), 1, function(x) any(is.na(x))))
-    if (length(id_na)){
-      df[id_na,] %>%
-        write_xlsx(paste0('DIF/', DIFVar, '_', test, '_iRemoved', '.xlsx'))
-      df <- na.omit(df)
-    }
+    deltaInd <- delta_DIF_dich(test, DIFVar, quick)
+    dfDelta <- deltaInd[['dfDelta']]
+    dfIndice <- deltaInd[['dfIndice']]
   }
 
-  DIF_dich(DIFVar, test, vars, df, p_cut, DIF_cut, DIF_adj_cut,
-       desig_effect, step, facil_cut, iterative, save_xlsx, quick)
+  Equate(dfDelta, test, vars, p_cut, DIF_cut, DIF_adj_cut, save_xlsx,
+         desig_effect, step, DIFVar, iterative, dfIndice)
 }

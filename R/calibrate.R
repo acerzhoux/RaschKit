@@ -6,10 +6,10 @@
 #' will be saved in 'results' folder in the working directory.
 #'
 #' @param test Name of the test.
-#' @param data Dataframe with pid, covariables (e.g,, DIF variable), and
+#' @param respDf Dataframe with pid, covariables (e.g,, DIF variable), and
 #' responses. Default is NULL where Excel file with name 'test' in 'data'
 #' folder is used.
-#' @param regr_vec_char Vector of character regressors' names.
+#' @param regrNmVec Vector of character regressors' names.
 #' @param pid Name of candidates' ID variable.
 #' @param n_cov Number of covariates before responses.
 #' @param n_dims Vector of numbers of responses the dimensions have.
@@ -18,7 +18,7 @@
 #' response columns, e.g., 30.
 #' @param dim_names Vector of the dimensions' names. Default is NULL.
 #' Define this vector if multi-dimensional model is to be run.
-#' @param keys Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).
+#' @param keyDf Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).
 #' @param quick TRUE if empirical error is not needed. Default is TRUE
 #' @param delete Vector of orders or labels of items to be removed. Default is NULL.
 #' @param dbl_key TRUE if any item has polytomous scoring. Default is NULL.
@@ -62,18 +62,18 @@
 #' is FALSE.
 #' @param pweight Variable name of person weights in response dataframe. Should
 #' be specified if weight is used for modeling. Default is NULL.
-#' @param dfAnc Dataframe of 'Item' and 'Delta' for anchors. Default is NULL.
+#' @param ancDf Dataframe of 'Item' and 'Delta' for anchors. Default is NULL.
 #'  If NULL, an xxx_anc.txt file with anchor tbl (Item, Delta) should be put
 #'  in 'input' folder beforehand. Check output 'xxx_anc.txt' file from previous run
 #'  for correct anchor order, especially for polytomous items with step parameters.
 #' @examples
 #' # Not run
-#' # calibrate(data=racp, test='RACP', pid="V1", n_cov=1, keys=cd,
+#' # calibrate(respDf=racp, test='RACP', pid="V1", n_cov=1, keyDf=cd,
 #' # delete=c(3,4,5,36), dbl_key=list(`7`=c(1,3), `9`=c(3,4)))
 #' @export
 
-calibrate <- function(test, data=NULL, keys, pid, n_cov,
-                      regr_vec_char=NULL, n_dims=NULL, dim_names=NULL,
+calibrate <- function(test, respDf=NULL, keyDf, pid, n_cov,
+                      regrNmVec=NULL, n_dims=NULL, dim_names=NULL,
                       quick=TRUE, delete=NULL,
                       dbl_key=NULL, anchor=FALSE, section_extr=NULL,
                       easy=90, hard=10, iRst=.11, fit_w=1.1, fit_uw=1.2,
@@ -83,24 +83,24 @@ calibrate <- function(test, data=NULL, keys, pid, n_cov,
                       filetype='sav', slope=NULL, intercept=NULL,
                       extrapolation=FALSE, save_xlsx=TRUE, est_type=NULL,
                       sparse_check=FALSE, CCCip2Wd=FALSE,
-                      pweight=NULL, dfAnc=NULL){
+                      pweight=NULL, ancDf=NULL){
   options(warn=-1)
 
   cat('\n============', if (anchor) 'Anchoring' else 'Calibrating', ':', test, '============\n\n')
 
   # read data
   save_data <- TRUE
-  if (is.null(data)) {
+  if (is.null(respDf)) {
     cat('Reading data...\n')
     if (filetype == 'sav') {
-      data <- haven::read_sav(paste0('data/', test, '.sav'))
+      respDf <- haven::read_sav(paste0('data/', test, '.sav'))
       label_csv <- paste0('data/', test, '_labels.csv')
       if (file.exists(label_csv)){
         nms <- read.csv(label_csv)$iLabel
-        names(data) <- nms
+        names(respDf) <- nms
       }
     } else if (filetype == 'csv') {
-      data <- read.csv(paste0('data/', test, '.csv'))
+      respDf <- read.csv(paste0('data/', test, '.csv'))
     } else {
       stop('Data must use sav or csv.')
     }
@@ -109,30 +109,30 @@ calibrate <- function(test, data=NULL, keys, pid, n_cov,
 
   # check input
   cat('Checking inputs...\n')
-  if (!all(c(pid, regr_vec_char) %in% names(data))) {
-    stop('Pid or regressor is not in data column names!')
+  if (!all(c(pid, regrNmVec) %in% names(respDf))) {
+    stop('Pid or regressor is not in respDf column names!')
   }
-  if (length(data[[pid]]) != length(unique(data[[pid]]))){
+  if (length(respDf[[pid]]) != length(unique(respDf[[pid]]))){
     stop('Please use unique pid for cases!')
   }
-  if (!is.null(dfAnc)){
-    if (!all(names(dfAnc) %in% c('Item', 'Delta'))){
-      stop('dfAnc should have names as \'Item\' and \'Delta\'!')
+  if (!is.null(ancDf)){
+    if (!all(names(ancDf) %in% c('Item', 'Delta'))){
+      stop('ancDf should have names as \'Item\' and \'Delta\'!')
     }
   }
-  if (!all(names(keys) %in% c('Item', 'Key', 'Max_score', 'Key2'))){
-    stop('keys should have names as \'Item\', \'Key\', \'Max_score\', \'Key2 (if double key)\'!')
+  if (!all(names(keyDf) %in% c('Item', 'Key', 'Max_score', 'Key2'))){
+    stop('keyDf should have names as \'Item\', \'Key\', \'Max_score\', \'Key2 (if double key)\'!')
   }
 
   # calculate arguments
   cat('Using default arguments if not given...\n')
-  if (is.null(n_dims)) n_dims <- ncol(data) - n_cov
-  labels <- keys$Item
-  names(data)[(n_cov+1):(n_cov+sum(n_dims))] <- labels
+  if (is.null(n_dims)) n_dims <- ncol(respDf) - n_cov
+  labels <- keyDf$Item
+  names(respDf)[(n_cov+1):(n_cov+sum(n_dims))] <- labels
 
   # ####### check folders that may contain files related to 'test'
   cat('Move existing files with test name into new folder if any...\n')
-  if (is.null(dfAnc)){
+  if (is.null(ancDf)){
     folders_mov <- c('output', 'results')
   } else {
     folders_mov <- c('input', 'output', 'results')
@@ -140,24 +140,22 @@ calibrate <- function(test, data=NULL, keys, pid, n_cov,
   map(folders_mov, ~move_into_folder(folder=.x, test=test))
 
   # ####### preprocess data
-  poly_key <- ifelse(any(keys$Max_score > 1), TRUE, FALSE)
+  poly_key <- ifelse(any(keyDf$Max_score > 1), TRUE, FALSE)
 
   if (poly_key){
     cat('Checking polytomou-score items; recode if score are not continuous...\n')
     if (recode_poly) {
-      data <- poly_recode(keys, data, n_cov, c('r','R','m','M','9','x','X','.','',' ',NA))
+      respDf <- poly_recode(keyDf, respDf, n_cov, c('r','R','m','M','9','x','X','.','',' ',NA))
     }
   }
 
   if (sparse_check){
     cat('Checking and removing items without data on any item or DIF variable categories...\n')
-    processed <- sparse_data_process(test=test, data=data, keys=keys, labels=labels,
-                     n_cov=n_cov, n_dims=n_dims,
-                     miss_code=c('.', 'r', 'R', 'x', 'X', '', ' '),
-                     DIFVar=NULL)
-    data <- processed[['data']]
+    processed <- sparse_data_process(test, respDf, keyDf, labels, n_cov, n_dims,
+                                     c('.', 'r', 'R', 'x', 'X', '', ' '), NULL)
+    respDf <- processed[['data']]
     n_dims <- processed[['n_dims']]
-    keys <- processed[['keys']]
+    keyDf <- processed[['keys']]
     labels <- processed[['labels']]
   }
 
@@ -166,11 +164,11 @@ calibrate <- function(test, data=NULL, keys, pid, n_cov,
     cat('Recoding embedded & trailing missing in responses to M & R...\n')
     for (i in 1:length(n_dims)){
       if (i==1){
-        data <- miss_recode(data, n_cov+1, n_cov+n_dims[[i]], 'M','R',
+        respDf <- miss_recode(respDf, n_cov+1, n_cov+n_dims[[i]], 'M','R',
                   NA, missCode2Conv, F, F)
       }
       else {
-        data <- miss_recode(data, n_cov+sum(n_dims[1:(i-1)])+1,
+        respDf <- miss_recode(respDf, n_cov+sum(n_dims[1:(i-1)])+1,
                   n_cov+sum(n_dims[1:i]), 'M','R', NA,
                   missCode2Conv, F, F)
       }
@@ -187,21 +185,21 @@ calibrate <- function(test, data=NULL, keys, pid, n_cov,
   # save data
   if (save_data) {
     cat('Saving data into csv and sav...\n')
-    write.csv(data, paste0('data/', test, '.csv'), row.names=FALSE)
+    write.csv(respDf, paste0('data/', test, '.csv'), row.names=FALSE)
     # for .sav data
     tryCatch({
-      haven::write_sav(data, paste0('data/', test, '.sav'))
+      haven::write_sav(respDf, paste0('data/', test, '.sav'))
     },
     error = function(e) {
-      data_sav <- data
+      data_sav <- respDf
       iSPSS <- paste0('V', 1:ncol(data_sav))
       names(data_sav)[1:ncol(data_sav)] <- iSPSS
 
       N1 <- sum(n_cov, length(labels))
-      if (ncol(data)==N1){
-        iLabel <- c(names(data)[1:n_cov], labels)
+      if (ncol(respDf)==N1){
+        iLabel <- c(names(respDf)[1:n_cov], labels)
       } else {
-        iLabel <- c(names(data)[1:n_cov], labels, names(data)[(N1+1):ncol(data)])
+        iLabel <- c(names(respDf)[1:n_cov], labels, names(respDf)[(N1+1):ncol(respDf)])
       }
 
       write.csv(
@@ -215,28 +213,28 @@ calibrate <- function(test, data=NULL, keys, pid, n_cov,
 
   # prepare arguments
   cat('Preparing ConQuest control file...\n')
-  prep <- df_key_lab_args(test, data, pid, n_cov, sum(n_dims), NULL,
-                          regr_vec_char, section_extr, labels, anchor, pweight)
+  prep <- df_key_lab_args(test, respDf, pid, n_cov, sum(n_dims), NULL,
+                          regrNmVec, section_extr, labels, anchor, pweight)
   if (length(n_dims) > 1){
     if(is.null(dim_names)) stop('Please set dimension names \'dim_names\'!')
-    if (poly_key) scrs <- 0:max(keys$Max_score) else scrs <- 0:1
+    if (poly_key) scrs <- 0:max(keyDf$Max_score) else scrs <- 0:1
     prep[['section_extr']] <- prep[['section_extr']] |>
       c(section_dim(scrs=scrs, n_dims=n_dims, dim_names=dim_names))
   }
 
   # ####### process anchor file
   if (anchor) {
-    if (is.null(dfAnc) || poly_key){ # poly: use previous, or manually prepare
+    if (is.null(ancDf) || poly_key){ # poly: use previous, or manually prepare
       # read from 'input' folder
     } else {
       cat('Processing anchor file...\n')
-      anchor_process(test, data, keys, labels, delete, poly_key, n_cov, n_dims, dfAnc)
+      anchor_process(test, respDf, keyDf, labels, delete, poly_key, n_cov, n_dims, ancDf)
     }
   }
 
   # ####### calibrate
   cat('Calibrating test items...\n')
-  lab_cqc(test=test, keys=keys, run=NULL, run_ls=NULL,
+  lab_cqc(test=test, keys=keyDf, run=NULL, run_ls=NULL,
       codes=prep$codes, pid_cols=prep$pid_cols, resps_cols=prep$resps_cols,
       quick=quick, delete=delete, dbl_key=dbl_key, poly_key=poly_key,
       anchor=anchor, step=FALSE, regr_ls=prep$regr_ls,
@@ -300,7 +298,7 @@ calibrate <- function(test, data=NULL, keys, pid, n_cov,
     cat('Checking option frequencies...\n')
     tryCatch(
       {
-        check_freq_resps_cat(test, data[(n_cov+1):(n_cov+sum(n_dims))])
+        check_freq_resps_cat(test, respDf[(n_cov+1):(n_cov+sum(n_dims))])
       },
       error = function(e){
         invisible()
@@ -313,7 +311,7 @@ calibrate <- function(test, data=NULL, keys, pid, n_cov,
     # ####### CCC of categories and scores
     cat('Producing Category Characteristic Curve (CCC)...\n')
     # determine whether to use wle or pv1
-    n_min <- min(map_int(data[-c(1:n_cov)], ~length(str_remove_all(na.omit(.x), 'R'))))
+    n_min <- min(map_int(respDf[-c(1:n_cov)], ~length(str_remove_all(na.omit(.x), 'R'))))
     abilEst2use <- ifelse(n_min >= 200, 'pv1', 'wle')
     plot_data <- CCC_ipMap(test, cqs, abilEst2use, numAbilGrps, poly_key)
     ccc_data <- plot_data[['ccc_data']]
@@ -335,7 +333,7 @@ calibrate <- function(test, data=NULL, keys, pid, n_cov,
     # ####### item summary
     cat('Putting together item analysis summaries...\n')
     smry <- itn_summary(test, easy, hard, iRst, fit_w, fit_uw,
-              dFallThr, dRiseThr, ccc_data, iType, keys)
+              dFallThr, dRiseThr, ccc_data, iType, keyDf)
     rm(cqs)
     if (save_xlsx){
       file_saved <- paste0('results/', paste0('itn_', test, '.xlsx'))

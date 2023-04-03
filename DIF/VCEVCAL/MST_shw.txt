@@ -1,0 +1,285 @@
+================================================================================
+MCQ Item Calibration MST                                   Tue Mar 28 12:11 2023
+SUMMARY OF THE ESTIMATION
+==============================================================Version: 5.29.5===
+
+DATA SPECIFICATIONS
+
+The Data File: data/MST_VCEVCAL.txt
+The format:  responses 14-37 pid 1-7 VCEVCAL 8-8
+Cases in file:                                                         2973
+Retained cases after dropcases and keepcases:                          2973
+Retained cases with non-zero weight:                                   2973
+Cases in MML/MCMC estimation:                                          2973
+Weighted number of cases in MML/MCMC estimation:                       2973
+Cases with EAP estimates and latent trait imputations (PVs):           2973
+Weighted number of cases EAP estimates and latent trait impu           2973
+key 1 scored as 1: CBBDBCDCBBDADABDDCBAADCD
+
+
+MODEL SPECIFICATIONS
+
+Xsi increment max:    1.00000
+FacOldXsi:    0.00000
+Assumed population distribution was: Gaussian
+Location constraint was: CASES
+Scale constraint was: Not applicable
+No case weights
+The regression model:
+Grouping Variables:
+The item model: item+VCEVCAL+item*VCEVCAL
+Slopes are fixed
+Total number of estimated parameters: 50
+Random number generation seed:    2.00000
+Number of nodes used when drawing PVs: 2000
+Number of plausible values to draw: 5
+Maximum number of iterations without a deviance improvement: 1000
+Maximum number of Newton steps for each parameter in M-step: 10
+Value for obtaining finite MLEs for zero/perfects:    0.30000
+
+
+ESTIMATION SPECIFICATIONS AND FIT
+
+Estimation method was: Gauss-Hermite Quadrature with 15 nodes
+No node filtering
+Final Deviance:                                83283.73262
+Akaike Information Criterion (AIC):            83383.73262
+Akaike Information Criterion Corrected (AICc): 83385.478
+Bayesian Information Criterion (BIC):          83683.59896
+The number of iterations: 910
+Termination criteria:  Max iterations=7500,Parameter Change= 0.00010
+                       Deviance Change= 0.00000
+Iterations terminated because the convergence criteria were reached
+================================================================================
+================================================================================
+MCQ Item Calibration MST                                   Tue Mar 28 12:11 2023
+TABLES OF RESPONSE MODEL PARAMETER ESTIMATES
+==============================================================Version: 5.29.5===
+TERM 1: item
+------------------------------------------------------------------------------------------------------------------------
+TERM 1: item
+
+        VARIABLES                                     UNWEIGHTED FIT             WEIGHTED FIT
+---------------                                   -----------------------   -----------------------
+          item                 ESTIMATE  ERROR^   MNSQ       CI        T    MNSQ       CI        T
+------------------------------------------------------------------------------------------------------------------------
+ 1   MST20Pla1                  -1.881   0.056    1.01 ( 0.95, 1.05)  0.4   0.98 ( 0.93, 1.07) -0.7
+ 2   MST20Pla2                  -0.641   0.043    1.17 ( 0.95, 1.05)  6.1   1.11 ( 0.97, 1.03)  5.8
+ 3   MST20Pla3                   0.395   0.041    1.01 ( 0.95, 1.05)  0.5   1.00 ( 0.97, 1.03)  0.1
+ 4   MST203x301                 -1.014   0.048    0.83 ( 0.95, 1.05) -7.0   0.90 ( 0.95, 1.05) -4.0
+ 5   MST203x302                  0.047   0.042    0.96 ( 0.95, 1.05) -1.5   0.97 ( 0.97, 1.03) -2.0
+ 6   MST203x303                  0.077   0.041    0.90 ( 0.95, 1.05) -3.9   0.93 ( 0.97, 1.03) -4.2
+ 7   MST203x304                 -0.140   0.043    0.90 ( 0.95, 1.05) -4.2   0.93 ( 0.96, 1.04) -3.9
+ 8   MST20Cro1                   0.202   0.041    1.27 ( 0.95, 1.05)  9.6   1.19 ( 0.97, 1.03) 11.4
+ 9   MST20Cro3                  -0.177   0.041    1.12 ( 0.95, 1.05)  4.4   1.09 ( 0.97, 1.03)  5.6
+ 10  MST20Cop1                  -1.758   0.052    0.74 ( 0.95, 1.05)-11.1   0.91 ( 0.94, 1.06) -3.1
+ 11  MST20Cop3                   0.008   0.041    1.04 ( 0.95, 1.05)  1.4   1.02 ( 0.97, 1.03)  1.0
+ 12  MST20Cop7                  -0.556   0.042    0.94 ( 0.95, 1.05) -2.5   0.96 ( 0.97, 1.03) -2.7
+ 13  MST20Cop4                   0.317   0.041    0.97 ( 0.95, 1.05) -1.0   0.98 ( 0.97, 1.03) -1.5
+ 14  MST20Dan1                   0.518   0.041    0.92 ( 0.95, 1.05) -3.1   0.93 ( 0.97, 1.03) -4.7
+ 15  MST20Dan2                  -0.136   0.041    0.92 ( 0.95, 1.05) -3.2   0.93 ( 0.97, 1.03) -4.3
+ 16  MST20Dan4                  -0.274   0.042    1.01 ( 0.95, 1.05)  0.3   1.00 ( 0.97, 1.03)  0.3
+ 17  MST20SBoom1                -0.236   0.042    1.09 ( 0.95, 1.05)  3.4   1.07 ( 0.97, 1.03)  4.2
+ 18  MST20SBoom2                -0.169   0.041    1.28 ( 0.95, 1.05) 10.0   1.20 ( 0.97, 1.03) 12.3
+ 19  MST20SBoom3                -0.803   0.042    1.11 ( 0.95, 1.05)  4.2   1.08 ( 0.97, 1.03)  4.7
+ 20  MST20Dat1                   0.475   0.041    0.84 ( 0.95, 1.05) -6.4   0.88 ( 0.97, 1.03) -8.5
+ 21  MST20Dat2                   0.858   0.042    0.88 ( 0.95, 1.05) -4.6   0.89 ( 0.97, 1.03) -6.3
+ 22  MST20Dat4                   0.458   0.042    0.92 ( 0.95, 1.05) -3.2   0.92 ( 0.97, 1.03) -5.1
+ 23  MST20PPo2                  -0.295   0.041    1.05 ( 0.95, 1.05)  1.9   1.03 ( 0.97, 1.03)  1.9
+ 24  MST20PPo5                   1.366   0.049    1.21 ( 0.95, 1.05)  7.6   1.03 ( 0.95, 1.05)  1.1
+--------------------------------------------------------------------------------
+An asterisk next to a parameter estimate indicates that it is constrained
+Separation Reliability= 0.997
+Chi-square test of parameter equality=   5440.09, df=24, Sig Level=0.000
+^ Quick standard errors have been used
+Term is a fixed effect
+
+TERM 2: VCEVCAL
+------------------------------------------------------------------------------------------------------------------------
+TERM 2: VCEVCAL
+
+        VARIABLES                                     UNWEIGHTED FIT             WEIGHTED FIT
+---------------                                   -----------------------   -----------------------
+         vcevcal               ESTIMATE  ERROR^   MNSQ       CI        T    MNSQ       CI        T
+------------------------------------------------------------------------------------------------------------------------
+ 1   1                          -0.245   0.009    0.98 ( 0.95, 1.05) -0.6   0.97 ( 0.95, 1.05) -1.1
+ 2   2                           0.245*  0.009    0.81 ( 0.08, 1.92) -0.3   0.82 ( 0.08, 1.92) -0.3
+--------------------------------------------------------------------------------
+An asterisk next to a parameter estimate indicates that it is constrained
+Separation Reliability Not Applicable
+Chi-square test of parameter equality=    793.45, df=1
+^ Quick standard errors have been used
+Term is a fixed effect
+
+TERM 3: item*VCEVCAL
+---------------------------------------------------------------------------------------------------------------------------------------
+TERM 3: item*VCEVCAL
+
+                     VARIABLES                                                  UNWEIGHTED FIT             WEIGHTED FIT
+------------------------------                                              -----------------------   -----------------------
+          item                     vcevcal               ESTIMATE  ERROR^   MNSQ       CI        T    MNSQ       CI        T
+---------------------------------------------------------------------------------------------------------------------------------------
+ 1   MST20Pla1             1   1                          -0.042   0.056    1.01 ( 0.95, 1.05)  0.4   0.98 ( 0.93, 1.07) -0.7
+ 2   MST20Pla2             1   1                           0.019   0.043    1.16 ( 0.95, 1.05)  6.0   1.11 ( 0.96, 1.04)  5.7
+ 3   MST20Pla3             1   1                          -0.046   0.041    1.01 ( 0.95, 1.05)  0.4   1.00 ( 0.97, 1.03)  0.0
+ 4   MST203x301            1   1                          -0.356   0.048    0.83 ( 0.95, 1.05) -7.0   0.90 ( 0.95, 1.05) -4.0
+ 5   MST203x302            1   1                          -0.395   0.042    0.96 ( 0.95, 1.05) -1.5   0.97 ( 0.97, 1.03) -2.1
+ 6   MST203x303            1   1                          -0.365   0.041    0.90 ( 0.95, 1.05) -3.9   0.93 ( 0.97, 1.03) -4.2
+ 7   MST203x304            1   1                          -0.583   0.043    0.90 ( 0.95, 1.05) -4.1   0.93 ( 0.96, 1.04) -3.9
+ 8   MST20Cro1             1   1                          -0.239   0.041    1.27 ( 0.95, 1.05)  9.6   1.19 ( 0.97, 1.03) 11.5
+ 9   MST20Cro3             1   1                          -0.049   0.041    1.12 ( 0.95, 1.05)  4.4   1.09 ( 0.97, 1.03)  5.6
+ 10  MST20Cop1             1   1                           0.082   0.052    0.74 ( 0.95, 1.05)-11.2   0.91 ( 0.94, 1.06) -3.2
+ 11  MST20Cop3             1   1                           0.136   0.041    1.04 ( 0.95, 1.05)  1.5   1.02 ( 0.97, 1.03)  1.1
+ 12  MST20Cop7             1   1                           0.105   0.042    0.94 ( 0.95, 1.05) -2.4   0.96 ( 0.97, 1.03) -2.7
+ 13  MST20Cop4             1   1                          -0.124   0.041    0.97 ( 0.95, 1.05) -1.0   0.98 ( 0.97, 1.03) -1.4
+ 14  MST20Dan1             1   1                           0.077   0.041    0.92 ( 0.95, 1.05) -3.0   0.93 ( 0.97, 1.03) -4.6
+ 15  MST20Dan2             1   1                           0.526   0.041    0.92 ( 0.95, 1.05) -3.2   0.93 ( 0.97, 1.03) -4.2
+ 16  MST20Dan4             1   1                          -0.147   0.042    1.01 ( 0.95, 1.05)  0.3   1.00 ( 0.97, 1.03)  0.2
+ 17  MST20SBoom1           1   1                          -0.108   0.042    1.09 ( 0.95, 1.05)  3.5   1.07 ( 0.97, 1.03)  4.2
+ 18  MST20SBoom2           1   1                           0.269   0.041    1.28 ( 0.95, 1.05)  9.9   1.20 ( 0.97, 1.03) 12.2
+ 19  MST20SBoom3           1   1                           0.245   0.042    1.11 ( 0.95, 1.05)  4.3   1.08 ( 0.97, 1.03)  4.7
+ 20  MST20Dat1             1   1                          -0.435   0.041    0.84 ( 0.95, 1.05) -6.5   0.88 ( 0.97, 1.03) -8.5
+ 21  MST20Dat2             1   1                          -0.054   0.042    0.88 ( 0.95, 1.05) -4.6   0.89 ( 0.97, 1.03) -6.3
+ 22  MST20Dat4             1   1                           0.270   0.042    0.92 ( 0.95, 1.05) -3.2   0.92 ( 0.97, 1.03) -5.1
+ 23  MST20PPo2             1   1                           0.754   0.041    1.05 ( 0.95, 1.05)  2.0   1.03 ( 0.97, 1.03)  1.9
+ 24  MST20PPo5             1   1                           0.447   0.049    1.21 ( 0.95, 1.05)  7.6   1.03 ( 0.95, 1.05)  1.1
+ 1   MST20Pla1             2   2                           0.042*  0.056    0.83 ( 0.08, 1.92) -0.2   1.03 ( 0.05, 1.95)  0.2
+ 2   MST20Pla2             2   2                          -0.019*  0.043    1.74 ( 0.08, 1.92)  1.5   1.14 ( 0.54, 1.46)  0.7
+ 3   MST20Pla3             2   2                           0.046*  0.041    1.47 ( 0.08, 1.92)  1.0   1.35 ( 0.36, 1.64)  1.1
+ 4   MST203x301            2   2                           0.356*  0.048    0.95 ( 0.08, 1.92)  0.1   0.97 ( 0.54, 1.46) -0.0
+ 5   MST203x302            2   2                           0.395*  0.042    1.28 ( 0.08, 1.92)  0.7   1.17 ( 0.36, 1.64)  0.6
+ 6   MST203x303            2   2                           0.365*  0.041    1.28 ( 0.08, 1.92)  0.7   1.17 ( 0.36, 1.64)  0.6
+ 7   MST203x304            2   2                           0.583*  0.043    0.76 ( 0.08, 1.92) -0.4   0.81 ( 0.36, 1.64) -0.5
+ 8   MST20Cro1             2   2                           0.239*  0.041    1.02 ( 0.08, 1.92)  0.2   0.92 ( 0.36, 1.64) -0.1
+ 9   MST20Cro3             2   2                           0.049*  0.041    1.13 ( 0.08, 1.92)  0.4   1.14 ( 0.52, 1.48)  0.6
+ 10  MST20Cop1             2   2                          -0.082*  0.052    1.49 ( 0.08, 1.92)  1.1   1.22 ( 0.05, 1.95)  0.6
+ 11  MST20Cop3             2   2                          -0.136*  0.041    0.58 ( 0.08, 1.92) -0.9   0.62 ( 0.52, 1.48) -1.7
+ 12  MST20Cop7             2   2                          -0.105*  0.042    0.71 ( 0.08, 1.92) -0.5   0.79 ( 0.54, 1.46) -0.9
+ 13  MST20Cop4             2   2                           0.124*  0.041    0.97 ( 0.08, 1.92)  0.1   0.88 ( 0.36, 1.64) -0.3
+ 14  MST20Dan1             2   2                          -0.077*  0.041    0.50 ( 0.08, 1.92) -1.2   0.56 ( 0.36, 1.64) -1.5
+ 15  MST20Dan2             2   2                          -0.526*  0.041    0.75 ( 0.08, 1.92) -0.4   0.81 ( 0.54, 1.46) -0.9
+ 16  MST20Dan4             2   2                           0.147*  0.042    1.25 ( 0.08, 1.92)  0.6   1.25 ( 0.52, 1.48)  0.9
+ 17  MST20SBoom1           2   2                           0.108*  0.042    0.69 ( 0.08, 1.92) -0.6   0.73 ( 0.52, 1.48) -1.1
+ 18  MST20SBoom2           2   2                          -0.269*  0.041    1.13 ( 0.02, 1.98)  0.4   1.18 ( 0.50, 1.50)  0.7
+ 19  MST20SBoom3           2   2                          -0.245*  0.042    0.80 ( 0.02, 1.98) -0.3   0.93 ( 0.42, 1.58) -0.1
+ 20  MST20Dat1             2   2                           0.435*  0.041    1.32 ( 0.02, 1.98)  0.8   0.98 ( 0.13, 1.87)  0.1
+ 21  MST20Dat2             2   2                           0.054*  0.042    0.47 ( 0.02, 1.98) -1.2   0.60 ( 0.13, 1.87) -0.9
+ 22  MST20Dat4             2   2                          -0.270*  0.042    1.06 ( 0.02, 1.98)  0.3   1.13 ( 0.38, 1.62)  0.5
+ 23  MST20PPo2             2   2                          -0.754*  0.041    0.78 ( 0.02, 1.98) -0.3   0.91 ( 0.42, 1.58) -0.2
+ 24  MST20PPo5             2   2                          -0.447*  0.049    0.80 ( 0.02, 1.98) -0.3   1.02 ( 0.13, 1.87)  0.2
+--------------------------------------------------------------------------------
+An asterisk next to a parameter estimate indicates that it is constrained
+Separation Reliability= 0.982
+Chi-square test of parameter equality=   1316.07, df=24, Sig Level=0.000
+^ Quick standard errors have been used
+Term is a fixed effect
+
+================================================================================
+MCQ Item Calibration MST                                   Tue Mar 28 12:11 2023
+TABLES OF POPULATION MODEL PARAMETER ESTIMATES
+==============================================================Version: 5.29.5===
+REGRESSION COEFFICIENTS
+
+
+
+Regression Variable
+
+CONSTANT                   0.000*
+-----------------------------------------------
+An asterisk next to a parameter estimate indicates that it is constrained
+===============================================
+UNCONDITIONAL COVARIANCE/CORRELATION MATRIX
+
+
+
+Dimension
+
+Dimension_1
+-------------------------------------------
+Variance                   1.105  ( 0.029)
+-------------------------------------------
+An asterisk next to a parameter estimate indicates that it is constrained
+
+===========================================
+
+RELIABILITY COEFFICIENTS
+------------------------
+
+Dimension: (Dimension_1)
+-----------------------
+ MLE Person separation RELIABILITY:  Unavailable
+ WLE Person separation RELIABILITY:   0.799
+ EAP/PV RELIABILITY:                  0.824
+------------------------
+================================================================================
+MCQ Item Calibration MST                                   Tue Mar 28 12:11 2023
+MAP OF WLE ESTIMATES AND RESPONSE MODEL PARAMETER ESTIMATES
+==============================================================Version: 5.29.5===
+                              Terms in the Model (excl Step terms)
+
+                         +item                +VCEVCAL             +item*VCEVCAL
+--------------------------------------------------------------------------------------
+                |                      |                      |                      |
+   4            |                      |                      |                      |
+              XX|                      |                      |                      |
+                |                      |                      |                      |
+                |                      |                      |                      |
+                |                      |                      |                      |
+                |                      |                      |                      |
+                |                      |                      |                      |
+   3            |                      |                      |                      |
+                |                      |                      |                      |
+                |                      |                      |                      |
+             XXX|                      |                      |                      |
+                |                      |                      |                      |
+                |                      |                      |                      |
+                |                      |                      |                      |
+   2       XXXXX|                      |                      |                      |
+                |                      |                      |                      |
+                |                      |                      |                      |
+           XXXXX|                      |                      |                      |
+                |                      |                      |                      |
+          XXXXXX|24                    |                      |                      |
+                |                      |                      |                      |
+   1     XXXXXXX|                      |                      |                      |
+                |21                    |                      |                      |
+        XXXXXXXX|                      |                      |23.1                  |
+         XXXXXXX|                      |                      |7.2 20.2              |
+                |14 20 22              |                      |15.1 24.1 5.2         |
+        XXXXXXXX|3 13                  |                      |19.1 22.1 4.2         |
+       XXXXXXXXX|8                     |2                     |12.1 14.1 18.1        |
+                |5 6 11                |                      |2.1 10.1 11.1         |
+   0   XXXXXXXXX|7 15                  |                      |1.1 3.1 9.1 1.2       |
+       XXXXXXXXX|9 16 17 18            |1                     |8.1 13.1 16.1         |
+       XXXXXXXXX|23                    |                      |4.1 5.1 6.1           |
+                |12                    |                      |20.1 15.2 24.2        |
+      XXXXXXXXXX|2                     |                      |7.1                   |
+        XXXXXXXX|19                    |                      |23.2                  |
+        XXXXXXXX|                      |                      |                      |
+  -1            |4                     |                      |                      |
+         XXXXXXX|                      |                      |                      |
+         XXXXXXX|                      |                      |                      |
+                |                      |                      |                      |
+           XXXXX|                      |                      |                      |
+             XXX|10                    |                      |                      |
+                |1                     |                      |                      |
+  -2            |                      |                      |                      |
+              XX|                      |                      |                      |
+                |                      |                      |                      |
+               X|                      |                      |                      |
+                |                      |                      |                      |
+                |                      |                      |                      |
+                |                      |                      |                      |
+  -3            |                      |                      |                      |
+                |                      |                      |                      |
+                |                      |                      |                      |
+                |                      |                      |                      |
+                |                      |                      |                      |
+                |                      |                      |                      |
+                |                      |                      |                      |
+  -4            |                      |                      |                      |
+                |                      |                      |                      |
+======================================================================================
+Each 'X' represents 21.4 cases
+Some parameters could not be fitted on the display
+======================================================================================

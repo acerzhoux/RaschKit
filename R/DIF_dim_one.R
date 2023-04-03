@@ -38,8 +38,6 @@
 #' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference
 #' between two tests. Default is 4.
 #' @param desig_effect Value to adjust errors. Default is 1.
-#' @param facil_cut Threshold of number of percent to flag an item with large
-#' facility difference between two groups of test takers. Default is 10.
 #' @param iterative TRUE to iteratively remove DIF items. Default is FALSE
 #' @param step TRUE if polytomous items are involved. Default is FALSE.
 #' @param pweight Variable name of person weights in response dataframe. Should
@@ -47,14 +45,11 @@
 #' @export
 
 DIF_dim_one <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
-            test, pid, n_cov, DIFVar, data=NULL, filetype='sav', keys,
-            vars=NULL, poly_facet=FALSE,
-            n_resp=NULL, regr_vec_char=NULL,
-            quick=TRUE, section_extr=NULL,
-            prep_process=FALSE, save_xlsx=TRUE,
-            p_cut=0.05, DIF_cut=0.5,
-            DIF_adj_cut=4, facil_cut=10, iterative=FALSE,
-            step=FALSE, desig_effect=1, pweight=NULL){
+                        test, pid, n_cov, DIFVar, data=NULL, filetype='sav', keys,
+                        vars=NULL, poly_facet=FALSE, n_resp=NULL, regr_vec_char=NULL,
+                        quick=TRUE, section_extr=NULL, prep_process=FALSE, save_xlsx=TRUE,
+                        p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4, iterative=FALSE,
+                        step=FALSE, desig_effect=1, pweight=NULL){
   # read data
   if (is.null(data)) {
     cat('Reading data...\n')
@@ -129,11 +124,11 @@ DIF_dim_one <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
           section_extr=prep$section_extr, dbl_key=NULL, poly_key=poly_key,
           quick=quick, step=step, keys=keys,
           p_cut=p_cut, DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut,
-          facil_cut=facil_cut, desig_effect=desig_effect,
+          desig_effect=desig_effect,
           test=test, DIFVar=DIFVar,
           vars=vars, poly_facet=poly_facet, poly_group=FALSE,
           poly_catgrs=NULL, save_xlsx=save_xlsx, iterative=iterative,
-          pweight=pweight) %>%
+          pweight=pweight) |>
     append(within(prep, rm(section_extr)))
 
   # ####### run models

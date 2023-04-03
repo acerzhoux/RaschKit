@@ -15,19 +15,10 @@
 
 df_shw <- function(folder='output', test){
   dfShw <- item_stats(folder, test)
-  if ("Item Estimate (case centred)" %in% names(dfShw)) {
-    dplyr::select(
-      dfShw,
-      item="Item Title" ,
-      delta="Item Estimate (case centred)",
-      error="Item Error"
-    )
-  } else {
-    dplyr::select(
-      dfShw,
-      item="Item Title" ,
-      delta="Item Estimate (item centred)",
-      error="Item Error"
-    )
-  }
+  dplyr::select(
+    dfShw,
+    item="Item Title" ,
+    delta="Item Estimate (item centred)",
+    error="Item Error"
+  )
 }

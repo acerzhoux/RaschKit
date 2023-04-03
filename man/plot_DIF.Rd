@@ -12,7 +12,7 @@ plot_DIF(
   DIF_cut = 0.5,
   DIF_adj_cut = 4,
   step = FALSE,
-  DIF = FALSE,
+  DIFVar = NULL,
   cor,
   shift,
   sdr,
@@ -40,8 +40,7 @@ between two tests. Default is 4.}
 
 \item{step}{TRUE if DIF analysis is performed on step parameters. Default is FALSE.}
 
-\item{DIF}{TRUE if DIF analysis is performed on a dichotomous DIF variable.
-Default is FALSE (anchor check).}
+\item{DIFVar}{Name of dichotomous DIF variable, e.g., 'gender'. Default is NULL.}
 
 \item{cor}{Correlation of two categories' delta estimates.}
 

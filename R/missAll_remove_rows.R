@@ -1,7 +1,7 @@
 #' missAll_remove_rows
 #'
-#' This function removes cases with all missing responses of 
-#' c('@@', '@@@', NA, '9', 'R', 'r', '', ' ').
+#' This function removes cases with all missing responses of
+#' c('@@', '@@@', NA, '9', '.').
 
 #' @param df Dataframe that contains responses of all missing values.
 #' @param begin The 1st item's order in test, e.g., 7.
@@ -13,13 +13,16 @@
 #' @export
 
 missAll_remove_rows <- function(df, begin, end, rm=TRUE){
-    df$flag_miss <- NA
-    n_case <- dim(df)[1]
-    for (i in 1:n_case){
-        if (all(flatten_chr(df[i, (begin:end)]) %in% c('@@', '@@@', NA, '9', 'R', 'r', '', ' '))){
-            df[i, 'flag_miss'] <- 1
-        }
-    }
-    if (rm) df <- df %>% filter(is.na(flag_miss)) %>% select(-flag_miss)
+  Flag <- apply(
+    df[begin:end], 1,
+    function(x) all(x %in% c('@@', '@@@', NA, '9', '.'))
+  )
+  df <- cbind(df, Flag)
+
+  if (rm) {
+    filter(df, !Flag) |>
+      dplyr::select(-Flag)
+  } else {
     df
+  }
 }

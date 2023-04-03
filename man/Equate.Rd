@@ -5,7 +5,7 @@
 \title{Equate}
 \usage{
 Equate(
-  df,
+  dfDelta,
   test,
   vars,
   p_cut = 0.05,
@@ -14,12 +14,15 @@ Equate(
   sav_results = TRUE,
   desig_effect = 1,
   step = FALSE,
-  DIF = FALSE,
-  iterative = FALSE
+  DIFVar = NULL,
+  iterative = FALSE,
+  dfIndice = NULL,
+  pointer = FALSE,
+  report = FALSE
 )
 }
 \arguments{
-\item{df}{Dataframe of five variables of 'item' (anchor labels), 'delta.x',
+\item{dfDelta}{Dataframe of five variables of 'item' (anchor labels), 'delta.x',
 'error.x', 'delta.y', and 'error.y'. '.x' and '.y' should correspond to order
 of test names in 'vars'.}
 
@@ -44,10 +47,17 @@ a plot are desired. Default is TRUE.}
 \item{step}{TRUE if DIF analysis is performed on step parameters.
 Default is FALSE.}
 
-\item{DIF}{TRUE if DIF analysis is performed on a dichotomous DIF variable.
-Default is FALSE (anchor check).}
+\item{DIFVar}{Name of dichotomous DIF variable, e.g., 'gender'.}
 
 \item{iterative}{TRUE to iteratively remove DIF items. Default is FALSE.}
+
+\item{dfIndice}{Dataframe of indice which includes variables of 'item' and
+1-3 of facility, discrimination, and weighted fit in order. Default is NULL when
+none of those indice is available.}
+
+\item{pointer}{Whether to print locations of output files. Default is FALSE.}
+
+\item{report}{Whether to generate a html report. Default is FALSE.}
 }
 \value{
 Dataframe of chi-square test results for anchors between two tests.
@@ -59,6 +69,6 @@ results and flags can be saved in 'equating' folder. Also, one plot is saved
 in subfolder 'plot' inside 'equating' folder.
 }
 \examples{
-Equate(df=data[, c('item', 'delta.x', 'error.x', 'delta.y', 'error.y')],
+Equate(dfDelta=data[, c('item', 'delta.x', 'error.x', 'delta.y', 'error.y')],
 test='Elana_math', vars=c('NSW', 'VIC'))
 }

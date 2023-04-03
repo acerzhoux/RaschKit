@@ -1,0 +1,15 @@
+export parameters                >> DIF/educator\RANZCOG_2_anc.txt
+itanal !estimates=wle,format=summary       >> DIF/educator\RANZCOG_2_its.txt
+itanal !estimates=wle,format=summary,filetype=excel >> DIF/educator\RANZCOG_2_its.xls
+itanal !estimates=latent             >> DIF/educator\RANZCOG_2_itn.txt
+itanal !estimates=latent,filetype=excel      >> DIF/educator\RANZCOG_2_itn.xls
+itanal !estimates=latent,format=export       >> DIF/educator\RANZCOG_2_opt.txt
+itanal !estimates=latent,format=export,filetype=excel >> DIF/educator\RANZCOG_2_opt.xls
+show !estimates=wle,Expanded=no,itemlabels=yes   >> DIF/educator\RANZCOG_2_shw.txt
+show !estimates=wle,Expanded=no,itemlabels=yes,filetype=excel  >> DIF/educator\RANZCOG_2_shw.xls
+show parameters !table=7             >> DIF/educator\RANZCOG_2_thr.txt
+show parameters !table=7,filetype=excel      >> DIF/educator\RANZCOG_2_thr.xls
+fit                        >> DIF/educator\RANZCOG_2_res.txt
+show cases !estimates=wle,filetype=excel     >> DIF/educator\RANZCOG_2_cas.xls
+itanal ! matrixout=i
+reset

@@ -41,8 +41,6 @@
 #' two tests. Default is 0.5.
 #' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference
 #' between two tests. Default is 4.
-#' @param facil_cut Threshold of number of percent to flag an item with large
-#' facility difference between two groups of test takers. Default is 10.
 #' @param desig_effect Value to adjust errors. Default is 1.
 #' @param dim_multi TRUE if the model is multidimensional. Default is FALSE.
 #' @param scores Scores possible in the test, e.g., 0:3. Default is NULL.
@@ -53,13 +51,13 @@
 #' @export
 
 DIF_dim_multi <- function(method=c('chi_square', 'Bonferroni'), test, DIFVar,
-              pid, n_cov, n_dims, dim_names, data=NULL, filetype='sav',
-              keys, vars=NULL, regr_vec_char=NULL,
-              quick=TRUE, step=FALSE, delete=NULL,
-              dbl_key=FALSE, section_extr=NULL,
-              p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4, facil_cut=10,
-              desig_effect=1, dim_multi=FALSE, scores=NULL,
-              prep_process=FALSE, pweight=NULL){
+                          pid, n_cov, n_dims, dim_names, data=NULL, filetype='sav',
+                          keys, vars=NULL, regr_vec_char=NULL,
+                          quick=TRUE, step=FALSE, delete=NULL,
+                          dbl_key=FALSE, section_extr=NULL,
+                          p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4,
+                          desig_effect=1, dim_multi=FALSE, scores=NULL,
+                          prep_process=FALSE, pweight=NULL){
   # read data
   if (is.null(data)) {
     cat('Reading data...\n')
@@ -123,7 +121,7 @@ DIF_dim_multi <- function(method=c('chi_square', 'Bonferroni'), test, DIFVar,
               regr_vec_char, section_extr, labels, FALSE, pweight)
   if (dim_multi){
     if (is.null(scores)) scrs <- 0:1 else scrs <- scores
-    prep[['section_extr']] <- prep[['section_extr']] %>%
+    prep[['section_extr']] <- prep[['section_extr']] |>
       c(section_dim(scrs=scrs, n_dims=n_dims, dim_names=dim_names))
   }
   arg_cqc <- list(test=test, run=NULL, run_ls=NULL, keys=keys,
@@ -144,10 +142,10 @@ DIF_dim_multi <- function(method=c('chi_square', 'Bonferroni'), test, DIFVar,
 
     cat('Performing iterative chi_square tests...\n')
     fdr <- here::here('DIF', DIFVar)
-    df <- delta_DIF_dich(folder=fdr, test=test, DIFVar=DIFVar) %>%
-      bind_cols(delta_error_DIF_dich(folder=fdr, test=test)) %>%
-      select(item, everything()) %>%
-      na.omit() %>%
+    df <- delta_DIF_dich(folder=fdr, test=test, DIFVar=DIFVar) |>
+      bind_cols(delta_error_DIF_dich(folder=fdr, test=test)) |>
+      select(item, everything()) |>
+      na.omit() |>
       as_tibble()
 
     strt <- 1
@@ -155,9 +153,8 @@ DIF_dim_multi <- function(method=c('chi_square', 'Bonferroni'), test, DIFVar,
       arg_DIF[['test']] <- paste0(test, '_', dim_names[[i]])
       dat <- df[strt:(strt+n_dims[[i]]-1), ]
       do.call(DIF_dich,
-          arg_DIF %>% append(list(vars=vars, df=dat,
+          arg_DIF |> append(list(vars=vars, df=dat,
                       DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut,
-                      facil_cut=facil_cut,
                       desig_effect=desig_effect)))
       strt <- strt+n_dims[[i]]
     }
@@ -167,7 +164,7 @@ DIF_dim_multi <- function(method=c('chi_square', 'Bonferroni'), test, DIFVar,
     cat('Running ConQuest...\n')
     lab_tbl <- mutate(lab_tbl, item=as.character(item))
     cats <- unique(data[[DIFVar]])
-    cats <- cats[!is.na(cats)] %>% sort()
+    cats <- cats[!is.na(cats)] |> sort()
     arg_cqc[['poly_catgrs']] <- cats
     do.call(lab_cqc, arg_cqc)
 
@@ -175,7 +172,7 @@ DIF_dim_multi <- function(method=c('chi_square', 'Bonferroni'), test, DIFVar,
     strt <- 0
     for (i in 1:N){
       labs <- lab_tbl[(strt+1):(strt+n_dims[[i]]), ]
-      do.call(DIF_poly_shw, arg_DIF %>%
+      do.call(DIF_poly_shw, arg_DIF |>
             append(list(folder=NULL,
                   labels=labs,
                   domain=dim_names[[i]])))

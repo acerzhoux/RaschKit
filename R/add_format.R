@@ -7,7 +7,7 @@
 
 add_format <- function(){
   # functions to add formats, hyperlink
-  colorFlags_link <- function(wb, i){
+  colorFlags_link <- function(wb, i, ls_save){
     cols <- c(10, 11, 13, 14)
     colWide <- ifelse(i==2, 20, 21)
     rules <- c('<10', '<.11', '>1.2', '>1.1')
@@ -32,7 +32,7 @@ add_format <- function(){
     }
     setColWidths(wb, sheet, cols = 1, widths = 14)
     setColWidths(wb, sheet, cols = 2:3, widths = 8)
-    setColWidths(wb, sheet, cols = 4, widths = 16)
+    setColWidths(wb, sheet, cols = 4, widths = 15)
     setColWidths(wb, sheet, cols = 5:6, widths = 6)
     setColWidths(wb, sheet, cols = 7:19, widths = 8)
     setColWidths(wb, sheet, cols = 20, widths = 90)
@@ -50,9 +50,9 @@ add_format <- function(){
     return(wb)
   }
 
-  addHeaderStyle <- function(wb, n_col, sheet){
+  addHeaderStyle <- function(wb, n_col, sheet, size=10){
     headerStyle <- createStyle(
-      fontSize = 10,
+      fontSize = size,
       textDecoration = 'bold',
       halign = "center",
       valign = 'bottom',
@@ -73,9 +73,9 @@ add_format <- function(){
     return(wb)
   }
 
-  addBodyStyle <- function(wb, halign, n_case, cols, sheet){
+  addBodyStyle <- function(wb, halign, n_case, cols, sheet, size=10){
     bodyStyle <- createStyle(
-      fontSize = 10,
+      fontSize = size,
       halign = halign,
       fontName='Arial',
       border = "TopBottomLeftRight",
@@ -112,11 +112,267 @@ add_format <- function(){
     return(wb)
   }
 
+  colorFlagsDifPoly <- function(wb, sheet, n_case, nCat, df){
+    redStyle <- createStyle(
+      halign = "right",
+      bgFill = "#FFC7CE",
+      wrapText=TRUE
+    )
+    greenStyle <- createStyle(
+      halign = "right",
+      bgFill = "#00FF00",
+      wrapText=TRUE
+    )
+
+    for (j in 0:(nCat-1)){
+      nCol <- 2*j+3
+      for (k in 2:n_case){
+        if (!is.na(df[k-1, nCol+1])){
+          conditionalFormatting(
+            wb=wb,
+            sheet=sheet,
+            cols=nCol,
+            rows=k,
+            rule=paste0(
+              'AND($', LETTERS[[nCol]], k, '>0,
+              IF(EXACT($', LETTERS[[nCol+1]], k, ', \"*\"), TRUE, FALSE))'
+            ),
+            type = "expression",
+            style = redStyle
+          )
+          conditionalFormatting(
+            wb=wb,
+            sheet=sheet,
+            cols=nCol,
+            rows=k,
+            rule=paste0(
+              'AND($', LETTERS[[nCol]], k, '<0,
+              IF(EXACT($', LETTERS[[nCol+1]], k, ', \"*\"), TRUE, FALSE))'
+            ),
+            type = "expression",
+            style = greenStyle
+          )
+        }
+      }
+    }
+
+    return(wb)
+  }
+
+  # itn
+  itn <- function(ex_ls, file, folder, prefix){
+    # add summary and flag sheets
+    itnSums <- map(ex_ls, ~dplyr::filter(.x, Priority %in% 1:4))
+    Flagged <- itnSums[lengths(itnSums) > 0L] |>
+      reduce(bind_rows) |>
+      select(-ncol(itnSums[[1]]))
+
+    # move combined files into a folder named prefix before saving
+    move_into_folder(folder, prefix)
+
+    ls_save <- list(
+        Note=itn_comment(),
+        Flagged=Flagged |>
+          mutate(ICC=paste0('=HYPERLINK(', Test, '!U$2, "ICC")'))
+      ) |>
+      append(
+        map(ex_ls, ~mutate(.x, ICC='=HYPERLINK(U$2, "ICC")'))
+      )
+
+    # add note sheet
+    wb <- createWorkbook()
+    addWorksheet(wb, names(ls_save)[[1]])
+    writeData(wb, sheet = names(ls_save)[[1]], x = ls_save[[1]])
+
+    # add flagged and test sheets
+    for (i in 2:length(ls_save)){
+      sheet <- names(ls_save)[[i]]
+      n_case <- nrow(ls_save[[i]])+1
+      n_col <- ifelse(i==2, ncol(ls_save[[i]]), ncol(ls_save[[i]])-1)
+      addWorksheet(wb, sheet)
+      writeData(wb, sheet = sheet, x = ls_save[[i]])
+
+      # header, body style
+      wb <- addHeaderStyle(wb, n_col, sheet) |>
+        addBodyStyle('left', n_case, c(4, 20), sheet) |>
+        addBodyStyle('right', n_case, 7:8, sheet) |>
+        addBodyStyle('center', n_case, setdiff(1:20, c(4, 20, 7:8)), sheet)
+
+      # add flag color and link
+      wb <- colorFlags_link(wb, i, ls_save)
+    }
+
+    saveWorkbook(wb, file, overwrite = TRUE)
+  }
+
+  # equating
+  equate <- function(ls_save, folder, file, flagVec){
+    # add note sheet
+    wb <- createWorkbook()
+    addWorksheet(wb, names(ls_save)[[1]])
+    writeData(wb, sheet = names(ls_save)[[1]], x = ls_save[[1]])
+
+    # add flagged and test sheets
+    for (i in 2:length(ls_save)){
+      sheet <- names(ls_save)[[i]]
+      n_case <- nrow(ls_save[[i]])+1
+      n_col <- ncol(ls_save[[i]])
+
+      colsFlag1 <- n_col-4
+      colsFlag <- colsFlag1 + c(0, 1, 3, 4)
+
+      addWorksheet(wb, sheet)
+      writeData(
+        wb,
+        sheet = sheet,
+        x = ls_save[[i]] |>
+          dplyr::mutate(
+            `Files`=c(
+              file.path(getwd(), folder, paste0(sheet, '_process.xlsx')),
+              rep(NA, n_case-1-1)
+            )
+          )
+      )
+
+      # header, body style
+      wb <- addHeaderStyle(wb, n_col, sheet) |>
+        addBodyStyle('left', n_case, 1, sheet) |>
+        addBodyStyle('right', n_case, 2:n_col, sheet)
+
+      setColWidths(wb, sheet, cols = 1, widths = 15)
+      setColWidths(wb, sheet, cols = 2:n_col, widths = 7)
+
+      # add flag color and link
+      wb <- colorFlags(
+          wb,
+          colsFlag,
+          c(paste0('>', flagVec[[1]]), paste0('>', flagVec[[2]]), '<.05', '=1'),
+          sheet,
+          n_case
+        ) |>
+        colorFlags(
+          colsFlag[1:2],
+          c(paste0('<-', flagVec[[1]]), paste0('<-', flagVec[[2]])),
+          sheet,
+          n_case
+        )
+
+      writeFormula(
+        wb, sheet,
+        startRow = 2,
+        startCol = n_col+2,
+        x = paste0('=HYPERLINK(', LETTERS[[n_col+1]], '$2, "Process")')
+      )
+
+      ## Insert images
+      insertImage(
+        wb, sheet,
+        file.path(folder, paste0(sheet, '_delta.png')),
+        startRow = 1, startCol = n_col+3,
+        width = 5.5, height = 10
+      )
+      if (colsFlag1 > 9 & identical(grep('step', sheet), integer(0))) {
+        insertImage(
+          wb, sheet,
+          file.path(folder, paste0(sheet, '_facilDiscrFitw.png')),
+          startRow = 1, startCol = n_col+10,
+          width = 5.5, height = 10
+        )
+      }
+
+      setColWidths(wb, sheet, cols = n_col+1, widths = 10)
+      setColWidths(wb, sheet, cols = n_col+2, widths = 10)
+
+      # pageBreak(wb, sheet, i = 30, type = "row")
+    }
+    saveWorkbook(wb, file, overwrite = TRUE)
+  }
+
+  # DIF polytomous variable
+  DIFPoly <- function(ls_save, folder, file){
+    # add note sheet
+    wb <- createWorkbook()
+    nCat <- (ncol(ls_save[[2]])-2)/2
+
+    # add flagged and test sheets
+    for (i in seq_along(ls_save)){
+      sheet <- names(ls_save)[[i]]
+      n_case <- nrow(ls_save[[i]])+1
+      n_col <- ncol(ls_save[[i]])
+      df <- ls_save[[i]]
+
+      addWorksheet(wb, sheet)
+      if (i==1) {
+        writeData(
+          wb,
+          sheet = sheet,
+          x = ls_save[[i]]
+        )
+      } else {
+        writeData(
+          wb,
+          sheet = sheet,
+          x = ls_save[[i]] |>
+            dplyr::mutate(
+              `Files`=c(
+                file.path(getwd(), folder, paste0(sheet, '_process.xlsx')),
+                rep(NA, n_case-1-1)
+              )
+            )
+        )
+        writeFormula(
+          wb, sheet,
+          startRow = 2,
+          startCol = n_col+2,
+          x = paste0('=HYPERLINK(', LETTERS[[n_col+1]], '$2, "Process")')
+        )
+        insertImage(
+          wb, sheet,
+          file.path(folder, paste0(sheet, '_delta.png')),
+          startRow = 1, startCol = n_col+3,
+          width = 17, height = 30, "cm"
+        )
+      }
+
+      # header, body style
+      wb <- addHeaderStyle(wb, n_col, sheet) |>
+        addBodyStyle('left', n_case, 1:2, sheet) |>
+        addBodyStyle('right', n_case, 3:n_col, sheet)
+
+      # set colunm width
+      setColWidths(wb, sheet, cols = 1, widths = 10)
+      setColWidths(wb, sheet, cols = 2, widths = 15)
+      for (j in 0:(nCat-1)){
+        nCol <- 2*j+3
+        setColWidths(wb, sheet, cols = nCol, widths = 7)
+        setColWidths(wb, sheet, cols = nCol+1, widths = 7)
+        addStyle(
+          wb,
+          sheet = sheet,
+          createStyle(halign = 'left', border = "TopBottomLeftRight"),
+          rows = 2:n_case,
+          cols = nCol+1,
+          gridExpand = TRUE
+        )
+      }
+
+      # add flag color and link
+      wb <- colorFlagsDifPoly(wb, sheet, n_case, nCat, df)
+
+      if (i != 1){
+        setColWidths(wb, sheet, cols = n_col+1, widths = 10)
+        setColWidths(wb, sheet, cols = n_col+2, widths = 10)
+      }
+
+    }
+    saveWorkbook(wb, file, overwrite = TRUE)
+  }
+
+  # return functions
   list(
-    colorFlags_link=colorFlags_link,
-    addHeaderStyle=addHeaderStyle,
-    addBodyStyle=addBodyStyle,
-    colorFlags=colorFlags
+    itn=itn,
+    equate=equate,
+    DIFPoly=DIFPoly
   )
 
 }

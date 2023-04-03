@@ -42,8 +42,6 @@
 #' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference
 #' between two tests. Default is 4.
 #' @param desig_effect Value to adjust errors. Default is 1.
-#' @param facil_cut Threshold of number of percent to flag an item with large
-#' facility difference between two groups of test takers. Default is 10.
 #' @param domain Name of the domain in the test, e.g., 'Literacy'. Default is NULL.
 #' @param save_xlsx Whether to save summary file and plots. Default is TRUE
 #' (one DIF variable).
@@ -67,17 +65,13 @@
 #' # regr_ls=list(G2='17', age='15-16'), quick=TRUE)
 #' @export
 
-DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
-        test, keys, #### CQC #####
-        codes, pid_cols=NULL, resps_cols, regr_ls=NULL, delete=NULL, anchor=FALSE,
-        section_extr=NULL, dbl_key=FALSE,
-        poly_key=FALSE, quick=TRUE, step=FALSE,
-        DIFVar=NULL, DIFVar_cols=NULL, poly_catgrs=NULL, ##### DIF part #####
-        poly_facet=FALSE, poly_group=FALSE,
-        vars=NULL, p_cut=0.05, DIF_cut=0.5,
-        DIF_adj_cut=4, facil_cut=10,
-        desig_effect=1, domain=NULL,
-        save_xlsx=TRUE, iterative=TRUE, pweight=NULL, pw_cols=NULL){
+DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'), test, keys, #### CQC #####
+                codes, pid_cols=NULL, resps_cols, regr_ls=NULL, delete=NULL, anchor=FALSE,
+                section_extr=NULL, dbl_key=FALSE, poly_key=FALSE, quick=TRUE, step=FALSE,
+                DIFVar=NULL, DIFVar_cols=NULL, poly_catgrs=NULL, ##### DIF part #####
+                poly_facet=FALSE, poly_group=FALSE, vars=NULL, p_cut=0.05,
+                DIF_cut=0.5, DIF_adj_cut=4, desig_effect=1, domain=NULL,
+                save_xlsx=TRUE, iterative=TRUE, pweight=NULL, pw_cols=NULL){
   # check inputs
   if (length(method)!=1 || !(method %in% c('chi_square', 'Bonferroni', 'Facet'))) {
     stop('Please set \'method\' as one of \'chi_square\', \'Bonferroni\', or \'Facet\'.')
@@ -108,7 +102,6 @@ DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
         list(
           vars=vars,
           DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut,
-          facil_cut=facil_cut,
           desig_effect=desig_effect, save_xlsx=save_xlsx,
           iterative=iterative, quick=quick
         )
@@ -123,12 +116,9 @@ DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
     do.call(lab_cqc, arg_cqc)
 
     cat('Performing Bonferroni adjusted comparison...\n')
-    labels <- read.table(paste0('data/', test, '_Labels.txt')) |>
-      rownames_to_column() |>
-      `colnames<-`(c('item', 'label'))
     do.call(
       DIF_poly_shw,
-      append(arg_DIF, list(labels=labels, domain=domain))
+      append(arg_DIF, list(labels=NULL, domain=domain))
     )
   }
 

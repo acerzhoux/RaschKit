@@ -14,8 +14,7 @@
 #' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference
 #' between two tests. Default is 4.
 #' @param step TRUE if DIF analysis is performed on step parameters. Default is FALSE.
-#' @param DIF TRUE if DIF analysis is performed on a dichotomous DIF variable.
-#' Default is FALSE (anchor check).
+#' @param DIFVar Name of dichotomous DIF variable, e.g., 'gender'. Default is NULL.
 #' @param cor Correlation of two categories' delta estimates.
 #' @param shift Shift of two categories' average delta estimates.
 #' @param sdr SD ratio of two categories' delta estimates.
@@ -24,60 +23,52 @@
 #' @return Plot of DIF analysis.
 #' @export
 
-plot_DIF <- function(df, wh, vars, p_cut=0.05,
-                     DIF_cut=0.5, DIF_adj_cut=4, step=FALSE,
-                     DIF=FALSE, cor, shift, sdr,
-                     axRange, quick=TRUE) {
+plot_DIF <- function(df, wh, vars, p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4,
+                     step=FALSE, DIFVar=NULL, cor, shift, sdr, axRange, quick=TRUE) {
+  if (!is.null(DIFVar)) DIF <- TRUE
+  if (step){
+    df <- df |>
+      dplyr::select(-delta.x, -delta.y) |>
+      dplyr::rename(delta.x=delta.x_dev,
+              delta.y_adj=delta.y_dev)
+  }
 
-    if (step){
-        df <- df %>%
-            dplyr::select(-delta.x, -delta.y) %>%
-            dplyr::rename(delta.x=delta.x_dev,
-                          delta.y_adj=delta.y_dev)
-    }
-    if ('iStep' %in% names(df)){
-        df <- df %>%
-            dplyr::rename(item=iStep)
-    }
+  txt1 <- tibble(delta.x=-Inf, delta.y_adj=Inf,
+           label=paste0('Easier for ',vars[1]))
+  txt2 <- tibble(delta.x=Inf, delta.y_adj=-Inf,
+           label=paste0('Easier for ',vars[2]))
 
-    txt1 <- tibble(delta.x=-Inf, delta.y_adj=Inf,
-                   label=paste0('Easier for ',vars[1]))
-    txt2 <- tibble(delta.x=Inf, delta.y_adj=-Inf,
-                   label=paste0('Easier for ',vars[2]))
+  error <- mean(sqrt(df$error.x^2 + df$error.y^2))
 
-    error <- mean(sqrt(df$error.x^2 + df$error.y^2))
+  p <- ggplot(df, aes(x=delta.x, y=delta.y_adj)) +
+    geom_point() +
+    lims(x=axRange, y=axRange) +
+    geom_abline(intercept=0, slope=1, colour='gray') +
+    geom_abline(intercept=-1.96*error, slope=1, colour='gray', linetype="dotted") +
+    geom_abline(intercept=1.96*error, slope=1, colour='gray', linetype="dotted") +
+    geom_ribbon(aes(ymin=LB, ymax=UB), alpha=0.2) +
+    geom_text(aes(label=label), data=txt1, vjust='top', hjust='left') +
+    geom_text(aes(label=label), data=txt2, vjust='bottom', hjust='right') +
+    labs(
+      title=paste0(wh, ' Review: ', dim(df)[1],
+             if (step) ' Steps' else if (DIF) ' Items' else ' Anchors',
+             ' (cor. = ', cor, ', ', 'mean shift = ', shift, ', ',
+             'SD ratio = ', sdr, ')'),
+      x=paste0('Item Difficulty (Logits) for ', vars[1], if (step | DIF) ' (delta-centred)'),
+      y=paste0('Item Difficulty (Logits) for ', vars[2], if (step | DIF) ' (delta-centred)' else ' (+ Mean shift)')
+    ) +
+    ggthemes::theme_tufte()
 
-    p <- ggplot(df, aes(x=delta.x, y=delta.y_adj)) +
-        geom_point() +
-        lims(x=axRange, y=axRange) +
-        geom_abline(intercept=0, slope=1, colour='gray') +
-        geom_abline(intercept=-1.96*error, slope=1, colour='gray', linetype="dotted") +
-        geom_abline(intercept=1.96*error, slope=1, colour='gray', linetype="dotted") +
-        geom_ribbon(aes(ymin=LB, ymax=UB), alpha=0.2) +
-        geom_text(aes(label=label), data=txt1, vjust='top', hjust='left') +
-        geom_text(aes(label=label), data=txt2, vjust='bottom', hjust='right') +
-        labs(
-          title=paste0(wh, ' Review: ', dim(df)[1],
-                       if (step) ' Steps' else if (DIF) ' Items' else ' Anchors',
-                       ' (cor. = ', cor, ', ', 'mean shift = ', shift, ', ',
-                       'SD ratio = ', sdr, ')'),
-          x=paste0('Item Difficulty (Logits) for ', vars[1],
-                  if (step) ' (delta-centred)'),
-          y=paste0('Item Difficulty (Logits) for ', vars[2],
-                  if (step) ' (delta-centred)' else ' (+ Mean shift)')
-        ) +
-        ggthemes::theme_tufte()
-
-    if (wh=='Before'){
-        DIF_txt <- DIF_items(df=df, p_cut=p_cut, DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut) |>
-            dplyr::select(item, delta.x, delta.y_adj)
-        p <- p +
-            ggrepel::geom_label_repel(data=DIF_txt, aes(label=item),
-                                      size=2.5, segment.size=0.25, alpha=0.5,
-                                      max.overlaps=100) +
-            labs(caption=paste0('DIF: abs(delta_dif)>', DIF_cut,
-                                ', abs(delta_dif_adj)>', DIF_adj_cut,
-                                ', p<', p_cut))
-    }
-    p
+  if (wh=='Before'){
+    DIF_txt <- DIF_items(df=df, p_cut=p_cut, DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut) |>
+      dplyr::select(item, delta.x, delta.y_adj)
+    p <- p +
+      ggrepel::geom_label_repel(data=DIF_txt, aes(label=item),
+                    size=2.5, segment.size=0.25, alpha=0.5,
+                    max.overlaps=100) +
+      labs(caption=paste0('DIF: abs(delta dif.) > ', DIF_cut,
+                ', abs(delta dif. adj.) > ', DIF_adj_cut,
+                ', p < ', p_cut))
+  }
+  p
 }

@@ -1,0 +1,239 @@
+================================================================================
+MCQ Item Calibration bang_5B                               Mon Feb 27 11:06 2023
+SUMMARY OF THE ESTIMATION
+==============================================================Version: 5.28.1===
+
+DATA SPECIFICATIONS
+
+The Data File: data/bang_5B_Data.txt
+The format:  responses 16-55 pid 1-14
+Cases in file:                                                        12622
+Retained cases after dropcases and keepcases:                         12622
+Retained cases with non-zero weight:                                  12622
+Cases in MML/MCMC estimation:                                         12621
+Weighted number of cases in MML/MCMC estimation:                      12621
+Cases with EAP estimates and latent trait imputations (PVs):          12622
+Weighted number of cases EAP estimates and latent trait impu          12622
+key 1 scored as 1: 31214131x4141221113142121241312131211113
+key 2 scored as 2: xxx2xxxxxxxxxxxx22xxxx2xxxxxxxxxxxxxx2xx
+
+
+MODEL SPECIFICATIONS
+
+Xsi increment max:    1.00000
+FacOldXsi:    0.00000
+Assumed population distribution was: Gaussian
+Location constraint was: CASES
+Scale constraint was: Not applicable
+No case weights
+The regression model:
+Grouping Variables:
+The item model: item+item*step
+Slopes are fixed
+Total number of estimated parameters: 42
+Random number generation seed:    2.00000
+Number of nodes used when drawing PVs: 2000
+Number of plausible values to draw: 5
+Maximum number of iterations without a deviance improvement: 1000
+Maximum number of Newton steps for each parameter in M-step: 10
+Value for obtaining finite MLEs for zero/perfects:    0.30000
+
+
+ESTIMATION SPECIFICATIONS AND FIT
+
+Estimation method was: Gauss-Hermite Quadrature with 50 nodes
+No node filtering
+Final Deviance:                                424156.07566
+Akaike Information Criterion (AIC):            424240.07566
+Akaike Information Criterion Corrected (AICc): 424240.36283
+Bayesian Information Criterion (BIC):          424552.68659
+The number of iterations: 54
+Termination criteria:  Max iterations=7500,Parameter Change= 0.00010
+                       Deviance Change= 0.00000
+Iterations terminated because the convergence criteria were reached
+================================================================================
+================================================================================
+MCQ Item Calibration bang_5B                               Mon Feb 27 11:06 2023
+TABLES OF RESPONSE MODEL PARAMETER ESTIMATES
+==============================================================Version: 5.28.1===
+TERM 1: item
+------------------------------------------------------------------------------------------------------------------------
+TERM 1: item
+
+        VARIABLES                                     UNWEIGHTED FIT             WEIGHTED FIT
+---------------                                   -----------------------   -----------------------
+          item                 ESTIMATE  ERROR^   MNSQ       CI        T    MNSQ       CI        T
+------------------------------------------------------------------------------------------------------------------------
+ 1   BA3FLPR02                  -4.220   0.058    1.00 ( 0.98, 1.02)  0.4   0.98 ( 0.90, 1.10) -0.4
+ 2   BA3FLPR03                  -4.734   0.073    0.92 ( 0.98, 1.02) -6.4   0.96 ( 0.87, 1.13) -0.5
+ 3   BA3FLPR05                  -3.353   0.041    1.10 ( 0.98, 1.02)  7.5   1.00 ( 0.94, 1.06)  0.1
+ 4   BA3FLPR07                  -2.866   0.034    0.85 ( 0.98, 1.02)-12.9   0.96 ( 0.95, 1.05) -1.5
+ 5   BA3MRK17063A               -2.595   0.031    0.79 ( 0.98, 1.02)-18.3   0.92 ( 0.96, 1.04) -3.9
+ 6   BA3MRU17065A               -0.357   0.020    1.27 ( 0.98, 1.02) 19.8   1.18 ( 0.98, 1.02) 21.6
+ 7   BA3MRK17064A               -1.813   0.025    0.93 ( 0.98, 1.02) -5.4   0.95 ( 0.97, 1.03) -3.8
+ 8   BA3MRK17066A               -1.792   0.025    1.14 ( 0.98, 1.02) 11.0   1.04 ( 0.97, 1.03)  2.9
+ 10  BA3MVK17071A               -0.603   0.020    1.03 ( 0.98, 1.02)  2.0   1.01 ( 0.98, 1.02)  1.6
+ 11  BA3MRK17069A               -2.343   0.029    0.79 ( 0.98, 1.02)-17.7   0.92 ( 0.96, 1.04) -4.3
+ 12  BA3MGK11117                -2.359   0.029    0.79 ( 0.98, 1.02)-18.4   0.91 ( 0.96, 1.04) -5.1
+ 13  BA5MRK1717A                -1.659   0.024    1.05 ( 0.98, 1.02)  3.9   1.05 ( 0.97, 1.03)  3.8
+ 14  BA5MRU1713A                -1.816   0.025    0.99 ( 0.98, 1.02) -1.0   0.97 ( 0.97, 1.03) -2.1
+ 15  BA5MRU1718A                -1.788   0.025    1.10 ( 0.98, 1.02)  8.1   1.08 ( 0.97, 1.03)  5.4
+ 16  BA5MRU1719A                -1.892   0.026    0.92 ( 0.98, 1.02) -6.7   0.97 ( 0.97, 1.03) -1.8
+ 17  BA5ORA1715A                -0.305   0.020    0.94 ( 0.98, 1.02) -4.5   0.96 ( 0.98, 1.02) -4.6
+ 18  BA5SRA1720A                -0.119   0.013    1.13 ( 0.98, 1.02)  9.8   1.09 ( 0.98, 1.02)  8.5
+ 19  BA5MRU1733A                -0.718   0.021    0.98 ( 0.98, 1.02) -1.2   0.99 ( 0.98, 1.02) -1.1
+ 20  BA5MRK1734A                -0.864   0.021    1.05 ( 0.98, 1.02)  4.1   1.04 ( 0.98, 1.02)  4.5
+ 21  BA5MRK1737A                -2.847   0.034    0.79 ( 0.98, 1.02)-18.0   0.92 ( 0.95, 1.05) -3.1
+ 22  BA5MRA1739A                -0.374   0.020    1.13 ( 0.98, 1.02)  9.6   1.08 ( 0.98, 1.02) 10.1
+ 23  BA5ORA1735A                -0.628   0.020    0.91 ( 0.98, 1.02) -7.2   0.94 ( 0.98, 1.02) -7.3
+ 24  BA5MVK1731A                -1.530   0.024    0.96 ( 0.98, 1.02) -3.3   0.97 ( 0.98, 1.02) -2.1
+ 25  BA5MRK15131A               -2.978   0.036    0.73 ( 0.98, 1.02)-23.6   0.91 ( 0.95, 1.05) -3.7
+ 26  BA5MRK15132A               -1.962   0.026    0.93 ( 0.98, 1.02) -5.4   0.97 ( 0.97, 1.03) -1.6
+ 27  BA5MRK15133A               -1.375   0.023    0.94 ( 0.98, 1.02) -5.2   0.96 ( 0.98, 1.02) -3.2
+ 28  BA5MRU15134A               -0.909   0.021    1.17 ( 0.98, 1.02) 12.8   1.12 ( 0.98, 1.02) 11.8
+ 29  BA5MRH15084A               -2.383   0.029    0.80 ( 0.98, 1.02)-16.7   0.92 ( 0.96, 1.04) -4.3
+ 30  BA5MRU15127A               -2.430   0.030    0.88 ( 0.98, 1.02)-10.1   0.95 ( 0.96, 1.04) -2.3
+ 31  BA5MRK15126A               -1.891   0.026    0.81 ( 0.98, 1.02)-15.7   0.93 ( 0.97, 1.03) -5.0
+ 32  BA5MRK15128A               -2.785   0.033    0.81 ( 0.98, 1.02)-15.9   0.92 ( 0.95, 1.05) -3.4
+ 33  BA5MGA15100A               -0.574   0.020    0.95 ( 0.98, 1.02) -3.8   0.96 ( 0.98, 1.02) -4.3
+ 34  BA5MGA15010A               -2.610   0.032    0.67 ( 0.98, 1.02)-29.3   0.89 ( 0.96, 1.04) -5.3
+ 35  BA5MRK1752A                -1.414   0.023    0.94 ( 0.98, 1.02) -4.9   0.96 ( 0.98, 1.02) -3.7
+ 36  BA5MRK1757A                -3.491   0.044    0.76 ( 0.98, 1.02)-20.6   0.95 ( 0.93, 1.07) -1.3
+ 37  BA5MRU1758A                -1.589   0.024    0.89 ( 0.98, 1.02) -9.1   0.95 ( 0.97, 1.03) -3.8
+ 38  BA5SRA1760A                -1.143   0.015    1.53 ( 0.98, 1.02) 35.8   1.26 ( 0.97, 1.03) 16.2
+ 39  BA5MVA1756A                -0.692   0.021    0.97 ( 0.98, 1.02) -2.1   0.99 ( 0.98, 1.02) -1.7
+ 40  BA5MVK1751A                -0.932   0.022    1.01 ( 0.97, 1.03)  0.5   1.01 ( 0.98, 1.02)  1.1
+--------------------------------------------------------------------------------
+An asterisk next to a parameter estimate indicates that it is constrained
+Separation Reliability= 0.999
+Chi-square test of parameter equality= 166560.95, df=39, Sig Level=0.000
+^ Quick standard errors have been used
+Term is a fixed effect
+
+TERM 2: item*step
+---------------------------------------------------------------------------------------------------------------------------------------
+TERM 2: item*step
+
+                     VARIABLES                                                  UNWEIGHTED FIT             WEIGHTED FIT
+------------------------------                                              -----------------------   -----------------------
+          item                    category               ESTIMATE  ERROR^   MNSQ       CI        T    MNSQ       CI        T
+---------------------------------------------------------------------------------------------------------------------------------------
+ 18  BA5SRA1720A                       0                                    1.14 ( 0.98, 1.02) 10.9   1.08 ( 0.98, 1.02)  7.4
+ 18  BA5SRA1720A                       1                   0.213   0.022    1.02 ( 0.98, 1.02)  1.4   1.01 ( 0.98, 1.02)  0.5
+ 18  BA5SRA1720A                       2                  -0.213*           1.13 ( 0.98, 1.02)  9.7   1.07 ( 0.98, 1.02)  6.6
+ 38  BA5SRA1760A                       0                                    1.80 ( 0.98, 1.02) 51.1   1.23 ( 0.97, 1.03) 13.1
+ 38  BA5SRA1760A                       1                   0.857   0.030    1.15 ( 0.98, 1.02) 11.3   1.02 ( 0.96, 1.04)  0.7
+ 38  BA5SRA1760A                       2                  -0.857*           1.39 ( 0.98, 1.02) 27.2   1.20 ( 0.97, 1.03) 14.4
+--------------------------------------------------------------------------------
+An asterisk next to a parameter estimate indicates that it is constrained
+^ Quick standard errors have been used
+================================================================================
+================================================================================
+MCQ Item Calibration bang_5B                               Mon Feb 27 11:06 2023
+TABLES OF POPULATION MODEL PARAMETER ESTIMATES
+==============================================================Version: 5.28.1===
+REGRESSION COEFFICIENTS
+
+
+
+Regression Variable
+
+CONSTANT                   0.000*
+-----------------------------------------------
+An asterisk next to a parameter estimate indicates that it is constrained
+===============================================
+UNCONDITIONAL COVARIANCE/CORRELATION MATRIX
+
+
+
+Dimension
+
+Dimension_1
+-------------------------------------------
+Variance                   1.213  ( 0.015)
+-------------------------------------------
+An asterisk next to a parameter estimate indicates that it is constrained
+
+===========================================
+
+RELIABILITY COEFFICIENTS
+------------------------
+
+Dimension: (Dimension_1)
+-----------------------
+ MLE Person separation RELIABILITY:  Unavailable
+ WLE Person separation RELIABILITY:   0.799
+ EAP/PV RELIABILITY:                  0.845
+------------------------
+================================================================================
+MCQ Item Calibration bang_5B                               Mon Feb 27 11:06 2023
+MAP OF WLE ESTIMATES AND RESPONSE MODEL PARAMETER ESTIMATES
+==============================================================Version: 5.28.1===
+             Terms in the Model (excl Step terms)
+
+                               +item
+----------------------------------------------------
+                |                                  |
+                |                                  |
+   4            |                                  |
+                |                                  |
+                |                                  |
+                |                                  |
+                |                                  |
+                |                                  |
+                |                                  |
+   3        XXXX|                                  |
+                |                                  |
+                |                                  |
+                |                                  |
+                |                                  |
+                |                                  |
+                |                                  |
+   2            |                                  |
+         XXXXXXX|                                  |
+                |                                  |
+                |                                  |
+       XXXXXXXXX|                                  |
+                |                                  |
+                |                                  |
+   1  XXXXXXXXXX|                                  |
+                |                                  |
+      XXXXXXXXXX|                                  |
+      XXXXXXXXXX|                                  |
+                |                                  |
+       XXXXXXXXX|                                  |
+       XXXXXXXXX|                                  |
+   0    XXXXXXXX|18                                |
+         XXXXXXX|                                  |
+         XXXXXXX|6 17 22                           |
+          XXXXXX|33                                |
+          XXXXXX|10 19 23 39                       |
+           XXXXX|20                                |
+  -1        XXXX|28 40                             |
+         XXXXXXX|38                                |
+             XXX|                                  |
+              XX|27 35                             |
+              XX|24 37                             |
+             XXX|13                                |
+               X|7 8 14 15 16 31                   |
+  -2           X|26                                |
+               X|                                  |
+               X|11                                |
+               X|12 29 30                          |
+               X|5 34                              |
+               X|32                                |
+                |4 21                              |
+  -3            |25                                |
+                |                                  |
+                |3                                 |
+                |36                                |
+                |                                  |
+                |                                  |
+                |                                  |
+  -4            |                                  |
+                |1                                 |
+                |2                                 |
+====================================================
+Each 'X' represents 94.1 cases
+
+====================================================

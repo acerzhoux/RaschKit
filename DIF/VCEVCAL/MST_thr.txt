@@ -1,0 +1,55 @@
+================================================================================
+MCQ Item Calibration MST                                   Tue Mar 28 12:11 2023
+TABLES OF GIN Thresholds
+==============================================================Version: 5.29.5===
+GIN Number  Threshold           GIN Labels
+--------------------------------------------------------------------------------
+1.1.1	    -2.168	vcevcal	1	1	item	1	MST20Pla1	
+2.1.1	    -1.593	vcevcal	2	2	item	1	MST20Pla1	
+1.2.1	    -0.867	vcevcal	1	1	item	2	MST20Pla2	
+2.2.1	    -0.415	vcevcal	2	2	item	2	MST20Pla2	
+1.3.1	     0.104	vcevcal	1	1	item	3	MST20Pla3	
+2.3.1	     0.687	vcevcal	2	2	item	3	MST20Pla3	
+1.4.1	    -1.615	vcevcal	1	1	item	4	MST203x301	
+2.4.1	    -0.412	vcevcal	2	2	item	4	MST203x301	
+1.5.1	    -0.593	vcevcal	1	1	item	5	MST203x302	
+2.5.1	     0.687	vcevcal	2	2	item	5	MST203x302	
+1.6.1	    -0.533	vcevcal	1	1	item	6	MST203x303	
+2.6.1	     0.687	vcevcal	2	2	item	6	MST203x303	
+1.7.1	    -0.968	vcevcal	1	1	item	7	MST203x304	
+2.7.1	     0.688	vcevcal	2	2	item	7	MST203x304	
+1.8.1	    -0.282	vcevcal	1	1	item	8	MST20Cro1	
+2.8.1	     0.687	vcevcal	2	2	item	8	MST20Cro1	
+1.9.1	    -0.472	vcevcal	1	1	item	9	MST20Cro3	
+2.9.1	     0.118	vcevcal	2	2	item	9	MST20Cro3	
+1.10.1	    -1.921	vcevcal	1	1	item	10	MST20Cop1	
+2.10.1	    -1.595	vcevcal	2	2	item	10	MST20Cop1	
+1.11.1	    -0.101	vcevcal	1	1	item	11	MST20Cop3	
+2.11.1	     0.117	vcevcal	2	2	item	11	MST20Cop3	
+1.12.1	    -0.696	vcevcal	1	1	item	12	MST20Cop7	
+2.12.1	    -0.416	vcevcal	2	2	item	12	MST20Cop7	
+1.13.1	    -0.053	vcevcal	1	1	item	13	MST20Cop4	
+2.13.1	     0.687	vcevcal	2	2	item	13	MST20Cop4	
+1.14.1	     0.350	vcevcal	1	1	item	14	MST20Dan1	
+2.14.1	     0.687	vcevcal	2	2	item	14	MST20Dan1	
+1.15.1	     0.145	vcevcal	1	1	item	15	MST20Dan2	
+2.15.1	    -0.417	vcevcal	2	2	item	15	MST20Dan2	
+1.16.1	    -0.666	vcevcal	1	1	item	16	MST20Dan4	
+2.16.1	     0.118	vcevcal	2	2	item	16	MST20Dan4	
+1.17.1	    -0.589	vcevcal	1	1	item	17	MST20SBoom1	
+2.17.1	     0.118	vcevcal	2	2	item	17	MST20SBoom1	
+1.18.1	    -0.146	vcevcal	1	1	item	18	MST20SBoom2	
+2.18.1	    -0.193	vcevcal	2	2	item	18	MST20SBoom2	
+1.19.1	    -0.803	vcevcal	1	1	item	19	MST20SBoom3	
+2.19.1	    -0.802	vcevcal	2	2	item	19	MST20SBoom3	
+1.20.1	    -0.206	vcevcal	1	1	item	20	MST20Dat1	
+2.20.1	     1.155	vcevcal	2	2	item	20	MST20Dat1	
+1.21.1	     0.559	vcevcal	1	1	item	21	MST20Dat2	
+2.21.1	     1.157	vcevcal	2	2	item	21	MST20Dat2	
+1.22.1	     0.483	vcevcal	1	1	item	22	MST20Dat4	
+2.22.1	     0.434	vcevcal	2	2	item	22	MST20Dat4	
+1.23.1	     0.214	vcevcal	1	1	item	23	MST20PPo2	
+2.23.1	    -0.803	vcevcal	2	2	item	23	MST20PPo2	
+1.24.1	     1.568	vcevcal	1	1	item	24	MST20PPo5	
+2.24.1	     1.164	vcevcal	2	2	item	24	MST20PPo5	
+================================================================================

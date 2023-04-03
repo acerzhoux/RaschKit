@@ -9,7 +9,7 @@ read2one(
   tests,
   prefix = NULL,
   file_name = NULL,
-  vars = NULL
+  difVarVec = NULL
 )
 }
 \arguments{
@@ -23,9 +23,8 @@ c('results', 'DIF', 'equating').}
 \item{file_name}{Name given to new file, each sheet of which is one test's result.
 Default is NULL.}
 
-\item{vars}{Vector of length 2 such as c('girls','boys'). Default is NULL.
-Should be specified when to read multiple DIF analysis (binary DIF variable)
-Excels and plots from 'DIF' folder.
+\item{difVarVec}{Vector of DIF variables used to extract results from folders
+named as elements in the vector.
 Its order corresponds to the alphabetic/numeric order of DIF variables'
 two categories in data.}
 }
@@ -35,5 +34,5 @@ and puts them into one file.
 }
 \examples{
 # Not run
-# read2one(folder='results', tests=c('bang_35', 'math_35'), prefix='itn')
+# read2one('DIF', 'Writing', difVarVec=c('gender', 'LBOTE', 'VCEVCAL'))
 }

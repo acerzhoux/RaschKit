@@ -12,90 +12,67 @@
 #' @export
 
 check_convergence <- function(cqs, test){
-    lookup <- tibble(Parameters=cqs$gXsiParameterLabels %>%
-        unlist() %>%
-        str_remove('item ') %>%
-        str_remove( ' category ') %>%
-        str_trim(),
-        stat=str_c('Xsi', 1:length(Parameters))
-    )
+  # lookup tbl: Item
+  lookup <- tibble(
+    Parameters=cqs$gXsiParameterLabels |>
+      unlist() |>
+      str_remove('item ') |>
+      str_remove( ' category ') |>
+      str_trim(),
+    stat=str_c('Xsi', 1:length(Parameters))
+  )
 
-    # Extract estimation history from the  system files
-    cq_hist <- cqs %>%
-        getCqHist() %>%
-        as_tibble() %>%
-        pivot_longer(cols=-Iter,
-                     names_to="stat",
-                     values_to="val") %>%
-        na.omit() %>% # bec only one plot for the changes Xsi/item pars will be created
-        mutate(stat_group=ifelse(str_detect(stat, "Xsi"), "Xsi", stat)) %>%
-        arrange(stat, Iter) %>%
-        group_by(stat) %>%
-        mutate(prev_val=lag(val),
-               Change=case_when(
-                   stat %in% c("Likelihood") ~ prev_val-val,
-                   TRUE ~ val-prev_val))
+  # estimation history
+  cq_hist <- as_tibble(getCqHist(cqs)) |>
+    pivot_longer(cols=-Iter, names_to="stat", values_to="Estimate") |>
+    mutate(Parameter=ifelse(str_detect(stat, "Xsi"), "Xsi", stat)) |>
+    arrange(stat, Iter) |>
+    group_by(stat) |>
+    rename(Iteration=Iter)
 
-    # Prepare plot data
-    min_lik <- cq_hist %>%
-        filter(stat=="Likelihood") %>%
-        ungroup() %>%
-        filter(val==min(val)) |>
-        tail(1)
+  # Beta
+  p1 <- ggplot(
+    data=cq_hist |>
+      filter(Parameter=='Xsi') |>
+      left_join(lookup, by='stat'),
+    aes(x=Iteration, y=Estimate, color=Parameters, group=Parameters)
+  ) +
+    scale_x_continuous(label=scales::label_comma(accuracy=1))
+  if (nrow(lookup) > 100) {
+    p1 <- p1 + geom_line(show.legend = FALSE)
+  } else {
+    p1 <- p1 + geom_line()
+  }
+  pBeta <- p1 +
+    ggthemes::theme_tufte() +
+    labs(title='Delta')
 
-    p1 <- ggplot(data=cq_hist %>%
-                   mutate(min_lik_iter=min_lik$Iter)%>%
-                   filter(Iter > min_lik_iter-150) %>%
-                   filter(stat_group=='Xsi') %>%
-                     left_join(lookup, by='stat'),
-               aes(x=Iter, y=Change, color=Parameters, group=Parameters))
-    if (nrow(lookup) > 100) {
-        p1 <- p1 + geom_line(show.legend = FALSE)
-    } else {
-        p1 <- p1 + geom_line()
-    }
-    p1 <- p1 +
-        ggthemes::theme_tufte() +
-        labs(title=str_c('(Max) Change: Deltas of ', test))
+  # other parameters
+  catAll <- setdiff(
+    unique((cq_hist$Parameter)),
+    c('Xsi','RunNo', "RanTermVariance1", "Tau1")
+  )
+  plotCats <- c('Beta', 'Likelihood', 'Variance', 'Covariance')
+  plotOthers <- list()
+  for (i in seq_along(plotCats)){
+    plotGrp <- str_subset(catAll, plotCats[[i]])
+    plotOthers[[plotCats[[i]]]] <- ggplot(
+      data=cq_hist |> filter(Parameter %in% plotGrp),
+      aes(x=Iteration, y=Estimate, group=Parameter, color=Parameter)
+    ) +
+      geom_line() +
+      ggthemes::theme_tufte() +
+      labs(title=plotCats[[i]]) +
+      scale_x_continuous(label=scales::label_comma(accuracy=1))
+  }
 
-    plot_dat <- cq_hist %>%
-                      filter(stat_group != "Xsi") %>%
-                      group_by(stat_group) %>%
-                      nest() %>%
-        filter(stat_group!="RunNo") %>%
-        mutate(min_lik_iter=min_lik$Iter ) %>%
-        unnest(data)%>%
-        mutate(min_lik_iter=min_lik$Iter )%>%
-        filter(Iter > min_lik_iter-150)
+  plot_ls <- list(
+    pBeta,
+    patchwork::wrap_plots(plotOthers, ncol=floor(sqrt(length(plotOthers))))
+  )
 
-    df_p2 <- plot_dat %>%
-        filter(stat_group=='Beta_Est1_D1')
-    p2 <- ggplot(data=df_p2, aes(x=Iter, y=Change)) +
-        geom_line()+
-        ggthemes::theme_tufte() +
-        labs(title=str_c('(Max) Change: Regressors of ', test))
-
-    p3 <- ggplot(data=plot_dat %>%
-                   filter(stat_group=='Likelihood'),
-               aes(x=Iter, y=Change)) +
-        geom_line() +
-        ggthemes::theme_tufte() +
-        labs(title=str_c('(Max) Change: Deviance of ', test))
-
-    p4 <- ggplot(data=plot_dat %>%
-                   filter(stat_group=='Variance_D1'),
-               aes(x=Iter, y=Change)) +
-        geom_line()+
-        ggthemes::theme_tufte() +
-        labs(title=str_c('(Max) Change: Covariance of ', test))
-
-    if (all(df_p2$val==0)){
-        plot_ls <- list(p1, p3, p4)
-    } else {
-        plot_ls <- list(p1, p2, p3, p4)
-    }
-
-    pdf(file=paste0('output/', test, "_Convergence_check.pdf"), width = 10, height = 7)
-    map(plot_ls, ~print(.x))
-    dev.off()
+  pdf(file=paste0('output/', test, "_Convergence_check.pdf"), width = 12, height = 6)
+  map(plot_ls, ~print(.x))
+  dev.off()
 }
+

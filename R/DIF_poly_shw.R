@@ -10,7 +10,8 @@
 #' @param DIFVar Name of polytomous DIF variable, e.g., 'nation'.
 #' @param labels Dataframe of labels of all the items in a test. Variable
 #' 'item' is item order in label file ('test_Labels.txt' in 'data' folder)
-#' and in test. Variable 'label' is complete item labels of test items.
+#' and in test. Variable 'label' is complete item labels of test items. Default
+#' is NULL.
 #' @param test Name of the test.
 #' @param domain Name of the domain in the test, e.g., 'Literacy'. Default is NULL.
 #' @param p_cut Threshold of statistical test. Default is 0.05.
@@ -20,53 +21,51 @@
 #' to produce the the flags.
 #' @return Tibble of summary of results from polytomous DIF variable analysis.
 #' @examples
-#' DIF_poly_shw(DIFVar='quintile', labels=labels, test='ELNA')
+#' DIF_poly_shw(DIFVar='educator', 'RANZCOG')
 #' @export
 
-DIF_poly_shw <- function(DIFVar, labels, test, domain=NULL,
-                         p_cut=0.05, step=FALSE){
-    folder <- paste0('DIF/', DIFVar)
-    file_ls <- list.files(folder, full.names=TRUE) |>
-        str_subset(test) |>
-        str_subset('_shw')
-    file_ls <- file_ls[!grepl("facet", file_ls)]
-    file_ls <- file_ls[!grepl("group", file_ls)]
+DIF_poly_shw <- function(DIFVar, test, domain=NULL, p_cut=0.05, step=FALSE, labels=NULL){
+  if (is.null(labels)){
+    labels <- read.table(paste0('data/', test, '_Labels.txt')) |>
+      rownames_to_column() |>
+      `colnames<-`(c('item', 'label')) |>
+      mutate(item=as.integer(item))
+  }
 
-    cats <- str_sub(file_ls, -10, -8) |>
-        parse_number() #categories
+  folder <- paste0('DIF/', DIFVar)
+  file_ls <- list.files(folder, full.names=TRUE) |>
+    str_subset(test) |>
+    str_subset('_shw.xls')
+  file_ls <- file_ls[!grepl("facet", file_ls)]
+  file_ls <- file_ls[!grepl("group", file_ls)]
 
-    # order categories
-    ord <- cats |> order()
-    file_ls <- file_ls[ord]
-    cats <- cats[ord]
+  cats <- str_sub(file_ls, -10, -8) |>
+    parse_number() #categories
 
-    N <- map_dbl(cats, ~N_item(folder=folder, test=paste0(test, '_', .x)))
+  # order categories
+  ord <- cats |> order()
+  file_ls <- file_ls[ord]
+  cats <- cats[ord]
 
-    # delta
-    Term1_lines <- map_dbl(
-            cats,
-            ~Lines(folder, paste0(test, '_', .x), 'shw', 'TERM 1: item')[2]
-        )
+  # delta
+  tests <- paste0(test, '_', cats)
+  getDf <- function(i){
+    readxl::read_xls(
+        paste0(folder, '/', tests[[i]], '_shw.xls'),
+        sheet='ResponseModel',
+        skip=6,
+        n_max=N_item(folder, tests[[i]])+1,
+        .name_repair = "unique_quiet"
+      ) |>
+      select(
+        item,
+        delta=ESTIMATE,
+        error=`ERROR^`
+      ) |>
+      dplyr::filter(!is.na(item))
+  }
+  df_ls <- map(1:length(cats), getDf)
 
-    df_ls <- pmap(list(a=file_ls, b=Term1_lines, c=N),
-                      function(a,b,c) {
-                        read_fwf(
-                          a,
-                          fwf_cols(
-                              item=c(1, 5),
-                              delta=c(21, 28),
-                              error=c(31, 35)
-                          ), ##item=c(6, 20),
-                          skip=(b + 5),
-                          n_max=c,
-                          show_col_types = FALSE
-                        ) |>
-                        mutate(
-                            item = as.character(item),
-                            delta = parse_number(as.character(delta))
-                        )
-                      })
-
-    DIF_poly(df_ls=df_ls, DIFVar=DIFVar, cats=cats, labels=labels,
-                test=test, domain=domain, p_cut=p_cut, step=step)
+  DIF_poly(df_ls=df_ls, DIFVar=DIFVar, cats=cats, labels=labels,
+        test=test, domain=domain, p_cut=p_cut, step=step)
 }

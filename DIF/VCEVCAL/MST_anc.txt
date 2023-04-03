@@ -1,0 +1,49 @@
+1       -1.88069        /* item MST20Pla1 */
+2       -0.64141        /* item MST20Pla2 */
+3        0.39494        /* item MST20Pla3 */
+4       -1.01372        /* item MST203x301 */
+5        0.04691        /* item MST203x302 */
+6        0.07697        /* item MST203x303 */
+7       -0.13981        /* item MST203x304 */
+8        0.20186        /* item MST20Cro1 */
+9       -0.17671        /* item MST20Cro3 */
+10       -1.75767        /* item MST20Cop1 */
+11        0.00822        /* item MST20Cop3 */
+12       -0.55594        /* item MST20Cop7 */
+13        0.31662        /* item MST20Cop4 */
+14        0.51817        /* item MST20Dan1 */
+15       -0.13621        /* item MST20Dan2 */
+16       -0.27370        /* item MST20Dan4 */
+17       -0.23550        /* item MST20SBoom1 */
+18       -0.16923        /* item MST20SBoom2 */
+19       -0.80252        /* item MST20SBoom3 */
+20        0.47453        /* item MST20Dat1 */
+21        0.85770        /* item MST20Dat2 */
+22        0.45848        /* item MST20Dat4 */
+23       -0.29455        /* item MST20PPo2 */
+24        1.36602        /* item MST20PPo5 */
+25       -0.24526        /* vcevcal 1 */
+26       -0.04245        /* item MST20Pla1 vcevcal 1 */
+27        0.01915        /* item MST20Pla2 vcevcal 1 */
+28       -0.04601        /* item MST20Pla3 vcevcal 1 */
+29       -0.35623        /* item MST203x301 vcevcal 1 */
+30       -0.39475        /* item MST203x302 vcevcal 1 */
+31       -0.36452        /* item MST203x303 vcevcal 1 */
+32       -0.58287        /* item MST203x304 vcevcal 1 */
+33       -0.23915        /* item MST20Cro1 vcevcal 1 */
+34       -0.04934        /* item MST20Cro3 vcevcal 1 */
+35        0.08203        /* item MST20Cop1 vcevcal 1 */
+36        0.13599        /* item MST20Cop3 vcevcal 1 */
+37        0.10513        /* item MST20Cop7 vcevcal 1 */
+38       -0.12426        /* item MST20Cop4 vcevcal 1 */
+39        0.07680        /* item MST20Dan1 vcevcal 1 */
+40        0.52565        /* item MST20Dan2 vcevcal 1 */
+41       -0.14679        /* item MST20Dan4 vcevcal 1 */
+42       -0.10839        /* item MST20SBoom1 vcevcal 1 */
+43        0.26921        /* item MST20SBoom2 vcevcal 1 */
+44        0.24485        /* item MST20SBoom3 vcevcal 1 */
+45       -0.43535        /* item MST20Dat1 vcevcal 1 */
+46       -0.05408        /* item MST20Dat2 vcevcal 1 */
+47        0.27001        /* item MST20Dat4 vcevcal 1 */
+48        0.75400        /* item MST20PPo2 vcevcal 1 */
+49        0.44704        /* item MST20PPo5 vcevcal 1 */

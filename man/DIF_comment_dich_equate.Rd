@@ -4,17 +4,17 @@
 \alias{DIF_comment_dich_equate}
 \title{DIF_comment_dich_equate}
 \usage{
-DIF_comment_dich_equate(vars, iDIF, DIF)
+DIF_comment_dich_equate(vars, iDIF, DIFVar)
 }
 \arguments{
+\item{vars}{Vector of length 2 such as c('girls','boys'). Its order
+corresponds to the alphabetic/numeric order of DIF variables' two categories in data.}
+
 \item{iDIF}{Vector of DIF items.}
 
-\item{DIF}{TRUE if DIF analysis is performed on a dichotomous DIF variable. 
-Default is FALSE (anchor check).}
-
-\item{DIFVar}{Name of DIF variable.}
+\item{DIFVar}{Name of dichotomous DIF variable, e.g., 'gender'.}
 }
 \description{
-This function generates comments for DIF analysis on dichotomous variable. 
+This function generates comments for DIF analysis on dichotomous variable.
 This is associated with test named 'test'.
 }

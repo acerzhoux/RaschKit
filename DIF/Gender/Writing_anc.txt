@@ -1,0 +1,44 @@
+1       -1.28517        /* item Q1 */
+2       -0.65819        /* item Q2 */
+3       -1.64014        /* item Q3 */
+4       -1.49411        /* item Q4 */
+5       -3.45350        /* item Q5 */
+6       -0.66970        /* item Q6 */
+7       -4.16942        /* item Q7 */
+8        0.51104        /* gender 1 */
+9        0.00653        /* item Q1 gender 1 */
+10        0.01999        /* item Q2 gender 1 */
+11        0.01517        /* item Q3 gender 1 */
+12        0.00155        /* item Q4 gender 1 */
+13        0.11620        /* item Q5 gender 1 */
+14       -0.07864        /* item Q6 gender 1 */
+15       -0.03086        /* item Q7 gender 1 */
+16      -13.24369        /* item Q1 category 1 */
+17       -6.40221        /* item Q1 category 2 */
+18       -1.29556        /* item Q1 category 3 */
+19        3.03257        /* item Q1 category 4 */
+20        6.99650        /* item Q1 category 5 */
+21      -13.26798        /* item Q2 category 1 */
+22       -6.18164        /* item Q2 category 2 */
+23       -1.07119        /* item Q2 category 3 */
+24        3.07468        /* item Q2 category 4 */
+25        6.88040        /* item Q2 category 5 */
+26      -11.22231        /* item Q3 category 1 */
+27       -4.77240        /* item Q3 category 2 */
+28        0.68746        /* item Q3 category 3 */
+29        5.44105        /* item Q3 category 4 */
+30      -11.51598        /* item Q4 category 1 */
+31       -5.54007        /* item Q4 category 2 */
+32        0.31088        /* item Q4 category 3 */
+33        5.57256        /* item Q4 category 4 */
+34       -9.61395        /* item Q5 category 1 */
+35       -3.42811        /* item Q5 category 2 */
+36        3.03788        /* item Q5 category 3 */
+37      -12.69025        /* item Q6 category 1 */
+38       -6.89740        /* item Q6 category 2 */
+39       -1.86179        /* item Q6 category 3 */
+40        2.89634        /* item Q6 category 4 */
+41        7.24527        /* item Q6 category 5 */
+42       -9.71427        /* item Q7 category 1 */
+43       -3.27535        /* item Q7 category 2 */
+44        3.13098        /* item Q7 category 3 */

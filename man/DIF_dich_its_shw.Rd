@@ -13,7 +13,6 @@ DIF_dich_its_shw(
   DIF_adj_cut = 4,
   desig_effect = 1,
   step = FALSE,
-  facil_cut = 10,
   save_xlsx = TRUE,
   iterative = FALSE,
   quick = TRUE
@@ -38,9 +37,6 @@ between two tests. Default is 4.}
 \item{desig_effect}{Value to adjust errors. Default is 1.}
 
 \item{step}{TRUE if DIF analysis is performed on step parameters. Default is FALSE.}
-
-\item{facil_cut}{Threshold of number of percent to flag an item with large
-facility difference between two groups of test takers. Default is 10.}
 
 \item{save_xlsx}{Whether to save summary file and plots. Default is TRUE
 (one DIF variable).}

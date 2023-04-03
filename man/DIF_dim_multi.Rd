@@ -25,7 +25,6 @@ DIF_dim_multi(
   p_cut = 0.05,
   DIF_cut = 0.5,
   DIF_adj_cut = 4,
-  facil_cut = 10,
   desig_effect = 1,
   dim_multi = FALSE,
   scores = NULL,
@@ -81,9 +80,6 @@ two tests. Default is 0.5.}
 
 \item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference
 between two tests. Default is 4.}
-
-\item{facil_cut}{Threshold of number of percent to flag an item with large
-facility difference between two groups of test takers. Default is 10.}
 
 \item{desig_effect}{Value to adjust errors. Default is 1.}
 

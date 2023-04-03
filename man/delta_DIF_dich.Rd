@@ -14,11 +14,12 @@ delta_DIF_dich(test, DIFVar, quick = TRUE)
 \item{quick}{Whether quick error is needed. Default is TRUE for DIF analysis.}
 }
 \value{
-Dataframe of variables of 'delta.x', 'delta.y'.
+List of delta and indice dataframes.
 }
 \description{
-This function extracts delta statistics for two categories of dichotomous DIF variable.
+This function extracts delta and indice statistics for two categories of
+dichotomous DIF variable.
 }
 \examples{
-delta_DIF_dich(test='AHU', DIFVar='ATSI', quick=F)
+delta_DIF_dich(test='Writing', DIFVar='gender')
 }

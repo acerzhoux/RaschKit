@@ -1,0 +1,209 @@
+================================================================================
+MCQ Item Calibration Math_3                                Tue Mar 21 14:59 2023
+SUMMARY OF THE ESTIMATION
+==============================================================Version: 5.29.5===
+
+DATA SPECIFICATIONS
+
+The Data File: data/Math_3_Data.txt
+The format:  responses 9-36 pid 1-7
+Cases in file:                                                          204
+Retained cases after dropcases and keepcases:                           204
+Retained cases with non-zero weight:                                    204
+Cases in MML/MCMC estimation:                                           185
+Weighted number of cases in MML/MCMC estimation:                        185
+Cases with EAP estimates and latent trait imputations (PVs):            204
+Weighted number of cases EAP estimates and latent trait impu            204
+key 1 scored as 1: BADBCDBDBDADBCBDAABBCBDBAABA
+
+
+MODEL SPECIFICATIONS
+
+Xsi increment max:    1.00000
+FacOldXsi:    0.00000
+Assumed population distribution was: Gaussian
+Location constraint was: NONE
+Scale constraint was: Not applicable
+No case weights
+The regression model:
+Grouping Variables:
+The item model: item
+Slopes are fixed
+Total number of estimated parameters: 2
+Random number generation seed:    2.00000
+Number of nodes used when drawing PVs: 2000
+Number of plausible values to draw: 5
+Maximum number of iterations without a deviance improvement: 1000
+Maximum number of Newton steps for each parameter in M-step: 10
+Value for obtaining finite MLEs for zero/perfects:    0.30000
+
+
+ESTIMATION SPECIFICATIONS AND FIT
+
+Estimation method was: Gauss-Hermite Quadrature with 15 nodes
+No node filtering
+Final Deviance:                                6469.4421
+Akaike Information Criterion (AIC):            6473.4421
+Akaike Information Criterion Corrected (AICc): 6473.50803
+Bayesian Information Criterion (BIC):          6479.88281
+The number of iterations: 13
+Termination criteria:  Max iterations=7500,Parameter Change= 0.00010
+                       Deviance Change= 0.00000
+Iterations terminated because the convergence criteria were reached
+================================================================================
+================================================================================
+MCQ Item Calibration Math_3                                Tue Mar 21 14:59 2023
+TABLES OF RESPONSE MODEL PARAMETER ESTIMATES
+==============================================================Version: 5.29.5===
+TERM 1: item
+------------------------------------------------------------------------------------------------------------------------
+TERM 1: item
+
+        VARIABLES                                     UNWEIGHTED FIT             WEIGHTED FIT
+---------------                                   -----------------------   -----------------------
+          item                 ESTIMATE  ERROR^   MNSQ       CI        T    MNSQ       CI        T
+------------------------------------------------------------------------------------------------------------------------
+ 1   2022_L2Q09                 -0.127*           0.80 ( 0.80, 1.20) -2.0   0.84 ( 0.89, 1.11) -3.1
+ 2   2022_L2Q10                  1.084*           0.93 ( 0.80, 1.20) -0.7   0.95 ( 0.89, 1.11) -0.9
+ 3   2022_L3Q03                 -0.474*           1.06 ( 0.80, 1.20)  0.6   1.07 ( 0.86, 1.14)  0.9
+ 4   2022_L2Q08                 -0.175*           1.15 ( 0.80, 1.20)  1.4   1.14 ( 0.89, 1.11)  2.3
+ 5   2022_L1Q12                  1.347*           0.96 ( 0.80, 1.20) -0.3   0.99 ( 0.87, 1.13) -0.2
+ 6   2022_L1Q13                  1.326*           1.06 ( 0.80, 1.20)  0.6   1.07 ( 0.87, 1.13)  1.1
+ 7   2022_L1Q14                  0.475*           0.98 ( 0.80, 1.20) -0.1   0.99 ( 0.92, 1.08) -0.2
+ 8   2022_L2Q14                  1.466*           1.19 ( 0.80, 1.20)  1.8   1.11 ( 0.85, 1.15)  1.4
+ 9   2022_L3Q07                  0.500*           1.10 ( 0.80, 1.20)  0.9   1.09 ( 0.92, 1.08)  2.0
+ 10  2022_L3Q08                  0.902*           0.98 ( 0.80, 1.20) -0.1   0.99 ( 0.90, 1.10) -0.2
+ 11  2022_L2Q25                 -0.434*           0.69 ( 0.80, 1.20) -3.4   0.73 ( 0.86, 1.14) -4.3
+ 12  2022_L1Q26                 -0.810*           1.06 ( 0.80, 1.20)  0.6   1.08 ( 0.82, 1.18)  0.8
+ 13  2022_L2Q27                  0.678*           0.98 ( 0.80, 1.20) -0.1   0.98 ( 0.91, 1.09) -0.4
+ 14  2022_L3Q17                 -0.275*           0.80 ( 0.80, 1.20) -2.0   0.85 ( 0.88, 1.12) -2.6
+ 15  2022_L2Q13                  0.231*           1.19 ( 0.80, 1.20)  1.8   1.16 ( 0.91, 1.09)  3.4
+ 16  2022_L3Q15                 -0.018*           0.96 ( 0.80, 1.20) -0.3   0.98 ( 0.90, 1.10) -0.3
+ 17  2022_L3Q16                  0.605*           0.91 ( 0.80, 1.20) -0.8   0.92 ( 0.92, 1.08) -1.9
+ 18  2022_L1Q23_1               -2.105*           1.05 ( 0.80, 1.20)  0.5   1.12 ( 0.57, 1.43)  0.6
+ 19  2022_L1Q24_1                0.833*           0.95 ( 0.80, 1.20) -0.4   0.96 ( 0.91, 1.09) -0.9
+ 20  L2_18_L3_20                 1.279*           1.00 ( 0.80, 1.20)  0.0   0.97 ( 0.87, 1.13) -0.4
+ 21  L2_1_L3_21                  0.116*           0.95 ( 0.80, 1.20) -0.5   0.97 ( 0.91, 1.09) -0.7
+ 22  L2_2_L3_22                  0.838*           1.06 ( 0.80, 1.20)  0.6   1.06 ( 0.91, 1.09)  1.3
+ 23  L2_4_L3_23                  0.564*           1.06 ( 0.80, 1.20)  0.6   1.05 ( 0.92, 1.08)  1.2
+ 24  L2_3_L3_24                  0.116*           1.04 ( 0.80, 1.20)  0.4   1.04 ( 0.91, 1.09)  0.9
+ 25  2022_L3Q24                  0.858*           1.04 ( 0.80, 1.20)  0.4   1.04 ( 0.91, 1.09)  0.8
+ 26  2022_L3Q25                  0.474*           0.96 ( 0.80, 1.20) -0.4   0.97 ( 0.92, 1.08) -0.7
+ 27  2022_L3Q26                  0.667*           0.95 ( 0.80, 1.20) -0.5   0.96 ( 0.91, 1.09) -0.9
+ 28  L2_25_L3_28                 1.235*           1.02 ( 0.80, 1.20)  0.2   1.01 ( 0.88, 1.12)  0.2
+--------------------------------------------------------------------------------
+An asterisk next to a parameter estimate indicates that it is constrained
+Separation Reliability= 1.000
+
+^ Quick standard errors have been used
+Term is a fixed effect
+
+================================================================================
+MCQ Item Calibration Math_3                                Tue Mar 21 14:59 2023
+TABLES OF POPULATION MODEL PARAMETER ESTIMATES
+==============================================================Version: 5.29.5===
+REGRESSION COEFFICIENTS
+
+
+
+Regression Variable
+
+CONSTANT                   0.492 ( 0.048)
+-----------------------------------------------
+An asterisk next to a parameter estimate indicates that it is constrained
+===============================================
+UNCONDITIONAL COVARIANCE/CORRELATION MATRIX
+
+
+
+Dimension
+
+Dimension_1
+-------------------------------------------
+Variance                   0.427  ( 0.042)
+-------------------------------------------
+An asterisk next to a parameter estimate indicates that it is constrained
+
+===========================================
+
+RELIABILITY COEFFICIENTS
+------------------------
+
+Dimension: (Dimension_1)
+-----------------------
+ MLE Person separation RELIABILITY:  Unavailable
+ WLE Person separation RELIABILITY:   0.709
+ EAP/PV RELIABILITY:                  0.649
+------------------------
+================================================================================
+MCQ Item Calibration Math_3                                Tue Mar 21 14:59 2023
+MAP OF WLE ESTIMATES AND RESPONSE MODEL PARAMETER ESTIMATES
+==============================================================Version: 5.29.5===
+                                             Terms in the Model (excl Step terms)
+
+                                                               +item
+---------------------------------------------------------------------------------------
+      XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX|                                       |
+   3                                        XX|                                       |
+                                              |                                       |
+                                              |                                       |
+                                              |                                       |
+                                              |                                       |
+                                              |                                       |
+                                              |                                       |
+                                              |                                       |
+                                              |                                       |
+                                              |                                       |
+                                              |                                       |
+   2                                    XXXXXX|                                       |
+                                              |                                       |
+                                              |                                       |
+                                   XXXXXXXXXXX|                                       |
+                                              |                                       |
+                                 XXXXXXXXXXXXX|                                       |
+                                              |8                                      |
+                                   XXXXXXXXXXX|                                       |
+                                              |5 6 20                                 |
+        XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX|28                                     |
+                                              |                                       |
+                         XXXXXXXXXXXXXXXXXXXXX|2                                      |
+   1                                          |                                       |
+                         XXXXXXXXXXXXXXXXXXXXX|10 25                                  |
+                                              |19 22                                  |
+                   XXXXXXXXXXXXXXXXXXXXXXXXXXX|13 27                                  |
+                   XXXXXXXXXXXXXXXXXXXXXXXXXXX|17                                     |
+                                              |9 23                                   |
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXX|7 26                                   |
+                                              |                                       |
+          XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX|                                       |
+                                              |15                                     |
+                     XXXXXXXXXXXXXXXXXXXXXXXXX|21 24                                  |
+   0                                          |16                                     |
+            XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX|                                       |
+                                              |1 4                                    |
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXX|14                                     |
+                                              |                                       |
+                   XXXXXXXXXXXXXXXXXXXXXXXXXXX|11                                     |
+                                              |3                                      |
+                                   XXXXXXXXXXX|                                       |
+                                              |                                       |
+                                      XXXXXXXX|12                                     |
+                                              |                                       |
+                                            XX|                                       |
+  -1                                          |                                       |
+                                              |                                       |
+                                          XXXX|                                       |
+                                              |                                       |
+                                              |                                       |
+                                              |                                       |
+                                              |                                       |
+                                              |                                       |
+                                              |                                       |
+                                            XX|                                       |
+                                              |                                       |
+  -2                                          |                                       |
+                                          XXXX|18                                     |
+=======================================================================================
+Each 'X' represents 0.5 cases
+
+=======================================================================================

@@ -1,0 +1,73 @@
+1       -1.27050        /* item Q1 */
+2       -0.68333        /* item Q2 */
+3       -1.72566        /* item Q3 */
+4       -1.49343        /* item Q4 */
+5       -3.53735        /* item Q5 */
+6       -0.68630        /* item Q6 */
+7       -4.17379        /* item Q7 */
+8        0.51555        /* gender 1 */
+9       -0.03291        /* item Q1 gender 1 */
+10       -0.01830        /* item Q2 gender 1 */
+11        0.12796        /* item Q3 gender 1 */
+12       -0.06135        /* item Q4 gender 1 */
+13        0.28541        /* item Q5 gender 1 */
+14       -0.19517        /* item Q6 gender 1 */
+15        0.02454        /* item Q7 gender 1 */
+16      -13.49229        /* item Q1 category 1 gender 1 */
+17       -6.14467        /* item Q1 category 2 gender 1 */
+18       -1.18442        /* item Q1 category 3 gender 1 */
+19        2.95733        /* item Q1 category 4 gender 1 */
+20        6.78069        /* item Q1 category 5 gender 1 */
+21      -13.15863        /* item Q2 category 1 gender 1 */
+22       -5.94831        /* item Q2 category 2 gender 1 */
+23       -0.92886        /* item Q2 category 3 gender 1 */
+24        3.12930        /* item Q2 category 4 gender 1 */
+25        6.46474        /* item Q2 category 5 gender 1 */
+26      -10.81862        /* item Q3 category 1 gender 1 */
+27       -4.80454        /* item Q3 category 2 gender 1 */
+28        0.79581        /* item Q3 category 3 gender 1 */
+29        5.16291        /* item Q3 category 4 gender 1 */
+30      -11.60855        /* item Q4 category 1 gender 1 */
+31       -5.31620        /* item Q4 category 2 gender 1 */
+32        0.42520        /* item Q4 category 3 gender 1 */
+33        5.45965        /* item Q4 category 4 gender 1 */
+34       -9.38624        /* item Q5 category 1 gender 1 */
+35       -3.27380        /* item Q5 category 2 gender 1 */
+36        2.90842        /* item Q5 category 3 gender 1 */
+37      -12.58259        /* item Q6 category 1 gender 1 */
+38       -6.60383        /* item Q6 category 2 gender 1 */
+39       -1.56411        /* item Q6 category 3 gender 1 */
+40        2.89075        /* item Q6 category 4 gender 1 */
+41        7.13405        /* item Q6 category 5 gender 1 */
+42       -9.69117        /* item Q7 category 1 gender 1 */
+43       -3.25192        /* item Q7 category 2 gender 1 */
+44        3.01404        /* item Q7 category 3 gender 1 */
+45      -12.70644        /* item Q1 category 1 gender 2 */
+46       -6.78279        /* item Q1 category 2 gender 2 */
+47       -1.44513        /* item Q1 category 3 gender 2 */
+48        3.03247        /* item Q1 category 4 gender 2 */
+49        7.09288        /* item Q1 category 5 gender 2 */
+50      -13.32503        /* item Q2 category 1 gender 2 */
+51       -6.41626        /* item Q2 category 2 gender 2 */
+52       -1.17454        /* item Q2 category 3 gender 2 */
+53        3.06044        /* item Q2 category 4 gender 2 */
+54        7.17292        /* item Q2 category 5 gender 2 */
+55      -12.15641        /* item Q3 category 1 gender 2 */
+56       -4.56871        /* item Q3 category 2 gender 2 */
+57        0.75267        /* item Q3 category 3 gender 2 */
+58        5.79212        /* item Q3 category 4 gender 2 */
+59      -11.22873        /* item Q4 category 1 gender 2 */
+60       -5.81486        /* item Q4 category 2 gender 2 */
+61        0.18413        /* item Q4 category 3 gender 2 */
+62        5.61621        /* item Q4 category 4 gender 2 */
+63      -10.15502        /* item Q5 category 1 gender 2 */
+64       -3.50829        /* item Q5 category 2 gender 2 */
+65        3.30234        /* item Q5 category 3 gender 2 */
+66      -12.68781        /* item Q6 category 1 gender 2 */
+67       -7.21100        /* item Q6 category 2 gender 2 */
+68       -2.12648        /* item Q6 category 3 gender 2 */
+69        2.88154        /* item Q6 category 4 gender 2 */
+70        7.30431        /* item Q6 category 5 gender 2 */
+71       -9.76950        /* item Q7 category 1 gender 2 */
+72       -3.31163        /* item Q7 category 2 gender 2 */
+73        3.22824        /* item Q7 category 3 gender 2 */

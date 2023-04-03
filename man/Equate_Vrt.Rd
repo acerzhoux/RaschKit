@@ -12,7 +12,7 @@ Equate_Vrt(
   DIF_cut = 0.5,
   DIF_adj_cut = 4,
   step = FALSE,
-  iterative = FALSE
+  iterative = TRUE
 )
 }
 \arguments{
@@ -34,7 +34,7 @@ between two tests. Default is 4.}
 \item{step}{TRUE if DIF analysis is performed on step parameters.
 Default is FALSE.}
 
-\item{iterative}{TRUE to iteratively remove DIF items. Default is FALSE.}
+\item{iterative}{TRUE to iteratively remove DIF items. Default is TRUE}
 }
 \value{
 List of chi-square test results for anchors between two adjacent grades.
@@ -45,5 +45,5 @@ is saved in 'equating' folder, each sheet of which is for two
 adjacent grades. Also saved are scatterplots named 'Vrt_xxx.pdf'.
 }
 \examples{
-Equate_Vrt(test='bang', grades=c(3, 5))
+Equate_Vrt(test='Math', grades=1:3)
 }

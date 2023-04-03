@@ -10,6 +10,234 @@ library(RaschKit)
 install_packages_ls()
 ```
 
+
+```{r}
+registred <- readxl::read_xlsx('dataRaw/CSTPRegistrations23.xlsx')
+
+# table(registred$LevelAppliedFor)
+# length(unique(registred$StudentID))
+
+# Humanities
+df <- registred |> 
+    select(StudentID, LevelAppliedFor, contains('HumanitiesQ'))
+dfRec <- miss_recode(df, 3, 47, miss_code=9, to_ltr=T)
+# freH <- freq_resps_cat(dfRec[-c(1,2)], wide=T)
+```
+
+
+```{r}
+for (i in 1:3){
+  cd <- readxl::read_xlsx('dataRaw/HUM.xlsx', i) |> 
+    select(`No.`, Key, Item) |> 
+    arrange(`No.`) |> 
+    mutate(
+      # Item=paste0('Q', `No.`), 
+      Max_score=1
+    ) |> 
+    select(-`No.`)
+  
+  calibrate(test=paste0('HUM_', i), 
+            # data=dfRec |> filter(LevelAppliedFor==i), 
+            pid='StudentID', n_cov=2, keys=cd)
+}
+```
+
+
+```{r}
+# Math
+# df <- registred |> 
+#     select(StudentID, LevelAppliedFor, contains('MathsQ'))
+# dfRec <- miss_recode(df, 3, 34, miss_code=9, to_ltr=T)
+# # freH <- freq_resps_cat(dfRec[-c(1,2)], wide=T)
+
+for (i in 1:3){
+  cd <- readxl::read_xlsx('dataRaw/Math.xlsx', i) |> 
+    select(`No.`, Key, Item) |> 
+    arrange(`No.`) |> 
+    mutate(
+      # Item=paste0('Q', `No.`), 
+      Max_score=1
+    ) |> 
+    select(-`No.`)
+  
+  calibrate(test=paste0('Math_', i), 
+            # data=dfRec |> filter(LevelAppliedFor==i), 
+            pid='StudentID', n_cov=2, keys=cd, n_dims=28)
+}
+
+read2one(folder='results', 
+         tests=c('HUM_1', 'HUM_2', 'HUM_3', 'Math_1', 'Math_2', 'Math_3'), 
+         prefix='itn', 
+         file_name ='Run_2')
+# read2one('results', c('Math_1', 'Math_2'), 'itn')
+```
+
+# concurrent
+
+```{r}
+j <- 1
+# j <- 2
+tests <- c('HUM', 'Math')
+test <- tests[[j]]
+nCol <- ifelse(j==1, 47, 30)
+
+cdLst <- list()
+dfLst <- list()
+
+for (i in 1:3){
+  cdLst[[i]] <- readxl::read_xlsx(paste0('dataRaw/', test, '.xlsx'), i) |> 
+    select(`No.`, Key, Item0, delta.x, error.x) |> 
+    arrange(`No.`) |> 
+    select(-`No.`)
+ 
+  dfLst[[i]] <- haven::read_sav(paste0('data/', test, '_', i, '.sav')) |>
+  `names<-`(c('StudentID', 'Grade', cdLst[[i]]$Item0)) |>
+  select(1:nCol)
+  
+  if (j==1 & i==1){
+    dfLst[[i]] <- dfLst[[i]] |> 
+      mutate(
+        `2014_L2Q19`=ifelse(`2014_L2Q19`=='C', 1, `2014_L2Q19`)
+      )
+  }
+  if (j==1 & i==2){
+    dfLst[[i]] <- dfLst[[i]] |> 
+      mutate(
+        `2015_L2Q29`=ifelse(`2015_L2Q29`=='A', 1, `2015_L2Q29`),
+        `2015_L2Q32`=ifelse(`2015_L2Q32`=='D', 1, `2015_L2Q32`),
+        `2014_L2Q19`=ifelse(`2014_L2Q19`=='A', 1, `2014_L2Q19`)
+      )
+  }
+  if (j==1 & i==3){
+    dfLst[[i]] <- dfLst[[i]] |> 
+      mutate(
+        `2015_L2Q29`=ifelse(`2015_L2Q29`=='B', 1, `2015_L2Q29`),
+        `2015_L2Q32_3`=ifelse(`2015_L2Q32_3`=='B', 1, `2015_L2Q32_3`)
+      )      
+  }
+}
+
+# data
+df0 <- reduce(dfLst, bind_rows)
+
+# key and anchor
+cd0 <- full_join(
+    cdLst[[1]],
+    cdLst[[2]],
+    by=c('Key', 'Item0', 'delta.x', 'error.x')
+  ) |> 
+  full_join(
+    cdLst[[3]],
+    by=c('Key', 'Item0', 'delta.x', 'error.x')
+  ) |> 
+  mutate(
+    Max_score=1
+  ) |> 
+  rename(Item=Item0)
+key0 <- select(cd0, Key, Item, Max_score) |> 
+  unique()
+anchors <- select(cd0, Item, delta.x, error.x) |> 
+  filter(!is.na(delta.x)) |> 
+  unique()
+
+all(key0$Item == names(df0)[-c(1, 2)])
+# table(key0$Item)[which(table(key0$Item) > 1) ]
+
+calibrate(test=paste0(test, '_concur'), data=df0,
+          regr_vec_char='Grade',
+          pid='StudentID', n_cov=2, keys=key0)
+
+# read2one('results', 'HUM_con', 'itn', 'HUM_Con')
+```
+
+
+```{r}
+j <- 1
+# j <- 2
+tests <- c('HUM', 'Math')
+test <- tests[[j]]
+
+cdLst <- list()
+
+for (i in 1:3){
+  cdLst[[i]] <- readxl::read_xlsx(paste0('dataRaw/', test, '.xlsx'), i) |> 
+    select(`No.`, Key, Item0, delta.x, error.x) |> 
+    arrange(`No.`) |> 
+    select(-`No.`)
+
+}
+
+# key and anchor
+cd0 <- full_join(
+    cdLst[[1]],
+    cdLst[[2]],
+    by=c('Key', 'Item0', 'delta.x', 'error.x')
+  ) |> 
+  full_join(
+    cdLst[[3]],
+    by=c('Key', 'Item0', 'delta.x', 'error.x')
+  ) |> 
+  mutate(
+    Max_score=1
+  ) |> 
+  rename(Item=Item0)
+key0 <- select(cd0, Key, Item, Max_score) |> 
+  unique()
+anchors <- select(cd0, Item, Delta=delta.x) |> 
+  filter(!is.na(Delta)) |> 
+  unique()
+
+calibrate(anchor=TRUE, test=paste0(test, '_0'), 
+          data=haven::read_sav('data/HUM_concur.sav') |> 
+              `names<-`(c('StudentID', 'Grade', key0$Item)),
+          # regr_vec_char='Grade',
+          pid='StudentID', n_cov=2, keys=key0, dfAnc=anchors)
+
+```
+
+# equiv tbl
+
+```{r}
+for (j in 1:2){
+  test <- tests[[j]]
+  n_dims <-  ifelse(j==1, 45, 28)
+  for (i in 1:3){
+    cd <- readxl::read_xlsx(paste0('dataRaw/', test, '.xlsx'), i) |> 
+      select(`No.`, Key=Key1, Item=Item0) |> 
+      arrange(`No.`) |> 
+      mutate(
+        # Item=paste0('Q', `No.`), 
+        Max_score=1
+      ) |> 
+      select(-`No.`)
+    
+    anchorGrade <- left_join(
+        cd |> filter(Key!='x'), 
+        item_stats('output', paste0(test, "_0")) |> 
+          select(
+            Item=`Item Title`,
+            Delta=`Item Estimate (case centred)` # keep untouched when anchoring
+          ), 
+        by='Item'
+      ) |> 
+      unique() |> 
+      select(Item, Delta) |> 
+      filter(!is.na(Delta))
+      
+    calibrate(anchor=TRUE, test=paste0(test, '_', i), n_dims=n_dims,
+              pid='StudentID', n_cov=2, keys=cd, dfAnc=anchorGrade, 
+              est_type='mle', extrapolation=TRUE, slope=10, intercept=100)
+  }
+  map(1:3, ~readxl::read_xlsx(paste0('results/scaled_', test, '_', .x, '.xlsx')) |> 
+        mutate(Grade=.x)) |> 
+    reduce(bind_rows) |> 
+    mutate(Score_raw=round(Score_raw)) |>
+    writexl::write_xlsx(paste0('results/', 'eqv_', test, '.xlsx'))
+  
+}
+```
+
+
 # Explore functions
 
 Open this .Rmd file via 'xxx.Rproj' in working directory. Explore data via 
@@ -18,10 +246,6 @@ the following functions.
 ## Recode embedded/trailing missing as 'M'/'R'
 
 Do once for each test domain if test has more than one domain.
-
-```{r}
-miss_recode(df=elena, begin=10, end=40) #specify beginning and end of test section
-```
 
 ## Remove missing columns/rows
 

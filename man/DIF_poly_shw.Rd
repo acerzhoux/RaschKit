@@ -4,14 +4,17 @@
 \alias{DIF_poly_shw}
 \title{DIF_poly_shw}
 \usage{
-DIF_poly_shw(DIFVar, labels, test, domain = NULL, p_cut = 0.05, step = FALSE)
+DIF_poly_shw(
+  DIFVar,
+  test,
+  domain = NULL,
+  p_cut = 0.05,
+  step = FALSE,
+  labels = NULL
+)
 }
 \arguments{
 \item{DIFVar}{Name of polytomous DIF variable, e.g., 'nation'.}
-
-\item{labels}{Dataframe of labels of all the items in a test. Variable
-'item' is item order in label file ('test_Labels.txt' in 'data' folder)
-and in test. Variable 'label' is complete item labels of test items.}
 
 \item{test}{Name of the test.}
 
@@ -20,6 +23,11 @@ and in test. Variable 'label' is complete item labels of test items.}
 \item{p_cut}{Threshold of statistical test. Default is 0.05.}
 
 \item{step}{TRUE if polytomous items are involved. Default is FALSE.}
+
+\item{labels}{Dataframe of labels of all the items in a test. Variable
+'item' is item order in label file ('test_Labels.txt' in 'data' folder)
+and in test. Variable 'label' is complete item labels of test items. Default
+is NULL.}
 }
 \value{
 List of summary of results from polytomous DIF variable analysis,

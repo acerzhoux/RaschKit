@@ -1,0 +1,48 @@
+let name = Writing;
+
+let path = DIF/gender;
+
+execute;
+
+title MCQ Item Calibration Writing;
+data data/Writing_gender.txt;
+
+format responses 14-20 pid 1-7  gender 9-9;
+
+labels                                           << input/Writing_lab.txt;
+
+key 1111111 !1;
+key 2222222 !2;
+key 3333333 !3;
+key 4444444 !4;
+key 5555555 !5;
+key 6666666 !6;
+
+set addextension=no, keeplastest=yes, iterlimit=1000, lconstraints=cases;
+
+codes 0,1,2,3,4,5,6; /*MR scored zero*/
+
+model item+gender+item*gender+item*step*gender;
+
+estimate ! convergence=0.0001, iter=7500, stderr=quick, fit=yes, deviancechange=0.000000001, matrixout=e, nodes=50;
+
+export logfile                                   >> %path%\%name%_log.txt;
+
+export parameters                                >> %path%\%name%_step_anc.txt;
+itanal !estimates=wle,format=summary             >> %path%\%name%_step_its.txt;
+itanal !estimates=wle,format=summary,filetype=excel >> %path%\%name%_step_its.xls;
+itanal !estimates=latent                         >> %path%\%name%_step_itn.txt;
+itanal !estimates=latent,filetype=excel          >> %path%\%name%_step_itn.xls;
+itanal !estimates=latent,format=export           >> %path%\%name%_step_opt.txt;
+itanal !estimates=latent,format=export,filetype=excel >> %path%\%name%_step_opt.xls;
+show !estimates=wle,Expanded=no,itemlabels=yes   >> %path%\%name%_step_shw.txt;
+show !estimates=wle,Expanded=no,itemlabels=yes,filetype=excel  >> %path%\%name%_step_shw.xls;
+show parameters !table=7                         >> %path%\%name%_step_thr.txt;
+show parameters !table=7,filetype=excel          >> %path%\%name%_step_thr.xls;
+fit                                              >> %path%\%name%_step_res.txt;
+show cases !estimates=wle,filetype=excel         >> %path%\%name%_step_cas.xls;
+put                                              >> %path%\%name%_step_compressed.CQS;
+itanal ! matrixout=i;
+
+reset;
+quit;

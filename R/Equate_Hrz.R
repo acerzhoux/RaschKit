@@ -6,7 +6,7 @@
 #' 'equating' folder for each grade.
 #'
 #' @param test Name of test.
-#' @param grades Vector of all grades. Default is c(2:10).
+#' @param grdIntVec Vector of all grades Default is c(2:10).
 #' @param forms Forms used in a test. Default is c('A','B')
 #' @param p_cut p value of chi-square test. Default is 0.05.
 #' @param DIF_cut Threshold of an item's delta estimate difference between
@@ -15,26 +15,28 @@
 #' between two tests. Default is 4.
 #' @param step TRUE if DIF analysis is performed on step parameters.
 #' Default is FALSE.
-#' @param iterative TRUE to iteratively remove DIF items. Default is FALSE.
+#' @param iter TRUE to iteratively remove DIF items. Default is TRUE
 #' @return List of chi-square test results on Form A and Form B for each grade.
 #' @examples
-#' Equate_Hrz(test='bang', grades=c(3, 5), long_label=T)
+#' Equate_Hrz(test='bang', grdIntVec=c(3, 5))
 #' @export
 
-Equate_Hrz <- function(test, grades=c(2:10), forms=c('A','B'), p_cut=0.05,
-          DIF_cut=0.5, DIF_adj_cut=4, step=FALSE, iterative=FALSE){
-  # grades, forms: combined in file names (Test_2A,Test_2B, ...)
-  if (!dir.exists('equating')) dir.create('equating')
+Equate_Hrz <- function(test, grdIntVec=c(2:10), forms=c('A','B'), p_cut=0.05,
+                       DIF_cut=0.5, DIF_adj_cut=4, step=FALSE, iter=TRUE){
+  # grdIntVec, forms: combined in file names (Test_2A,Test_2B, ...)
+  folder <- paste0('equating/Hrz_', test)
+  if (!dir.exists(folder)) dir.create(folder)
 
   grps <- list()
-  for (i in seq_along(grades)){
-    grps[[i]] <- str_c(grades[[i]], forms)
+  for (i in seq_along(grdIntVec)){
+    grps[[i]] <- str_c(grdIntVec[[i]], forms)
   }
 
   equat_ls <- list()
   for (i in seq_along(grps)){
     test_2 <- grps[[i]]
-    cat('Equating Forms', test_2, '...\n')
+    # cat('Equating Forms', test_2, '...\n')
+    prefix <- paste0(folder, '/', paste0(test_2, collapse='_'))
 
     # extract facility and discrimination from its.xls file
     t1 <- paste0(test, '_', test_2[[1]])
@@ -48,21 +50,29 @@ Equate_Hrz <- function(test, grades=c(2:10), forms=c('A','B'), p_cut=0.05,
       modify_at(c('Facil.x', 'Facil.y'), ~round(.x, 3)) |>
       na.omit()
 
-    names(facilDiscrFitw) <- gsub("\\.x", paste0('_', test_2[[1]]), names(facilDiscrFitw))
-    names(facilDiscrFitw) <- gsub("\\.y", paste0('_', test_2[[2]]), names(facilDiscrFitw))
-
-    pstats <- plot_facilDiscrFitw(facilDiscrFitw, test_2, c(3, 7), 3)
+    names(facilDiscrFitw) <- gsub("\\.x", paste0(' ', test_2[[1]]), names(facilDiscrFitw))
+    names(facilDiscrFitw) <- gsub("\\.y", paste0(' ', test_2[[2]]), names(facilDiscrFitw))
 
     statsEqu <- Equate_shw(test, test_2, NULL, p_cut, DIF_cut,
-                           DIF_adj_cut, FALSE, step, iterative)
+                           DIF_adj_cut, FALSE, step, iter)
+    ggsave(
+      paste0(prefix, '_delta.png'),
+      statsEqu[['plot_DIF']],
+      width=17, height=30, units="cm"
+    )
+    ggsave(
+      paste0(prefix, '_facilDiscrFitw.png'),
+      plot_facilDiscrFitw(facilDiscrFitw, paste0('L', test_2), c(3, 7), 3),
+      width=17, height=30, units="cm"
+    )
 
     statsEqu[['flag']] <- left_join(
-      statsEqu[['flag']],
-      facilDiscrFitw,
-      by = c('item' = 'Label')
-    ) |>
+        statsEqu[['flag']],
+        facilDiscrFitw,
+        by = c('item' = 'Label')
+      ) |>
       dplyr::select(item, contains('N'), contains('Facil'),
-                  contains('Discr'), contains('Fitw'), everything())
+                    contains('Discr'), contains('Fitw'), everything())
 
     statsEqu[['final']] <- left_join(
         statsEqu[['final']],
@@ -75,7 +85,12 @@ Equate_Hrz <- function(test, grades=c(2:10), forms=c('A','B'), p_cut=0.05,
         everything()
       )
 
-    statsEqu[['plot_DIF']] <- list(statsEqu[['plot_DIF']], pstats)
+    # statsEqu[['plot_DIF']] <- list(statsEqu[['plot_DIF']], pstats)
+    # save Excel
+    writexl::write_xlsx(
+      statsEqu[1:5],
+      paste0(prefix, '_process.xlsx')
+    )
 
     equat_ls[[paste0(test_2, collapse='_')]] <- statsEqu
   }
@@ -92,23 +107,16 @@ Equate_Hrz <- function(test, grades=c(2:10), forms=c('A','B'), p_cut=0.05,
     ) |>
     reduce(bind_rows) |>
     select(Form, everything())
-  sum_ls <- append(list(Summary=summary), map(equat_ls, 'final'))
+  ls_save <- append(list(Summary=summary), map(equat_ls, 'final'))
 
-  # save results
-  path_xlsx <- paste0('equating/', 'Hrz_', test, if(step) '_step', '.xlsx')
-  writexl::write_xlsx(sum_ls, path_xlsx)
+  # add format, hyperlink; save results
+  file <- paste0('equating/Hrz_', test, '.xlsx')
+  cat('\n', test, 'horizontal equating results saved at:\n\t', file)
+  add_format()[['equate']](
+    ls_save,
+    folder,
+    file,
+    c(DIF_cut, DIF_adj_cut)
+  )
 
-  path_pdf <- paste0('equating/', 'Hrz_', test, if(step) '_step', '.pdf')
-  pdf(path_pdf, width=7, height=14)
-  map(map(equat_ls, 'plot_DIF'), print)
-  dev.off()
-
-  # point users to files of varying purposes
-  writeLines(c(
-    paste0('Anchor DIF analysis for ', test, ' (before horizontal equating):'),
-    paste0('\tSummary:\t', path_xlsx),
-    paste0('\tPlots:\t\t', path_pdf)
-  ))
-
-  # sum_ls
 }

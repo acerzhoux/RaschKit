@@ -1,0 +1,79 @@
+================================================================================
+MCQ Item Calibration Writing                               Fri Mar 31 12:00 2023
+TABLES OF GIN Thresholds
+==============================================================Version: 5.29.5===
+GIN Number  Threshold           GIN Labels
+--------------------------------------------------------------------------------
+1.1.1	   -14.280	gender	1	1	item	1	Q1	
+1.1.2	    -6.938	gender	1	1	item	1	Q1	
+1.1.3	    -1.981	gender	1	1	item	1	Q1	
+1.1.4	     2.164	gender	1	1	item	1	Q1	
+1.1.5	     6.001	gender	1	1	item	1	Q1	
+1.1.6	    10.309	gender	1	1	item	1	Q1	
+2.1.1	   -14.462	gender	2	2	item	1	Q1	
+2.1.2	    -8.538	gender	2	2	item	1	Q1	
+2.1.3	    -3.205	gender	2	2	item	1	Q1	
+2.1.4	     1.273	gender	2	2	item	1	Q1	
+2.1.5	     5.333	gender	2	2	item	1	Q1	
+2.1.6	     9.079	gender	2	2	item	1	Q1	
+1.2.1	   -13.345	gender	1	1	item	2	Q2	
+1.2.2	    -6.140	gender	1	1	item	2	Q2	
+1.2.3	    -1.125	gender	1	1	item	2	Q2	
+1.2.4	     2.926	gender	1	1	item	2	Q2	
+1.2.5	     6.294	gender	1	1	item	2	Q2	
+1.2.6	    10.274	gender	1	1	item	2	Q2	
+2.2.1	   -14.507	gender	2	2	item	2	Q2	
+2.2.2	    -7.601	gender	2	2	item	2	Q2	
+2.2.3	    -2.364	gender	2	2	item	2	Q2	
+2.2.4	     1.878	gender	2	2	item	2	Q2	
+2.2.5	     5.979	gender	2	2	item	2	Q2	
+2.2.6	     9.530	gender	2	2	item	2	Q2	
+1.3.1	   -11.903	gender	1	1	item	3	Q3	
+1.3.2	    -5.888	gender	1	1	item	3	Q3	
+1.3.3	    -0.295	gender	1	1	item	3	Q3	
+1.3.4	     4.082	gender	1	1	item	3	Q3	
+1.3.5	     8.593	gender	1	1	item	3	Q3	
+2.3.1	   -14.526	gender	2	2	item	3	Q3	
+2.3.2	    -6.942	gender	2	2	item	3	Q3	
+2.3.3	    -1.618	gender	2	2	item	3	Q3	
+2.3.4	     3.417	gender	2	2	item	3	Q3	
+2.3.5	     7.823	gender	2	2	item	3	Q3	
+1.4.1	   -12.650	gender	1	1	item	4	Q4	
+1.4.2	    -6.356	gender	1	1	item	4	Q4	
+1.4.3	    -0.617	gender	1	1	item	4	Q4	
+1.4.4	     4.423	gender	1	1	item	4	Q4	
+1.4.5	    10.004	gender	1	1	item	4	Q4	
+2.4.1	   -13.181	gender	2	2	item	4	Q4	
+2.4.2	    -7.761	gender	2	2	item	4	Q4	
+2.4.3	    -1.766	gender	2	2	item	4	Q4	
+2.4.4	     3.669	gender	2	2	item	4	Q4	
+2.4.5	     9.299	gender	2	2	item	4	Q4	
+1.5.1	   -12.125	gender	1	1	item	5	Q5	
+1.5.2	    -6.010	gender	1	1	item	5	Q5	
+1.5.3	     0.173	gender	1	1	item	5	Q5	
+1.5.4	     7.017	gender	1	1	item	5	Q5	
+2.5.1	   -14.494	gender	2	2	item	5	Q5	
+2.5.2	    -7.847	gender	2	2	item	5	Q5	
+2.5.3	    -1.036	gender	2	2	item	5	Q5	
+2.5.4	     6.023	gender	2	2	item	5	Q5	
+1.6.1	   -12.951	gender	1	1	item	6	Q6	
+1.6.2	    -6.974	gender	1	1	item	6	Q6	
+1.6.3	    -1.935	gender	1	1	item	6	Q6	
+1.6.4	     2.522	gender	1	1	item	6	Q6	
+1.6.5	     6.756	gender	1	1	item	6	Q6	
+1.6.6	    10.386	gender	1	1	item	6	Q6	
+2.6.1	   -13.699	gender	2	2	item	6	Q6	
+2.6.2	    -8.220	gender	2	2	item	6	Q6	
+2.6.3	    -3.134	gender	2	2	item	6	Q6	
+2.6.4	     1.870	gender	2	2	item	6	Q6	
+2.6.5	     6.299	gender	2	2	item	6	Q6	
+2.6.6	    10.843	gender	2	2	item	6	Q6	
+1.7.1	   -13.327	gender	1	1	item	7	Q7	
+1.7.2	    -6.886	gender	1	1	item	7	Q7	
+1.7.3	    -0.619	gender	1	1	item	7	Q7	
+1.7.4	     6.296	gender	1	1	item	7	Q7	
+2.7.1	   -14.485	gender	2	2	item	7	Q7	
+2.7.2	    -8.025	gender	2	2	item	7	Q7	
+2.7.3	    -1.485	gender	2	2	item	7	Q7	
+2.7.4	     5.141	gender	2	2	item	7	Q7	
+================================================================================

@@ -65,13 +65,13 @@ Equate_shw(test='elana_math', vars=c('NSW', 'VIC'))
 ## Horizontal equating
 
 ```{r}
-Equate_Hrz(test='R', grades=c(2:6), forms=c('A','B'))
+Equate_Hrz(test='bang', grades=c(3, 5), forms=c('A','B'))
 # files names should cover all combinations of args 'grades' and 'forms' (e.g., R_2A.shw)
 ```
 
 ## Vertical equating
 
 ```{r}
-Equate_Vrt(test='R', grades=c(2:10))
+Equate_Vrt(test='Math', grades=1:3)
 # files names should cover all elements of arg 'grades' (e.g., R_2.shw)
 ```

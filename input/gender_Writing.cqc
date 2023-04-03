@@ -1,0 +1,50 @@
+let name = Writing;
+
+let path = DIF/gender;
+
+execute;
+
+title MCQ Item Calibration Writing;
+data data/Writing_gender.txt;
+
+format responses 14-20 pid 1-7  gender 9-9;
+
+labels                                           << input/Writing_lab.txt;
+
+key 1111111 !1;
+key 2222222 !2;
+key 3333333 !3;
+key 4444444 !4;
+key 5555555 !5;
+key 6666666 !6;
+
+set addextension=no, keeplastest=yes, iterlimit=1000, lconstraints=cases;
+
+codes 0,1,2,3,4,5,6; /*MR scored zero*/
+
+model item+gender+item*gender+item*step;
+
+estimate ! convergence=0.0001, iter=7500, stderr=quick, fit=yes, deviancechange=0.000000001, matrixout=e, nodes=50;
+
+export logfile                                   >> %path%\%name%_log.txt;
+
+export parameters                                >> %path%\%name%_anc.txt;
+itanal !estimates=wle,format=summary             >> %path%\%name%_its.txt;
+itanal !estimates=wle,format=summary,filetype=excel >> %path%\%name%_its.xls;
+itanal !estimates=latent                         >> %path%\%name%_itn.txt;
+itanal !estimates=latent,filetype=excel          >> %path%\%name%_itn.xls;
+itanal !estimates=latent,format=export           >> %path%\%name%_opt.txt;
+itanal !estimates=latent,format=export,filetype=excel >> %path%\%name%_opt.xls;
+show !estimates=wle,Expanded=no,itemlabels=yes   >> %path%\%name%_shw.txt;
+show !estimates=wle,Expanded=no,itemlabels=yes,filetype=excel  >> %path%\%name%_shw.xls;
+show parameters !table=8                         >> %path%\%name%_del.txt;
+show parameters !table=8,filetype=excel          >> %path%\%name%_del.xls;
+show parameters !table=7                         >> %path%\%name%_thr.txt;
+show parameters !table=7,filetype=excel          >> %path%\%name%_thr.xls;
+fit                                              >> %path%\%name%_res.txt;
+show cases !estimates=wle,filetype=excel         >> %path%\%name%_cas.xls;
+put                                              >> %path%\%name%_compressed.CQS;
+itanal ! matrixout=i;
+
+reset;
+quit;
