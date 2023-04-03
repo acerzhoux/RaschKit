@@ -4,14 +4,14 @@
 \alias{calibrate_lst}
 \title{calibrate_lst}
 \usage{
-calibrate_lst(dataLst = NULL, keysLst, pid, n_cov, run)
+calibrate_lst(respDfLst = NULL, keyDfLst, pid, n_cov, run)
 }
 \arguments{
-\item{dataLst}{List of response dataframe. Default is NULL (reruns after review).
+\item{respDfLst}{List of response dataframe. Default is NULL (reruns after review).
 If NULL and items need collapsing, put processed data with test name in
 'data' folder before running.}
 
-\item{keysLst}{List of key dataframes. Element names are test names.}
+\item{keyDfLst}{List of key dataframes. Element names are test names.}
 
 \item{pid}{Name of candidates' ID variable.}
 

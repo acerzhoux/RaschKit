@@ -5,19 +5,19 @@
 \title{equate_lst}
 \usage{
 equate_lst(
-  deltaLst,
+  deltaDfLst,
   vars,
   p_cut = 0.05,
   DIF_cut = 0.5,
   DIF_adj_cut = 4,
   desig_effect = 1,
   step = FALSE,
-  iterative = TRUE,
-  indiceLst = NULL
+  iter = TRUE,
+  indDfLst = NULL
 )
 }
 \arguments{
-\item{deltaLst}{List of tests' anchor statistics dataframe of variables 'item',
+\item{deltaDfLst}{List of tests' anchor statistics dataframe of variables 'item',
 'delta.x', 'error.x', 'delta.y', 'error.y'. The names of the elements are
 test names.}
 
@@ -37,12 +37,12 @@ between two tests. Default is 4.}
 \item{step}{TRUE if DIF analysis is performed on step parameters.
 Default is FALSE.}
 
-\item{iterative}{TRUE to iteratively remove DIF items. Default is TRUE.}
+\item{iter}{TRUE to iteratively remove DIF items. Default is TRUE.}
 
-\item{indiceLst}{List of tests' indice statistics dataframe of variables 'item',
+\item{indDfLst}{List of tests' indice statistics dataframe of variables 'item',
 'facil.x', 'discr.x', 'fitw.x', 'facil.y', 'discr.y', 'fitw.y'. Those indice
 variable should be in the order above and can be incomplete. The names of
-the elements are test names and should be in same order as deltaLst. Default
+the elements are test names and should be in same order as deltaDfLst. Default
 is NULL when no index is available.}
 }
 \value{

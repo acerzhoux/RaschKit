@@ -6,11 +6,11 @@
 \usage{
 calibrate(
   test,
-  data = NULL,
-  keys,
+  respDf = NULL,
+  keyDf,
   pid,
   n_cov,
-  regr_vec_char = NULL,
+  regrNmVec = NULL,
   n_dims = NULL,
   dim_names = NULL,
   quick = TRUE,
@@ -37,23 +37,23 @@ calibrate(
   sparse_check = FALSE,
   CCCip2Wd = FALSE,
   pweight = NULL,
-  dfAnc = NULL
+  ancDf = NULL
 )
 }
 \arguments{
 \item{test}{Name of the test.}
 
-\item{data}{Dataframe with pid, covariables (e.g,, DIF variable), and
+\item{respDf}{Dataframe with pid, covariables (e.g,, DIF variable), and
 responses. Default is NULL where Excel file with name 'test' in 'data'
 folder is used.}
 
-\item{keys}{Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).}
+\item{keyDf}{Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).}
 
 \item{pid}{Name of candidates' ID variable.}
 
 \item{n_cov}{Number of covariates before responses.}
 
-\item{regr_vec_char}{Vector of character regressors' names.}
+\item{regrNmVec}{Vector of character regressors' names.}
 
 \item{n_dims}{Vector of numbers of responses the dimensions have.
 Default is NULL. Define this vector if multi-dimensional model is to be run,
@@ -130,7 +130,7 @@ is FALSE.}
 \item{pweight}{Variable name of person weights in response dataframe. Should
 be specified if weight is used for modeling. Default is NULL.}
 
-\item{dfAnc}{Dataframe of 'Item' and 'Delta' for anchors. Default is NULL.
+\item{ancDf}{Dataframe of 'Item' and 'Delta' for anchors. Default is NULL.
 If NULL, an xxx_anc.txt file with anchor tbl (Item, Delta) should be put
 in 'input' folder beforehand. Check output 'xxx_anc.txt' file from previous run
 for correct anchor order, especially for polytomous items with step parameters.}
@@ -143,6 +143,6 @@ will be saved in 'results' folder in the working directory.
 }
 \examples{
 # Not run
-# calibrate(data=racp, test='RACP', pid="V1", n_cov=1, keys=cd,
+# calibrate(respDf=racp, test='RACP', pid="V1", n_cov=1, keyDf=cd,
 # delete=c(3,4,5,36), dbl_key=list(`7`=c(1,3), `9`=c(3,4)))
 }

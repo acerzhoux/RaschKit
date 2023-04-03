@@ -5,7 +5,7 @@
 \title{Equate}
 \usage{
 Equate(
-  dfDelta,
+  deltaDf,
   test,
   vars,
   p_cut = 0.05,
@@ -15,14 +15,14 @@ Equate(
   desig_effect = 1,
   step = FALSE,
   DIFVar = NULL,
-  iterative = FALSE,
-  dfIndice = NULL,
+  iter = FALSE,
+  indDf = NULL,
   pointer = FALSE,
   report = FALSE
 )
 }
 \arguments{
-\item{dfDelta}{Dataframe of five variables of 'item' (anchor labels), 'delta.x',
+\item{deltaDf}{Dataframe of five variables of 'item' (anchor labels), 'delta.x',
 'error.x', 'delta.y', and 'error.y'. '.x' and '.y' should correspond to order
 of test names in 'vars'.}
 
@@ -49,9 +49,9 @@ Default is FALSE.}
 
 \item{DIFVar}{Name of dichotomous DIF variable, e.g., 'gender'.}
 
-\item{iterative}{TRUE to iteratively remove DIF items. Default is FALSE.}
+\item{iter}{TRUE to iteratively remove DIF items. Default is FALSE.}
 
-\item{dfIndice}{Dataframe of indice which includes variables of 'item' and
+\item{indDf}{Dataframe of indice which includes variables of 'item' and
 1-3 of facility, discrimination, and weighted fit in order. Default is NULL when
 none of those indice is available.}
 
@@ -69,6 +69,6 @@ results and flags can be saved in 'equating' folder. Also, one plot is saved
 in subfolder 'plot' inside 'equating' folder.
 }
 \examples{
-Equate(dfDelta=data[, c('item', 'delta.x', 'error.x', 'delta.y', 'error.y')],
+Equate(deltaDf=data[, c('item', 'delta.x', 'error.x', 'delta.y', 'error.y')],
 test='Elana_math', vars=c('NSW', 'VIC'))
 }

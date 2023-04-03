@@ -6,21 +6,21 @@
 \usage{
 Equate_Vrt(
   test,
-  grades = c(2:10),
-  grade_name = "L",
+  grdIntVec = c(2:10),
+  grdPrefix = "L",
   p_cut = 0.05,
   DIF_cut = 0.5,
   DIF_adj_cut = 4,
   step = FALSE,
-  iterative = TRUE
+  iter = TRUE
 )
 }
 \arguments{
 \item{test}{Name of test.}
 
-\item{grades}{Vector of all grades. Default is c(2:10).}
+\item{grdIntVec}{Vector of all grades Default is c(2:10).}
 
-\item{grade_name}{Character to add before grade in plots. Default is 'L'
+\item{grdPrefix}{Character to add before grade in plots. Default is 'L'
 (for 'level').}
 
 \item{p_cut}{p value of chi-square test. Default is 0.05.}
@@ -34,7 +34,7 @@ between two tests. Default is 4.}
 \item{step}{TRUE if DIF analysis is performed on step parameters.
 Default is FALSE.}
 
-\item{iterative}{TRUE to iteratively remove DIF items. Default is TRUE}
+\item{iter}{TRUE to iteratively remove DIF items. Default is TRUE}
 }
 \value{
 List of chi-square test results for anchors between two adjacent grades.
@@ -42,8 +42,8 @@ List of chi-square test results for anchors between two adjacent grades.
 \description{
 This function performs vertical equating. An Excel file named 'Vrt_xxx.xlsx'
 is saved in 'equating' folder, each sheet of which is for two
-adjacent grades. Also saved are scatterplots named 'Vrt_xxx.pdf'.
+adjacent grades Also saved are scatterplots named 'Vrt_xxx.pdf'.
 }
 \examples{
-Equate_Vrt(test='Math', grades=1:3)
+Equate_Vrt(test='Math', grdIntVec=1:3)
 }

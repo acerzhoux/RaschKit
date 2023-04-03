@@ -1,0 +1,40 @@
+#' plot_facil
+#'
+#' This function plots the facilities of the two categories of the dichotomous 
+#' DIF variable.
+#'
+#' @param test Name of test.
+#' @param facil_dif Dataframe of two categories' facilities, output from 
+#' function facil_DIF().
+#' @param vars Vector of two categories' names, e.g., c('girls', 'boys').
+#' @param facil_cut Threshold to label items with big facility difference 
+#' between the two categories.
+#' @param DIFVar Name of DIF variable. Should be lowercase for ConQuest to run. 
+#' Default is NULL.
+#' @return Plot of one category's facilities vs. those of the other category of 
+#' the dichotomous DIF variable.
+#' @export
+
+plot_facil <- function(test, facil_dif, vars, facil_cut, DIFVar){
+    txt2 <- tibble(`2`=-Inf, `1`=Inf, label=paste0('Easier for ', vars[1]))
+    txt1 <- tibble(`2`=Inf, `1`=-Inf, label=paste0('Easier for ', vars[2]))
+    DIF_txt <- facil_dif %>% filter(dif>facil_cut)
+
+    ggplot(facil_dif, aes(`1`, `2`)) +
+        geom_point() +
+        # geom_smooth(method='lm') +
+        lims(x= c(0, 100), y = c(0, 100)) +
+        geom_abline(intercept=0, slope=1, colour='gray') +
+        geom_text(aes(label=label), data=txt1, vjust='top', hjust='left') +
+        geom_text(aes(label=label), data=txt2, vjust='bottom', hjust='right') +
+        labs(title=paste0(toupper(test), ': Item ',
+                          'Facility Comparison on ', str_to_title(DIFVar)),
+             subtitle=paste0(vars[[1]], ' vs. ', vars[[2]]),
+             x=paste0('Item Facility for ', vars[1]),
+             y=paste0('Item Facility for ', vars[2]),
+             caption=paste0('Labelbed items: abs(Dif_Facil)>', facil_cut, '%')) +
+        ggthemes::theme_tufte() +
+        ggrepel::geom_label_repel(data=DIF_txt, aes(label=item),
+                                  size=2, segment.size=0.25, alpha=0.5,
+                                  max.overlaps=100)
+}

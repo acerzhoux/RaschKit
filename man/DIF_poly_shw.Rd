@@ -45,5 +45,5 @@ statistical test and flag the combinations of item and category that show
 significant results.
 }
 \examples{
-DIF_poly_shw(DIFVar='quintile', labels=labels, test='ELNA')
+DIF_poly_shw(DIFVar='educator', 'RANZCOG')
 }
