@@ -10,56 +10,67 @@
 #' @export
 
 df_shw_Term3 <- function(DIFVar, test){
-    folder <- paste0('DIF/', DIFVar)
+  folder <- paste0('DIF/', DIFVar)
+  labs <- read.table(paste0('data/', test, '_Labels.txt')) |>
+    rowid_to_column('item') |>
+    dplyr::rename(`Item Title` = V1)
+  test <- paste0(test, '_facet')
 
-    labs <- read.table(paste0('data/', test, '_Labels.txt')) |>
-        rowid_to_column('iNum') |>
-        dplyr::rename(Label = V1)
+  # #### solve line difference issue arising from CQ versions
+  lnT2 <- Lines(folder, test, 'shw', 'TERM 2: ')
+  lnT3 <- Lines(folder, test, 'shw', 'TERM 3: item*')
+  lessNum <- ifelse(length(lnT2)==1, 14, 13)
+  nSkip <- ifelse(length(lnT2)==1, 7+n_item+10+n_cat+8, 8+n_item+11+n_cat+9)
+  # #### End
 
-    test <- paste0(test, '_facet')
-    n_max <- {Lines(folder, test, 'shw', 'An asterisk ')[3] - 2} -
-        {Lines(folder, test, 'shw', 'TERM 3: item*')[[2]] + 6} + 1
+  n_item <- N_item(folder, test)
+  n_cat <- lnT3[[length(lnT3)]] - lnT2[[length(lnT2)]] - lessNum
+  n_max <- {Lines(folder, test, 'shw', 'An asterisk ')[3] - 2} -
+      {lnT3[[length(lnT3)]] + 6} + 1
 
-    term3 <- read_fwf(
-        Path(folder, test, 'shw'),
-        fwf_cols(
-            iNum = c(2, 5),
-            Item = c(6, 16),
-            Category = c(21, 25),
-            Estimate = c(36, 43),
-            Error = c(46, 50),
-            Outfit = c(55, 58),
-            Outfit_t = c(73, 77),
-            Infit = c(81, 84),
-            Infit_t = c(100, 103)
-        ),
-        skip = (Lines(folder, test, 'shw', 'TERM 3: item*')[[2]] + 5),
-        n_max =  n_max,
-        show_col_types  =  FALSE
-        ) |>
-        left_join(labs, by = 'iNum') |>
-        dplyr::select(-Item, Item = Label) |>
-        mutate(Estimate = parse_number(Estimate))
+  term3 <- readxl::read_xls(
+      paste0(folder, '/', test, '_shw.xls'),
+      sheet='ResponseModel',
+      skip=nSkip,
+      n_max=n_max+1,
+      .name_repair = "unique_quiet"
+    ) |>
+    select(
+      item,
+      Category=3,
+      Estimate=ESTIMATE,
+      Error=`ERROR^`,
+      Outfit=`MNSQ...7`,
+      `Outfit T`=`T...10`,
+      Infit=`MNSQ...11`,
+      `Infit T`=`T...14`
+    ) |>
+    dplyr::filter(!is.na(item))
 
-    smry <- term3 |>
-        dplyr::select(iNum, Item, !!sym(DIFVar) := Category, everything()) |>
-        arrange(iNum, !!sym(DIFVar)) |>
-        mutate(
-            Sig = ifelse(abs(Estimate)>1.96*Error, '*', NA),
-            `Est>0.5` = ifelse(abs(Estimate)>0.5, '*', NA),
-            `Est>1` = ifelse(abs(Estimate)>1, '*', NA),
-            Flag = ifelse((Sig == '*' & `Est>0.5` == '*' & `Est>1` == '*'), 1, NA)
-        )
+  smry <- term3 |>
+    dplyr::select(item, !!sym(DIFVar) := Category, everything()) |>
+    left_join(
+      labs,
+      by='item'
+    ) |>
+    arrange(item, !!sym(DIFVar)) |>
+    mutate(
+      Sig = ifelse(abs(Estimate)>1.96*Error, '*', NA),
+      `Est>0.5` = ifelse(abs(Estimate)>0.5, '*', NA),
+      `Est>1` = ifelse(abs(Estimate)>1, '*', NA),
+      Flag = ifelse((Sig == '*' & `Est>0.5` == '*' & `Est>1` == '*'), 1, NA)
+    ) |>
+    dplyr::select(seqNo=item, `Item Title`, !!sym(DIFVar), everything())
 
-    smry |>
-        cbind(
-            ` ` = '',
-            ` ` =  c(
-                'Note that the \"Sig\" column checks that the DIF estimate',
-                'is bigger than twice the measurement error associated with the estimate.',
-                'If it isn\'t, then it isn\'t possible to conclude that the Educator really differs much from zero.',
-                'If an Educator has Flag as \'1\' or Columns J K L all as \"*\", then there is probably a large effect for that item.',
-                rep('', nrow(smry)-4)
-            )
-        )
+  smry |>
+    cbind(
+      ` ` = '',
+      `Note.` =  c(
+        '\"Sig\" column checks whether the absolute DIF estimate',
+        'is bigger than twice the measurement error associated with the estimate.',
+        'If it isn\'t, then it isn\'t possible to conclude that the Educator really differs much from zero.',
+        paste0('If any ', DIFVar, ' has Flag as \'1\' (Columns J K L all \"*\"), then there is probably a large effect for that item.'),
+        rep('', nrow(smry)-4)
+      )
+    )
 }

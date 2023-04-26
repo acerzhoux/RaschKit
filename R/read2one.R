@@ -31,7 +31,11 @@ read2one <- function (folder = c('results', 'DIF', 'equating'), tests,
   # sheet name to read from
   sheetNm <- ifelse(folder %in% c('DIF', 'equating'), 'final', 1)
   ex_ls <- map(files, ~readxl::read_xlsx(.x, sheetNm))
-  names(ex_ls) <- difVarVec
+  if (folder=='DIF') {
+    names(ex_ls) <- difVarVec
+  } else {
+    names(ex_ls) <- tests
+  }
 
   # Excel name to save files into one
   if (!is.null(file_name)) {
@@ -53,10 +57,43 @@ read2one <- function (folder = c('results', 'DIF', 'equating'), tests,
 
   # itn
   if (sheetNm == 1){
-    names(ex_ls) <- tests
     if (prefix=='itn'){
-      # add hyperlink, color, format #######
-      add_format()[['itn']](ex_ls, file, folder, prefix)
+      # add summary and flag sheets
+      itnSums <- map(ex_ls, ~dplyr::filter(.x, Priority %in% 1:4))
+      Flagged <- itnSums[lengths(itnSums) > 0L] |>
+        reduce(bind_rows) |>
+        select(-ncol(itnSums[[1]]))
+
+      # move combined files into a folder named prefix before saving
+      move_into_folder(folder, prefix)
+
+      ls_save <- list(
+          Reliabilities=getReliability(tests),
+          Note=itn_comment(),
+          Flagged=Flagged |>
+            mutate(ICC=paste0('=HYPERLINK(', Test, '!U$2, "ICC")'))
+        ) |>
+        append(
+          map(ex_ls, ~mutate(.x, ICC='=HYPERLINK(U$2, "ICC")'))
+        )
+
+      add_format()[['itn']](ls_save, file, folder, prefix) # hyperlink, color, format
+    } else if (prefix=='eqv') {
+      move_into_folder(folder, prefix)
+      list(
+        allLong=ex_ls |>
+          imap(~mutate(.x, Test=.y)) |>
+          reduce(bind_rows) |>
+          modify_if(is.numeric, ~round(.x, 3)),
+        allWide=ex_ls |>
+          reduce(full_join, by='Score_raw') |>
+          arrange(Score_raw) |>
+          modify_if(is.numeric, ~round(.x, 3)) |>
+          `names<-`(c('Score_raw', map(tests, ~paste0(c('Est_', 'SE_', 'Scale_'), .x)) |> unlist()))
+      ) |>
+      append(ex_ls) |>
+      writexl::write_xlsx(file)
+
     } else {
       move_into_folder(folder, prefix)
       ex_ls |>

@@ -22,5 +22,5 @@ This function extract item steps' delta estimates from .shw file. This is
 associated with test named 'test'.
 }
 \examples{
-df_del_shw_Step(test='elana_poly_score')
+df_del_shw_Step(test='ELNA')
 }

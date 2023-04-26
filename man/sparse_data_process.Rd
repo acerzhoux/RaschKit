@@ -6,11 +6,11 @@
 \usage{
 sparse_data_process(
   test,
-  data,
-  keys,
+  respDf,
+  keyDf,
   labels,
   n_cov,
-  n_dims,
+  nDimVec,
   miss_code = c(".", "r", "R", "x", "X", "", " "),
   DIFVar = NULL
 )
@@ -18,15 +18,15 @@ sparse_data_process(
 \arguments{
 \item{test}{Name of test.}
 
-\item{data}{Data to be processed.}
+\item{respDf}{Data to be processed.}
 
-\item{keys}{Keys to the test items.}
+\item{keyDf}{Keys to the test items.}
 
 \item{labels}{Item labels.}
 
 \item{n_cov}{Number of covariables before reponses in the dataframe.}
 
-\item{n_dims}{Vector of number of items for each dimension in the test.}
+\item{nDimVec}{Vector of number of items for each dimension in the test.}
 
 \item{miss_code}{Code for missing data that should be coded to NA.}
 
@@ -46,14 +46,8 @@ An Excel file with processed data and removed items will be saved to 'data'
 folder in working directory.
 }
 \examples{
-processed <- sparse_data_process(test='Dan', data=df_DIF, keys=rep(1,1072),
-labels=rep(1,1072), n_cov=5, n_dims=c(901, 171),
+processed <- sparse_data_process(test='Dan', data=df_DIF, keyDf=rep(1,1072),
+labels=rep(1,1072), n_cov=5, nDimVec=c(901, 171),
 miss_code=c('.', 'r', 'R', 'x', 'X', '', ' '),
 DIFVar='studGender')
-processed1 <- sparse_data_process(test='Dan', data=df_DIF, keys=rep(1,1072),
-labels=rep(1,1072), n_cov=5, n_dims=c(901, 171),
-miss_code=c('.', 'r', 'R', 'x', 'X', '', ' '))
-processed_elena <- sparse_data_process(test='elena', data=elena,
-keys=rep(1,39), labels=rep(1,39), n_cov=9, n_dims=c(30, 9),
-miss_code=c('.', 'r', 'R', 'x', 'X', '', ' '), DIFVar='gender')
 }

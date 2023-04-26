@@ -4,41 +4,29 @@
 \alias{anchor_process}
 \title{anchor_process}
 \usage{
-anchor_process(
-  test,
-  data,
-  keys,
-  labels,
-  delete,
-  poly_key,
-  n_cov,
-  n_dims,
-  dfAnc
-)
+anchor_process(test, respDf, keyDf, delVec, n_cov, nDimVec, ancDf)
 }
 \arguments{
 \item{test}{Name of test.}
 
-\item{data}{Dataframe with pid, covariables (e.g,, DIF variable), and responses.
+\item{respDf}{Dataframe with pid, covariables (e.g,, DIF variable), and responses.
 Default is NULL where Excel file with name 'test' in 'data' folder is used.}
 
-\item{keys}{Vector of keys in the test. Default is NULL.}
+\item{keyDf}{Vector of keys in the test. Default is NULL.}
 
-\item{labels}{Vector of item labels that correspond to order of item response columns in data.}
-
-\item{delete}{Vector of orders of items to be removed. Default is NULL.}
-
-\item{poly_key}{TRUE if the key of any item has polytomous scoring. Default is FALSE.}
+\item{delVec}{Vector of orders of items to be removed. Default is NULL.}
 
 \item{n_cov}{Number of covariates before responses.}
 
-\item{n_dims}{Vector of numbers of responses the dimensions have. Default is NULL.
+\item{nDimVec}{Vector of numbers of responses the dimensions have. Default is NULL.
 Define this vector if multi-dimensional model is to be run, e.g., c(30, 45).
 Also should define this if there are variables after response columns, e.g., 30.}
 
-\item{dfAnc}{Dataframe of 'Item' and 'Delta' for anchors.}
+\item{ancDf}{Dataframe of 'Item' and 'Delta' for anchors.}
 }
 \description{
-This function processes anchor file of all-MC test to be input into ConQuest. This is
+This function removes deleted or no-data items, reorders items,
+extracts anchors with new orders, and saves file into 'input' folder. The file
+will be imported into ConQuest as anchor file. This is
 associated with test named 'test'.
 }

@@ -20,7 +20,7 @@ plot_facilDiscrFitw <- function(facilDiscrFitw, tests, colsInd1, numInd){
       geom_abline(intercept=0, slope=1, colour='gray') +
       labs(
         title=paste0('Mean shift: ',
-                     round(colMeans(facilDiscrFitw[cols[[2]]]-facilDiscrFitw[cols[[1]]]), 3)),
+                     round(colMeans(facilDiscrFitw[cols[[1]]]-facilDiscrFitw[cols[[2]]]), 3)),
         x=paste0(index, ' for ', tests[1]),
         y=paste0(index, ' for ', tests[2])
       ) +

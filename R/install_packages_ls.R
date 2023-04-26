@@ -11,7 +11,7 @@
 install_packages_ls <- function(packages=c('plyr', 'conquestr', 'rlang', 'bookdown',
                                            'ggthemes', 'ggrepel', 'patchwork', 'rmarkdown',
                                            'gdata', 'janitor', 'data.table', 'knitr',
-                                           'RColorBrewer', 'fs', 'here', 'lazyeval',
+                                           'RColorBrewer', 'fs', 'lazyeval',
                                            'writexl', 'ggpubr', 'qpdf', 'tidyverse',
                                            'openxlsx')){
     lapply(packages, function(x){

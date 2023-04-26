@@ -15,23 +15,23 @@
 #' tests. Default is 0.5.
 #' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference
 #' between two tests. Default is 4.
-#' @param desig_effect Value to adjust errors. Default is 1.
+#' @param design_effect Value to adjust errors. Default is 1.
 #' @param step TRUE if DIF analysis is performed on step parameters. Default is FALSE.
 #' @param save_xlsx Whether to save summary file and plots. Default is TRUE
 #' (one DIF variable).
-#' @param iterative TRUE to iteratively remove DIF items. Default is FALSE
+#' @param iter TRUE to iteratively remove DIF items. Default is FALSE
 #' @param quick Whether quick error is needed. Default is TRUE for DIF analysis.
 #' @return List of summary of results from dichotomous DIF variable analysis,
 #' including comments, step, summary statistics with flags, and statistics of
 #' items after review.
 #' @examples
 #' # Not run
-#' # DIF_dich_its_shw(DIFVar='Gender', test='AHU', vars=c('Male', 'Female'))
+#' # DIF_dich_its_shw(DIFVar='gender', test='ELNA', vars=c('Male', 'Female'))
 #' @export
 
 DIF_dich_its_shw <- function(DIFVar, test, vars, p_cut=0.05, DIF_cut=0.5,
-                             DIF_adj_cut=4, desig_effect=1, step=FALSE,
-                             save_xlsx=TRUE, iterative=FALSE, quick=TRUE){
+                             DIF_adj_cut=4, design_effect=1, step=FALSE,
+                             save_xlsx=TRUE, iter=FALSE, quick=TRUE){
   # delta, indice dataframe
   if (step) {
     # use item*step*DIFVar estimates
@@ -44,5 +44,5 @@ DIF_dich_its_shw <- function(DIFVar, test, vars, p_cut=0.05, DIF_cut=0.5,
   }
 
   Equate(dfDelta, test, vars, p_cut, DIF_cut, DIF_adj_cut, save_xlsx,
-         desig_effect, step, DIFVar, iterative, dfIndice)
+         design_effect, step, DIFVar, iter, dfIndice)
 }

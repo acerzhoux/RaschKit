@@ -4,14 +4,14 @@
 \alias{resps_modify}
 \title{resps_modify}
 \usage{
-resps_modify(test, resps_cols, delete)
+resps_modify(keyDf, resps_cols, delVec)
 }
 \arguments{
-\item{test}{Name of the test.}
+\item{keyDf}{Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).}
 
 \item{resps_cols}{Column number(s) of responses in the data .txt file.}
 
-\item{delete}{Vector of item order number to be removed from the test,
+\item{delVec}{Vector of item order number to be removed from the test,
 e.g., c(2, 3, 45, 46).}
 }
 \description{

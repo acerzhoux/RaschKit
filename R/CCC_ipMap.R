@@ -73,6 +73,7 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key){
     separate(temp, into = c("iNum", "iLab"), sep = " ") |>
     mutate(
       iLab = str_remove_all(iLab, "[(,)]"),
+      # iLab = keyDf$Item,
       iNum = as.numeric(iNum),
       iType = case_when(
         iStepsCount == 2 ~ "Dichotomous",
@@ -162,7 +163,7 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key){
     left_join(iEstimates |>
        filter(modelTerm == 1) |>
        dplyr::rename(iLogit = Xsi),
-       by = "iLab")  |>
+       by = "iLab") |>
     select(-category, -modelTerm) |>
     left_join(
       iEstimates |>
@@ -291,6 +292,7 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key){
       deltas |>
         select(-stepDelta, -stepError) |>
         mutate(category = paste0("deltaCat", category)) |>
+        unique() |>
         spread(category, delta, fill = NA),
       by = "iNum"
     ) |>

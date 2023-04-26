@@ -11,10 +11,10 @@ DIF_dich_its_shw(
   p_cut = 0.05,
   DIF_cut = 0.5,
   DIF_adj_cut = 4,
-  desig_effect = 1,
+  design_effect = 1,
   step = FALSE,
   save_xlsx = TRUE,
-  iterative = FALSE,
+  iter = FALSE,
   quick = TRUE
 )
 }
@@ -34,14 +34,14 @@ tests. Default is 0.5.}
 \item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference
 between two tests. Default is 4.}
 
-\item{desig_effect}{Value to adjust errors. Default is 1.}
+\item{design_effect}{Value to adjust errors. Default is 1.}
 
 \item{step}{TRUE if DIF analysis is performed on step parameters. Default is FALSE.}
 
 \item{save_xlsx}{Whether to save summary file and plots. Default is TRUE
 (one DIF variable).}
 
-\item{iterative}{TRUE to iteratively remove DIF items. Default is FALSE}
+\item{iter}{TRUE to iteratively remove DIF items. Default is FALSE}
 
 \item{quick}{Whether quick error is needed. Default is TRUE for DIF analysis.}
 }
@@ -59,5 +59,5 @@ subfolder 'plot' inside 'DIF' folder.
 }
 \examples{
 # Not run
-# DIF_dich_its_shw(DIFVar='Gender', test='AHU', vars=c('Male', 'Female'))
+# DIF_dich_its_shw(DIFVar='gender', test='ELNA', vars=c('Male', 'Female'))
 }

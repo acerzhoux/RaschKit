@@ -51,7 +51,7 @@ delta_DIF_dich <- function (test, DIFVar, quick = TRUE){
   dfError <- readxl::read_xls(
       paste0(folder, '/', test, '_shw.xls'),
       sheet='ResponseModel',
-      skip=8+n_item+22,
+      skip=7+n_item+20,
       n_max=n_item*2+1,
       .name_repair="unique_quiet",
       col_types='numeric'

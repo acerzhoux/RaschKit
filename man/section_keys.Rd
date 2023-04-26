@@ -4,19 +4,20 @@
 \alias{section_keys}
 \title{section_keys}
 \usage{
-section_keys(test, keys, dbl_key = NULL, poly_key = FALSE, delete = NULL)
+section_keys(test, keyDf, dblKeyLst = NULL, poly_key = FALSE, delVec = NULL)
 }
 \arguments{
 \item{test}{Name of the test.}
 
-\item{keys}{Dataframe of 'Item', 'Key', and 'Max_score'.}
+\item{keyDf}{Dataframe of 'Item', 'Key', and 'Max_score'.}
 
-\item{dbl_key}{TRUE if the key of any item is double key. Default is NULL.}
+\item{dblKeyLst}{List of items with double keys. Element is double keys, and
+element name is item order, e.g., list(`7`=c(1,3), `9`=c(3,4). Default is NULL.}
 
 \item{poly_key}{TRUE if the key of any item has polytomous scoring.
 Default is FALSE.}
 
-\item{delete}{Vector of to-be-removed items' order numbers in the test,
+\item{delVec}{Vector of to-be-removed items' order numbers in the test,
 e.g., c(4, 7, 65, 114). Default is NULL.}
 }
 \value{
@@ -33,8 +34,8 @@ They key file has one row for all-multiple-choice-item test, or multiple
 rows if any item has double key or polytomous scoring.
 }
 \examples{
-section_keys(test='b', delete=c(2, 5))
-section_keys(test='b', dbl_key=list(`5`=c(1,3), `29`=c(3,4)))
+section_keys(test='b', delVec=c(2, 5))
+section_keys(test='b', dblKeyLst=list(`5`=c(1,3), `29`=c(3,4)))
 section_keys(test='a', poly_key=TRUE)
-section_keys(test='b', poly_key=TRUE, delete=c(2, 5))
+section_keys(test='b', poly_key=TRUE, delVec=c(2, 5))
 }

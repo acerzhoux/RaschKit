@@ -23,7 +23,7 @@
 #' @param anchor TRUE when anchor is to be done. Default is FALSE.
 #' @param section_extr Extra sections to be added to 'test.cqc' file in
 #' 'input' folder. Default is NULL.
-#' @param dbl_key TRUE if any item has polytomous scoring. Default is FALSE.
+#' @param dblKeyLst  TRUE if any item has polytomous scoring. Default is FALSE.
 #' @param poly_key TRUE if the key of any item has polytomous scoring. Default is FALSE.
 #' @param quick Whether quick error is needed. Default is TRUE for DIF analysis.
 #' @param step TRUE if any item in the test has polytomous scoring. Default is FALSE.
@@ -41,17 +41,17 @@
 #' tests. Default is 0.5.
 #' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference
 #' between two tests. Default is 4.
-#' @param desig_effect Value to adjust errors. Default is 1.
+#' @param design_effect Value to adjust errors. Default is 1.
 #' @param domain Name of the domain in the test, e.g., 'Literacy'. Default is NULL.
 #' @param save_xlsx Whether to save summary file and plots. Default is TRUE
 #' (one DIF variable).
 #' @return Dataframe of students' ID, raw score, max test score, estimate,
 #' and standard error.
-#' @param iterative TRUE to iteratively remove DIF items. Default is TRUE.
+#' @param iter TRUE to iteratively remove DIF items. Default is TRUE.
 #' @param pweight Variable name of person weights in response dataframe. Should
 #' be specified if weight is used for modeling. Default is NULL.
 #' @param pw_cols String of column numbers of case weight, e.g., '5-15'.
-#' @param keys Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).
+#' @param keyDf Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).
 #' @examples
 #' # Not run
 #' # DIF(vars=c('girls', 'boys'), test='literacy', codes=c(1:4, 9),
@@ -65,21 +65,21 @@
 #' # regr_ls=list(G2='17', age='15-16'), quick=TRUE)
 #' @export
 
-DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'), test, keys, #### CQC #####
-                codes, pid_cols=NULL, resps_cols, regr_ls=NULL, delete=NULL, anchor=FALSE,
-                section_extr=NULL, dbl_key=FALSE, poly_key=FALSE, quick=TRUE, step=FALSE,
+DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'), test, keyDf, #### CQC #####
+                codes, pid_cols=NULL, resps_cols, regr_ls=NULL, delVec=NULL, anchor=FALSE,
+                section_extr=NULL, dblKeyLst =FALSE, poly_key=FALSE, quick=TRUE, step=FALSE,
                 DIFVar=NULL, DIFVar_cols=NULL, poly_catgrs=NULL, ##### DIF part #####
                 poly_facet=FALSE, poly_group=FALSE, vars=NULL, p_cut=0.05,
-                DIF_cut=0.5, DIF_adj_cut=4, desig_effect=1, domain=NULL,
-                save_xlsx=TRUE, iterative=TRUE, pweight=NULL, pw_cols=NULL){
+                DIF_cut=0.5, DIF_adj_cut=4, design_effect=1, domain=NULL,
+                save_xlsx=TRUE, iter=TRUE, pweight=NULL, pw_cols=NULL){
   # check inputs
   if (length(method)!=1 || !(method %in% c('chi_square', 'Bonferroni', 'Facet'))) {
     stop('Please set \'method\' as one of \'chi_square\', \'Bonferroni\', or \'Facet\'.')
   }
 
-  arg_cqc <- list(test=test, run=NULL, run_ls=NULL, keys=keys, ####CQC
+  arg_cqc <- list(test=test, run=NULL, run_ls=NULL, keyDf=keyDf, ####CQC
     codes=codes, pid_cols=pid_cols, resps_cols=resps_cols,
-    quick=quick, delete=delete, dbl_key=dbl_key, poly_key=poly_key,
+    quick=quick, delVec=delVec, dblKeyLst =dblKeyLst , poly_key=poly_key,
     anchor=anchor, step=step, regr_ls=regr_ls, section_extr=section_extr,
     DIFVar=DIFVar, DIFVar_cols=DIFVar_cols, poly_catgrs=poly_catgrs,
     poly_facet=poly_facet, poly_group=poly_group,
@@ -94,7 +94,7 @@ DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'), test, keys, #### 
     do.call(lab_cqc, arg_cqc)
 
     cat('Performing', 'chi_square tests with facet model results',
-      if (iterative) 'iteratively' else 'once and for all', '...\n')
+      if (iter) 'iteratively' else 'once and for all', '...\n')
     do.call(
       DIF_dich_its_shw,
       append(
@@ -102,8 +102,8 @@ DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'), test, keys, #### 
         list(
           vars=vars,
           DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut,
-          desig_effect=desig_effect, save_xlsx=save_xlsx,
-          iterative=iterative, quick=quick
+          design_effect=design_effect, save_xlsx=save_xlsx,
+          iter=iter, quick=quick
         )
       )
     )
@@ -137,10 +137,22 @@ DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'), test, keys, #### 
 
     # summarise and plot results
     cat('Summarising results from facet model...\n')
-    df_shw_Term3(DIFVar, test) |>
-      writexl::write_xlsx(
-        paste0('DIF/', DIFVar, if(step) '_step', '_', test, '_Facet.xlsx')
-      )
+    results <- df_shw_Term3(DIFVar, test) |>
+      mutate(!!sym(DIFVar) := as.integer(!!sym(DIFVar)))
+
+    ls_save <- list(
+      filter(results[1:13], Flag==1),
+      results
+    )
+    names(ls_save) <- c('summary', test)
+
+    # add format
+    file <- file.path('DIF', paste0(DIFVar, '_', test, '_Facet.xlsx'))
+    add_format()[['DIFFacet']](
+      ls_save,
+      file.path(DIFVar, paste0(test, '_Group.pdf')),
+      file
+    )
 
     cat('Plotting results from group model...\n')
     plot_DIF_group(test=test, DIFVar=DIFVar)
@@ -148,9 +160,9 @@ DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'), test, keys, #### 
     # point users to files of varying purposes
     writeLines(c(
       paste0('\n========= Output Files =========\n'),
-      paste0(toupper(DIFVar), ' DIF analysis for ', test, if (step) ' (step)', ' (Facet model & group model):'),
-      paste0('\tSummary:\t\t', 'DIF/', DIFVar, if(step) '_step', '_', test, '_Facet.xlsx'),
-      paste0('\tExpected Score Curves:\t', 'DIF/', DIFVar, if(step) '_step', '_', test, '_Group.pdf')
+      paste0(toupper(DIFVar), ' DIF analysis for ', test, ' (Facet model & group model):'),
+      paste0('\tSummary:\t\t', 'DIF/', DIFVar, '_', test, '_Facet.xlsx'),
+      paste0('\tExpected Score Curves:\t', 'DIF/', DIFVar, '/', test, '_Group.pdf')
     ))
   }
 }

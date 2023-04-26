@@ -7,15 +7,15 @@
 DIF(
   method = c("chi_square", "Bonferroni", "Facet"),
   test,
-  keys,
+  keyDf,
   codes,
   pid_cols = NULL,
   resps_cols,
   regr_ls = NULL,
-  delete = NULL,
+  delVec = NULL,
   anchor = FALSE,
   section_extr = NULL,
-  dbl_key = FALSE,
+  dblKeyLst = FALSE,
   poly_key = FALSE,
   quick = TRUE,
   step = FALSE,
@@ -28,10 +28,10 @@ DIF(
   p_cut = 0.05,
   DIF_cut = 0.5,
   DIF_adj_cut = 4,
-  desig_effect = 1,
+  design_effect = 1,
   domain = NULL,
   save_xlsx = TRUE,
-  iterative = TRUE,
+  iter = TRUE,
   pweight = NULL,
   pw_cols = NULL
 )
@@ -41,7 +41,7 @@ DIF(
 
 \item{test}{Name of the test.}
 
-\item{keys}{Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).}
+\item{keyDf}{Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).}
 
 \item{codes}{Vector of valid codes for item responses,
 e.g., c(1, 2, 3, 4, 5, 6, 7, 8, 9).}
@@ -53,15 +53,12 @@ e.g., c(1, 2, 3, 4, 5, 6, 7, 8, 9).}
 \item{regr_ls}{List of regressors. Element is column number in data.
 Element name is regressor's name. Default is NULL.}
 
-\item{delete}{Vector of item order number(s) to be removed from the test,
-e.g., c(2, 3, 45, 46). Default is NULL.}
-
 \item{anchor}{TRUE when anchor is to be done. Default is FALSE.}
 
 \item{section_extr}{Extra sections to be added to 'test.cqc' file in
 'input' folder. Default is NULL.}
 
-\item{dbl_key}{TRUE if any item has polytomous scoring. Default is FALSE.}
+\item{dblKeyLst}{TRUE if any item has polytomous scoring. Default is FALSE.}
 
 \item{poly_key}{TRUE if the key of any item has polytomous scoring. Default is FALSE.}
 
@@ -92,19 +89,22 @@ tests. Default is 0.5.}
 \item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference
 between two tests. Default is 4.}
 
-\item{desig_effect}{Value to adjust errors. Default is 1.}
+\item{design_effect}{Value to adjust errors. Default is 1.}
 
 \item{domain}{Name of the domain in the test, e.g., 'Literacy'. Default is NULL.}
 
 \item{save_xlsx}{Whether to save summary file and plots. Default is TRUE
 (one DIF variable).}
 
-\item{iterative}{TRUE to iteratively remove DIF items. Default is TRUE.}
+\item{iter}{TRUE to iteratively remove DIF items. Default is TRUE.}
 
 \item{pweight}{Variable name of person weights in response dataframe. Should
 be specified if weight is used for modeling. Default is NULL.}
 
 \item{pw_cols}{String of column numbers of case weight, e.g., '5-15'.}
+
+\item{delete}{Vector of item order number(s) to be removed from the test,
+e.g., c(2, 3, 45, 46). Default is NULL.}
 }
 \value{
 Dataframe of students' ID, raw score, max test score, estimate,

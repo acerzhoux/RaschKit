@@ -15,7 +15,8 @@ itn_summary(
   dRiseThr = 0.1,
   ccc_data,
   iType,
-  keys
+  keyDf,
+  dblKeyLst
 )
 }
 \arguments{
@@ -45,7 +46,10 @@ Default is 0.1.}
 \item{iType}{Dataframe with columns of iNum and itype. One element of list
 output from Function 'CCC_Vernon'.}
 
-\item{keys}{Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).}
+\item{keyDf}{Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).}
+
+\item{dblKeyLst}{List of items with double keys. Element is double keys, and
+element name is item order, e.g., list(`7`=c(1,3), `9`=c(3,4). Default is NULL.}
 }
 \value{
 Dataframe of item statistics with flags.

@@ -9,14 +9,13 @@
 #' width. Default is FALSE.
 #' @return Dataframe of item name_step, delta, and error.
 #' @examples
-#' df_del_shw_Step(test='elana_poly_score')
+#' df_del_shw_Step(test='ELNA')
 #' @export
 
 df_del_shw_Step <- function(folder='output', test){
     df_del(folder, test) |>
-    left_join(
+    right_join(
         df_shw_Step(folder, test),
-        by=c('iStep')
-    ) |>
-    na.omit()
+        by=c('item')
+    )
 }

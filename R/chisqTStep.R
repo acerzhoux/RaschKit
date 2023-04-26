@@ -12,6 +12,10 @@
 #' @export
 
 chisqTStep <- function(df, desig_effect=1){
+  if (nrow(df) != nrow(na.omit(df))) {
+    stop('Missing in data! Remove and retry?')
+  }
+
   modify_at(
       df,
       c('delta.x', 'delta.y', 'error.x', 'error.y'),

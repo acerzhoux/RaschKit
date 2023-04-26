@@ -14,7 +14,7 @@
 #' 'DIFVar_cols', and 'poly_facet'.
 #'
 #' @param test Name of the test.
-#' @param keys Dataframe of 'Item', 'Key', and 'Max_score'.
+#' @param keyDf Dataframe of 'Item', 'Key', and 'Max_score'.
 #' @param run Vector of specific categories of variables to select from
 #' 'test_Data.txt' in 'data' folder, e.g., c('English2', 3, 1). This corresponds
 #' to the previous argument `run_ls`. Default is NULL.
@@ -26,12 +26,13 @@
 #' Element name is regressor's name. Default is NULL.
 #' @param codes Vector of valid codes for item responses,
 #' e.g., c(1, 2, 3, 4, 5, 6, 7, 8, 9).
-#' @param delete Vector of item order number(s) to be removed from the test,
+#' @param delVec Vector of item order number(s) to be removed from the test,
 #' e.g., c(2, 3, 45, 46). Default is NULL.
 #' @param anchor TRUE when anchor is to be done. Default is FALSE.
 #' @param section_extr Extra sections to be added to 'test.cqc' file in
 #' 'input' folder. Default is NULL.
-#' @param dbl_key TRUE if any item has polytomous scoring. Default is NULL.
+#' @param dblKeyLst List of items with double keys. Element is double keys, and
+#' element name is item order, e.g., list(`7`=c(1,3), `9`=c(3,4). Default is NULL.
 #' @param poly_key TRUE if the key of any item has polytomous scoring. Default is FALSE.
 #' @param quick TRUE if quick estimation is preferred. Default is FALSE.
 #' @param step TRUE if any item in the test has polytomous scoring. Default is FALSE.
@@ -50,18 +51,17 @@
 #' lab_cqc()
 #' @export
 
-lab_cqc <- function(test, keys, run=NULL, run_ls=NULL,
-         codes, pid_cols=NULL, resps_cols, quick=FALSE, delete=NULL,
-         dbl_key=NULL, poly_key=FALSE, anchor=FALSE, section_extr=NULL,
-         step=FALSE, regr_ls=NULL,
-         DIFVar=NULL, DIFVar_cols=NULL, #dich & poly
-         poly_catgrs=NULL, #dich, poly
-         poly_facet=FALSE, poly_group=FALSE, #poly: facet
-         pweight=NULL, pw_cols=NULL){
+lab_cqc <- function(test, keyDf, run=NULL, run_ls=NULL,
+                   codes, pid_cols=NULL, resps_cols, quick=FALSE, delVec=NULL,
+                   dblKeyLst=NULL, poly_key=FALSE, anchor=FALSE, section_extr=NULL,
+                   step=FALSE, regr_ls=NULL, DIFVar=NULL, DIFVar_cols=NULL, #dich & poly
+                   poly_catgrs=NULL, #dich, poly
+                   poly_facet=FALSE, poly_group=FALSE, #poly: facet
+                   pweight=NULL, pw_cols=NULL){
   # run_ls: list(domain='3-11', grade='12-13', flag='36')
-  #   for testform; keys, labels differ; put in 'Keepcases'
+  #   for testform; keyDf, labels differ; put in 'Keepcases'
   # run: c('English2', 3, 1); used with `run_ls`
-  # poly_catgrs: poly DIF; keys, labels same for 'Keepcases'
+  # poly_catgrs: poly DIF; keyDf, labels same for 'Keepcases'
   # DIFVar: Lowercase to run 'conquestr'
 
   # create folders
@@ -85,30 +85,26 @@ lab_cqc <- function(test, keys, run=NULL, run_ls=NULL,
   }
 
   # modify if last response col(s) has no data
-  if (length(delete)>0) {
-    resps_cols <- resps_modify(test=test,
-                 resps_cols=resps_cols, delete=delete)}
+  if (length(delVec)>0) {
+    resps_cols <- resps_modify(keyDf, resps_cols, delVec)
+  }
+
   # compose CQC string
-  cqc <- c(section_intro(test, run_ls, path_output, DIFVar, poly_catgrs),
-      section_data(path_df, resps_cols, pid_cols, run_ls, regr_ls,
-            path_lab, DIFVar, DIFVar_cols, poly_group,
-            pweight, pw_cols),
-      section_keys(test=test, keys, dbl_key=dbl_key,
-            poly_key=poly_key, delete=delete),
-      section_specs(anchor=anchor, test=test, DIFVar=DIFVar,
-             poly_catgrs=poly_catgrs, quick=quick),
-      if (!is.null(section_extr)) section_extr,
-      section_model(run_ls=run_ls, run=run, regr_ls=regr_ls, codes=codes,
-             poly_key=poly_key, DIFVar=DIFVar, step=step,
-             poly_group=poly_group),
-      section_estimate(quick=quick, poly_key=poly_key),
-      section_export(poly_key=poly_key, step=step, DIFVar=DIFVar,
-            poly_catgrs=poly_catgrs,
-            poly_facet=poly_facet, poly_group=poly_group),
-      'reset;',
-      if (!is.null(poly_catgrs)) 'enddo;',
-      'quit;') %>%
-    str_replace_all(c(' ;'=';', '  ;'=';', '   ;'=';', '  ;'=';', '   ;'=';'))
+  cqc <- c(
+    section_intro(test, run_ls, path_output, DIFVar, poly_catgrs),
+    section_data(path_df, resps_cols, pid_cols, run_ls, regr_ls,
+                 path_lab, DIFVar, DIFVar_cols, poly_group, pweight, pw_cols),
+    section_keys(test, keyDf, dblKeyLst, poly_key, delVec),
+    section_specs(anchor, test, DIFVar, poly_catgrs, quick),
+    if (!is.null(section_extr)) section_extr,
+    section_model(run_ls, run, regr_ls, codes, poly_key, DIFVar, step, poly_group),
+    section_estimate(quick, poly_key),
+    section_export(poly_key, step, DIFVar, poly_catgrs, poly_facet, poly_group),
+    'reset;',
+    if (!is.null(poly_catgrs)) 'enddo;',
+    'quit;'
+  ) |>
+  str_replace_all(c(' ;'=';', '  ;'=';', '   ;'=';', '  ;'=';', '   ;'=';'))
 
   # write CQC into folder
   cqc_path <-  paste0(

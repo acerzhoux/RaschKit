@@ -19,5 +19,5 @@ This function extracts parameter estimates from its.txt file. This is
 associated with test named 'test'.
 }
 \examples{
-df_its(test=test)
+df_its(test='Bang_3')
 }

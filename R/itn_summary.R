@@ -19,16 +19,30 @@
 #' @param ccc_data Data to draw CCC. One element of list output from Function 'CCC_Vernon'.
 #' @param iType Dataframe with columns of iNum and itype. One element of list
 #' output from Function 'CCC_Vernon'.
-#' @param keys Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).
+#' @param keyDf Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).
+#' @param dblKeyLst List of items with double keys. Element is double keys, and
+#' element name is item order, e.g., list(`7`=c(1,3), `9`=c(3,4). Default is NULL.
 #' @return Dataframe of item statistics with flags.
 #' @examples
 #' a <- itn_summary(test='math_35', ccc_data=ccc_data, iType=iType)
 #' @export
 
 itn_summary <- function(test, easy=90, hard=10, iRst=.11, fit_w=1.1, fit_uw=1.2,
-                        dFallThr=.5, dRiseThr=.1, ccc_data, iType, keys){
+                        dFallThr=.5, dRiseThr=.1, ccc_data, iType, keyDf, dblKeyLst){
+  # process double keys
+  if (('Key2' %in% names(keyDf)) & any(!is.na(keyDf$Key2))) {
+    keyDf <- keyDf |>
+      dplyr::mutate(Key=ifelse(is.na(Key2), Key, paste0(Key, ', ', Key2)))
+  }
+  if (!is.null(dblKeyLst)) {
+    for (i in seq_along(dblKeyLst)) {
+      keyDf[as.integer(names(dblKeyLst[i])), 'Key'] <- paste0(dblKeyLst[[i]], collapse=', ')
+    }
+  }
+
+  # put together summary
   right_join(
-      keys,
+      keyDf,
       CCC_fine_flag4(
         itnFlag123(test, easy, hard, iRst, fit_w, fit_uw),
         CCC_comments(test, dFallThr, dRiseThr, ccc_data, iType)
@@ -37,7 +51,13 @@ itn_summary <- function(test, easy=90, hard=10, iRst=.11, fit_w=1.1, fit_uw=1.2,
     ) |>
     bind_cols(
       tibble(
-        `ICC Path`=c(paste0(getwd(), '/output/', test, '_CCC.pdf'), rep(NA, nrow(keys)-1))
+        `Files`=c(
+          paste0(getwd(), '/output/', test, '_CCC.pdf'),
+          paste0(getwd(), '/output/', test, '_ipMap.pdf'),
+          paste0(getwd(), '/output/', test, '_Convergence_check.pdf'),
+          paste0(getwd(), '/output/', test, '_Frequency_check.xlsx'),
+          rep(NA, nrow(keyDf)-4)
+        )
       ),
     ) |>
     dplyr::mutate(
@@ -65,7 +85,7 @@ itn_summary <- function(test, easy=90, hard=10, iRst=.11, fit_w=1.1, fit_uw=1.2,
       `Number of Students`,
       Priority,
       Comment,
-      `ICC Path`
+      Files
     ) |>
     dplyr::mutate(
       Priority=ifelse(is.na(`Item Estimate (item centred)`), NA, Priority),

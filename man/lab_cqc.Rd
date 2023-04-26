@@ -6,15 +6,15 @@
 \usage{
 lab_cqc(
   test,
-  keys,
+  keyDf,
   run = NULL,
   run_ls = NULL,
   codes,
   pid_cols = NULL,
   resps_cols,
   quick = FALSE,
-  delete = NULL,
-  dbl_key = NULL,
+  delVec = NULL,
+  dblKeyLst = NULL,
   poly_key = FALSE,
   anchor = FALSE,
   section_extr = NULL,
@@ -32,7 +32,7 @@ lab_cqc(
 \arguments{
 \item{test}{Name of the test.}
 
-\item{keys}{Dataframe of 'Item', 'Key', and 'Max_score'.}
+\item{keyDf}{Dataframe of 'Item', 'Key', and 'Max_score'.}
 
 \item{run}{Vector of specific categories of variables to select from
 'test_Data.txt' in 'data' folder, e.g., c('English2', 3, 1). This corresponds
@@ -50,10 +50,11 @@ e.g., c(1, 2, 3, 4, 5, 6, 7, 8, 9).}
 
 \item{quick}{TRUE if quick estimation is preferred. Default is FALSE.}
 
-\item{delete}{Vector of item order number(s) to be removed from the test,
+\item{delVec}{Vector of item order number(s) to be removed from the test,
 e.g., c(2, 3, 45, 46). Default is NULL.}
 
-\item{dbl_key}{TRUE if any item has polytomous scoring. Default is NULL.}
+\item{dblKeyLst}{List of items with double keys. Element is double keys, and
+element name is item order, e.g., list(`7`=c(1,3), `9`=c(3,4). Default is NULL.}
 
 \item{poly_key}{TRUE if the key of any item has polytomous scoring. Default is FALSE.}
 

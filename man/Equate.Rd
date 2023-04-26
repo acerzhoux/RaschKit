@@ -12,7 +12,7 @@ Equate(
   DIF_cut = 0.5,
   DIF_adj_cut = 4,
   sav_results = TRUE,
-  desig_effect = 1,
+  design_effect = 1,
   step = FALSE,
   DIFVar = NULL,
   iter = FALSE,
@@ -42,7 +42,7 @@ between two tests. Default is 4.}
 \item{sav_results}{TRUE if an Excel file with chi-square test results and
 a plot are desired. Default is TRUE.}
 
-\item{desig_effect}{Value to adjust errors. Default is 1.}
+\item{design_effect}{Value to adjust errors. Default is 1.}
 
 \item{step}{TRUE if DIF analysis is performed on step parameters.
 Default is FALSE.}

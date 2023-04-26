@@ -37,5 +37,5 @@ df_del <- function(folder='output', test){
   items_del |>
     left_join(labs, by='iNum') |>
     dplyr::select(-iNum, -iLab, Label) |>
-    unite('iStep', c('Label', 'step'), sep='_')
+    unite('item', c('Label', 'step'), sep='_')
 }

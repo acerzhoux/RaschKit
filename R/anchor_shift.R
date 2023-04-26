@@ -12,13 +12,13 @@ anchor_shift <- function(test, shift){
   iN <- N_item('output', test)
 
   readr::read_fwf(
-    paste0('output/', test, '_anc.txt'),
-    fwf_widths(
-      c(8, 10, 50),
-      c("iNum", "delta", "label")
-    ),
-    show_col_types=FALSE
-  ) |>
+      paste0('output/', test, '_anc.txt'),
+      fwf_widths(
+        c(8, 10, 50),
+        c("iNum", "delta", "label")
+      ),
+      show_col_types=FALSE
+    ) |>
     mutate(
       delta=case_when(
         iNum<=iN ~ delta+shift,
@@ -26,11 +26,5 @@ anchor_shift <- function(test, shift){
       ),
       delta=round(delta, 3)
     ) |>
-    write.table(
-      paste0('input/', test, '_anc.txt'),
-      quote=FALSE,
-      col.names=FALSE,
-      row.names=FALSE,
-      sep='\t'
-    )
+    write_fwf(paste0('input/', test, '_anc.txt'))
 }

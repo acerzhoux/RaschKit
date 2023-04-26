@@ -4,7 +4,7 @@
 \alias{plot_DIF_poly}
 \title{plot_DIF_poly}
 \usage{
-plot_DIF_poly(DIFVar, subgrp, cats, item, delta_cat, Flag_dif)
+plot_DIF_poly(DIFVar, subgrp, cats, error_cat_item, delta_cat, Flag_dif)
 }
 \arguments{
 \item{DIFVar}{Name of polytomous DIF variable.}
@@ -14,7 +14,7 @@ Minimum is 1. Maximum is length of categories.}
 
 \item{cats}{Ordered categories of the DIF variable, e.g., c(4:10)}
 
-\item{item}{Vector of item labels that had estimates in each subgroup.}
+\item{error_cat_item}{Dataframe of each subgroup's error and item label.}
 
 \item{delta_cat}{Dataframe with items' delta estimates in subgroups (1st to
 last but one columns) and average estimates (last column).}

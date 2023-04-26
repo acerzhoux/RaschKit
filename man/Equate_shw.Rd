@@ -13,7 +13,7 @@ Equate_shw(
   DIF_adj_cut = 4,
   sav_results = TRUE,
   step = FALSE,
-  iterative = FALSE
+  iter = FALSE
 )
 }
 \arguments{
@@ -39,7 +39,7 @@ a plot are desired. Default is TRUE.}
 \item{step}{TRUE if DIF analysis is performed on step parameters.
 Default is FALSE.}
 
-\item{iterative}{TRUE to iteratively remove DIF items. Default is FALSE.}
+\item{iter}{TRUE to iteratively remove DIF items. Default is FALSE.}
 }
 \value{
 Dataframe of chi-square test results for anchors between two tests.

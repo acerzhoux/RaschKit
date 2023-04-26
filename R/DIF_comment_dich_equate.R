@@ -15,7 +15,7 @@ DIF_comment_dich_equate <- function(vars, iDIF, DIFVar){
     Comment = 1,
     Description =
       if (length(iDIF)==0) {
-        paste0('No', opt, 'showed DIF between ', vars[[1]], ' and ', vars[[2]], '.')
+        paste0('No ', opt, ' showed DIF between ', vars[[1]], ' and ', vars[[2]], '.')
       } else {
         c(paste(c(paste(paste('A total of', length(iDIF), opt, 'showed DIF')),
           paste0('Consider removing ', opt, ' ',

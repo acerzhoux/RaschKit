@@ -24,82 +24,76 @@
 #' @export
 
 miss_recode <- function(df, begin, end, code_emd='M', code_trail='R',
-                        code_allMiss=NA_character_,
-                        miss_code=c('@','@@','@@@','@@@@','7','8','9','88','99','.','',' ', '-'),
-                        to_dgt=FALSE, to_ltr=FALSE) {
-    # df <- df %>% modify_at(c(begin:end), as.character)
-    N <- ncol(df)
-    rwnms <- rownames(df)
-    clnms <- colnames(df)
+            code_allMiss=NA_character_,
+            miss_code=c('@','@@','@@@','@@@@','7','8','9','88','99','.','',' ', '-'),
+            to_dgt=FALSE, to_ltr=FALSE) {
+  # df <- df %>% modify_at(c(begin:end), as.character)
+  N <- ncol(df)
+  rwnms <- rownames(df)
+  clnms <- colnames(df)
 
-    df_recode <- df[begin:end] %>%
-        modify_at(1:ncol(.), as.character)
+  df_recode <- df[begin:end] %>%
+    modify_at(1:ncol(.), as.character)
 
-    # convert missing code to embedded missing code
-    for (ms in  miss_code){
-        df_recode[df_recode==ms] <- code_emd
+  # convert missing code to embedded missing code
+  for (ms in  miss_code){
+    df_recode[df_recode==ms] <- code_emd
+  }
+  df_recode[is.na(df_recode)] <- code_emd
+
+  conv_vec <- function(vec, code_emd, code_trail, code_allMiss){
+    end <- length(vec)
+    if (all(vec==code_emd)){
+      vec <- rep(code_allMiss, length(vec))
+    } else if (vec[end]==code_emd & vec[(end-1)]!=code_emd){
+      # vec[end] <- code_emd
+      # next
+    } else if (vec[end]==code_emd & vec[(end-1)]==code_emd){
+      seq_ns <- rle(vec[(1:end)] %in% code_emd)$lengths
+      last_1 <- end - seq_ns[[length(seq_ns)]] + 1
+      vec[last_1] <- code_emd
+      vec[(last_1+1):end] <- code_trail
     }
-    df_recode[is.na(df_recode)] <- code_emd
+    vec
+  }
 
-    conv_vec <- function(vec, code_emd, code_trail, code_allMiss){
-        end <- length(vec)
-        if (all(vec==code_emd)){
-            vec <- rep(code_allMiss, length(vec))
-        } else if (vec[end]==code_emd & vec[(end-1)]!=code_emd){
-            # vec[end] <- code_emd
-            # next
-        } else if (vec[end]==code_emd & vec[(end-1)]==code_emd){
-            seq_ns <- rle(vec[(1:end)] %in% code_emd)$lengths
-            last_1 <- end - seq_ns[[length(seq_ns)]] + 1
-            vec[last_1] <- code_emd
-            vec[(last_1+1):end] <- code_trail
-        }
-        vec
-    }
-    df_coded <- apply(df_recode, 1,
-                function(x) conv_vec(x, code_emd=code_emd,
-                                     code_trail=code_trail,
-                                     code_allMiss=code_allMiss))
-    # if ('list' %in% class(df_coded)){
-    #     df_coded <- df_coded %>%
-    #         reduce(bind_rows(.)) %>%
-    #         as_tibble(.name_repair = "minimal")
-    # } else if ('matrix' %in% class(df_coded)){
-    df_coded <- df_coded %>%
-        as_tibble() %>%
-        t() %>%
-        as_tibble(.name_repair = "minimal")
-    # }
+  df_coded <- apply(
+      df_recode, 1,
+      function(x) conv_vec(x, code_emd, code_trail, code_allMiss)
+    ) |>
+    as_tibble() %>%
+    t() %>%
+    as_tibble(.name_repair = "minimal")
 
-    # merge together
-    if (begin==1){
-        if (end==N){
-            df <- df_coded
-        } else {
-            df <- cbind(df_coded, df[(end+1):N])
-        }
+  # merge together
+  if (begin==1){
+    if (end==N){
+      df <- df_coded
     } else {
-        if (end==N){
-            df <- df[1:(begin-1)] %>%
-                cbind(df_coded)
-        } else {
-            df <- df[1:(begin-1)] %>%
-                cbind(df_coded) %>%
-                cbind(df[(end+1):N])
-        }
+      df <- cbind(df_coded, df[(end+1):N])
     }
-    rownames(df) <- rwnms
-    colnames(df) <- clnms
+  } else {
+    if (end==N){
+      df <- df[1:(begin-1)] %>%
+        cbind(df_coded)
+    } else {
+      df <- df[1:(begin-1)] %>%
+        cbind(df_coded) %>%
+        cbind(df[(end+1):N])
+    }
+  }
+  rownames(df) <- rwnms
+  colnames(df) <- clnms
 
-    if (to_dgt){
-        df <- modify_at(df, begin:end,
-                        ~recode(.,`A`='1',`B`='2',`C`='3',
-                                `D`='4',`E`='5',`F`='6'))
-    }
-    if (to_ltr){
-        df <- modify_at(df, begin:end,
-                        ~recode(.,`1`='A',`2`='B',`3`='C',
-                                `4`='D',`5`='E',`6`='F'))
-    }
-    df
+  if (to_dgt){
+    df <- modify_at(df, begin:end,
+            ~recode(.,`A`='1',`B`='2',`C`='3',
+                `D`='4',`E`='5',`F`='6'))
+  }
+  if (to_ltr){
+    df <- modify_at(df, begin:end,
+            ~recode(.,`1`='A',`2`='B',`3`='C',
+                `4`='D',`5`='E',`6`='F'))
+  }
+  df
 }

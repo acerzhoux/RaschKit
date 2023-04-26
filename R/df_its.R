@@ -7,7 +7,7 @@
 #' @param test Name of test.
 #' @return Dataframe of item statistics such as N, facility, and discrimination.
 #' @examples
-#' df_its(test=test)
+#' df_its(test='Bang_3')
 #' @export
 
 df_its <- function(folder='output', test){

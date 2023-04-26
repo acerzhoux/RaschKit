@@ -9,15 +9,15 @@ section_estimate(quick, poly_key = FALSE)
 \arguments{
 \item{quick}{TRUE if quick estimation is preferred.}
 
-\item{poly_key}{TRUE if the key of any item has polytomous scoring. 
+\item{poly_key}{TRUE if the key of any item has polytomous scoring.
 Default is FALSE.}
 }
 \value{
-String of characters used in estimation section of 'test.cqc' file 
+String of characters used in estimation section of 'test.cqc' file
 in 'input' folder.
 }
 \description{
-This function creates string of estimation specification for 'test.cqc' 
+This function creates string of estimation specification for 'test.cqc'
 file in 'input' folder. This is associated with test named 'test'.
 }
 \examples{

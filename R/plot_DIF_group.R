@@ -229,7 +229,7 @@ plot_DIF_group <- function(test, DIFVar, numAbilGrps=3, abilEst2use="pv1"){
     xMin <- round(min(dfObserved$Ability), 2) - 0.1
     xMax <- round(max(dfObserved$Ability), 2) + 0.1
 
-    pdf(file = paste0('DIF/', DIFVar, '_', test, "_Group.pdf"), width = 10, height = 7)
+    pdf(file = file.path('DIF', DIFVar, paste0(test, '_Group.pdf')), width = 10, height = 7)
 
     for(k in unique(deltas$iNum)){
         i_df <- deltas |>

@@ -20,7 +20,7 @@
 #' a plot are desired. Default is TRUE.
 #' @param step TRUE if DIF analysis is performed on step parameters.
 #' Default is FALSE.
-#' @param iterative TRUE to iteratively remove DIF items. Default is FALSE.
+#' @param iter TRUE to iteratively remove DIF items. Default is FALSE.
 #' @return Dataframe of chi-square test results for anchors between two tests.
 #' @examples
 #' Equate_shw(test='elana_math', vars=c('NSW', 'VIC'))
@@ -28,7 +28,7 @@
 
 Equate_shw <- function(test, vars, var_name=NULL, p_cut=0.05,
                        DIF_cut=0.5, DIF_adj_cut=4,
-                       sav_results=TRUE, step=FALSE, iterative=FALSE){
+                       sav_results=TRUE, step=FALSE, iter=FALSE){
   if (!dir.exists('equating')) dir.create('equating')
 
   r1 <- vars[[1]]
@@ -37,14 +37,15 @@ Equate_shw <- function(test, vars, var_name=NULL, p_cut=0.05,
 
   # merge data
   if (step){
-    dfDelta <- inner_join(
+    deltaDf <- inner_join(
       df_del_shw_Step('output', paste0(test, '_', r1)),
       df_del_shw_Step('output', paste0(test, '_', r2)),
-      by="iStep"
+      by="item"
     ) |>
     na.omit()
+    # testStep <- paste0('step_', test)
   } else {
-    dfDelta <- inner_join(
+    deltaDf <- inner_join(
       df_shw('output', paste0(test, '_', r1)),
       df_shw('output', paste0(test, '_', r2)),
       by='item'
@@ -52,6 +53,6 @@ Equate_shw <- function(test, vars, var_name=NULL, p_cut=0.05,
     na.omit()
   }
 
-  Equate(dfDelta, test, vars, p_cut, DIF_cut, DIF_adj_cut,
-         sav_results, 1, step, NULL, iterative)
+  Equate(deltaDf, test, vars, p_cut, DIF_cut, DIF_adj_cut,
+         sav_results, 1, step, NULL, iter)
 }

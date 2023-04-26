@@ -15,14 +15,14 @@
              library(x, character.only=TRUE)}}\
     )
 3.	Software compatibility.
-    - ACER ConQuest: 5.29.5\
+    - ACER ConQuest: 5.31.5\
       conquestr: 1.0.5\
-      Raschkit: 1.0.3
-    - Install ACER ConQuest 5.29.5.
+      Raschkit: 1.0.4
+    - Install ACER ConQuest 5.31.5.
         - From left bottom corner of Windows, 
             - Type in 'software centre' and click.
             - click 'Applications'.
-            - click 'ACER ConQuest v5.29.5' and install.
+            - click 'ACER ConQuest v5.31.5' and install.
     - Install 'conquestr' 1.0.5 (packageVersion('conquestr')).
         - From bottom right pane of 'xxx.Rproj' (Step 1).    
             - click 'Packages' (3rd button after 'Files', 'Plots').
@@ -32,13 +32,13 @@
             - Select 'conquestr_1.0.5.zip'. 
             - Click 'Open'. 
             - Click 'Install'.
-    - Install 'RaschKit' 1.0.3 (packageVersion('RaschKit')).
+    - Install 'RaschKit' 1.0.4 (packageVersion('RaschKit')).
         - From bottom right pane of 'xxx.Rproj' (Step 1).    
             - click 'Packages' (3rd button after 'Files', 'Plots').
             - click 'Install'. From 'Install from', select 'Package Archive File...'.
             - Click 'Browse'. Enter into 'File name' file path\
                 T:\Xiaoliang Zhou
-            - Select 'RaschKit_1.0.3.tar.gz'. 
+            - Select 'RaschKit_1.0.4.tar.gz'. 
             - Click 'Open'. 
             - Click 'Install'.
 4.  In 'xxx.Rproj', run code below and explore .Rmd files in ‘rCode’ folder for 
@@ -48,23 +48,36 @@
     - create_folders()
 
 ===== v1.0.4 Updates =====
-1. calibrate_con() merges grade response dataframes and codebooks before performing
+1. calibrateCon() merges grade response dataframes and codebooks before performing
    free calibrarion by regressing on grade.
-2. calibrate_lst() calibrates a list of response dataframes and puts summary file
+2. calibrateLst() calibrates a list of response dataframes and puts summary file
    with standard ACER template format into 'results' folder.
-3. equate_lst() performs DIF analysis on a list of delta dataframes. If indDf is 
+3. calibrateScale() gives three ways of automating anchor file preparation. 
+   Refer to arguments of 'ancShift', 'ancTest2Read', and 'ancDf' for reference.
+   Now, inputting a shift number, test name, or unordered anchor dataframe is
+   sufficient to guarantee correct delta (and step) order.
+4. equateLst() performs DIF analysis on a list of delta dataframes. If indDfLst is 
    available, its stats and plots are added to summary file.
-4. DIF_VarTests() perfomrs DIF analysis on a vector of DIF variables on a list
+5. DIFVarTests() perfomrs DIF analysis on a vector of DIF variables on a list
    of response dataframes. Summary files named with DIF variables are put in 
    'DIF' folder. If test3term is given, DIF analysis on both item and steps 
    are done and summaries are put side by side on 'summary' sheet in summary file.
-5. For all summary files, statistics are read from .xls files to guarantee 
+6. For all summary files, statistics are read from .xls files to guarantee 
    accurate extraction of columns.
-6. ACER template and format are used on all summary files including item analysis,
+7. ACER template and format are used on all summary files including item analysis,
    equating, and DIF analysis. Hyperlinks are inserted if necessary. Plots are
-   inserted into Excel sheets for equating and DIF. Flags are colored.
-7. Renamed arguments to make functions easier for use such as respDfLst (list 
+   inserted into Excel sheets for equating and DIF. Flags are colored. Reliabilities
+   are extracted and put in summary file.
+8. Renamed arguments to make functions easier for use such as respDfLst (list 
    of response dataframes) and grdIntVec (vector of integers representing grades).
+9. More checked are added inside functions to help users debug problems. For
+   example, calibrate() stops if item labels contain any space.
+10. Solved plotting error of plot_DIF() when there are only a couple of 
+    items/anchors. Regression line and formula are added onto plot.
+11. Allows double-key items to have CCC and keys to be added to 'Key' column of
+    summary files.
+12. QA2Df() checks equivalance of char variables and difference of numeric variables.
+    Difference is shown if only one variable is NA on any row.
 
 ===== v1.0.3 Updates =====
 1. DIF_dim_one() corrected order of reading data and checking input.

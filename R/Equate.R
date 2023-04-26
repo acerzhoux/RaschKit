@@ -18,7 +18,7 @@
 #' between two tests. Default is 4.
 #' @param sav_results TRUE if an Excel file with chi-square test results and
 #' a plot are desired. Default is TRUE.
-#' @param desig_effect Value to adjust errors. Default is 1.
+#' @param design_effect Value to adjust errors. Default is 1.
 #' @param step TRUE if DIF analysis is performed on step parameters.
 #' Default is FALSE.
 #' @param DIFVar Name of dichotomous DIF variable, e.g., 'gender'.
@@ -35,7 +35,7 @@
 #' @export
 
 Equate <- function(deltaDf, test, vars, p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4,
-                   sav_results=TRUE, desig_effect=1, step=FALSE, DIFVar=NULL,
+                   sav_results=TRUE, design_effect=1, step=FALSE, DIFVar=NULL,
                    iter=FALSE, indDf=NULL, pointer=FALSE, report=FALSE){
   # check
   if (!is.null(indDf)){
@@ -88,7 +88,7 @@ Equate <- function(deltaDf, test, vars, p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4,
 
   # DIF check
   if (step){
-    results <- chisqTStep(deltaDf, desig_effect)
+    results <- chisqTStep(deltaDf, design_effect)
   } else {
     results <- chisqT(deltaDf)
   }
@@ -107,7 +107,7 @@ Equate <- function(deltaDf, test, vars, p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4,
       iFlag <- iFlag |>
         append(list(filter(updated, abs(DIF_std)==max(abs(DIF_std)))))
       if (step){
-        updated <- chisqTStep(filter(updated, abs(DIF_std)!=max(abs(DIF_std))), desig_effect)
+        updated <- chisqTStep(filter(updated, abs(DIF_std)!=max(abs(DIF_std))), design_effect)
       } else {
         updated <- chisqT(filter(updated, abs(DIF_std)!=max(abs(DIF_std))))
       }
@@ -172,7 +172,7 @@ Equate <- function(deltaDf, test, vars, p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4,
                  shift$sdr_afr, getRange(updated, step), quick)
 
   p_save <- p1 / p2 +
-    plot_annotation(title=paste0('Number of DIF ', if(step) 'step ' else 'Items ', 'in ',
+    plot_annotation(title=paste0('Number of DIF ', if(step) 'Step ' else 'Items ', 'in ',
                    toupper(test), ': ', nrow(deltaDf)-nrow(updated)),
             subtitle=paste0(vars[[1]], ' vs. ', vars[[2]]),
             tag_levels='I')

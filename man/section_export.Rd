@@ -32,7 +32,8 @@ in 'input' folder. This is associated with test named 'test'.
 \details{
 If poly_catgrs is not NULL, then each category's code is added into names
 of output files. If poly_facet is TRUE, then string '_facet' is added into
-names of output files of the facet model.
+names of output files of the facet model. If poly_group is TRUE, then string
+'_group' is added into names of output files of the group model.
 }
 \examples{
 section_export()

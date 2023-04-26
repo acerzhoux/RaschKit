@@ -5,7 +5,8 @@
 #'
 #' If poly_catgrs is not NULL, then each category's code is added into names
 #' of output files. If poly_facet is TRUE, then string '_facet' is added into
-#' names of output files of the facet model.
+#' names of output files of the facet model. If poly_group is TRUE, then string
+#' '_group' is added into names of output files of the group model.
 #'
 #' @param poly_key TRUE if the key of any item has polytomous scoring.
 #' Default is FALSE.
@@ -27,13 +28,10 @@ section_export <- function(poly_key, step, DIFVar, poly_catgrs, poly_facet, poly
   else if (poly_group) p <- '%path%\\%name%_group'
   else p <- '%path%\\%name%'
 
-  if (poly_key & step) p <- str_c(p, '_', 'step')
+  if (poly_key & step) p <- paste0(p, '_step')
 
   c(
-    paste0('export logfile                                                 >> ',
-      if (!is.null(poly_catgrs)) paste0('%path%\\%test%_%', DIFVar, '%_log.txt;\n')
-      else if (poly_facet) '%path%\\%name%_facet_log.txt;\n'
-      else '%path%\\%name%_log.txt;\n'),
+    paste0('export logfile                                                 >> ', p, '_log.txt;'),
     paste0('export parameters                                              >> ', p, '_anc.txt;'),
     paste0('export reg_coefficients                                        >> ', p, '_reg.txt;'),
     paste0('export covariance                                              >> ', p, '_cov.txt;'),

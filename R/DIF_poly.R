@@ -68,7 +68,7 @@ DIF_poly <- function(df_ls, DIFVar, cats, labels, test, domain=NULL,
   plist <- map(
       1:length(cats),
       ~plot_DIF_poly(
-        DIFVar, ., cats, item=error_cat_item$item, delta_cat, Flag_dif
+        DIFVar, ., cats, error_cat_item, delta_cat, Flag_dif
       )
     )
   p_save <- patchwork::wrap_plots(plist, ncol=floor(sqrt(length(plist)))) +
@@ -100,7 +100,7 @@ DIF_poly <- function(df_ls, DIFVar, cats, labels, test, domain=NULL,
   ggsave(
       paste0(prefix, 'delta.png'),
       p_save,
-      width=17, height=30, units="cm"
+      width=34, height=60, units="cm"
   )
 
   names(Flag_dif) <- gsub("_", ' ', names(Flag_dif))

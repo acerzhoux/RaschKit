@@ -23,14 +23,14 @@ item_stats <- function(folder='outoput', test){
       readxl::read_xls(
         paste0(folder, '/', test, '_shw.xls'),
         sheet='ResponseModel',
-        skip=6,
+        skip=5,
         n_max=N_item('output', test)+1,
-        .name_repair = "unique_quiet"
-      ) |>
+        .name_repair = "unique_quiet"      ) |>
       select(1, 3:5, 9:12) |>
       `names<-`(c('seqNo', 'Estimate', 'Item Error', 'Outfit', 'Infit',
                   'C.I. (L)', 'C.I. (H)', 'T')) |>
-      dplyr::filter(!is.na(Estimate)),
+      dplyr::filter(!is.na(Estimate)) |>
+      dplyr::mutate(seqNo=as.integer(seqNo)),
       by='seqNo'
     ) |>
     as_tibble()

@@ -11,11 +11,11 @@ calibrate(
   pid,
   n_cov,
   regrNmVec = NULL,
-  n_dims = NULL,
-  dim_names = NULL,
+  nDimVec = NULL,
+  dimNmVec = NULL,
   quick = TRUE,
-  delete = NULL,
-  dbl_key = NULL,
+  delVec = NULL,
+  dblKeyLst = NULL,
   anchor = FALSE,
   section_extr = NULL,
   easy = 90,
@@ -37,6 +37,8 @@ calibrate(
   sparse_check = FALSE,
   CCCip2Wd = FALSE,
   pweight = NULL,
+  ancShift = NULL,
+  ancTest2Read = NULL,
   ancDf = NULL
 )
 }
@@ -55,19 +57,20 @@ folder is used.}
 
 \item{regrNmVec}{Vector of character regressors' names.}
 
-\item{n_dims}{Vector of numbers of responses the dimensions have.
+\item{nDimVec}{Vector of numbers of responses the dimensions have.
 Default is NULL. Define this vector if multi-dimensional model is to be run,
 e.g., c(30, 45). Also should define this if there are variables after
 response columns, e.g., 30.}
 
-\item{dim_names}{Vector of the dimensions' names. Default is NULL.
+\item{dimNmVec}{Vector of the dimensions' names. Default is NULL.
 Define this vector if multi-dimensional model is to be run.}
 
 \item{quick}{TRUE if empirical error is not needed. Default is TRUE}
 
-\item{delete}{Vector of orders or labels of items to be removed. Default is NULL.}
+\item{delVec}{Vector of orders or labels of items to be removed. Default is NULL.}
 
-\item{dbl_key}{TRUE if any item has polytomous scoring. Default is NULL.}
+\item{dblKeyLst}{List of items with double keys. Element is double keys, and
+element name is item order, e.g., list(`7`=c(1,3), `9`=c(3,4). Default is NULL.}
 
 \item{anchor}{TRUE when anchor is to be done. Default is FALSE.}
 
@@ -130,10 +133,21 @@ is FALSE.}
 \item{pweight}{Variable name of person weights in response dataframe. Should
 be specified if weight is used for modeling. Default is NULL.}
 
-\item{ancDf}{Dataframe of 'Item' and 'Delta' for anchors. Default is NULL.
-If NULL, an xxx_anc.txt file with anchor tbl (Item, Delta) should be put
-in 'input' folder beforehand. Check output 'xxx_anc.txt' file from previous run
-for correct anchor order, especially for polytomous items with step parameters.}
+\item{ancShift}{Shift of mean anchor delta from previous cycle obtained from
+equating analysis. It will be added to each item delta of 'test' in 'output'
+folder and put in 'input' folder as anchor file for 'test'. Default is NULL.}
+
+\item{ancTest2Read}{Name of test in 'output' folder to read delta from. This
+is usually concurrent calibration results such as all grades and/or all test
+forms. Only delta's (and step estimates) in 'tests' are extracted and put in
+'input' folder as anchor file. Default is NULL.}
+
+\item{ancDf}{Dataframe of 'Item' and 'Delta' for anchors. Include 'Step' column
+for step estimates (step number). Default is NULL. If all of ancShift, ancTest2Read,
+and ancDf are NULL, an xxx_anc.txt file with
+anchor tbl (Item, Delta) should be put in 'input' folder beforehand.
+Check output 'xxx_anc.txt' file from previous run for correct anchor order,
+especially for polytomous items with step parameters.}
 }
 \description{
 This function calibrates items in a test and adds comments and flags of
@@ -144,5 +158,5 @@ will be saved in 'results' folder in the working directory.
 \examples{
 # Not run
 # calibrate(respDf=racp, test='RACP', pid="V1", n_cov=1, keyDf=cd,
-# delete=c(3,4,5,36), dbl_key=list(`7`=c(1,3), `9`=c(3,4)))
+# delVec=c(3,4,5,36), dblKeyLst=list(`7`=c(1,3), `9`=c(3,4)))
 }

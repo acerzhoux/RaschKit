@@ -30,20 +30,26 @@ check_convergence <- function(cqs, test){
     group_by(stat) |>
     rename(Iteration=Iter)
 
-  # Beta
+  # delta
+  datThis <- cq_hist |>
+    filter(Parameter=='Xsi')
+  yRange <- c(
+    range(datThis$Estimate)[[1]]-1,
+    range(datThis$Estimate)[[2]]+1
+  )
   p1 <- ggplot(
-    data=cq_hist |>
-      filter(Parameter=='Xsi') |>
-      left_join(lookup, by='stat'),
-    aes(x=Iteration, y=Estimate, color=Parameters, group=Parameters)
-  ) +
-    scale_x_continuous(label=scales::label_comma(accuracy=1))
+      data=datThis |>
+        left_join(lookup, by='stat'),
+      aes(x=Iteration, y=Estimate, color=Parameters, group=Parameters)
+    ) +
+    scale_x_continuous(label=scales::label_comma(accuracy=1)) +
+    lims(y=yRange)
   if (nrow(lookup) > 100) {
     p1 <- p1 + geom_line(show.legend = FALSE)
   } else {
     p1 <- p1 + geom_line()
   }
-  pBeta <- p1 +
+  pDelta <- p1 +
     ggthemes::theme_tufte() +
     labs(title='Delta')
 
@@ -56,18 +62,38 @@ check_convergence <- function(cqs, test){
   plotOthers <- list()
   for (i in seq_along(plotCats)){
     plotGrp <- str_subset(catAll, plotCats[[i]])
+
+    datThis <- cq_hist |>
+      filter(Parameter %in% plotGrp)
+
+    if (i %in% 3:4) {
+      yRange <- c(0, 1)
+    } else if (i==1) {
+      yRange <- c(
+        range(datThis$Estimate)[[1]]-0.2,
+        range(datThis$Estimate)[[2]]+0.2
+      )
+    } else {
+      incr <- max(datThis$Estimate)-min(datThis$Estimate)
+      yRange <- c(
+        min(datThis$Estimate)-incr,
+        max(datThis$Estimate)+incr
+      )
+    }
+
     plotOthers[[plotCats[[i]]]] <- ggplot(
-      data=cq_hist |> filter(Parameter %in% plotGrp),
-      aes(x=Iteration, y=Estimate, group=Parameter, color=Parameter)
-    ) +
+        data=datThis,
+        aes(x=Iteration, y=Estimate, group=Parameter, color=Parameter)
+      ) +
       geom_line() +
       ggthemes::theme_tufte() +
       labs(title=plotCats[[i]]) +
-      scale_x_continuous(label=scales::label_comma(accuracy=1))
+      scale_x_continuous(label=scales::label_comma(accuracy=1)) +
+      lims(y=yRange)
   }
 
   plot_ls <- list(
-    pBeta,
+    pDelta,
     patchwork::wrap_plots(plotOthers, ncol=floor(sqrt(length(plotOthers))))
   )
 

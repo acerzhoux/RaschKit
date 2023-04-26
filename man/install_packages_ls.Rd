@@ -7,7 +7,7 @@
 install_packages_ls(
   packages = c("plyr", "conquestr", "rlang", "bookdown", "ggthemes", "ggrepel",
     "patchwork", "rmarkdown", "gdata", "janitor", "data.table", "knitr", "RColorBrewer",
-    "fs", "here", "lazyeval", "writexl", "ggpubr", "qpdf", "tidyverse", "openxlsx")
+    "fs", "lazyeval", "writexl", "ggpubr", "qpdf", "tidyverse", "openxlsx")
 )
 }
 \arguments{

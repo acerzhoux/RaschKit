@@ -16,5 +16,5 @@ This function extracts step parameter estimates from .shw file. This is
 associated with test named 'test'.
 }
 \examples{
-df_shw_Step(test='elana_poly_score')
+df_shw_Step(test='ELNA')
 }

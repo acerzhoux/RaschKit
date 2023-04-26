@@ -21,7 +21,7 @@
 #' to produce the the flags.
 #' @return Tibble of summary of results from polytomous DIF variable analysis.
 #' @examples
-#' DIF_poly_shw(DIFVar='educator', 'RANZCOG')
+#' DIF_poly_shw(DIFVar='quintile', test='ELNA')
 #' @export
 
 DIF_poly_shw <- function(DIFVar, test, domain=NULL, p_cut=0.05, step=FALSE, labels=NULL){
@@ -53,7 +53,7 @@ DIF_poly_shw <- function(DIFVar, test, domain=NULL, p_cut=0.05, step=FALSE, labe
     readxl::read_xls(
         paste0(folder, '/', tests[[i]], '_shw.xls'),
         sheet='ResponseModel',
-        skip=6,
+        skip=5,
         n_max=N_item(folder, tests[[i]])+1,
         .name_repair = "unique_quiet"
       ) |>
@@ -64,7 +64,7 @@ DIF_poly_shw <- function(DIFVar, test, domain=NULL, p_cut=0.05, step=FALSE, labe
       ) |>
       dplyr::filter(!is.na(item))
   }
-  df_ls <- map(1:length(cats), getDf)
+  df_ls <- map(seq_along(cats), getDf)
 
   DIF_poly(df_ls=df_ls, DIFVar=DIFVar, cats=cats, labels=labels,
         test=test, domain=domain, p_cut=p_cut, step=step)

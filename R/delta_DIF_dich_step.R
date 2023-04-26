@@ -53,13 +53,13 @@ delta_DIF_dich_step <- function(test, DIFVar, quick=TRUE){
   # error
   file_shw <- Path(folder, test, 'shw')
   y <- readLines(file_shw)
-  ind1 <- grep('TERM 4\\: item\\*step\\*', y)[[2]]+5
+  ind1 <- grep('TERM 4\\: item\\*step\\*', y)[[1]]+5
   ind2 <- grep('An asterisk next to', y)[[4]]-2
 
   dfError <- readxl::read_xls(
       paste0(folder, '/', test, '_shw.xls'),
       sheet='ResponseModel',
-      skip=8+n_item+24+n_item*2+9,
+      skip=7+n_item+22+n_item*2+8,
       n_max=ind2-ind1+1,
       .name_repair="unique_quiet",
       col_types='numeric'
@@ -83,5 +83,5 @@ delta_DIF_dich_step <- function(test, DIFVar, quick=TRUE){
     ) |>
     select(item, error.x=`1`, error.y=`2`)
 
-  left_join(deltas, errors, by = "item")
+  inner_join(deltas, errors, by = "item")
 }

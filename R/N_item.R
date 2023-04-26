@@ -10,5 +10,5 @@
 
 N_item <- function(folder, test){
     Lines(folder, test, 'shw', 'An asterisk')[[1]] -
-    Lines(folder, test, 'shw', 'TERM 1: item')[[2]] - 7
+    Lines(folder, test, 'shw', 'TERM 1: item')[[1]] - 7
 }
