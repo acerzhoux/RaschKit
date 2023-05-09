@@ -9,6 +9,8 @@
 #' @param n_cov Number of covariates before responses.
 #' @param est_type Type of ability estimate to use for score equivalence table,
 #' 'wle' or 'mle'. 'wle' is commonly used. Default is 'wle'.
+#' @param trial TRUE when trial item diagnostics is needed after anchoring is done.
+#' Default is FALSE.
 #' @param ancShiftLst List of shift of mean anchor delta from previous cycle obtained from
 #' equating analysis. It will be added to each item delta of 'test' in 'output'
 #' folder and put in 'input' folder as anchor file for 'test'. Default is NULL.
@@ -28,9 +30,9 @@
 #' Default is FALSE.
 #' @export
 
-calibrateScale <- function(keyDfLst, pid, n_cov, est_type='wle',
-                         ancShiftLst=NULL, ancTest2ReadLst=NULL, ancDfLst=NULL,
-                         slope=NULL, intercept=NULL, extrapolation=FALSE){
+calibrateScale <- function(keyDfLst, pid, n_cov, est_type='wle', trial=FALSE,
+                           ancShiftLst=NULL, ancTest2ReadLst=NULL, ancDfLst=NULL,
+                           slope=NULL, intercept=NULL, extrapolation=FALSE){
   testVec <- names(keyDfLst)
 
   # process arguments
@@ -45,12 +47,17 @@ calibrateScale <- function(keyDfLst, pid, n_cov, est_type='wle',
 
   # anchor tests in testVec
   for (i in seq_along(keyDfLst)){
-    calibrate(testVec[[i]], NULL, keyDfLst[[i]], pid, n_cov,
+    calibrate(testVec[[i]], NULL, keyDfLst[[i]], pid, n_cov, trial=trial,
               ancShift=ancShiftLst[[i]], ancTest2Read=ancTest2ReadLst[[i]],
-              ancDf=ancDfLst[[i]], anchor=TRUE, est_type=est_type,
+              ancDf=ancDfLst[[i]], est_type=est_type,
               slope=slope, intercept=intercept, extrapolation=extrapolation)
   }
 
   # read into one file
-  read2one('results', testVec, 'eqv')
+  if (!is.null(est_type)) {
+    read2one('results', testVec, 'eqv')
+  }
+  if (trial) {
+    read2one('results', testVec, 'itn', 'trial')
+  }
 }

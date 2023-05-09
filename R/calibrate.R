@@ -23,7 +23,8 @@
 #' @param delVec Vector of orders or labels of items to be removed. Default is NULL.
 #' @param dblKeyLst List of items with double keys. Element is double keys, and
 #' element name is item order, e.g., list(`7`=c(1,3), `9`=c(3,4). Default is NULL.
-#' @param anchor TRUE when anchor is to be done. Default is FALSE.
+#' @param trial TRUE when trial item diagnostics is needed after anchoring is done.
+#' Default is FALSE.
 #' @param section_extr Extra sections to be added to 'test.cqc' file in
 #' 'input' folder. Default is NULL.
 #' @param easy Threshold to flag easy items. Default is 90 (percent correct).
@@ -71,11 +72,10 @@
 #' forms. Only delta's (and step estimates) in 'tests' are extracted and put in
 #' 'input' folder as anchor file. Default is NULL.
 #' @param ancDf Dataframe of 'Item' and 'Delta' for anchors. Include 'Step' column
-#' for step estimates (step number). Default is NULL. If all of ancShift, ancTest2Read,
-#' and ancDf are NULL, an xxx_anc.txt file with
-#' anchor tbl (Item, Delta) should be put in 'input' folder beforehand.
-#' Check output 'xxx_anc.txt' file from previous run for correct anchor order,
-#' especially for polytomous items with step parameters.
+#' for step estimates (step number). Default is NULL. Specify one of ancShift,
+#' ancTest2Read, and ancDf to do anchoring. Check output 'xxx_anc.txt' file
+#' from previous run for correct anchor order, especially for polytomous items
+#' with step parameters.
 #' @examples
 #' # Not run
 #' # calibrate(respDf=racp, test='RACP', pid="V1", n_cov=1, keyDf=cd,
@@ -84,7 +84,7 @@
 
 calibrate <- function(test, respDf=NULL, keyDf, pid, n_cov, regrNmVec=NULL,
                       nDimVec=NULL, dimNmVec=NULL, quick=TRUE, delVec=NULL,
-                      dblKeyLst=NULL, anchor=FALSE, section_extr=NULL, easy=90,
+                      dblKeyLst=NULL, trial=FALSE, section_extr=NULL, easy=90,
                       hard=10, iRst=.11, fit_w=1.1, fit_uw=1.2, dFallThr=.5,
                       dRiseThr=.1, numAbilGrps=NULL, recode_poly=FALSE,
                       missCode2Conv=NULL, filetype='sav', slope=NULL, intercept=NULL,
@@ -95,6 +95,8 @@ calibrate <- function(test, respDf=NULL, keyDf, pid, n_cov, regrNmVec=NULL,
 
   if (!is.null(ancShift) || !is.null(ancTest2Read) || !is.null(ancDf)) {
     anchor <- TRUE
+  } else {
+    anchor <- FALSE
   }
 
   cat('\n============', if (anchor) 'Anchoring' else 'Calibrating', ':', test, '============\n\n')
@@ -286,7 +288,7 @@ calibrate <- function(test, respDf=NULL, keyDf, pid, n_cov, regrNmVec=NULL,
   cat('Checking convergence...\n')
   check_convergence(cqs, test)
 
-  if (anchor){
+  if (anchor) {
     # check: input .anc file vs. output .anc file
     ancInput <- anchor_getLab('input', test)
     if (!('Step' %in% names(ancInput))) poly_key <- FALSE
@@ -339,7 +341,9 @@ calibrate <- function(test, respDf=NULL, keyDf, pid, n_cov, regrNmVec=NULL,
       paste0('\tRaw and logit score table:\t', 'output/', test, '_cas',  '.xls')
     ))
 
-  } else { # summarize item calibration
+  }
+
+  if (!anchor || trial) { # summarize item calibration
     # ####### check: Option frequencies
     cat('Checking option frequencies...\n')
     tryCatch(

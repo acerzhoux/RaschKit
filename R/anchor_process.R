@@ -32,7 +32,6 @@ anchor_process <- function(test, respDf, keyDf, delVec, n_cov, nDimVec, ancDf){
             'M' = NA_character_,
             'x' = NA_character_,
             'X' = NA_character_,
-            '.' = NA_character_,
             '9' = NA_character_)
         )
     ) |>

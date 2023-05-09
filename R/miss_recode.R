@@ -61,7 +61,7 @@ miss_recode <- function(df, begin, end, code_emd='M', code_trail='R',
       df_recode, 1,
       function(x) conv_vec(x, code_emd, code_trail, code_allMiss)
     ) |>
-    as_tibble() %>%
+    as_tibble(.name_repair = "minimal") %>%
     t() %>%
     as_tibble(.name_repair = "minimal")
 
