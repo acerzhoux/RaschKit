@@ -78,6 +78,8 @@
     summary files.
 12. QA2Df() checks equivalance of char variables and difference of numeric variables.
     Difference is shown if only one variable is NA on any row.
+13. Both calibrateScale() and calibrate() allow for diagnostics on trial items
+    after anchoring on core items.
 
 ===== v1.0.3 Updates =====
 1. DIF_dim_one() corrected order of reading data and checking input.

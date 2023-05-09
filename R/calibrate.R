@@ -329,7 +329,6 @@ calibrate <- function(test, respDf=NULL, keyDf, pid, n_cov, regrNmVec=NULL,
       equiva_tbl(test, est_type, slope, intercept, extrapolation)
     }
     # est_cas(test)
-    rm(cqs)
 
     # point users to files of varying purposes
     writeLines(c(
@@ -384,7 +383,7 @@ calibrate <- function(test, respDf=NULL, keyDf, pid, n_cov, regrNmVec=NULL,
     cat('Putting together item analysis summaries...\n')
     smry <- itn_summary(test, easy, hard, iRst, fit_w, fit_uw,
               dFallThr, dRiseThr, ccc_data, iType, keyDf, dblKeyLst)
-    rm(cqs)
+
     if (save_xlsx){
       file_saved <- paste0('results/', paste0('itn_', test, '.xlsx'))
       writexl::write_xlsx(smry, file_saved)
@@ -415,4 +414,6 @@ calibrate <- function(test, respDf=NULL, keyDf, pid, n_cov, regrNmVec=NULL,
     }
   }
 
+  # remove cqs to save space
+  rm(cqs)
 }
