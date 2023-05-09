@@ -3,7 +3,7 @@
 1.  Create a project file 'xxx.Rproj' in a working directory and open it.
 2.  Run code below to install packages.\
     lapply(\
-        c('plyr', 'conquestr', 'rlang','bookdown',\
+        c('plyr', 'rlang','bookdown',\
           'ggthemes', 'ggrepel', 'patchwork','rmarkdown',\
           'gdata', 'janitor', 'data.table','knitr',\
           'RColorBrewer', 'fs', 'lazyeval', 'writexl',\
