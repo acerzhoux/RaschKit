@@ -1,0 +1,60 @@
+---
+title: "anchor"
+author: "Xiaoliang Zhou"
+date: `r format(Sys.time(), "%d %B, %Y")`
+output: html_document
+---
+
+```{r}
+library(RaschKit)
+install_packages_ls()
+```
+
+# Explore functions
+
+Open this .Rmd file via 'xxx.Rproj' in working directory.
+
+calibrateScale() and calibrate() gives three ways of automating anchor file preparation. 
+  - ancShift: shift of anchors kept.
+  - ancTest2Read: name of test (xxx: 'xxx_anc.txt' file in 'output' folder).
+  - ancDf: dataframe of anchor delta (and step) estimates.
+  
+Can also prepare anchor file by yourself and put that into 'input' folder. Then,
+use default value of NULL for the three arguments above.
+
+## calibrateScale() anchors a list of tests
+
+```{r}
+calibrateScale(
+  keyDfLst,
+  pid,
+  n_cov,
+  est_type = "wle",
+  ancShiftLst = NULL,
+  ancTest2ReadLst = NULL,
+  ancDfLst = NULL,
+  slope = NULL,
+  intercept = NULL,
+  extrapolation = FALSE
+)
+```
+
+## calibrate() anchors one test
+
+```{r}
+calibrate(
+  anchor=TRUE, # can ignore if any of ancShift, ancTest2Read, ancDf is not NULL
+  test,
+  respDf = NULL,
+  keyDf,
+  pid,
+  n_cov,
+  ancShift = NULL,
+  ancTest2Read = NULL,
+  ancDf = NULL,
+  est_type = "wle",
+  slope = NULL,
+  intercept = NULL,
+  extrapolation = FALSE
+)  
+```

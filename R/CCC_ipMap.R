@@ -531,11 +531,9 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key){
         Category = as.factor(category),
         lineLab = "Model\nProbability")
     ggplot() +
-      geom_point(o_df, mapping = aes(x = Ability, y = prop, size = Count,
-                 colour = Category),  alpha = .8) +
-      geom_line(o_df, mapping = aes(x = Ability, y = prop,colour = Category,
-                linetype = lineLab),
-         size = 1, alpha = .8) +
+      geom_point(o_df, mapping = aes(x = Ability, y = prop, size = Count, colour = Category),  alpha = .8) +
+      geom_line(o_df, mapping = aes(x = Ability, y = prop, colour = Category, linetype = lineLab),
+                size = 1, alpha = .8) +
       geom_line(m_df, mapping= aes(x=ability, y=probability,
                  colour=Category, linetype = lineLab)) +
       labs(title = paste0("Category Characteristic Curves\n", "Item: ", i, " (",
