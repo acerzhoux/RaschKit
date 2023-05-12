@@ -8,14 +8,14 @@
 #' @param abilEst2use Ability type used for curve data. Default is 'pv1'.
 #' Use 'wle' for smaller samples.
 #' @param numAbilGrps Number of ability groups. Default is NULL.
-#' @param poly_key TRUE if the key of any item has polytomous scoring.
+#' @param poly_key TRUE if the key of any item has polytomous scoring. Default is FALSE.
 #' @return Plots of CCC by category and score.
 #' @examples
-#' plot_data <- CCC_ipMap(test='AHU', cqs=cqs)
+#' plot_data <- CCC_ipMap(test, cqs)
 #' plot_data <- CCC_ipMap(test='RACP', abilEst2use='wle')
 #' @export
 
-CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key){
+CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key=FALSE){
   thr <- df_thr('output', test)
 
   # check names
@@ -269,7 +269,8 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key){
       keyPtbisNeg = ifelse(score == 1 & ptbis < 0, 1, 0),
       keyPtbisLow = ifelse(score == 1 & ptbis < .1, 1, 0)
     ) |>
-    filter(!is.na(iType))
+    filter(!is.na(iType)) |>
+    modify_if(is.numeric, ~round(.x, 2))
 
   # Item Stats --------------------------------------------------------------
   iStats <- catStats |>
@@ -454,137 +455,29 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key){
     group_by(iNum) |>
     mutate(stepDeltaCumsum = cumsum(stepDelta))
 
-  ccc_dich <- function(iStats, dfObs_opt, i){
-    i_df <- iStats |> filter(iNum == i)
-    o_df <- dfObs_opt |> filter(iNum == i)
-
-    # detect sparse options
-    opt_sparse <- o_df |>
-      filter(!(Option %in% c('M', 'R'))) |>
-      group_by(Option) |>
-      summarise(N=sum(Count)) |>
-      filter(N < 25) |>
-      pull(Option)
-    if (length(opt_sparse) > 0){
-      opt_text <- str_c('Warning:\nFewer than 25 candidates selected ',
-          paste(opt_sparse, collapse=' or '), '.')
-      annt <- data.frame(xpos = -Inf, ypos = Inf, txt = opt_text,
-           hjustvar = 0, vjustvar = 2)
-    }
-
-    xMin <- c(o_df$Ability) |> min()  |> floor() -.25
-    m_df <- tibble(pLoc = seq(xMin, 3, .001)) |>
-      mutate(pSuccess = exp(pLoc - i_df$iLogit)/(1+exp(pLoc - i_df$iLogit)),
-        lineLab = "Model\nProbability")
-    p <- ggplot() +
-      geom_point(data = o_df,
-          mapping = aes(x = Ability, y = prop, size = Count,
-               colour = Option), alpha = .8) +
-      geom_line(data = o_df,
-         mapping = aes(x = Ability, y = prop, colour = Option),
-         size = 1, alpha = .5) +
-      geom_line(data = m_df,
-         mapping = aes(x = pLoc, y = pSuccess,
-              colour = lineLab), size = 1.5, alpha = .5) +
-      scale_shape_discrete(name = "Ability\nGroup") +
-      labs(title = paste0("Category Characteristic Curves\n", "Item: ", i, " (",
-            i_df$iLab,")"),
-      subtitle = paste0("Weighted MNSQ = ", round(i_df$WeightedMNSQ, 2)),
-      x = "Latent Trait (logit)", y = "Probability") +
-      scale_colour_brewer(type="qual", palette = 2) +
-      ggthemes::theme_tufte()
-
-    if (length(opt_sparse) > 0){
-      p +
-        geom_text(
-          data = annt,
-          aes(x=xpos, y=ypos, hjust=hjustvar, vjust=vjustvar, label=txt)
-        )
-    } else {
-      p
-    }
-  }
-
-  ccc_poly <- function(iStats, dfObs, i, dfModel){
-    i_df <- iStats |> filter(iNum == i)
-    o_df <- dfObs |> filter(iNum == i) |>
-      mutate(lineLab = "Observed\nProportion")
-    # xMin <- min(o_df$Ability) |> floor() - 0.25
-    xMin <- -15
-    xmax <- 15
-
-    kkk <- tibble(iNum = i, ability = seq(xMin, xmax, by=.02)) |>
-      left_join(dfModel |> filter(iNum == i) |>
-           select(iNum, category, iLogit, stepDeltaCumsum),
-         by = "iNum") |>
-      group_by(iNum, ability) |>
-      arrange(iNum, ability, category) |>
-      mutate(numerator = ((category*(ability - iLogit)) -
-              stepDeltaCumsum) |> exp(),
-        denominator = 1+ sum(numerator))
-    m_df <- kkk |>
-      select(iNum, ability, category, numerator, denominator) |>
-      ungroup() |>
-      bind_rows(kkk |> distinct(iNum, ability, denominator) |>
-           mutate(category = 0, numerator = 1)) |>
-      mutate(probability = numerator/denominator,
-        Category = as.factor(category),
-        lineLab = "Model\nProbability")
-    ggplot() +
-      geom_point(o_df, mapping = aes(x = Ability, y = prop, size = Count, colour = Category),  alpha = .8) +
-      geom_line(o_df, mapping = aes(x = Ability, y = prop, colour = Category, linetype = lineLab),
-                size = 1, alpha = .8) +
-      geom_line(m_df, mapping= aes(x=ability, y=probability,
-                 colour=Category, linetype = lineLab)) +
-      labs(title = paste0("Category Characteristic Curves\n", "Item: ", i, " (",
-            i_df$iLab,")"),
-      subtitle = paste0("Weighted MNSQ = ", round(i_df$WeightedMNSQ,2),
-             "\nDelta(s) ",
-             paste(i_df |> select(contains("delta")) |>
-                round(2), collapse = " ")),
-      x = "Latent Trait (logit)", y = "Probability",
-      linetype = "") +
-      ggthemes::theme_tufte()
-  }
-
-  ccc_score <- function(iStats, dfObs, i){
-    i_df <- iStats |> filter(iNum == i)
-    o_df <- dfObs |> filter(iNum == i)
-    xMin <- c(o_df$Ability) |> min()  |> floor() -.25
-    m_df <- tibble(pLoc = seq(xMin, 3, .001)) |>
-      mutate(pSuccess = exp(pLoc - i_df$iLogit)/(1+exp(pLoc - i_df$iLogit)),
-        lineLab = "Model\nProbability")
-    ggplot() +
-      geom_point(data = o_df,
-          mapping = aes(x = Ability, y = prop, size = Count,
-               colour = Category), alpha = .8) +
-      geom_line(data = o_df,
-         mapping = aes(x = Ability, y = prop, colour = Category),
-         size = 1, alpha = .5) +
-      geom_line(data = m_df,
-         mapping = aes(x = pLoc, y = pSuccess,
-              colour = lineLab), size = 1.5, alpha = .5) +
-      scale_shape_discrete(name = "Ability\nGroup") +
-      labs(title = paste0("Category Characteristic Curves\n", "Item: ", i, " (",
-            i_df$iLab,")"),
-      subtitle = paste0("Weighted MNSQ = ", round(i_df$WeightedMNSQ,2)),
-      x = "Latent Trait (logit)", y = "Probability") +
-      scale_colour_brewer(type="qual", palette = 2) +
-      ggthemes::theme_tufte()
-  }
+  # tbl put below CCC
+  tblInt <- catStats |>
+    ungroup() |>
+    select(
+      iNum,
+      Option=resp, Score=score, Count=count,
+      `% Total`=percentTotal,
+      `Pt Bis`=ptbis, PV1Avg=mean, PV1SD=sd
+    )
 
   plot_ls <- list()
   ccc_data_ls <- list()
-  for(i in seq_along(iStats$iNum)){
+  # for(i in seq_along(iStats$iNum)){
+  for(i in 1:2){
     j <- iStats$iNum[[i]]
     # print(i)
     if (itype_condition$itype[[i]] %in% c('allwrong', 'dich')){
-      plot_ls[[i]] <- ccc_dich(iStats=iStats, dfObs_opt=dfObs_opt, i=j)
+      plot_ls[[i]] <- CCC_plot()[['ccc_dich']](iStats, dfObs_opt, j, tblInt)
       ccc_data_ls[[i]] <- dfObs_opt |> filter(iNum == j)
     } else if (itype_condition$itype[[i]] %in% 'poly'){
-      plot_ls[[i]] <- ccc_poly(iStats=iStats, dfObs=dfObs, i=j, dfModel=dfModel)
+      plot_ls[[i]] <- CCC_plot()[['ccc_poly']](iStats, dfObs, j, dfModel, tblInt)
     } else if (itype_condition$itype[[i]] %in% 'score'){
-      plot_ls[[i]] <- ccc_score(iStats=iStats, dfObs=dfObs, i=j)
+      plot_ls[[i]] <- CCC_plot()[['ccc_score']](iStats, dfObs, j, tblInt)
       ccc_data_ls[[i]] <- dfObs |> filter(iNum == j) |>
        mutate(Category=ifelse(Category==1, str_c(1, '*'), 0)) |>
        dplyr::rename(Option=Category)
@@ -599,7 +492,7 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key){
   }
 
   # ####### generate ICCs by Score
-  pdf(file = paste0('output/', test, "_CCC.pdf"), width = 10, height = 7)
+  pdf(file = paste0('output/', test, "_CCC.pdf"), width = 7, height = 9)
   map(plot_ls, ~print(.x))
   dev.off()
 
