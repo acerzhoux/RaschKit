@@ -12,7 +12,6 @@
 #' each variable in this vector will be calculated. Default is NULL.
 #' @param selfDf Dataframe of your own.
 #' @param otherDf Dataframe of others'.
-#' @example QA2Df(aspect, id, charVarVec, numVarVec, selfDf, otherDf)
 #' @export
 
 QA2Df <- function(aspect, id, charVarVec=NULL, numVarVec=NULL, selfDf, otherDf){

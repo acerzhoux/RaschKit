@@ -9,6 +9,7 @@ calibrateScale(
   pid,
   n_cov,
   est_type = "wle",
+  trial = FALSE,
   ancShiftLst = NULL,
   ancTest2ReadLst = NULL,
   ancDfLst = NULL,
@@ -26,6 +27,9 @@ calibrateScale(
 
 \item{est_type}{Type of ability estimate to use for score equivalence table,
 'wle' or 'mle'. 'wle' is commonly used. Default is 'wle'.}
+
+\item{trial}{TRUE when trial item diagnostics is needed after anchoring is done.
+Default is FALSE.}
 
 \item{ancShiftLst}{List of shift of mean anchor delta from previous cycle obtained from
 equating analysis. It will be added to each item delta of 'test' in 'output'

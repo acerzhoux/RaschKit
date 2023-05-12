@@ -4,7 +4,7 @@
 \alias{CCC_ipMap}
 \title{CCC_ipMap}
 \usage{
-CCC_ipMap(test, cqs, abilEst2use = "pv1", numAbilGrps = NULL, poly_key)
+CCC_ipMap(test, cqs, abilEst2use = "pv1", numAbilGrps = NULL, poly_key = FALSE)
 }
 \arguments{
 \item{test}{Name of the test.}
@@ -16,7 +16,7 @@ Use 'wle' for smaller samples.}
 
 \item{numAbilGrps}{Number of ability groups. Default is NULL.}
 
-\item{poly_key}{TRUE if the key of any item has polytomous scoring.}
+\item{poly_key}{TRUE if the key of any item has polytomous scoring. Default is FALSE.}
 }
 \value{
 Plots of CCC by category and score.
@@ -26,6 +26,6 @@ This function draws for each item CCC of both category and score.
 Plots will be saved in 'output' folder.
 }
 \examples{
-plot_data <- CCC_ipMap(test='AHU', cqs=cqs)
+plot_data <- CCC_ipMap(test, cqs)
 plot_data <- CCC_ipMap(test='RACP', abilEst2use='wle')
 }

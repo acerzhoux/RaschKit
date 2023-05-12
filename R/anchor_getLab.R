@@ -5,7 +5,6 @@
 #'
 #' @param folder Folder to extract anchor dataframe, either 'input' or 'output'.
 #' @param test Name of test in 'output' folder.
-#' @example anchor_getLab('input', 'FPA')
 #' @export
 
 anchor_getLab <- function(folder, test) {

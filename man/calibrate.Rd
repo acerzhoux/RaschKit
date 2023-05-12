@@ -16,7 +16,7 @@ calibrate(
   quick = TRUE,
   delVec = NULL,
   dblKeyLst = NULL,
-  anchor = FALSE,
+  trial = FALSE,
   section_extr = NULL,
   easy = 90,
   hard = 10,
@@ -72,7 +72,8 @@ Define this vector if multi-dimensional model is to be run.}
 \item{dblKeyLst}{List of items with double keys. Element is double keys, and
 element name is item order, e.g., list(`7`=c(1,3), `9`=c(3,4). Default is NULL.}
 
-\item{anchor}{TRUE when anchor is to be done. Default is FALSE.}
+\item{trial}{TRUE when trial item diagnostics is needed after anchoring is done.
+Default is FALSE.}
 
 \item{section_extr}{Extra sections to be added to 'test.cqc' file in
 'input' folder. Default is NULL.}
@@ -143,11 +144,10 @@ forms. Only delta's (and step estimates) in 'tests' are extracted and put in
 'input' folder as anchor file. Default is NULL.}
 
 \item{ancDf}{Dataframe of 'Item' and 'Delta' for anchors. Include 'Step' column
-for step estimates (step number). Default is NULL. If all of ancShift, ancTest2Read,
-and ancDf are NULL, an xxx_anc.txt file with
-anchor tbl (Item, Delta) should be put in 'input' folder beforehand.
-Check output 'xxx_anc.txt' file from previous run for correct anchor order,
-especially for polytomous items with step parameters.}
+for step estimates (step number). Default is NULL. Specify one of ancShift,
+ancTest2Read, and ancDf to do anchoring. Check output 'xxx_anc.txt' file
+from previous run for correct anchor order, especially for polytomous items
+with step parameters.}
 }
 \description{
 This function calibrates items in a test and adds comments and flags of
