@@ -40,5 +40,7 @@ Imports:
     ggpubr,
     qpdf,
     tidyverse,
-    openxlsx
+    openxlsx,
+    grid,
+    flextable
 RoxygenNote: 7.2.3
