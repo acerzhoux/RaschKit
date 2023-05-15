@@ -81,6 +81,7 @@
     Difference is shown if only one variable is NA on any row.
 13. Both calibrateScale() and calibrate() allow for diagnostics on trial items
     after anchoring on core items.
+14. Added statistics on option/score and test to CCC plots. Also, color flags are added.
 
 ===== v1.0.3 Updates =====
 1. DIF_dim_one() corrected order of reading data and checking input.
