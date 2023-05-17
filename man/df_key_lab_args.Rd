@@ -14,7 +14,7 @@ df_key_lab_args(
   regr_vec_char = NULL,
   section_extr = NULL,
   labels = NULL,
-  anchor = FALSE,
+  useR = FALSE,
   pweight = NULL
 )
 }
@@ -37,7 +37,7 @@ df_key_lab_args(
 
 \item{labels}{Item labels. Default is NULL.}
 
-\item{anchor}{TRUE when anchor is to be done. Default is FALSE.}
+\item{useR}{TRUE when code 'R' is used for scoring. Default is FALSE.}
 
 \item{pweight}{Variable name of person weights in response dataframe. Should
 be specified if weight is used for modeling. Default is NULL.}

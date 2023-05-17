@@ -13,7 +13,7 @@
 #' @param regr_vec_char Vector of character regressors' names.
 #' @param section_extr Sections to be included in the .cqc file. Default is NULL.
 #' @param labels Item labels. Default is NULL.
-#' @param anchor TRUE when anchor is to be done. Default is FALSE.
+#' @param useR TRUE when code 'R' is used for scoring. Default is FALSE.
 #' @param pweight Variable name of person weights in response dataframe. Should
 #' be specified if weight is used for modeling. Default is NULL.
 #' @return A list of arguments with calculated elements.
@@ -26,7 +26,7 @@
 
 df_key_lab_args <- function(test, data, pid, n_cov, n_resp,
                             DIFVar=NULL, regr_vec_char=NULL,
-                            section_extr=NULL, labels=NULL, anchor=FALSE,
+                            section_extr=NULL, labels=NULL, useR=FALSE,
                             pweight=NULL){
     create_folders(DIFVar=DIFVar)
     if (!is.null(regr_vec_char)){
@@ -60,7 +60,7 @@ df_key_lab_args <- function(test, data, pid, n_cov, n_resp,
         reduce(c) %>%
         unique()
 
-    if (anchor){
+    if (useR){
         codes <- codes %>%
             .[!(. %in% c(NA, 'X', 'x', '', ' '))] %>%
             sort()

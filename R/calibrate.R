@@ -238,7 +238,7 @@ calibrate <- function(test, respDf=NULL, keyDf, pid, n_cov, regrNmVec=NULL,
   # prepare arguments
   cat('Preparing ConQuest control file...\n')
   prep <- df_key_lab_args(test, respDf, pid, n_cov, sum(nDimVec), NULL,
-                          regrNmVec, section_extr, labels, anchor, pweight)
+                          regrNmVec, section_extr, labels, anchor & !trial, pweight)
   if (length(nDimVec) > 1){
     if(is.null(dimNmVec)) stop('Please set dimension names \'dimNmVec\'!')
     if (poly_key) scrs <- 0:max(keyDf$Max_score) else scrs <- 0:1
