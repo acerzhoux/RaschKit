@@ -21,18 +21,22 @@
 #' @export
 
 section_specs <- function(anchor, test, DIFVar, poly_catgrs, quick){
-    if (anchor) anc_path <- paste0('input/', test, '_anc.txt')
+  if (anchor) anc_path <- paste0('input/', test, '_anc.txt')
 
-    c(paste0('set addextension=no, keeplastest=yes, iterlimit=1000, ',
+  c(
+    paste0(
+      'set addextension=no, keeplastest=yes, iterlimit=1000, ',
       if(anchor) {
-        paste0('constraints=none;\nimport anchor_parameters <<', anc_path, ';\n')
+        paste0('constraints=none;\n\nimport anchor_parameters                                       <<', anc_path, ';\n')
       } else {
         if (quick){
           'lconstraints=cases;\n'
         } else {
           'constraints=items;\n'
         }
-      }),
+      }
+    ),
 
-      if (!is.null(poly_catgrs)) paste0('Keepcases %', DIFVar, '%! ', DIFVar, ';\n'))
+    if (!is.null(poly_catgrs)) paste0('Keepcases %', DIFVar, '%! ', DIFVar, ';\n')
+  )
 }

@@ -25,27 +25,42 @@
 #' @export
 
 section_model <- function(run_ls, run, regr_ls, codes, poly_key,
-                          DIFVar, step, poly_group){
-    c(if (!is.null(run_ls)) {
-        map2_chr(run, names(run_ls), ~paste0('keepcases ', .x, '!', .y, ';\n'))
-    },
+              DIFVar, step, poly_group){
+  c(
+  if (!is.null(run_ls)) {
+    map2_chr(run, names(run_ls), ~paste0('keepcases ', .x, '!', .y, ';\n'))
+  },
 
-    if (!is.null(regr_ls)) {str_c('Regression ', paste0(names(regr_ls), collapse=' '), ';\n')},
-    str_c('codes ', paste0(codes, collapse=','), '; /*MR scored zero*/\n'),
+  if (!is.null(regr_ls)) {
+    str_c('Regression ', paste0(names(regr_ls), collapse=' '), ';\n')
+  },
+  str_c('codes ', paste0(codes, collapse=','), ';\n'),
 
-    if (poly_key){
-        if (step){
-            paste0('model item',
-                   if (!is.null(DIFVar) & !poly_group) {paste0('+', DIFVar, '+item*', DIFVar)},
-                   '+item*step*', DIFVar, ';\n')
-        } else {
-            paste0('model item',
-                   if (!is.null(DIFVar) & !poly_group) {paste0('+', DIFVar, '+item*', DIFVar)},
-                   '+item*step;\n')
-        }
+  if (poly_key){
+    if (step){
+      paste0(
+        'model item',
+        if (!is.null(DIFVar) & !poly_group) {
+          paste0('+', DIFVar, '+item*', DIFVar)
+        },
+        '+item*step*', DIFVar, ';\n'
+      )
     } else {
-        paste0('model item',
-               if (!is.null(DIFVar) & !poly_group) {paste0('+', DIFVar, '+item*', DIFVar)},
-               ';\n')
-    })
+      paste0(
+        'model item',
+        if (!is.null(DIFVar) & !poly_group) {
+           paste0('+', DIFVar, '+item*', DIFVar)
+        },
+        '+item*step;\n'
+      )
+    }
+  } else {
+    paste0(
+      'model item',
+      if (!is.null(DIFVar) & !poly_group) {
+        paste0('+', DIFVar, '+item*', DIFVar)
+      },
+      ';\n'
+    )
+  })
 }

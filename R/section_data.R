@@ -29,17 +29,21 @@
 #' @export
 
 section_data <- function(path_df, resps_cols, pid_cols, run_ls, regr_ls,
-                         path_lab, DIFVar, DIFVar_cols, poly_group,
-                         pweight, pw_cols){
-    c(paste0('data ', path_df, ';\n'),
-      paste('format responses', resps_cols,
-            if (!is.null(pid_cols)) paste('pid', pid_cols),
-            if (!is.null(pweight)) paste(pweight, pw_cols),
-            if (!is.null(DIFVar)) paste(DIFVar, DIFVar_cols),
-            if (!is.null(run_ls)) paste(paste(names(run_ls), run_ls), collapse=' '),
-            if (!is.null(regr_ls)) paste(paste(names(regr_ls), regr_ls), collapse=' '),
-            ';\n'),
-      if (poly_group) paste0('group ', DIFVar, ';\n'),
-      paste0('labels                                           << ', path_lab, ';\n'),
-      if (!is.null(pweight)) paste0('caseweight ', pweight, ';\n'))
+             path_lab, DIFVar, DIFVar_cols, poly_group,
+             pweight, pw_cols){
+  c(
+    paste0('data ', path_df, ';\n'),
+    paste(
+      'format responses', resps_cols,
+      if (!is.null(pid_cols)) paste('pid', pid_cols),
+      if (!is.null(pweight)) paste(pweight, pw_cols),
+      if (!is.null(DIFVar)) paste(DIFVar, DIFVar_cols),
+      if (!is.null(run_ls)) paste(paste(names(run_ls), run_ls), collapse=' '),
+      if (!is.null(regr_ls)) paste(paste(names(regr_ls), regr_ls), collapse=' '),
+      ';\n'
+    ),
+    if (poly_group) paste0('group ', DIFVar, ';\n'),
+    paste0('labels                                     << ', path_lab, ';\n'),
+    if (!is.null(pweight)) paste0('caseweight ', pweight, ';\n')
+  )
 }

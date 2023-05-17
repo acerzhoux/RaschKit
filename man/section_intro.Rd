@@ -9,7 +9,7 @@ section_intro(test, run_ls, path_output, DIFVar, poly_catgrs)
 \arguments{
 \item{test}{Name of test.}
 
-\item{run_ls}{List of data filters. Element is column number in data. 
+\item{run_ls}{List of data filters. Element is column number in data.
 Element name is filter variable's name.}
 
 \item{path_output}{Route of folder to put export files.}
@@ -19,11 +19,11 @@ Element name is filter variable's name.}
 \item{poly_catgrs}{Vector of polytomous DIF variable's categories.}
 }
 \value{
-String of characters used in introduction section of 'test.cqc' 
+String of characters used in introduction section of 'test.cqc'
 file in 'input' folder.
 }
 \description{
-This function creates string of introduction specification for 'test.cqc' 
+This function creates string of introduction specification for 'test.cqc'
 file in 'input' folder. This is associated with test named 'test'.
 }
 \examples{
