@@ -188,10 +188,12 @@ DIFVarTests <- function(testVec=NULL, respDfLst=NULL, difVarLst=NULL, n_cov=NULL
         test3termFiles <- paste0(folder, '/step_', testsT, '_process.xlsx')
         files <- c(files, test3termFiles)
         testStepVec <- c(testVec, paste0('step_', testsT))
+        ex_ls <- map(files, ~readxl::read_xlsx(.x, 'final'))
+        names(ex_ls) <- testStepVec
+      } else {
+        ex_ls <- map(files, ~readxl::read_xlsx(.x, 'final'))
+        names(ex_ls) <- testVec
       }
-
-      ex_ls <- map(files, ~readxl::read_xlsx(.x, 'final'))
-      names(ex_ls) <- testStepVec
 
       n <- length(ex_ls)
       nStep <- ifelse(is.null(test3term), 0, length(test3termFiles))
