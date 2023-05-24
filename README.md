@@ -16,14 +16,14 @@
              library(x, character.only=TRUE)}}\
     )
 3.	Software compatibility.
-    - ACER ConQuest: 5.33.2\
+    - ACER ConQuest: 5.33.5\
       conquestr: 1.0.8\
       Raschkit: 1.0.4
-    - Install ACER ConQuest 5.33.2.
+    - Install ACER ConQuest 5.33.5.
         - From left bottom corner of Windows, 
             - Type in 'software centre' and click.
             - click 'Applications'.
-            - click 'ACER ConQuest v5.33.2' and install.
+            - click 'ACER ConQuest v5.33.5' and install.
     - Install 'conquestr' 1.0.8 (packageVersion('conquestr')).
         - From bottom right pane of 'xxx.Rproj' (Step 1).    
             - click 'Packages' (3rd button after 'Files', 'Plots').
