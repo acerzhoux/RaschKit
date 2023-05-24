@@ -77,7 +77,7 @@ CCC_plot <- function(easy=90, hard=10, iRst=.11, fit_w=1.1, fit_uw=1.2){
 
     tblStats <- tblStats |>
       dplyr::mutate(
-        key_ptbis = tblStats[str_detect(tblStats$Option, "\\*"), ]$`Pt Bis`,
+        key_ptbis = min(tblStats[str_detect(tblStats$Option, "\\*"), ]$`Pt Bis`),
         key_abil = min(tblStats[str_detect(tblStats$Option, "\\*"), ]$PV1Avg), #db key
         unexp_ptbis = ifelse(`% Total`>10 & `Pt Bis`>0 & Score==0, 1, 0),
         unexp_abil = ifelse(`% Total`>10 & PV1Avg>key_abil & Score==0, 1, 0)
