@@ -28,11 +28,11 @@ check_convergence <- function(cqs, test){
     mutate(Parameter=ifelse(str_detect(stat, "Xsi"), "Xsi", stat)) |>
     arrange(stat, Iter) |>
     group_by(stat) |>
-    rename(Iteration=Iter)
+    dplyr::rename(Iteration=Iter)
 
   # delta
   datThis <- cq_hist |>
-    filter(Parameter=='Xsi')
+    dplyr::filter(Parameter=='Xsi')
   yRange <- c(
     range(datThis$Estimate)[[1]]-1,
     range(datThis$Estimate)[[2]]+1

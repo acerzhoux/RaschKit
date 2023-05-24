@@ -16,21 +16,21 @@
              library(x, character.only=TRUE)}}\
     )
 3.	Software compatibility.
-    - ACER ConQuest: 5.31.5\
-      conquestr: 1.0.5\
+    - ACER ConQuest: 5.33.2\
+      conquestr: 1.0.8\
       Raschkit: 1.0.4
-    - Install ACER ConQuest 5.31.5.
+    - Install ACER ConQuest 5.33.2.
         - From left bottom corner of Windows, 
             - Type in 'software centre' and click.
             - click 'Applications'.
-            - click 'ACER ConQuest v5.31.5' and install.
-    - Install 'conquestr' 1.0.5 (packageVersion('conquestr')).
+            - click 'ACER ConQuest v5.33.2' and install.
+    - Install 'conquestr' 1.0.8 (packageVersion('conquestr')).
         - From bottom right pane of 'xxx.Rproj' (Step 1).    
             - click 'Packages' (3rd button after 'Files', 'Plots').
             - click 'Install'. From 'Install from', select 'Package Archive File...'.
             - Click 'Browse'. Enter into 'File name' file path (if Windows)\
-                P:\ACER ConQuest\Admin\InHouse - ConQuest Latest versions\conquestr\Win
-            - Select 'conquestr_1.0.5.zip'. 
+                P:\ACER ConQuest\Admin\InHouse - ConQuest Latest versions\conquestr
+            - Select 'conquestr_1.0.8.zip'. 
             - Click 'Open'. 
             - Click 'Install'.
     - Install 'RaschKit' 1.0.4 (packageVersion('RaschKit')).
@@ -81,7 +81,7 @@
     Difference is shown if only one variable is NA on any row.
 13. Both calibrateScale() and calibrate() allow for diagnostics on trial items
     after anchoring on core items.
-14. Added statistics on option/score and test to CCC plots. Also, color flags are added.
+14. Added statistics on option/score and test to CCC plots. Added color flags.
 
 ===== v1.0.3 Updates =====
 1. DIF_dim_one() corrected order of reading data and checking input.
