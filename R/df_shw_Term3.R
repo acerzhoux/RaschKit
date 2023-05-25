@@ -17,14 +17,14 @@ df_shw_Term3 <- function(DIFVar, test){
   test <- paste0(test, '_facet')
 
   # #### solve line difference issue arising from CQ versions
+  n_item <- N_item(folder, test)
   lnT2 <- Lines(folder, test, 'shw', 'TERM 2: ')
   lnT3 <- Lines(folder, test, 'shw', 'TERM 3: item*')
   lessNum <- ifelse(length(lnT2)==1, 14, 13)
+  n_cat <- lnT3[[length(lnT3)]] - lnT2[[length(lnT2)]] - lessNum
   nSkip <- ifelse(length(lnT2)==1, 7+n_item+10+n_cat+8, 8+n_item+11+n_cat+9)
   # #### End
 
-  n_item <- N_item(folder, test)
-  n_cat <- lnT3[[length(lnT3)]] - lnT2[[length(lnT2)]] - lessNum
   n_max <- {Lines(folder, test, 'shw', 'An asterisk ')[3] - 2} -
       {lnT3[[length(lnT3)]] + 6} + 1
 
