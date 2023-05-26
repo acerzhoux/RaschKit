@@ -40,7 +40,7 @@
 #' two tests. Default is 0.5.
 #' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference
 #' between two tests. Default is 4.
-#' @param desig_effect Value to adjust errors. Default is 1.
+#' @param design_effect Value to adjust errors. Default is 1.
 #' @param dim_multi TRUE if the model is multidimensional. Default is FALSE.
 #' @param scores Scores possible in the test, e.g., 0:3. Default is NULL.
 #' @param prep_process TRUE if it is needed to remove items without data on
@@ -56,7 +56,7 @@ DIFDimMulti <- function(method=c('chi_square', 'Bonferroni'), test, DIFVar,
                           quick=TRUE, delVec=NULL,
                           dblKeyLst=FALSE, section_extr=NULL,
                           p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4,
-                          desig_effect=1, dim_multi=FALSE, scores=NULL,
+                          design_effect=1, dim_multi=FALSE, scores=NULL,
                           prep_process=FALSE, pweight=NULL, iter=TRUE){
   # read data
   if (is.null(respDf)) {

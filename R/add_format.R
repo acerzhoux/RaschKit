@@ -280,7 +280,7 @@ add_format <- function(){
         startRow = 1, startCol = n_col+3,
         width = 5.5, height = 10
       )
-      if (colsFlag1 > 9 & identical(grep('step', file), integer(0))) {
+      if (colsFlag1 > 9 & identical(grep('step', sheet), integer(0))) {
         insertImage(
           wb, sheet,
           file.path(getwd(), folder, paste0(sheet, '_facilDiscrFitw.png')),
