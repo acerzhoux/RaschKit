@@ -18,6 +18,8 @@ on where to find report and/or result files.
 
 ## calibrateLst() calibrates a list of tests (one test needs be put in list)
 
+Please recode ahead disconnected polytomous scores if needed.
+
 ```{r}
 calibrateLst( # include format, hyperlink, flag color
   respDfLst = NULL, 

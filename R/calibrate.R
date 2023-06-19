@@ -163,7 +163,7 @@ calibrate <- function(test, respDf=NULL, keyDf, pid, n_cov, regrNmVec=NULL,
   if (poly_key){
     cat('Checking polytomou-score items; recode if score are not continuous...\n')
     if (recode_poly) {
-      respDf <- poly_recode(keyDf, respDf, n_cov, c('r','R','m','M','9','x','X','.','',' ',NA))
+      respDf <- poly_recode(test, keyDf, respDf, n_cov, c('r','R','m','M','9','x','X','.','',' ',NA))
     }
   }
 

@@ -99,3 +99,18 @@ miss_recode(
 )
 ```
 
+## Recode disconnected scores in polytomous scoring
+
+If any item has scores recoded, a file named 'xxx_recode_score.csv' will be saved 
+in 'data' folder.
+
+```{r}
+poly_recode(
+  test,
+  keyDf, 
+  respDf, 
+  n_cov, 
+  c('r','R','m','M','9','x','X','.','',' ',NA)
+)
+```
+

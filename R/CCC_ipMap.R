@@ -336,7 +336,8 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key=F
   } else {
     iPlotDat <- iEstimates |>
       filter(is.na(category)) |>
-      mutate(iNum=1:nrow(.)) |>
+      rowid_to_column('iNum') |>
+      # mutate(iNum=1:nrow(.)) |>
       select(iLab, iNum) |>
       right_join(iEstimates, by = "iLab") |>
       filter(!is.na(category)) |>
