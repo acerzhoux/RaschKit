@@ -5,16 +5,19 @@
 \title{poly_recode}
 \usage{
 poly_recode(
-  keys,
-  data,
+  test,
+  keyDf,
+  respDf,
   n_cov,
   miss_code = c("r", "R", "m", "M", "9", "x", "X", ".", "", " ", NA)
 )
 }
 \arguments{
-\item{keys}{Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).}
+\item{test}{Name of the test.}
 
-\item{data}{Dataframe with pid, covariables (e.g,, DIF variable), and
+\item{keyDf}{Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).}
+
+\item{respDf}{Dataframe with pid, covariables (e.g,, DIF variable), and
 responses. Default is NULL where Excel file with name 'test' in 'data'
 folder is used.}
 
