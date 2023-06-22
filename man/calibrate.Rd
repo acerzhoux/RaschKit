@@ -26,7 +26,6 @@ calibrate(
   dFallThr = 0.5,
   dRiseThr = 0.1,
   numAbilGrps = NULL,
-  recode_poly = FALSE,
   missCode2Conv = NULL,
   filetype = "sav",
   slope = NULL,
@@ -98,10 +97,6 @@ Default is 0.5.}
 Default is 0.1.}
 
 \item{numAbilGrps}{Number of ability groups. Default is NULL.}
-
-\item{recode_poly}{TRUE if polytomous items have non-continuous scores.
-Note that code in c('r','R','m','M','9','x','X','.','',' ',NA) will be kept
-intact while other codes will be down scored to be continuous. Default is FALSE.}
 
 \item{missCode2Conv}{Response codes to convert to embedded/trailing missing
 ('M' or 'R'). Use freq_resps_cat() to explore response distribution

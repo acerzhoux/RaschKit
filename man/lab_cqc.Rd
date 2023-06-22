@@ -26,7 +26,8 @@ lab_cqc(
   poly_facet = FALSE,
   poly_group = FALSE,
   pweight = NULL,
-  pw_cols = NULL
+  pw_cols = NULL,
+  strRec = NULL
 )
 }
 \arguments{
@@ -84,6 +85,8 @@ Default is FALSE.}
 be specified if weight is used for modeling. Default is NULL.}
 
 \item{pw_cols}{String of column numbers of case weight, e.g., '5-15'.}
+
+\item{strRec}{String of recoding for ConQuest control file. Default is NULL.}
 }
 \value{
 'test.cqc' file in 'input' folder.
