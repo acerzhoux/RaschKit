@@ -46,6 +46,7 @@
 #' @param pweight Variable name of person weights in response dataframe. Should
 #' be specified if weight is used for modeling. Default is NULL.
 #' @param pw_cols String of column numbers of case weight, e.g., '5-15'.
+#' @param strRec String of recoding for ConQuest control file. Default is NULL.
 #' @return 'test.cqc' file in 'input' folder.
 #' @examples
 #' lab_cqc()
@@ -57,7 +58,7 @@ lab_cqc <- function(test, keyDf, run=NULL, run_ls=NULL,
                    step=FALSE, regr_ls=NULL, DIFVar=NULL, DIFVar_cols=NULL, #dich & poly
                    poly_catgrs=NULL, #dich, poly
                    poly_facet=FALSE, poly_group=FALSE, #poly: facet
-                   pweight=NULL, pw_cols=NULL){
+                   pweight=NULL, pw_cols=NULL, strRec=NULL){
   # run_ls: list(domain='3-11', grade='12-13', flag='36')
   #   for testform; keyDf, labels differ; put in 'Keepcases'
   # run: c('English2', 3, 1); used with `run_ls`
@@ -97,6 +98,7 @@ lab_cqc <- function(test, keyDf, run=NULL, run_ls=NULL,
     section_keys(test, keyDf, dblKeyLst, poly_key, delVec),
     section_specs(anchor, test, DIFVar, poly_catgrs, quick),
     if (!is.null(section_extr)) section_extr,
+    if (poly_key) strRec,
     section_model(run_ls, run, regr_ls, codes, poly_key, DIFVar, step, poly_group),
     section_estimate(quick, poly_key),
     section_export(poly_key, step, DIFVar, poly_catgrs, poly_facet, poly_group),

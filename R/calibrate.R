@@ -40,9 +40,6 @@
 #' @param dRiseThr Ability on last bin below which rising distractor is unflagged.
 #' Default is 0.1.
 #' @param numAbilGrps Number of ability groups. Default is NULL.
-#' @param recode_poly TRUE if polytomous items have non-continuous scores.
-#' Note that code in c('r','R','m','M','9','x','X','.','',' ',NA) will be kept
-#' intact while other codes will be down scored to be continuous. Default is FALSE.
 #' @param missCode2Conv Response codes to convert to embedded/trailing missing
 #' ('M' or 'R'). Use freq_resps_cat() to explore response distribution
 #' and determine which codes need recoding. Commonly found missing symbols
@@ -86,7 +83,7 @@ calibrate <- function(test, respDf=NULL, keyDf, pid, n_cov, regrNmVec=NULL,
                       nDimVec=NULL, dimNmVec=NULL, quick=TRUE, delVec=NULL,
                       dblKeyLst=NULL, trial=FALSE, section_extr=NULL, easy=90,
                       hard=10, iRst=.11, fit_w=1.1, fit_uw=1.2, dFallThr=.5,
-                      dRiseThr=.1, numAbilGrps=NULL, recode_poly=FALSE,
+                      dRiseThr=.1, numAbilGrps=NULL,
                       missCode2Conv=NULL, filetype='sav', slope=NULL, intercept=NULL,
                       extrapolation=FALSE, save_xlsx=TRUE, est_type=NULL,
                       sparse_check=FALSE, CCCip2Wd=FALSE, pweight=NULL,
@@ -161,10 +158,8 @@ calibrate <- function(test, respDf=NULL, keyDf, pid, n_cov, regrNmVec=NULL,
   poly_key <- ifelse(any(keyDf$Max_score > 1), TRUE, FALSE)
 
   if (poly_key){
-    cat('Checking polytomou-score items; recode if score are not continuous...\n')
-    if (recode_poly) {
-      respDf <- poly_recode(test, keyDf, respDf, n_cov, c('r','R','m','M','9','x','X','.','',' ',NA))
-    }
+    cat('Generate recode string for ConQuest if polytomous scores are disconnected...\n')
+    strRec <- poly_recode(test, keyDf, respDf, n_cov, c('r','R','m','M','9','x','X','.','',' ',NA))
   }
 
   if (sparse_check){
@@ -277,7 +272,7 @@ calibrate <- function(test, respDf=NULL, keyDf, pid, n_cov, regrNmVec=NULL,
       section_extr=prep$section_extr,
       DIFVar=NULL, DIFVar_cols=prep$DIFVar_cols, poly_catgrs=NULL,
       poly_facet=FALSE, poly_group=FALSE,
-      pweight=pweight, pw_cols=prep$pw_cols)
+      pweight=pweight, pw_cols=prep$pw_cols, strRec=strRec)
 
   # ####### read CQS output for summary
   cat('Reading CQS file...\n')
@@ -393,7 +388,7 @@ calibrate <- function(test, respDf=NULL, keyDf, pid, n_cov, regrNmVec=NULL,
         paste0('\n===== Output Files\n'),
         paste0('Item calibration of ', toupper(test), ':'),
         paste0('\tCQ output:\t', 'output/', ' (Files with \'', test, '\' in name)'),
-        if (recode_poly & file.exists(paste0('data/', test, '_recode_score.csv'))){
+        if (file.exists(paste0('data/', test, '_recode_score.csv'))){
           paste0('\tScore recoding:\t', 'data/', test, '_recode_score.csv')
         },
         if (save_data){
