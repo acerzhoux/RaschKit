@@ -101,7 +101,7 @@ DIFDimOne <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
   # ####### preprocess data
   if (poly_key){
     cat('Checking polytomou-score items; recode if score are not continuous...\n')
-    respDf <- poly_recode(test, keyDf, respDf, n_cov, c('r','R','m','M','9','x','X','.','',' ',NA))
+    strRec <- poly_recode(test, keyDf, respDf, n_cov, c('r','R','m','M','9','x','X','.','',' ',NA))
   }
 
   if (prep_process){

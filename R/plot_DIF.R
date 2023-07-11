@@ -92,7 +92,7 @@ plot_DIF <- function(df, wh, vars, p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4,
       labs(
         caption=paste0(
           'DIF: abs(delta dif.) > ', DIF_cut,
-          ', abs(delta dif. adj.) > ', DIF_adj_cut,
+          ', abs(delta dif. std.) > ', DIF_adj_cut,
           ', p < ', p_cut
         )
       )
