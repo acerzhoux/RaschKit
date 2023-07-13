@@ -102,14 +102,18 @@ Equate <- function(deltaDf, test, vars, p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4,
   # two ways of dealing with DIF items
   if (iter){
     iFlag <- list()
-    # iteraively remove DIF anchor of max abs(DIF_std)
+    # iteraively remove DIF anchor of max chisq
     while (dim(iDIF)[1] != 0){
       iFlag <- iFlag |>
-        append(list(filter(updated, abs(DIF_std)==max(abs(DIF_std)))))
+        append(
+          list(filter(iDIF, chisq==max(chisq)))
+        )
+      iItem <- filter(iDIF, chisq==max(chisq)) |>
+        pull(item)
       if (step){
-        updated <- chisqTStep(filter(updated, abs(DIF_std)!=max(abs(DIF_std))), design_effect)
+        updated <- chisqTStep(filter(updated, item!=iItem), design_effect)
       } else {
-        updated <- chisqT(filter(updated, abs(DIF_std)!=max(abs(DIF_std))))
+        updated <- chisqT(filter(updated, item!=iItem))
       }
       iDIF <- DIF_items(updated, p_cut, DIF_cut, DIF_adj_cut)
     }

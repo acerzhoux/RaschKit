@@ -1,7 +1,7 @@
 Package: RaschKit
 Type: Package
 Title: Perform Psychometric Analyses under Rasch Models
-Version: 1.0.5
+Version: 1.0.6
 Authors@R: 
     c(person("Zhou", 
              "Xiaoliang", 
