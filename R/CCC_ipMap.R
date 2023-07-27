@@ -9,13 +9,15 @@
 #' Use 'wle' for smaller samples.
 #' @param numAbilGrps Number of ability groups. Default is NULL.
 #' @param poly_key TRUE if the key of any item has polytomous scoring. Default is FALSE.
+#' @param quick TRUE if empirical error is not needed. Default is TRUE
 #' @return Plots of CCC by category and score.
 #' @examples
 #' plot_data <- CCC_ipMap(test, cqs)
 #' plot_data <- CCC_ipMap(test='RACP', abilEst2use='wle')
 #' @export
 
-CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key=FALSE){
+CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
+            poly_key=FALSE, quick=TRUE){
   thr <- df_thr('output', test)
 
   # check names
@@ -98,7 +100,7 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key=F
       tibble(
         paramLab = cqs$gXsiParameterLabels |> unlist()
       ) |>
-      rowid_to_column(),
+        rowid_to_column(),
       by = "rowid") |>
     mutate(
       paramLab = str_trim(paramLab, "both"),
@@ -114,11 +116,8 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key=F
     mutate(modelTerm = ifelse(is.na(category), 1, 2)) # 'item'; 'step'
 
   # tackle constraint terms
-  n_should <- nrow(filter(iStepsCounts, !is.na(iType)))
-  n_given <- iEstTemp |>
-    filter(modelTerm == 1) |>
-    nrow()
-  if(n_given!=n_should){
+  # n_should <- nrow(filter(iStepsCounts, !is.na(iType)))
+  if(!quick){
     constrained1 <- iStepsCounts |>
       filter(iNum == max(iStepsCounts$iNum)) |>
       select(iLab) |>
@@ -135,8 +134,8 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key=F
       dplyr::summarise(
         Xsi = sum(Xsi)*-1, # constraint
         error = mean(error)
-       ) |>
-       mutate(iLab = iStepsCounts[iStepsCounts$iNum == max(iStepsCounts$iNum),]$iLab)
+      ) |>
+      mutate(iLab = iStepsCounts[iStepsCounts$iNum == max(iStepsCounts$iNum),]$iLab)
   } else {
     constrained1 <- tibble()
   }
@@ -161,9 +160,9 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key=F
   deltas <- iStepsCounts |>
     filter(iStepsCount > 0) |>
     left_join(iEstimates |>
-       filter(modelTerm == 1) |>
-       dplyr::rename(iLogit = Xsi),
-       by = "iLab") |>
+            filter(modelTerm == 1) |>
+            dplyr::rename(iLogit = Xsi),
+          by = "iLab") |>
     select(-category, -modelTerm) |>
     left_join(
       iEstimates |>
@@ -180,7 +179,7 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key=F
     filter(!is.na(iType))
 
   # if quick error is used: Adjust delta shift to delta and abilities
-  delta_shift <- mean(deltas$delta)
+  delta_shift <- mean(deltas$delta, na.rm=TRUE)
   if (abs(delta_shift) > 0.001) {
     deltas$iLogit <- deltas$iLogit - delta_shift
     deltas$delta <- deltas$delta - delta_shift
@@ -195,11 +194,11 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key=F
     select(respPrekey, respCat = Value)
 
   respDat <- tibble(
-      pid = map_dbl(cqs$gResponseData, "Pid"),
-      resp = map_int(cqs$gResponseData, "Rsp"),
-      item = map_int(cqs$gResponseData, "Item"),
-      respPrekey = map_int(cqs$gResponseData, "PreKeyRsp")
-    ) |>
+    pid = map_dbl(cqs$gResponseData, "Pid"),
+    resp = map_int(cqs$gResponseData, "Rsp"),
+    item = map_int(cqs$gResponseData, "Item"),
+    respPrekey = map_int(cqs$gResponseData, "PreKeyRsp")
+  ) |>
     mutate(iNum = item+1) |> # because CQ starts with item 0
     left_join(preKeyLookUp, by = "respPrekey") |>
     right_join(
@@ -217,25 +216,30 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key=F
   iFitStats <- iStepsCounts |>
     filter(iStepsCount > 0) |>
     filter(!is.na(iType)) |>
-    bind_cols(
-    tibble(
-      UnWeightedMNSQ = map_dbl(cqs$gFitStatistics$Value, "UnWeightedMNSQ"),
-      UnWeightedtfit = map_dbl(cqs$gFitStatistics$Value, "UnWeightedtfit"),
-      WeightedCW2 = map_dbl(cqs$gFitStatistics$Value, "WeightedCW2"),
-      WeightedMNSQ = map_dbl(cqs$gFitStatistics$Value, "WeightedMNSQ"),
-      Weightedtfit = map_dbl(cqs$gFitStatistics$Value, "Weightedtfit"),
-      WeightedNumerator = map_dbl(cqs$gFitStatistics$Value, "WeightedNumerator"),
-      WeightedDenominator = map_dbl(cqs$gFitStatistics$Value, "WeightedDenominator"),
-      UnWeightedSE = map_dbl(cqs$gFitStatistics$Value, "UnWeightedSE"),
-      WeightedSE = map_dbl(cqs$gFitStatistics$Value, "WeightedSE")
-    )[1:n_should, ] # polytomous
-   )
+    left_join(
+      cbind(
+        iNum=filter(deltas, !is.na(iLogit)) |>
+          pull(iNum),
+        tibble(
+          UnWeightedMNSQ = map_dbl(cqs$gFitStatistics$Value, "UnWeightedMNSQ"),
+          UnWeightedtfit = map_dbl(cqs$gFitStatistics$Value, "UnWeightedtfit"),
+          WeightedCW2 = map_dbl(cqs$gFitStatistics$Value, "WeightedCW2"),
+          WeightedMNSQ = map_dbl(cqs$gFitStatistics$Value, "WeightedMNSQ"),
+          Weightedtfit = map_dbl(cqs$gFitStatistics$Value, "Weightedtfit"),
+          WeightedNumerator = map_dbl(cqs$gFitStatistics$Value, "WeightedNumerator"),
+          WeightedDenominator = map_dbl(cqs$gFitStatistics$Value, "WeightedDenominator"),
+          UnWeightedSE = map_dbl(cqs$gFitStatistics$Value, "UnWeightedSE"),
+          WeightedSE = map_dbl(cqs$gFitStatistics$Value, "WeightedSE")
+        )[1:nrow(filter(iEstTemp, modelTerm == 1)), ] # polytomous
+      ),
+      by='iNum'
+    )
 
   # Category Stats ----------------------------------------------------------
   catStats <- bind_cols(
-      cqs$gMatrixList$i_counts |> as_tibble(),
-      cqs$gMatrixList$i_ptbis |> as_tibble()
-    ) |>
+    cqs$gMatrixList$i_counts |> as_tibble(),
+    cqs$gMatrixList$i_ptbis |> as_tibble()
+  ) |>
     rowid_to_column("iNum") |>
     gather(stat, value, -iNum) |>
     separate(stat, into = c("stat", "resp"), sep = "_") |>
@@ -286,7 +290,7 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key=F
           `Item-Total` = `item-total`
         ) |>
         rowid_to_column("iNum"),
-        # the new column is iNum and not rowid because gMatrixList includes the excluded items
+      # the new column is iNum and not rowid because gMatrixList includes the excluded items
       by = "iNum"
     ) |>
     left_join(
@@ -322,7 +326,7 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key=F
     labs(title = "Candidates", x = "", y = "") +
     ggthemes::theme_tufte() +
     theme(axis.text.x=element_blank(),
-      axis.ticks.x = element_blank())
+        axis.ticks.x = element_blank())
 
   np <- nrow(iEstimates)
   ni <- length(which(iEstimates$modelTerm==1))
@@ -358,7 +362,7 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key=F
 
   iPlot <- iPlot +
     geom_hline(yintercept = mean(iPlotDat$deltaCat1, na.rm=TRUE),
-        colour = "grey80", linetype = "longdash") +
+           colour = "grey80", linetype = "longdash") +
     geom_text(size = 2) +
     labs(title = "Items", x = "", y = "Logits") +
     scale_y_continuous(
@@ -367,10 +371,10 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key=F
     xlim(0.5, max(iPlotDat$deltaRank) + 0.5) +
     ggthemes::theme_tufte() +
     theme(axis.text.x=element_blank(),
-      axis.ticks.x = element_blank())
+        axis.ticks.x = element_blank())
 
   ipMap <- ggpubr::ggarrange(pPlot, iPlot, ncol = 2, nrow = 1,
-           widths = c(1, 4))
+                 widths = c(1, 4))
 
   # save item-person map
   pdf(file = paste0('output/', test, "_ipMap.pdf"), width = 7, height = 7)
@@ -383,8 +387,8 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key=F
     mutate(type = "wle") |>
     bind_rows(
       pStats |>
-       select(pid, pv1:pv5) |>
-       gather(type, ability, -pid)
+        select(pid, pv1:pv5) |>
+        gather(type, ability, -pid)
     ) |>
     filter(type %in% abilEst2use) |>
     left_join(respDat, by = "pid")
@@ -392,18 +396,18 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key=F
 
   if (is.null(numAbilGrps)) numAbilGrps <- map(ccDat, ~round(log10(nrow(.x))+1))
   ccDat_ls <- map2(ccDat, numAbilGrps, ~mutate(.x, group = ntile(ability, .y)) |>
-        group_by(group) |>
-        mutate(abilityGrp = mean(ability)) |> ungroup() |>
-        dplyr::rename(score = resp))
+             group_by(group) |>
+             mutate(abilityGrp = mean(ability)) |> ungroup() |>
+             dplyr::rename(score = resp))
   itype_condition <- reduce(ccDat_ls, bind_rows) |>
-     nest_by(iNum) |>
-     mutate(itype=case_when(
-       all(data$iStepsCount==1)~'allwrong',
-       all(data$iStepsCount>2)~'poly',
-       all(data$respCat %in% c(0,1,9,'M','R','m','r'))~'score',
-       all(data$iStepsCount==2)~'dich')
-     ) |>
-     select(-data)
+    nest_by(iNum) |>
+    mutate(itype=case_when(
+      all(data$iStepsCount==1)~'allwrong',
+      all(data$iStepsCount>2)~'poly',
+      all(data$respCat %in% c(0,1,9,'M','R','m','r'))~'score',
+      all(data$iStepsCount==2)~'dich')
+    ) |>
+    select(-data)
   ccDat_df <- reduce(ccDat_ls, bind_rows)
 
   ################### CCC data for polytomous or 01 ############################
@@ -416,11 +420,11 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key=F
     dplyr::summarise(Count = n()) |> ungroup() |>
     complete(Category, nesting(iNum, group, Ability), fill = list(Count = 0)) |>
     ########################
-    # removes scores with count of zero across ability groups
-    group_by(iNum, Category) |> mutate(scoreCount = sum(Count)) |>
+  # removes scores with count of zero across ability groups
+  group_by(iNum, Category) |> mutate(scoreCount = sum(Count)) |>
     filter(scoreCount > 0) |> select(-scoreCount) |>
     ########################
-    group_by(iNum, Ability, group) |>
+  group_by(iNum, Ability, group) |>
     mutate(prop = Count/sum(Count)) |>
     ungroup() |>
     arrange(iNum, group, Category)
@@ -433,18 +437,18 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key=F
 
   dfObs_opt <- ccDat_df |>
     mutate(respCat=toupper(respCat),
-      respCat=ifelse(score==1, str_c(respCat, '*'), respCat),
-      group = as.factor(group),
-      score = as.factor(score)) |>
+         respCat=ifelse(score==1, str_c(respCat, '*'), respCat),
+         group = as.factor(group),
+         score = as.factor(score)) |>
     group_by(iNum, group, Ability = abilityGrp, Option = respCat) |>
     dplyr::summarise(Count = n()) |> ungroup() |>
     complete(Option, nesting(iNum, group, Ability), fill = list(Count = 0)) |>
     ########################
-    # removes scores with count of zero across ability groups
-    group_by(iNum, Option) |> mutate(scoreCount = sum(Count)) |>
+  # removes scores with count of zero across ability groups
+  group_by(iNum, Option) |> mutate(scoreCount = sum(Count)) |>
     filter(scoreCount > 0) |> select(-scoreCount) |>
     ########################
-    group_by(iNum, Ability, group) |>
+  group_by(iNum, Ability, group) |>
     mutate(prop = Count/sum(Count)) |>
     ungroup() |>
     arrange(iNum, group)
@@ -469,7 +473,7 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key=F
   plot_ls <- list()
   ccc_data_ls <- list()
   for(i in seq_along(iStats$iNum)){
-  # for(i in 5){
+    # for(i in 5){
     j <- iStats$iNum[[i]]
     # print(i)
     if (itype_condition$itype[[i]] %in% c('allwrong', 'dich')){
@@ -480,8 +484,8 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL, poly_key=F
     } else if (itype_condition$itype[[i]] %in% 'score'){
       plot_ls[[i]] <- CCC_plot()[['ccc_score']](iStats, dfObs, j, tblInt)
       ccc_data_ls[[i]] <- dfObs |> filter(iNum == j) |>
-       mutate(Category=ifelse(Category==1, str_c(1, '*'), 0)) |>
-       dplyr::rename(Option=Category)
+        mutate(Category=ifelse(Category==1, str_c(1, '*'), 0)) |>
+        dplyr::rename(Option=Category)
     }
   }
 

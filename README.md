@@ -47,10 +47,13 @@
     - library(RaschKit)
     - install_packages_ls()
     - create_folders()
-
+    
 ===== v1.0.6 Updates =====
 1. Debugged Equate() where iDIF should have been used to iteratively select 
    DIF item each step.
+2. Debugged CCC_ipMap() where any item has all responses correct.
+3. Added function of reading .sav datasets to DIFVarTests() so processed .sav
+   files with test names can be put in 'data' folder.
 
 ===== v1.0.5 Updates =====
 1. Debugged poly_recode() where a 'test' argument is needed.

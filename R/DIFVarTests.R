@@ -43,12 +43,24 @@ DIFVarTests <- function(testVec=NULL, respDfLst=NULL, difVarLst=NULL, n_cov=NULL
     }
   }
   if (!resltReady) {
-    if (is.null(respDfLst) | is.null(n_cov) | is.null(pid) | is.null(keyDfLst)){
-      stop('Please provide \'respDfLst\', \'n_cov\', \'pid\', and \'keyDfLst\'!')
+    if (is.null(n_cov) | is.null(pid) | is.null(keyDfLst)){
+      stop('Please provide \'n_cov\', \'pid\', and \'keyDfLst\'!')
     }
-    if (!all(names(difVarLst) %in% names(respDfLst[[1]]))) {
-      stop('All DIF variables should be in data!')
+
+    # read .sav datasets from 'data' folder
+    if (is.null(respDfLst)){
+      respDfLst <- map(testVec, ~haven::read_sav(paste0('data/', .x, '.sav')))
     }
+
+    for (i in seq_along(respDfLst)){
+      if (!all(names(difVarLst) %in% names(respDfLst[[i]]))) {
+        idMiss <- !(names(difVarLst) %in% names(respDfLst[[i]]))
+        stop(
+          paste0('Test ', testVec[[i]],' should have DIF variable ', toString(names(difVarLst)[idMiss]), '!')
+        )
+      }
+    }
+
     if (!(length(respDfLst) == length(keyDfLst))) {
       stop('respDfLst and keyDfLst should have same number of elements!')
     }

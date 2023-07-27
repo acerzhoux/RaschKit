@@ -357,7 +357,7 @@ calibrate <- function(test, respDf=NULL, keyDf, pid, n_cov, regrNmVec=NULL,
     # determine whether to use wle or pv1
     n_min <- min(map_int(respDf[-c(1:n_cov)], ~length(str_remove_all(na.omit(.x), 'R'))))
     abilEst2use <- ifelse(n_min >= 200, 'pv1', 'wle')
-    plot_data <- CCC_ipMap(test, cqs, abilEst2use, numAbilGrps, poly_key)
+    plot_data <- CCC_ipMap(test, cqs, abilEst2use, numAbilGrps, poly_key, quick)
     ccc_data <- plot_data[['ccc_data']]
     iType <- plot_data[['itype']]
 
