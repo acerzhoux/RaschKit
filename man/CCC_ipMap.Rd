@@ -4,7 +4,14 @@
 \alias{CCC_ipMap}
 \title{CCC_ipMap}
 \usage{
-CCC_ipMap(test, cqs, abilEst2use = "pv1", numAbilGrps = NULL, poly_key = FALSE)
+CCC_ipMap(
+  test,
+  cqs,
+  abilEst2use = "pv1",
+  numAbilGrps = NULL,
+  poly_key = FALSE,
+  quick = TRUE
+)
 }
 \arguments{
 \item{test}{Name of the test.}
@@ -17,6 +24,8 @@ Use 'wle' for smaller samples.}
 \item{numAbilGrps}{Number of ability groups. Default is NULL.}
 
 \item{poly_key}{TRUE if the key of any item has polytomous scoring. Default is FALSE.}
+
+\item{quick}{TRUE if empirical error is not needed. Default is TRUE}
 }
 \value{
 Plots of CCC by category and score.
