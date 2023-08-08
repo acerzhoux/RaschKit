@@ -21,16 +21,41 @@ on where to find report and/or result files.
 If indDfLst is available, its stats and plots are added to summary file.
 
 ```{r}
+tests <- c('N', 'R', 'WA')
+vars <- c('trial', 'live')
+stats <- c('delta', 'ind')
+
+lst <- list()
+for (i in 1:2) {
+ lst[[i]] <- map2(
+    map(
+      tests, 
+      ~readxl::read_xlsx(
+        'equating/stats.xlsx', 
+        paste0(.x, '.', stats[[i]], '.', vars[[1]]) #e.g., N.delta.trial
+      )
+    ),
+    map(
+      tests,
+      ~readxl::read_xlsx(
+        'equating/stats.xlsx',
+        paste0(.x, '.', stats[[i]], '.', vars[[2]]) #e.g., R.ind.live
+      )
+    ),
+    ~inner_join(.x, .y, by='item')
+  )  
+}  
+
 equateLst( # include format, hyperlink, flag color
-  deltaDfLst,
+  deltaDfLst=lst[[1]] |> `names<-`(tests),
   vars,
   p_cut = 0.05,
-  DIF_cut = 0.5,
-  DIF_adj_cut = 4,
+  DIF_cut = c(0.3, 0.3, 0.5), # vector of cuts if tests vary in cut
+  DIF_std_cut = c(3.5, 3.5, 40), # vector of cuts if tests vary in cut
   design_effect = 1,
   step = FALSE,
-  iter = TRUE,
-  indDfLst = NULL
+  iter = FALSE,
+  indDfLst = lst[[2]] # NULL if no stats on facility, discrimination, infit
 )
 ```
 

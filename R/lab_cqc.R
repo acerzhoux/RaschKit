@@ -26,13 +26,9 @@
 #' Element name is regressor's name. Default is NULL.
 #' @param codes Vector of valid codes for item responses,
 #' e.g., c(1, 2, 3, 4, 5, 6, 7, 8, 9).
-#' @param delVec Vector of item order number(s) to be removed from the test,
-#' e.g., c(2, 3, 45, 46). Default is NULL.
 #' @param anchor TRUE when anchor is to be done. Default is FALSE.
 #' @param section_extr Extra sections to be added to 'test.cqc' file in
 #' 'input' folder. Default is NULL.
-#' @param dblKeyLst List of items with double keys. Element is double keys, and
-#' element name is item order, e.g., list(`7`=c(1,3), `9`=c(3,4). Default is NULL.
 #' @param poly_key TRUE if the key of any item has polytomous scoring. Default is FALSE.
 #' @param quick TRUE if quick estimation is preferred. Default is FALSE.
 #' @param step TRUE if any item in the test has polytomous scoring. Default is FALSE.
@@ -53,8 +49,8 @@
 #' @export
 
 lab_cqc <- function(test, keyDf, run=NULL, run_ls=NULL,
-                   codes, pid_cols=NULL, resps_cols, quick=FALSE, delVec=NULL,
-                   dblKeyLst=NULL, poly_key=FALSE, anchor=FALSE, section_extr=NULL,
+                   codes, pid_cols=NULL, resps_cols, quick=FALSE,
+                   poly_key=FALSE, anchor=FALSE, section_extr=NULL,
                    step=FALSE, regr_ls=NULL, DIFVar=NULL, DIFVar_cols=NULL, #dich & poly
                    poly_catgrs=NULL, #dich, poly
                    poly_facet=FALSE, poly_group=FALSE, #poly: facet
@@ -85,17 +81,12 @@ lab_cqc <- function(test, keyDf, run=NULL, run_ls=NULL,
     path_df <- paste0('data/', test, '_', DIFVar, '.txt')
   }
 
-  # modify if last response col(s) has no data
-  if (length(delVec)>0) {
-    resps_cols <- resps_modify(keyDf, resps_cols, delVec)
-  }
-
   # compose CQC string
   cqc <- c(
     section_intro(test, run_ls, path_output, DIFVar, poly_catgrs),
     section_data(path_df, resps_cols, pid_cols, run_ls, regr_ls,
                  path_lab, DIFVar, DIFVar_cols, poly_group, pweight, pw_cols),
-    section_keys(test, keyDf, dblKeyLst, poly_key, delVec),
+    section_keys(keyDf),
     section_specs(anchor, test, DIFVar, poly_catgrs, quick),
     if (!is.null(section_extr)) section_extr,
     if (poly_key) strRec,

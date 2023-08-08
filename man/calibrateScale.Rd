@@ -13,6 +13,8 @@ calibrateScale(
   ancShiftLst = NULL,
   ancTest2ReadLst = NULL,
   ancDfLst = NULL,
+  ancRead = FALSE,
+  useR = FALSE,
   slope = NULL,
   intercept = NULL,
   extrapolation = FALSE
@@ -41,11 +43,14 @@ forms. Only delta's (and step estimates) in 'tests' are extracted and put in
 'input' folder as anchor file. Default is NULL.}
 
 \item{ancDfLst}{List of dataframe of 'Item' and 'Delta' for anchors. Include 'Step' column
-for step estimates (step number). Default is NULL. If all of ancShift, ancTest2Read,
-and ancDf are NULL, an xxx_anc.txt file with
-anchor tbl (Item, Delta) should be put in 'input' folder beforehand.
+for step estimates (step number). Default is NULL.
 Check output 'xxx_anc.txt' file from previous run for correct anchor order,
 especially for polytomous items with step parameters.}
+
+\item{ancRead}{Whether to read anchor file in 'input' folder. Need to put anchor
+file there. Default is FALSE.}
+
+\item{useR}{TRUE when code 'R' is used for scoring. Default is FALSE.}
 
 \item{slope}{Slope to multiply ability estimates. Default is NULL}
 

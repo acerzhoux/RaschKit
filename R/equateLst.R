@@ -10,9 +10,9 @@
 #' to two tests associated with .x and .y.
 #' @param p_cut p value of chi-square test. Default is 0.05.
 #' @param DIF_cut Threshold of an item's delta estimate difference between
-#' two tests. Default is 0.5.
-#' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference
-#' between two tests. Default is 4.
+#' two tests. Default is 0.5. Give vector of cuts if tests vary in cut.
+#' @param DIF_std_cut Threshold of an item's adjusted delta estimate difference
+#' between two tests. Default is 4. Give vector of cuts if tests vary in cut.
 #' @param design_effect Value to adjust errors. Default is 1.
 #' @param step TRUE if DIF analysis is performed on step parameters.
 #' Default is FALSE.
@@ -26,18 +26,30 @@
 #' hyperlinks, flag color, and format.
 #' @export
 
-equateLst <- function(deltaDfLst, vars, p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4,
+equateLst <- function(deltaDfLst, vars, p_cut=0.05, DIF_cut=0.5, DIF_std_cut=4,
                        design_effect=1, step=FALSE, iter=TRUE, indDfLst=NULL){
   # check input
   tests <- names(deltaDfLst)
   if (is.null(tests)) {
-    stop('Please give the test name to each dataframe element in list!')
+    stop('deltaDfLst should have test name for each Df element!')
   }
 
   lenCheck <- map_int(deltaDfLst, nrow) == map_int(deltaDfLst, ~nrow(na.omit(.x)))
   if (any(!lenCheck)) {
     stop(paste0(names(lenCheck[!lenCheck]), ' contains missing values! Remove and retry.'))
   }
+
+  if (length(DIF_cut)!=1 & length(DIF_cut)!=length(tests)) {
+    stop('Number of DIF_cut should equal number of tests!')
+  }
+
+  if (length(DIF_std_cut)!=1 & length(DIF_std_cut)!=length(tests)) {
+      stop('Number of DIF_std_cut should equal number of tests!')
+  }
+
+  # check DIF_cut, DIF_std_cut
+  if (length(DIF_cut)==1) DIF_cut <- rep(DIF_cut, length(tests))
+  if (length(DIF_std_cut)==1) DIF_std_cut <- rep(DIF_std_cut, length(tests))
 
   # folders, file names
   subfolder <- ifelse(
@@ -51,12 +63,12 @@ equateLst <- function(deltaDfLst, vars, p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4,
   # DIF analysis
   if (is.null(indDfLst)) {
     for (i in seq_along(tests)){
-      Equate(deltaDfLst[[i]], tests[[i]], vars, p_cut, DIF_cut, DIF_adj_cut, TRUE,
+      Equate(deltaDfLst[[i]], tests[[i]], vars, p_cut, DIF_cut[[i]], DIF_std_cut[[i]], TRUE,
            design_effect, step, NULL, iter)
     }
   } else {
     for (i in seq_along(tests)){
-      Equate(deltaDfLst[[i]], tests[[i]], vars, p_cut, DIF_cut, DIF_adj_cut, TRUE,
+      Equate(deltaDfLst[[i]], tests[[i]], vars, p_cut, DIF_cut[[i]], DIF_std_cut[[i]], TRUE,
              design_effect, step, NULL, iter, indDfLst[[i]])
     }
   }
@@ -87,7 +99,7 @@ equateLst <- function(deltaDfLst, vars, p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4,
     ls_save,
     folder,
     file,
-    c(DIF_cut, DIF_adj_cut)
+    list(DIF_cut, DIF_std_cut)
   )
 
   cat('\nEquating summary file is at:\n\t', file)

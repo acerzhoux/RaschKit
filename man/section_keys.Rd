@@ -4,38 +4,21 @@
 \alias{section_keys}
 \title{section_keys}
 \usage{
-section_keys(test, keyDf, dblKeyLst = NULL, poly_key = FALSE, delVec = NULL)
+section_keys(keyDf)
 }
 \arguments{
-\item{test}{Name of the test.}
-
-\item{keyDf}{Dataframe of 'Item', 'Key', and 'Max_score'.}
-
-\item{dblKeyLst}{List of items with double keys. Element is double keys, and
-element name is item order, e.g., list(`7`=c(1,3), `9`=c(3,4). Default is NULL.}
-
-\item{poly_key}{TRUE if the key of any item has polytomous scoring.
-Default is FALSE.}
-
-\item{delVec}{Vector of to-be-removed items' order numbers in the test,
-e.g., c(4, 7, 65, 114). Default is NULL.}
+\item{keyDf}{Dataframe of 'Item', 'Key', and 'Max_score'. Can have 'Key2',
+'Key3', etc. if multiple keys.}
 }
 \value{
 String of characters used in key section of 'test.cqc' file in
 'input' folder.
 }
 \description{
-This function reads in 'test_Key.txt' from 'data' folder and specifies
-the Key section of the 'test.cqc' file in 'input' folder. Both procedures
-are associated with test named 'test'.
-}
-\details{
-They key file has one row for all-multiple-choice-item test, or multiple
-rows if any item has double key or polytomous scoring.
+This function uses keyDf to generate key strings for CQ control file. A test
+of multiple choice with one key has one row/string, and otherwise multiple
+rows/strings (e.g., double key or polytomous scoring).
 }
 \examples{
-section_keys(test='b', delVec=c(2, 5))
-section_keys(test='b', dblKeyLst=list(`5`=c(1,3), `29`=c(3,4)))
-section_keys(test='a', poly_key=TRUE)
-section_keys(test='b', poly_key=TRUE, delVec=c(2, 5))
+section_keys(cdLst[[1]])
 }

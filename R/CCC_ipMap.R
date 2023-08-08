@@ -218,8 +218,9 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
     filter(!is.na(iType)) |>
     left_join(
       cbind(
-        iNum=filter(deltas, !is.na(iLogit)) |>
-          pull(iNum),
+        iNum=filter(deltas, !is.na(iLogit)) |> #remove all-correct items
+          pull(iNum) |>
+          unique(), # polytomous
         tibble(
           UnWeightedMNSQ = map_dbl(cqs$gFitStatistics$Value, "UnWeightedMNSQ"),
           UnWeightedtfit = map_dbl(cqs$gFitStatistics$Value, "UnWeightedtfit"),

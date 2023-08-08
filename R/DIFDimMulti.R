@@ -31,8 +31,6 @@
 #' @param dimNmVec Vector of the dimensions' names.
 #' @param keyDf Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).
 #' @param quick TRUE when testing. Default is TRUE
-#' @param delVec Vector of orders of items to be removed.
-#' @param dblKeyLst TRUE if any item has polytomous scoring. Default is FALSE.
 #' @param section_extr Extra sections to be added to 'test.cqc' file in 'input'
 #' folder. Default is NULL.
 #' @param p_cut p value of chi-square test. Default is 0.05.
@@ -53,8 +51,7 @@
 DIFDimMulti <- function(method=c('chi_square', 'Bonferroni'), test, DIFVar,
                           pid, n_cov, nDimVec, dimNmVec, respDf=NULL, filetype='sav',
                           keyDf, vars=NULL, regrNmVec=NULL,
-                          quick=TRUE, delVec=NULL,
-                          dblKeyLst=FALSE, section_extr=NULL,
+                          quick=TRUE, section_extr=NULL,
                           p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4,
                           design_effect=1, dim_multi=FALSE, scores=NULL,
                           prep_process=FALSE, pweight=NULL, iter=TRUE){
@@ -128,7 +125,7 @@ DIFDimMulti <- function(method=c('chi_square', 'Bonferroni'), test, DIFVar,
   }
   arg_cqc <- list(test=test, run=NULL, run_ls=NULL, keyDf=keyDf,
     codes=prep$codes, pid_cols=prep$pid_cols, resps_cols=prep$resps_cols,
-    quick=quick, delVec=delVec, dblKeyLst=dblKeyLst, poly_key=poly_key,
+    quick=quick, poly_key=poly_key,
     anchor=FALSE, step=FALSE, regr_ls=prep$regr_ls, section_extr=prep$section_extr,
     DIFVar=DIFVar, DIFVar_cols=prep$DIFVar_cols, poly_catgrs=NULL,
     poly_facet=FALSE, poly_group=FALSE, pweight=pweight, pw_cols=prep$pw_cols)

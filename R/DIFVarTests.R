@@ -95,8 +95,10 @@ DIFVarTests <- function(testVec=NULL, respDfLst=NULL, difVarLst=NULL, n_cov=NULL
   if (resltReady) { # extract stats and DIF analysis
     for (k in seq_along(testVec)){
       test <- testVec[[k]]
+      cat('\n============', 'DIF Analysis:',  test, '============\n\n')
       for (i in 1:n_var){
         DIFVar <- vars_DIF[[i]]
+        cat('\n\t>>>>>', DIFVar, '<<<<<\n\n')
         vars <- difVarLst[[i]]
         if (is.null(vars)) {
           DIF_poly_shw(DIFVar, test, NULL, p_cut, FALSE, NULL)
@@ -104,8 +106,9 @@ DIFVarTests <- function(testVec=NULL, respDfLst=NULL, difVarLst=NULL, n_cov=NULL
           DIF_dich_its_shw(DIFVar, test, vars, p_cut, DIF_cut, DIF_adj_cut,
                            design_effect, FALSE, TRUE, iter, TRUE)
         }
-        if (!is.null(test3term) & !is.null(vars)){
+        if (!is.null(test3term) && !is.null(vars)){
           if (test %in% test3term){
+            cat('\n\t>>>>>', DIFVar, '* step', '<<<<<\n\n')
             DIF_dich_its_shw(DIFVar, test, vars, p_cut, DIF_cut, DIF_adj_cut,
                              design_effect, TRUE, TRUE, iter, TRUE)
           }
@@ -115,6 +118,7 @@ DIFVarTests <- function(testVec=NULL, respDfLst=NULL, difVarLst=NULL, n_cov=NULL
   } else { # model, save results, and DIF analysis
     for (k in seq_along(testVec)){
       test <- testVec[[k]]
+      cat('\n============', 'DIF Analysis:', test, '============\n\n')
       keyDf <- keyDfLst[[k]]
       if (is.null(respDfLst)){
         respDf <- respDfLst
@@ -123,13 +127,15 @@ DIFVarTests <- function(testVec=NULL, respDfLst=NULL, difVarLst=NULL, n_cov=NULL
       }
       for (i in 1:n_var){
         DIFVar <- vars_DIF[[i]]
+        cat('\n\t>>>>>', DIFVar, '<<<<<\n\n')
         vars <- difVarLst[[i]]
         method <- ifelse(is.null(vars), 'Bonferroni', 'chi_square')
         DIFDimOne(method, test, pid, n_cov, DIFVar, respDf, 'sav', keyDf, vars,
                     FALSE, NULL, NULL, TRUE, NULL, FALSE, TRUE, p_cut, DIF_cut,
                     DIF_adj_cut, iter, FALSE, design_effect, NULL)
-        if (!is.null(test3term) & !is.null(vars)){
+        if (!is.null(test3term) && !is.null(vars)){
           if (test %in% test3term){
+            cat('\n\t>>>>>', DIFVar, '* step', '<<<<<\n\n')
             DIFDimOne(method, test, pid, n_cov, DIFVar, respDf, 'sav', keyDf, vars,
                         FALSE, NULL, NULL, TRUE, NULL, FALSE, TRUE, p_cut, DIF_cut,
                         DIF_adj_cut, iter, TRUE, design_effect, NULL)
@@ -212,9 +218,13 @@ DIFVarTests <- function(testVec=NULL, respDfLst=NULL, difVarLst=NULL, n_cov=NULL
 
       summary <- map(ex_ls[1:(n-nStep)], ~.x |> filter(flag==1)) |>
         imap(~.x |> mutate(Test=.y)) |>
-        map2(
-          difVarLst,
-          ~.x |> mutate(Favored=as.character(ifelse(DIF<0, .y[[1]], .y[[2]])))
+        map(
+          ~mutate(
+            .x,
+            Favored=as.character(
+              ifelse(DIF<0, difVarLst[[i]][[1]], difVarLst[[i]][[2]])
+            )
+          )
         ) |>
         reduce(bind_rows) |>
         select(Test, Favored, everything(), chisq, p) |>
@@ -223,9 +233,13 @@ DIFVarTests <- function(testVec=NULL, respDfLst=NULL, difVarLst=NULL, n_cov=NULL
       if (!is.null(test3term)){
         summaryStep <- map(ex_ls[(n-nStep+1):n], ~.x |> filter(flag==1)) |>
           imap(~.x |> mutate(Test=.y)) |>
-          map2(
-            difVarLst,
-            ~.x |> mutate(Favored=as.character(ifelse(DIF<0, .y[[1]], .y[[2]])))
+          map(
+            ~.x |>
+            mutate(
+              Favored=as.character(
+                ifelse(DIF<0, difVarLst[[i]][[1]], difVarLst[[i]][[2]])
+              )
+            )
           ) |>
           reduce(bind_rows) |>
           select(Test, Favored, everything(), chisq, p) |>

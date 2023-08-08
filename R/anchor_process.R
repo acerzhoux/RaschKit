@@ -9,7 +9,6 @@
 #' @param respDf Dataframe with pid, covariables (e.g,, DIF variable), and responses.
 #' Default is NULL where Excel file with name 'test' in 'data' folder is used.
 #' @param keyDf Vector of keys in the test. Default is NULL.
-#' @param delVec Vector of orders of items to be removed. Default is NULL.
 #' @param n_cov Number of covariates before responses.
 #' @param nDimVec Vector of numbers of responses the dimensions have. Default is NULL.
 #' Define this vector if multi-dimensional model is to be run, e.g., c(30, 45).
@@ -17,9 +16,9 @@
 #' @param ancDf Dataframe of 'Item' and 'Delta' for anchors.
 #' @export
 
-anchor_process <- function(test, respDf, keyDf, delVec, n_cov, nDimVec, ancDf){
+anchor_process <- function(test, respDf, keyDf, n_cov, nDimVec, ancDf){
   # id of removed item
-  id_x <- unique(c(which(keyDf$Key %in% c('x', 'X')), delVec))
+  id_x <- which(keyDf$Key %in% c('x', 'X'))
   # id of item with one score category
   id_no_data <- which(
     {map_df(

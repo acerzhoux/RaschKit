@@ -18,8 +18,6 @@ DIFDimMulti(
   vars = NULL,
   regrNmVec = NULL,
   quick = TRUE,
-  delVec = NULL,
-  dblKeyLst = FALSE,
   section_extr = NULL,
   p_cut = 0.05,
   DIF_cut = 0.5,
@@ -63,10 +61,6 @@ corresponds to the alphabetic/numeric order of DIF variables' two categories in 
 Make sure to check colinearity of the regressors.}
 
 \item{quick}{TRUE when testing. Default is TRUE}
-
-\item{delVec}{Vector of orders of items to be removed.}
-
-\item{dblKeyLst}{TRUE if any item has polytomous scoring. Default is FALSE.}
 
 \item{section_extr}{Extra sections to be added to 'test.cqc' file in 'input'
 folder. Default is NULL.}

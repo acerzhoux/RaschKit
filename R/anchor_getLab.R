@@ -12,7 +12,7 @@ anchor_getLab <- function(folder, test) {
   dfRead <- readr::read_fwf(
       paste0(folder, '/', test, '_anc.txt'),
       fwf_widths(
-        c(8, 10, 50),
+        c(5, 15, 50),
         c("iNum", "Delta", "paramLab")
       ),
       show_col_types=FALSE

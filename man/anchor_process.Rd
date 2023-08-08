@@ -4,7 +4,7 @@
 \alias{anchor_process}
 \title{anchor_process}
 \usage{
-anchor_process(test, respDf, keyDf, delVec, n_cov, nDimVec, ancDf)
+anchor_process(test, respDf, keyDf, n_cov, nDimVec, ancDf)
 }
 \arguments{
 \item{test}{Name of test.}
@@ -13,8 +13,6 @@ anchor_process(test, respDf, keyDf, delVec, n_cov, nDimVec, ancDf)
 Default is NULL where Excel file with name 'test' in 'data' folder is used.}
 
 \item{keyDf}{Vector of keys in the test. Default is NULL.}
-
-\item{delVec}{Vector of orders of items to be removed. Default is NULL.}
 
 \item{n_cov}{Number of covariates before responses.}
 

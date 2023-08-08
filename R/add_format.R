@@ -53,7 +53,7 @@ add_format <- function(){
     return(wb)
   }
 
-  addHeaderStyle <- function(wb, n_col, sheet, size=10){
+  addHeaderStyle <- function(wb, n_col, sheet, size=8){
     headerStyle <- createStyle(
       fontSize = size,
       textDecoration = 'bold',
@@ -76,7 +76,7 @@ add_format <- function(){
     return(wb)
   }
 
-  addBodyStyle <- function(wb, halign, n_case, cols, sheet, size=10){
+  addBodyStyle <- function(wb, halign, n_case, cols, sheet, size=8){
     bodyStyle <- createStyle(
       fontSize = size,
       halign = halign,
@@ -237,7 +237,10 @@ add_format <- function(){
         x = ls_save[[i]] |>
           dplyr::mutate(
             `Files`=c(
-              file.path(getwd(), folder, paste0(sheet, '_process.xlsx')),
+              file.path(
+                gsub('equating/', '', gsub('DIF/', '', folder)),
+                paste0(sheet, '_process.xlsx')
+              ),
               rep(NA, n_case-1-1)
             )
           )
@@ -255,13 +258,13 @@ add_format <- function(){
       wb <- colorFlags(
           wb,
           colsFlag,
-          c(paste0('>', flagVec[[1]]), paste0('>', flagVec[[2]]), '<.05', '=1'),
+          c(paste0('>', flagVec[[1]][i-1]), paste0('>', flagVec[[2]][i-1]), '<.05', '=1'),
           sheet,
           n_case
         ) |>
         colorFlags(
           colsFlag[1:2],
-          c(paste0('<-', flagVec[[1]]), paste0('<-', flagVec[[2]])),
+          c(paste0('<-', flagVec[[1]][i-1]), paste0('<-', flagVec[[2]][i-1])),
           sheet,
           n_case
         )
@@ -276,14 +279,14 @@ add_format <- function(){
       ## Insert images
       insertImage(
         wb, sheet,
-        file.path(getwd(), folder, paste0(sheet, '_delta.png')),
+        file.path(folder, paste0(sheet, '_delta.png')),
         startRow = 1, startCol = n_col+3,
         width = 5.5, height = 10
       )
       if (colsFlag1 > 9 & identical(grep('step', sheet), integer(0))) {
         insertImage(
           wb, sheet,
-          file.path(getwd(), folder, paste0(sheet, '_facilDiscrFitw.png')),
+          file.path(folder, paste0(sheet, '_facilDiscrFitw.png')),
           startRow = 1, startCol = n_col+10,
           width = 5.5, height = 10
         )
@@ -324,7 +327,7 @@ add_format <- function(){
           x = ls_save[[i]] |>
             dplyr::mutate(
               `Files`=c(
-                file.path(getwd(), folder, paste0(sheet, '_process.xlsx')),
+                file.path(folder, paste0(sheet, '_process.xlsx')),
                 rep(NA, n_case-1-1)
               )
             )

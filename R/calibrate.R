@@ -19,10 +19,7 @@
 #' @param dimNmVec Vector of the dimensions' names. Default is NULL.
 #' Define this vector if multi-dimensional model is to be run.
 #' @param keyDf Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).
-#' @param quick TRUE if empirical error is not needed. Default is TRUE
-#' @param delVec Vector of orders or labels of items to be removed. Default is NULL.
-#' @param dblKeyLst List of items with double keys. Element is double keys, and
-#' element name is item order, e.g., list(`7`=c(1,3), `9`=c(3,4). Default is NULL.
+#' @param quick TRUE if empirical error is not needed. Default is TRUE.
 #' @param trial TRUE when trial item diagnostics is needed after anchoring is done.
 #' Default is FALSE.
 #' @param section_extr Extra sections to be added to 'test.cqc' file in
@@ -69,32 +66,35 @@
 #' forms. Only delta's (and step estimates) in 'tests' are extracted and put in
 #' 'input' folder as anchor file. Default is NULL.
 #' @param ancDf Dataframe of 'Item' and 'Delta' for anchors. Include 'Step' column
-#' for step estimates (step number). Default is NULL. Specify one of ancShift,
-#' ancTest2Read, and ancDf to do anchoring. Check output 'xxx_anc.txt' file
+#' for step estimates (step number). Default is NULL. Check output 'xxx_anc.txt' file
 #' from previous run for correct anchor order, especially for polytomous items
 #' with step parameters.
+#' @param ancRead Whether to read anchor file in 'input' folder. Need to put anchor
+#' file there. Default is FALSE.
+#' @param useR TRUE when code 'R' is used for scoring. Default is FALSE.
 #' @examples
 #' # Not run
-#' # calibrate(respDf=racp, test='RACP', pid="V1", n_cov=1, keyDf=cd,
-#' # delVec=c(3,4,5,36), dblKeyLst=list(`7`=c(1,3), `9`=c(3,4)))
+#' # calibrate(respDf=racp, test='RACP', pid="V1", n_cov=1, keyDf=cd)
 #' @export
 
 calibrate <- function(test, respDf=NULL, keyDf, pid, n_cov, regrNmVec=NULL,
-                      nDimVec=NULL, dimNmVec=NULL, quick=TRUE, delVec=NULL,
-                      dblKeyLst=NULL, trial=FALSE, section_extr=NULL, easy=90,
+                      nDimVec=NULL, dimNmVec=NULL, quick=TRUE,
+                      trial=FALSE, section_extr=NULL, easy=90,
                       hard=10, iRst=.11, fit_w=1.1, fit_uw=1.2, dFallThr=.5,
                       dRiseThr=.1, numAbilGrps=NULL,
                       missCode2Conv=NULL, filetype='sav', slope=NULL, intercept=NULL,
                       extrapolation=FALSE, save_xlsx=TRUE, est_type=NULL,
                       sparse_check=FALSE, CCCip2Wd=FALSE, pweight=NULL,
-                      ancShift=NULL, ancTest2Read=NULL, ancDf=NULL){
+                      ancShift=NULL, ancTest2Read=NULL, ancDf=NULL, ancRead=FALSE,
+                      useR=FALSE){
   options(warn=-1)
 
-  if (!is.null(ancShift) || !is.null(ancTest2Read) || !is.null(ancDf)) {
+  if (!is.null(ancShift) || !is.null(ancTest2Read) || !is.null(ancDf) || ancRead) {
     anchor <- TRUE
   } else {
     anchor <- FALSE
   }
+  if (trial) useR <- FALSE
 
   cat('\n============', if (anchor) 'Anchoring' else 'Calibrating', ':', test, '============\n\n')
 
@@ -151,8 +151,10 @@ calibrate <- function(test, respDf=NULL, keyDf, pid, n_cov, regrNmVec=NULL,
   }
 
   # ####### Move 'test'-related files I:
-  cat('Move files in \'input\' folder with test name into subfolder...\n')
-  move_into_folder('input', test)
+  if (!ancRead) {
+    cat('Move files in \'input\' folder with test name into subfolder...\n')
+    move_into_folder('input', test)
+  }
 
   # ####### preprocess data
   poly_key <- ifelse(any(keyDf$Max_score > 1), TRUE, FALSE)
@@ -185,13 +187,6 @@ calibrate <- function(test, respDf=NULL, keyDf, pid, n_cov, regrNmVec=NULL,
                   n_cov+sum(nDimVec[1:i]), 'M','R', NA,
                   missCode2Conv, F, F)
       }
-    }
-  }
-
-  # find out deleted item order if delete is item labels
-  if (!is.null(delVec)){
-    if (typeof(delVec) == "character"){
-      delVec <- which(labels %in% delVec)
     }
   }
 
@@ -233,7 +228,7 @@ calibrate <- function(test, respDf=NULL, keyDf, pid, n_cov, regrNmVec=NULL,
   # prepare arguments
   cat('Preparing ConQuest control file...\n')
   prep <- df_key_lab_args(test, respDf, pid, n_cov, sum(nDimVec), NULL,
-                          regrNmVec, section_extr, labels, anchor & !trial, pweight)
+                          regrNmVec, section_extr, labels, useR, pweight)
   if (length(nDimVec) > 1){
     if(is.null(dimNmVec)) stop('Please set dimension names \'dimNmVec\'!')
     if (poly_key) scrs <- 0:max(keyDf$Max_score) else scrs <- 0:1
@@ -243,15 +238,15 @@ calibrate <- function(test, respDf=NULL, keyDf, pid, n_cov, regrNmVec=NULL,
 
   # ####### process anchor file
   if (anchor) {
-    cat('Processing anchor file...\n')
+    cat('Processing/Reading anchor file...\n')
     if (!is.null(ancShift)){
       anchor_shift(test, ancShift)
     } else if (!is.null(ancTest2Read)) {
       ancDf <- anchor_getLab('output', ancTest2Read)
-      anchor_process(test, respDf, keyDf, delVec, n_cov, nDimVec, ancDf)
+      anchor_process(test, respDf, keyDf, n_cov, nDimVec, ancDf)
     } else if (!is.null(ancDf)) {
-      anchor_process(test, respDf, keyDf, delVec, n_cov, nDimVec, ancDf)
-    } else { # read from 'input' folder
+      anchor_process(test, respDf, keyDf, n_cov, nDimVec, ancDf)
+    } else if (ancRead) { # read from 'input' folder
       ancPath <- paste0('input/', test, '_anc.txt')
       if (!file.exists(ancPath)) {
         stop(paste0(ancPath, ' with correct parameter order should exist!'))
@@ -267,7 +262,7 @@ calibrate <- function(test, respDf=NULL, keyDf, pid, n_cov, regrNmVec=NULL,
   cat('Calibrating test items...\n')
   lab_cqc(test=test, keyDf=keyDf, run=NULL, run_ls=NULL,
       codes=prep$codes, pid_cols=prep$pid_cols, resps_cols=prep$resps_cols,
-      quick=quick, delVec=delVec, dblKeyLst=dblKeyLst, poly_key=poly_key,
+      quick=quick, poly_key=poly_key,
       anchor=anchor, step=FALSE, regr_ls=prep$regr_ls,
       section_extr=prep$section_extr,
       DIFVar=NULL, DIFVar_cols=prep$DIFVar_cols, poly_catgrs=NULL,
@@ -377,7 +372,7 @@ calibrate <- function(test, respDf=NULL, keyDf, pid, n_cov, regrNmVec=NULL,
     # ####### item summary
     cat('Putting together item analysis summaries...\n')
     smry <- itn_summary(test, easy, hard, iRst, fit_w, fit_uw,
-              dFallThr, dRiseThr, ccc_data, iType, keyDf, dblKeyLst)
+              dFallThr, dRiseThr, ccc_data, iType, keyDf)
 
     if (save_xlsx){
       file_saved <- paste0('results/', paste0('itn_', test, '.xlsx'))

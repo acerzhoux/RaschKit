@@ -46,9 +46,10 @@ delta_DIF_dich <- function (test, DIFVar, quick = TRUE){
       select(1, 2, 4, 6, 3, 5, 7),
       by='iNum'
     ) |>
-    select(-iNum)
+    select(-iNum) |>
+    na.omit()
 
-  dfError <- readxl::read_xls(
+  dfErrorLong <- readxl::read_xls(
       paste0(folder, '/', test, '_shw.xls'),
       sheet='ResponseModel',
       skip=7+n_item+20,
@@ -57,31 +58,47 @@ delta_DIF_dich <- function (test, DIFVar, quick = TRUE){
       col_types='numeric'
     ) |>
     select(item, error=`ERROR^`) |>
-    na.omit() |>
-    mutate(Category=rep(c('error.x', 'error.y'), n_item)) |>
-    pivot_wider(names_from = 'Category', values_from = 'error') |>
+    na.omit()
+  n_item1 <- round(nrow(dfErrorLong)/2)
+  dfError <- dfErrorLong |>
+    mutate(Category=rep(c('error.x', 'error.y'), each=n_item1)) |>
+    pivot_wider(
+      names_from = 'Category',
+      values_from = 'error'
+    ) |>
     map_dfr(unlist)
 
   dfDelta <- left_join(
-      labs,
-      left_join(
-        dfDIF |>
+    labs,
+    left_join(
+      dfDIF |>
         select(iNum, delta.x, delta.y),
-        dfError,
-        by=c('iNum'='item')
-      ),
-      by='iNum'
-    ) |>
-    select(-iNum)
+      dfError,
+      by=c('iNum'='item')
+    ),
+    by='iNum'
+  ) |>
+  select(-iNum)
 
   # record items with missing delta
   id_na <- which(apply(dfDelta, 1, function(x) any(is.na(x[2:5]))))
   if (length(id_na)){
-    write.csv(
-      dfDelta[id_na, ],
-      paste0('DIF/', DIFVar, '_', test, '_iRemoved', '.csv'),
-      row.names=FALSE
-    )
+    fileRmd <- 'DIF/0 iRmd.csv'
+    missDf <- dfDelta[id_na, ] |>
+      mutate(
+        Test=test,
+        DIFVar=DIFVar
+      )
+    if (file.exists(fileRmd)) {
+      read.csv(fileRmd) |>
+        bind_rows(
+          missDf
+        ) |>
+        write.csv(fileRmd, row.names=FALSE)
+    } else {
+      missDf |>
+        write.csv(fileRmd, row.names=FALSE)
+    }
     dfDelta <- na.omit(dfDelta)
   }
 

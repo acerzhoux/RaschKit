@@ -14,7 +14,7 @@ anchor_shift <- function(test, shift){
   readr::read_fwf(
       paste0('output/', test, '_anc.txt'),
       fwf_widths(
-        c(8, 10, 50),
+        c(5, 15, 50),
         c("iNum", "delta", "label")
       ),
       show_col_types=FALSE

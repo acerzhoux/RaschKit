@@ -67,7 +67,7 @@ delta_DIF_dich_step <- function(test, DIFVar, quick=TRUE){
     select(
       qOrder=item,
       cat=`...4`,
-      DIFVar=DIFVar,
+      DIFVar=tolower(DIFVar),
       error=`ERROR^`
     ) |>
     filter(!is.na(qOrder), cat!=0)
@@ -83,5 +83,29 @@ delta_DIF_dich_step <- function(test, DIFVar, quick=TRUE){
     ) |>
     select(item, error.x=`1`, error.y=`2`)
 
-  inner_join(deltas, errors, by = "item")
+  dfDelta <- inner_join(deltas, errors, by = "item")
+
+  # record items with missing delta
+  id_na <- which(apply(dfDelta, 1, function(x) any(is.na(x[2:5]))))
+  if (length(id_na)){
+    fileRmd <- 'DIF/0 iRmd.csv'
+    missDf <- dfDelta[id_na, ] |>
+      mutate(
+        Test=test,
+        DIFVar=DIFVar
+      )
+    if (file.exists(fileRmd)) {
+      read.csv(fileRmd) |>
+        bind_rows(
+          missDf
+        ) |>
+        write.csv(fileRmd, row.names=FALSE)
+    } else {
+      missDf |>
+        write.csv(fileRmd, row.names=FALSE)
+    }
+    dfDelta <- na.omit(dfDelta)
+  }
+
+  dfDelta
 }

@@ -18,12 +18,9 @@
 #' @param resps_cols String of column numbers of responses, e.g., '20-30'.
 #' @param regr_ls List of regressors. Element is column number in data.
 #' Element name is regressor's name. Default is NULL.
-#' @param delete Vector of item order number(s) to be removed from the test,
-#' e.g., c(2, 3, 45, 46). Default is NULL.
 #' @param anchor TRUE when anchor is to be done. Default is FALSE.
 #' @param section_extr Extra sections to be added to 'test.cqc' file in
 #' 'input' folder. Default is NULL.
-#' @param dblKeyLst  TRUE if any item has polytomous scoring. Default is FALSE.
 #' @param poly_key TRUE if the key of any item has polytomous scoring. Default is FALSE.
 #' @param quick Whether quick error is needed. Default is TRUE for DIF analysis.
 #' @param step TRUE if any item in the test has polytomous scoring. Default is FALSE.
@@ -66,8 +63,8 @@
 #' @export
 
 DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'), test, keyDf, #### CQC #####
-                codes, pid_cols=NULL, resps_cols, regr_ls=NULL, delVec=NULL, anchor=FALSE,
-                section_extr=NULL, dblKeyLst =FALSE, poly_key=FALSE, quick=TRUE, step=FALSE,
+                codes, pid_cols=NULL, resps_cols, regr_ls=NULL, anchor=FALSE,
+                section_extr=NULL, poly_key=FALSE, quick=TRUE, step=FALSE,
                 DIFVar=NULL, DIFVar_cols=NULL, poly_catgrs=NULL, ##### DIF part #####
                 poly_facet=FALSE, poly_group=FALSE, vars=NULL, p_cut=0.05,
                 DIF_cut=0.5, DIF_adj_cut=4, design_effect=1, domain=NULL,
@@ -79,7 +76,7 @@ DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'), test, keyDf, ####
 
   arg_cqc <- list(test=test, run=NULL, run_ls=NULL, keyDf=keyDf, ####CQC
     codes=codes, pid_cols=pid_cols, resps_cols=resps_cols,
-    quick=quick, delVec=delVec, dblKeyLst =dblKeyLst , poly_key=poly_key,
+    quick=quick, poly_key=poly_key,
     anchor=anchor, step=step, regr_ls=regr_ls, section_extr=section_extr,
     DIFVar=DIFVar, DIFVar_cols=DIFVar_cols, poly_catgrs=poly_catgrs,
     poly_facet=poly_facet, poly_group=poly_group,

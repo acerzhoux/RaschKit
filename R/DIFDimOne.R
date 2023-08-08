@@ -120,8 +120,8 @@ DIFDimOne <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
   prep <- df_key_lab_args(test, respDf, pid, n_cov, n_resp, DIFVar,
                           regrNmVec, section_extr, labels, FALSE, pweight)
 
-  arg_DIF <- list(method=method, delVec=NULL, anchor=FALSE, domain=NULL,
-          section_extr=prep$section_extr, dblKeyLst=NULL, poly_key=poly_key,
+  arg_DIF <- list(method=method, anchor=FALSE, domain=NULL,
+          section_extr=prep$section_extr, poly_key=poly_key,
           quick=quick, step=step, keyDf=keyDf,
           p_cut=p_cut, DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut,
           design_effect=design_effect,

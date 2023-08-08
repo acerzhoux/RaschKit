@@ -20,24 +20,18 @@
 #' @param iType Dataframe with columns of iNum and itype. One element of list
 #' output from Function 'CCC_Vernon'.
 #' @param keyDf Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).
-#' @param dblKeyLst List of items with double keys. Element is double keys, and
-#' element name is item order, e.g., list(`7`=c(1,3), `9`=c(3,4). Default is NULL.
 #' @return Dataframe of item statistics with flags.
 #' @examples
 #' a <- itn_summary(test='math_35', ccc_data=ccc_data, iType=iType)
 #' @export
 
 itn_summary <- function(test, easy=90, hard=10, iRst=.11, fit_w=1.1, fit_uw=1.2,
-                        dFallThr=.5, dRiseThr=.1, ccc_data, iType, keyDf, dblKeyLst){
+                        dFallThr=.5, dRiseThr=.1, ccc_data, iType, keyDf){
   # process double keys
-  if (('Key2' %in% names(keyDf)) & any(!is.na(keyDf$Key2))) {
+  if (('Key2' %in% names(keyDf)) && any(!is.na(keyDf$Key2))) {
+    ks <- names(select(keyDf, contains('Key')))
     keyDf <- keyDf |>
-      dplyr::mutate(Key=ifelse(is.na(Key2), Key, paste0(Key, ', ', Key2)))
-  }
-  if (!is.null(dblKeyLst)) {
-    for (i in seq_along(dblKeyLst)) {
-      keyDf[as.integer(names(dblKeyLst[i])), 'Key'] <- paste0(dblKeyLst[[i]], collapse=', ')
-    }
+      dplyr::mutate(Key=apply(keyDf[ks], 1, function(x) paste0(na.omit(x), collapse='')))
   }
 
   # put together summary
@@ -52,10 +46,10 @@ itn_summary <- function(test, easy=90, hard=10, iRst=.11, fit_w=1.1, fit_uw=1.2,
     bind_cols(
       tibble(
         `Files`=c(
-          paste0(getwd(), '/output/', test, '_CCC.pdf'),
-          paste0(getwd(), '/output/', test, '_ipMap.pdf'),
-          paste0(getwd(), '/output/', test, '_Convergence_check.pdf'),
-          paste0(getwd(), '/output/', test, '_Frequency_check.xlsx'),
+          paste0('../output/', test, '_CCC.pdf'),
+          paste0('../output/', test, '_ipMap.pdf'),
+          paste0('../output/', test, '_Convergence_check.pdf'),
+          paste0('../output/', test, '_Frequency_check.xlsx'),
           rep(NA, nrow(keyDf)-4)
         )
       ),
@@ -89,11 +83,10 @@ itn_summary <- function(test, easy=90, hard=10, iRst=.11, fit_w=1.1, fit_uw=1.2,
     ) |>
     dplyr::mutate(
       Priority=ifelse(is.na(`Item Estimate (item centred)`), NA, Priority),
-      Comment=ifelse(is.na(`Item Estimate (item centred)`), 'Deleted.', Comment),
+      Comment=ifelse(is.na(`Item Estimate (item centred)`), 'No data.', Comment),
       Key=ifelse(`Max Score`>1, 'CR', Key),
       `Max Score`=ifelse(is.na(`Item Estimate (item centred)`), NA, `Max Score`),
       Facility=ifelse(is.na(`Item Estimate (item centred)`), NA, Facility)
-    ) |>
-    dplyr::filter(Comment!='Deleted.')
+    )
 
 }

@@ -9,7 +9,7 @@ equateLst(
   vars,
   p_cut = 0.05,
   DIF_cut = 0.5,
-  DIF_adj_cut = 4,
+  DIF_std_cut = 4,
   design_effect = 1,
   step = FALSE,
   iter = TRUE,
@@ -27,10 +27,10 @@ to two tests associated with .x and .y.}
 \item{p_cut}{p value of chi-square test. Default is 0.05.}
 
 \item{DIF_cut}{Threshold of an item's delta estimate difference between
-two tests. Default is 0.5.}
+two tests. Default is 0.5. Give vector of cuts if tests vary in cut.}
 
-\item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference
-between two tests. Default is 4.}
+\item{DIF_std_cut}{Threshold of an item's adjusted delta estimate difference
+between two tests. Default is 4. Give vector of cuts if tests vary in cut.}
 
 \item{design_effect}{Value to adjust errors. Default is 1.}
 

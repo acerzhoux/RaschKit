@@ -30,9 +30,11 @@ calibrateScale(
   pid,
   n_cov,
   est_type = "wle",
-  ancShiftLst = NULL,
+  ancShiftLst = NULL, # use one of ancShiftLst, ancTest2ReadLst, ancDfLst, ancRead
   ancTest2ReadLst = NULL,
   ancDfLst = NULL,
+  ancRead=FALSE, 
+  useR=FALSE, # TRUE: Only for WLE case estimate
   slope = NULL,
   intercept = NULL,
   extrapolation = FALSE
@@ -43,15 +45,16 @@ calibrateScale(
 
 ```{r}
 calibrate(
-  anchor=TRUE, # can ignore if any of ancShift, ancTest2Read, ancDf is not NULL
   test,
   respDf = NULL,
   keyDf,
   pid,
   n_cov,
-  ancShift = NULL,
+  ancShift = NULL, # use one of ancShift, ancTest2Read, ancDf, ancRead
   ancTest2Read = NULL,
   ancDf = NULL,
+  ancRead=FALSE, 
+  useR=FALSE, # TRUE: Only for WLE case estimate
   est_type = "wle",
   slope = NULL,
   intercept = NULL,

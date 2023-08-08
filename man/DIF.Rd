@@ -12,10 +12,8 @@ DIF(
   pid_cols = NULL,
   resps_cols,
   regr_ls = NULL,
-  delVec = NULL,
   anchor = FALSE,
   section_extr = NULL,
-  dblKeyLst = FALSE,
   poly_key = FALSE,
   quick = TRUE,
   step = FALSE,
@@ -57,8 +55,6 @@ Element name is regressor's name. Default is NULL.}
 
 \item{section_extr}{Extra sections to be added to 'test.cqc' file in
 'input' folder. Default is NULL.}
-
-\item{dblKeyLst}{TRUE if any item has polytomous scoring. Default is FALSE.}
 
 \item{poly_key}{TRUE if the key of any item has polytomous scoring. Default is FALSE.}
 
@@ -102,9 +98,6 @@ between two tests. Default is 4.}
 be specified if weight is used for modeling. Default is NULL.}
 
 \item{pw_cols}{String of column numbers of case weight, e.g., '5-15'.}
-
-\item{delete}{Vector of item order number(s) to be removed from the test,
-e.g., c(2, 3, 45, 46). Default is NULL.}
 }
 \value{
 Dataframe of students' ID, raw score, max test score, estimate,
