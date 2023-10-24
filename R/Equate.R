@@ -14,7 +14,7 @@
 #' @param p_cut p value of chi-square test. Default is 0.05.
 #' @param DIF_cut Threshold of an item's delta estimate difference between two
 #' tests. Default is 0.5.
-#' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference
+#' @param DIF_std_cut Threshold of an item's standardized delta estimate difference
 #' between two tests. Default is 4.
 #' @param sav_results TRUE if an Excel file with chi-square test results and
 #' a plot are desired. Default is TRUE.
@@ -34,7 +34,7 @@
 #' test='Elana_math', vars=c('NSW', 'VIC'))
 #' @export
 
-Equate <- function(deltaDf, test, vars, p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4,
+Equate <- function(deltaDf, test, vars, p_cut=0.05, DIF_cut=0.5, DIF_std_cut=4,
                    sav_results=TRUE, design_effect=1, step=FALSE, DIFVar=NULL,
                    iter=FALSE, indDf=NULL, pointer=FALSE, report=FALSE){
   # check
@@ -93,7 +93,7 @@ Equate <- function(deltaDf, test, vars, p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4,
     results <- chisqT(deltaDf)
   }
 
-  iDIF <- DIF_items(results, p_cut, DIF_cut, DIF_adj_cut)
+  iDIF <- DIF_items(results, p_cut, DIF_cut, DIF_std_cut)
   iDIFFlag <- pull(iDIF, item)
 
   updated <- results
@@ -115,7 +115,7 @@ Equate <- function(deltaDf, test, vars, p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4,
       } else {
         updated <- chisqT(filter(updated, item!=iItem))
       }
-      iDIF <- DIF_items(updated, p_cut, DIF_cut, DIF_adj_cut)
+      iDIF <- DIF_items(updated, p_cut, DIF_cut, DIF_std_cut)
     }
     if (length(iFlag)>0){
       iFlagDF <- reduce(iFlag, bind_rows)
@@ -161,7 +161,7 @@ Equate <- function(deltaDf, test, vars, p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4,
                   sdr_bfr = round(sd(final$delta.y)/sd(final$delta.x), 3))
 
   p1 <- plot_DIF(error_band(final), 'Before', vars, p_cut, DIF_cut,
-                 DIF_adj_cut, step, DIFVar, shift$cor_bfr, shift$shift_bfr,
+                 DIF_std_cut, step, DIFVar, shift$cor_bfr, shift$shift_bfr,
                  shift$sdr_bfr, getRange(final, step), quick)
 
   # plot updated: After removal
@@ -172,7 +172,7 @@ Equate <- function(deltaDf, test, vars, p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4,
 
   # plot non-DIF anchors
   p2 <- plot_DIF(error_band(updated), 'After', vars, p_cut, DIF_cut,
-                 DIF_adj_cut, step, DIFVar, shift$cor_afr, shift$shift_afr,
+                 DIF_std_cut, step, DIFVar, shift$cor_afr, shift$shift_afr,
                  shift$sdr_afr, getRange(updated, step), quick)
 
   p_save <- p1 / p2 +

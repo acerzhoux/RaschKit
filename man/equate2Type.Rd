@@ -5,32 +5,28 @@
 \title{equate2Type}
 \usage{
 equate2Type(
-  type = c("Hrz", "Vrt"),
+  linkTypeLst,
   test,
-  grdIntVec = c(2:10),
-  forms = c("A", "B"),
   p_cut = 0.05,
   DIF_cut = 0.5,
-  DIF_adj_cut = 4,
+  DIF_std_cut = 4,
   step = FALSE,
   iter = TRUE
 )
 }
 \arguments{
-\item{type}{Type of equating. One of c('Hrz', 'Vrt').}
+\item{linkTypeLst}{Length-one list such as list(Hrz=list(grades=c(2:10),
+forms=c('A', 'B', 'C'))) or list(Vrt=c(2:10)). Name is Hrz or Vrt.
+Element is list of grades and test forms or vector of grades.}
 
 \item{test}{Name of test.}
-
-\item{grdIntVec}{Vector of all grades Default is c(2:10).}
-
-\item{forms}{Forms used in a test. Default is c('A','B')}
 
 \item{p_cut}{p value of chi-square test. Default is 0.05.}
 
 \item{DIF_cut}{Threshold of an item's delta estimate difference between two
 tests. Default is 0.5.}
 
-\item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference
+\item{DIF_std_cut}{Threshold of an item's standardized delta estimate difference
 between two tests. Default is 4.}
 
 \item{step}{TRUE if DIF analysis is performed on step parameters.

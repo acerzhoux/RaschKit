@@ -36,7 +36,7 @@ DIFVarTests( # include format, hyperlink, flag color
   keyDfLst = NULL,
   p_cut = 0.05,
   DIF_cut = 0.5,
-  DIF_adj_cut = 4,
+  DIF_std_cut = 4,
   design_effect = 1,
   resltReady = FALSE, # TURE when ConQuest output files are in 'DIF' folder
   iter = TRUE, # FALSE if to compare with results from using ACER DIF templates
@@ -51,7 +51,7 @@ For tests that have polytomous items,
     'item+DIFVar+item*DIFVar+item*step*DIFVar;' are run. Results of 1st model 
     are used for item delta DIF analysis, and those of 2nd model for step DIF analysis.
 
-## DIFDimOne() performs significance tests on fecet modeling results
+## DIFDimOne() performs significance tests on facet modeling results
 
 Only use this when the polytomous DIF variable is external to test takers. 
 Examples are educator and rater.
@@ -77,7 +77,7 @@ DIFDimOne( # include format, hyperlink, flag color
   save_xlsx = TRUE,
   p_cut = 0.05,
   DIF_cut = 0.5,
-  DIF_adj_cut = 4,
+  DIF_std_cut = 4,
   iter = FALSE,
   step = FALSE,
   desig_effect = 1,
@@ -90,7 +90,7 @@ DIFDimOne( # include format, hyperlink, flag color
 
 ```{r}
 DIFDimMulti(
-  method = c("chi_square", "Bonferroni"),
+  method = c("chi_square", "Bonferroni"), # choose one
   test,
   DIFVar,
   pid,
@@ -104,14 +104,11 @@ DIFDimMulti(
   regrNmVec = NULL,
   quick = TRUE,
   step = FALSE,
-  delVec = NULL,
-  dblKeyLst = FALSE,
   section_extr = NULL,
   p_cut = 0.05,
   DIF_cut = 0.5,
-  DIF_adj_cut = 4,
+  DIF_std_cut = 4,
   desig_effect = 1,
-  dim_multi = FALSE,
   scores = NULL,
   prep_process = FALSE,
   pweight = NULL

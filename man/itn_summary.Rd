@@ -55,5 +55,5 @@ This function produces item analysis results with flags based on item
 statistics and CCC. This is associated with test named 'test'.
 }
 \examples{
-a <- itn_summary(test='math_35', ccc_data=ccc_data, iType=iType)
+a <- itn_summary(test='FPA', ccc_data=ccc_data, iType=iType, keyDf=keyDf)
 }

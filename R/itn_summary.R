@@ -22,7 +22,7 @@
 #' @param keyDf Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).
 #' @return Dataframe of item statistics with flags.
 #' @examples
-#' a <- itn_summary(test='math_35', ccc_data=ccc_data, iType=iType)
+#' a <- itn_summary(test='FPA', ccc_data=ccc_data, iType=iType, keyDf=keyDf)
 #' @export
 
 itn_summary <- function(test, easy=90, hard=10, iRst=.11, fit_w=1.1, fit_uw=1.2,
@@ -31,7 +31,7 @@ itn_summary <- function(test, easy=90, hard=10, iRst=.11, fit_w=1.1, fit_uw=1.2,
   if (('Key2' %in% names(keyDf)) && any(!is.na(keyDf$Key2))) {
     ks <- names(select(keyDf, contains('Key')))
     keyDf <- keyDf |>
-      dplyr::mutate(Key=apply(keyDf[ks], 1, function(x) paste0(na.omit(x), collapse='')))
+      dplyr::mutate(Key=apply(keyDf[ks], 1, function(x) paste0(sort(na.omit(x)), collapse='')))
   }
 
   # put together summary

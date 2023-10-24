@@ -15,10 +15,10 @@ DIF_steps_dich <- function(iterative=FALSE){
     Details = c('Calculate mean shift by subtracting Group 2\'s average delta estimates from that of Group 1.',
       'Adjust each delta estimate of Group 2 by adding to it the shift (Step 1).',
       'Calculate delta difference by subtracting each adjusted delta of Group 2 (Step 2) from that of Group 1.',
-      'Standardise each delta difference (Step 3) by dividing it by adjusted error, i.e., sqrt(error.x^2 + error.y^2).',
-      'Perform two-side df-1 chi-squared test on each squared standardised delta difference (Step 4).',
+      'Standardise each delta difference (Step 3) by dividing it by pooled standard error, i.e., sqrt(error.x^2 + error.y^2).',
+      'Perform two-tailed df-1 Chi-squared test on each squared standardized delta difference (Step 4).',
       if (iterative){
-        'Iteratively perform Step 5 and each time remove the item of largest chi-squared value until items all satisfy thresholds of p value, absolute delta difference, and absolute standardised delta difference.'
+        'Iteratively perform Step 5 and each time remove the item of largest Chi-square until items all satisfy thresholds of p value, absolute delta difference, and absolute standardized delta difference.'
       }),
     Steps = 1:length(Details)) %>%
         select(Steps, Details)

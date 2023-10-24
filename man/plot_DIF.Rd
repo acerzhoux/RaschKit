@@ -10,7 +10,7 @@ plot_DIF(
   vars,
   p_cut = 0.05,
   DIF_cut = 0.5,
-  DIF_adj_cut = 4,
+  DIF_std_cut = 4,
   step = FALSE,
   DIFVar = NULL,
   cor,
@@ -35,7 +35,7 @@ to .x and .y (delta, error).}
 \item{DIF_cut}{Threshold of an item's delta estimate difference between two
 tests. Default is 0.5.}
 
-\item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference
+\item{DIF_std_cut}{Threshold of an item's standardized delta estimate difference
 between two tests. Default is 4.}
 
 \item{step}{TRUE if DIF analysis is performed on step parameters. Default is FALSE.}

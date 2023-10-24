@@ -13,7 +13,7 @@
 #' @param p_cut p value of chi-square test. Default is 0.05.
 #' @param DIF_cut Threshold of an item's delta estimate difference between two
 #' tests. Default is 0.5.
-#' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference
+#' @param DIF_std_cut Threshold of an item's standardized delta estimate difference
 #' between two tests. Default is 4.
 #' @param design_effect Value to adjust errors. Default is 1.
 #' @param step TRUE if DIF analysis is performed on step parameters. Default is FALSE.
@@ -30,12 +30,12 @@
 #' @export
 
 DIF_dich_its_shw <- function(DIFVar, test, vars, p_cut=0.05, DIF_cut=0.5,
-                             DIF_adj_cut=4, design_effect=1, step=FALSE,
+                             DIF_std_cut=4, design_effect=1, step=FALSE,
                              save_xlsx=TRUE, iter=FALSE, quick=TRUE){
   # delta, indice dataframe
   if (step) {
     # use item*step*DIFVar estimates
-    dfDelta <- delta_DIF_dich_step(test, DIFVar, quick)
+    dfDelta <- delta_DIF_dich_step(test, DIFVar)
     dfIndice <- NULL
   } else {
     deltaInd <- delta_DIF_dich(test, DIFVar, quick)
@@ -43,6 +43,6 @@ DIF_dich_its_shw <- function(DIFVar, test, vars, p_cut=0.05, DIF_cut=0.5,
     dfIndice <- deltaInd[['dfIndice']]
   }
 
-  Equate(dfDelta, test, vars, p_cut, DIF_cut, DIF_adj_cut, save_xlsx,
+  Equate(dfDelta, test, vars, p_cut, DIF_cut, DIF_std_cut, save_xlsx,
          design_effect, step, DIFVar, iter, dfIndice)
 }

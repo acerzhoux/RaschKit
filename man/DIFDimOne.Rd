@@ -23,7 +23,7 @@ DIFDimOne(
   save_xlsx = TRUE,
   p_cut = 0.05,
   DIF_cut = 0.5,
-  DIF_adj_cut = 4,
+  DIF_std_cut = 4,
   iter = FALSE,
   step = FALSE,
   design_effect = 1,
@@ -76,7 +76,7 @@ some categories of DIF variable. Default is FALSE.}
 \item{DIF_cut}{Threshold of an item's delta estimate difference between
 two tests. Default is 0.5.}
 
-\item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference
+\item{DIF_std_cut}{Threshold of an item's standardized delta estimate difference
 between two tests. Default is 4.}
 
 \item{iter}{TRUE to iteratively remove DIF items. Default is FALSE}

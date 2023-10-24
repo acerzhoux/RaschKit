@@ -21,9 +21,8 @@ DIFDimMulti(
   section_extr = NULL,
   p_cut = 0.05,
   DIF_cut = 0.5,
-  DIF_adj_cut = 4,
+  DIF_std_cut = 4,
   design_effect = 1,
-  dim_multi = FALSE,
   scores = NULL,
   prep_process = FALSE,
   pweight = NULL,
@@ -70,12 +69,10 @@ folder. Default is NULL.}
 \item{DIF_cut}{Threshold of an item's delta estimate difference between
 two tests. Default is 0.5.}
 
-\item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference
+\item{DIF_std_cut}{Threshold of an item's standardized delta estimate difference
 between two tests. Default is 4.}
 
 \item{design_effect}{Value to adjust errors. Default is 1.}
-
-\item{dim_multi}{TRUE if the model is multidimensional. Default is FALSE.}
 
 \item{scores}{Scores possible in the test, e.g., 0:3. Default is NULL.}
 

@@ -36,10 +36,9 @@
 #' @param p_cut p value of chi-square test. Default is 0.05.
 #' @param DIF_cut Threshold of an item's delta estimate difference between
 #' two tests. Default is 0.5.
-#' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference
+#' @param DIF_std_cut Threshold of an item's standardized delta estimate difference
 #' between two tests. Default is 4.
 #' @param design_effect Value to adjust errors. Default is 1.
-#' @param dim_multi TRUE if the model is multidimensional. Default is FALSE.
 #' @param scores Scores possible in the test, e.g., 0:3. Default is NULL.
 #' @param prep_process TRUE if it is needed to remove items without data on
 #' some categories of DIF variable. Default is FALSE.
@@ -52,8 +51,8 @@ DIFDimMulti <- function(method=c('chi_square', 'Bonferroni'), test, DIFVar,
                           pid, n_cov, nDimVec, dimNmVec, respDf=NULL, filetype='sav',
                           keyDf, vars=NULL, regrNmVec=NULL,
                           quick=TRUE, section_extr=NULL,
-                          p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4,
-                          design_effect=1, dim_multi=FALSE, scores=NULL,
+                          p_cut=0.05, DIF_cut=0.5, DIF_std_cut=4,
+                          design_effect=1, scores=NULL,
                           prep_process=FALSE, pweight=NULL, iter=TRUE){
   # read data
   if (is.null(respDf)) {
@@ -94,7 +93,7 @@ DIFDimMulti <- function(method=c('chi_square', 'Bonferroni'), test, DIFVar,
   # change 'DIFVar' to all lower-case; otherwise, R cannot call CQC
   if (method=='Bonferroni'){
     if (DIFVar != tolower(DIFVar)){
-      cat('\'', DIFVar, '\'', 'changed to', '\'', tolower(DIFVar), '\'', ' as ConQuestr requires.')
+      cat('\'', DIFVar, '\'', 'changed to', '\'', tolower(DIFVar), '\'', ' as ConQuestr requires.\n')
       ID_DIFVar <- which(names(respDf) == DIFVar)
       names(respDf)[ID_DIFVar] <- tolower(DIFVar)
       DIFVar <- tolower(DIFVar)
@@ -118,7 +117,7 @@ DIFDimMulti <- function(method=c('chi_square', 'Bonferroni'), test, DIFVar,
   cat('Preparing ConQuest control file...\n')
   prep <- df_key_lab_args(test, respDf, pid, n_cov, sum(nDimVec), DIFVar,
               regrNmVec, section_extr, labels, FALSE, pweight)
-  if (dim_multi){
+  if (length(nDimVec) > 1){
     if (is.null(scores)) scrs <- 0:1 else scrs <- scores
     prep[['section_extr']] <- prep[['section_extr']] |>
       c(section_dim(scrs=scrs, nDimVec=nDimVec, dimNmVec=dimNmVec))
@@ -157,7 +156,7 @@ DIFDimMulti <- function(method=c('chi_square', 'Bonferroni'), test, DIFVar,
               deltaDf=dfDelta,
               indDf=dfIndice,
               DIF_cut=DIF_cut,
-              DIF_adj_cut=DIF_adj_cut,
+              DIF_std_cut=DIF_std_cut,
               design_effect=design_effect,
               iter=iter
             )
@@ -184,7 +183,8 @@ DIFDimMulti <- function(method=c('chi_square', 'Bonferroni'), test, DIFVar,
       labs <- lab_tbl[(strt+1):(strt+nDimVec[[i]]), ]
       do.call(
         DIF_poly_shw,
-        arg_DIF |> append(list(labels=labs, domain=dimNmVec[[i]]))
+        arg_DIF |>
+          append(list(labels=labs, domain=dimNmVec[[i]]))
       )
       strt <- strt+nDimVec[[i]]
     }

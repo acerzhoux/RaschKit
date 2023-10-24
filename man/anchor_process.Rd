@@ -20,7 +20,7 @@ Default is NULL where Excel file with name 'test' in 'data' folder is used.}
 Define this vector if multi-dimensional model is to be run, e.g., c(30, 45).
 Also should define this if there are variables after response columns, e.g., 30.}
 
-\item{ancDf}{Dataframe of 'Item' and 'Delta' for anchors.}
+\item{ancDf}{Dataframe of 'Item', 'Delta' (and 'Step') for anchors.}
 }
 \description{
 This function removes deleted or no-data items, reorders items,

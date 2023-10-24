@@ -34,5 +34,5 @@ and puts them into one file.
 }
 \examples{
 # Not run
-# read2one('DIF', 'Writing', difVarVec=c('gender', 'LBOTE', 'VCEVCAL'))
+# read2one('results', c('AACA'), 'itn')
 }

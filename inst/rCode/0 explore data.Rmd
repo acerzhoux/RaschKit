@@ -12,40 +12,15 @@ install_packages_ls()
 create_folders()
 ```
 
-Open this .Rmd file via 'xxx.Rproj' in working directory. Explore data via 
-the following functions.
+Open this .Rmd file via 'xxx.Rproj' in working directory. Explore data and codebook.
 
-# Check data and codebook
+# Data
 
-## Data
-
-Read data to be used for 
+Read data to be used for calibration etc..
 
 ```{r}
 respDf <- haven::read_sav('data/test.sav') # 'respDf' of calibrate()
 ```
-
-## Codebook
-
-```{r}
-keyDf <- readxl::read_xlsx(
-    list.files(here::here('dataRaw'), 
-    'codebook', # revise to unique string in file name
-    full.names = TRUE)
-  ) |> 
-  select(Item, Key, Max_score) # 'keyDf' of calibrate()
-```
-
-## Update key after review
-
-This may occur when you send 1st round of item analysis results to test developers
-and they advise psychometricians to change key, use double key, or remove items.
-
-```{r}
-keyDf[25, 'Key'] <- 'A'
-```
-
-# Explore functions
 
 ## Check response categories' frequencies
 
@@ -112,5 +87,60 @@ poly_recode(
   n_cov, 
   c('r','R','m','M','9','x','X','.','',' ',NA)
 )
+```
+
+# Codebook
+
+```{r}
+keyDf <- readxl::read_xlsx(
+    list.files('dataRaw', 'codebook', full.names=TRUE) # string for codebook
+  ) |>  
+  select(Item, Key, Max_score) # 'keyDf' of calibrate()
+
+
+codebook <- readxl::read_xlsx(
+    list.files('dataRaw', 'Codebook', full.names = TRUE)
+  ) 
+
+keyDf <- codebook |> 
+  filter(!is.na(key)) |> 
+  select(Item=item_code, Key=key) |> 
+  mutate(Max_score=1)
+```
+
+## Update key after review
+
+This may occur when you send 1st round of item analysis results to test developers
+and they advise psychometricians to change key, use double key, or remove items.
+
+```{r}
+# change key
+keyDf[25, 'Key'] <- 'A' 
+
+# double key
+keyDf$Key2 <- NA
+keyDf[4, 'Key2'] <- 'B'
+
+# triple key
+keyDf[2, 'Key2'] <- 'B'
+keyDf$Key3 <- NA
+keyDf[2, 'Key3'] <- 'D'
+
+# remove item
+keyDf[20, 'Key'] <- 'x' 
+```
+
+# QA parallel analysis
+
+```{r}
+QA2Df(
+  id, 
+  charVarVec = NULL, 
+  numVarVec = NULL, 
+  selfDf, 
+  otherDf
+)
+# return three dataframes put side by side: 
+#   self, other, difference (char: T/F; numeric: difference)
 ```
 

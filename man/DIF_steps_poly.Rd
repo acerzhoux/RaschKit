@@ -10,7 +10,7 @@ DIF_steps_poly()
 Tibble of four steps to do DIF analyses.
 }
 \description{
-This function generates a tibble of steps to follow when performing a type 
+This function generates a tibble of steps to follow when performing a type
 of DIF analysis on a polytomous DIF variable.
 }
 \examples{

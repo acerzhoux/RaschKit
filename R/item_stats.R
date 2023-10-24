@@ -33,7 +33,8 @@ item_stats <- function(folder='outoput', test){
       dplyr::mutate(seqNo=as.integer(seqNo)),
       by='seqNo'
     ) |>
-    as_tibble()
+    as_tibble() |>
+    mutate(Estimate=as.numeric(Estimate))
 
   mDelta <- mean(iShw$Estimate, na.rm=TRUE)
   if (abs(mDelta) > 0.001){

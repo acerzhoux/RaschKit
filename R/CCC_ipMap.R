@@ -13,7 +13,7 @@
 #' @return Plots of CCC by category and score.
 #' @examples
 #' plot_data <- CCC_ipMap(test, cqs)
-#' plot_data <- CCC_ipMap(test='RACP', abilEst2use='wle')
+#' plot_data <- CCC_ipMap(test='WA', abilEst2use='wle')
 #' @export
 
 CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
@@ -69,8 +69,11 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
 
   # Item Difficulties (iLogit) and deltas -----------------------------------
   iStepsCounts <- tibble(
-      temp = cqs$gGinLongLabels |> unlist() |> str_remove_all("item:|(|)"),
-      iStepsCount = cqs$gItemSteps |> unlist()
+      temp = cqs$gGinLongLabels |>
+        unlist() |>
+        str_remove_all("item:|(|)"),
+      iStepsCount = cqs$gItemSteps |>
+        unlist()
     ) |>
     separate(temp, into = c("iNum", "iLab"), sep = " ") |>
     mutate(
@@ -85,11 +88,13 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
     filter(!is.na(iType))
 
   # items excluded from calibration
-  iExc <- iStepsCounts |> filter(iStepsCount == 0) |>
+  iExc <- iStepsCounts |>
+    filter(iStepsCount == 0) |>
     select(iNum, iLab)
 
-  iExcCheck <- cqs$gDeletes |> unlist()
-  # an alternative to check if this yields the same items
+  iExcCheck <- cqs$gDeletes |>
+    unlist()
+    # an alternative to check if this yields the same items
 
   iEstTemp <- tibble(
       Xsi = cqs$gXsi |> as.vector(),
@@ -159,10 +164,12 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
   # if test has only dichomtomously scored items, then CQ's item delta is iLogit (item difficulty)
   deltas <- iStepsCounts |>
     filter(iStepsCount > 0) |>
-    left_join(iEstimates |>
-            filter(modelTerm == 1) |>
-            dplyr::rename(iLogit = Xsi),
-          by = "iLab") |>
+    left_join(
+      iEstimates |>
+        filter(modelTerm == 1) |>
+        dplyr::rename(iLogit = Xsi),
+       by = "iLab"
+    ) |>
     select(-category, -modelTerm) |>
     left_join(
       iEstimates |>
@@ -194,11 +201,11 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
     select(respPrekey, respCat = Value)
 
   respDat <- tibble(
-    pid = map_dbl(cqs$gResponseData, "Pid"),
-    resp = map_int(cqs$gResponseData, "Rsp"),
-    item = map_int(cqs$gResponseData, "Item"),
-    respPrekey = map_int(cqs$gResponseData, "PreKeyRsp")
-  ) |>
+      pid = map_dbl(cqs$gResponseData, "Pid"),
+      resp = map_int(cqs$gResponseData, "Rsp"),
+      item = map_int(cqs$gResponseData, "Item"),
+      respPrekey = map_int(cqs$gResponseData, "PreKeyRsp")
+    ) |>
     mutate(iNum = item+1) |> # because CQ starts with item 0
     left_join(preKeyLookUp, by = "respPrekey") |>
     right_join(
@@ -238,9 +245,11 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
 
   # Category Stats ----------------------------------------------------------
   catStats <- bind_cols(
-    cqs$gMatrixList$i_counts |> as_tibble(),
-    cqs$gMatrixList$i_ptbis |> as_tibble()
-  ) |>
+      cqs$gMatrixList$i_counts |>
+        as_tibble(),
+      cqs$gMatrixList$i_ptbis |>
+        as_tibble()
+    ) |>
     rowid_to_column("iNum") |>
     gather(stat, value, -iNum) |>
     separate(stat, into = c("stat", "resp"), sep = "_") |>
@@ -275,6 +284,7 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
       keyPtbisLow = ifelse(score == 1 & ptbis < .1, 1, 0)
     ) |>
     filter(!is.na(iType)) |>
+    mutate(mean=mean-delta_shift) |> #adjust pv's by delta shift
     modify_if(is.numeric, ~round(.x, 2))
 
   # Item Stats --------------------------------------------------------------
@@ -418,14 +428,17 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
       score = as.factor(score)
     ) |>
     group_by(iNum, group, Ability = abilityGrp, Category = score) |>
-    dplyr::summarise(Count = n()) |> ungroup() |>
+    dplyr::summarise(Count = n()) |>
+    ungroup() |>
     complete(Category, nesting(iNum, group, Ability), fill = list(Count = 0)) |>
     ########################
-  # removes scores with count of zero across ability groups
-  group_by(iNum, Category) |> mutate(scoreCount = sum(Count)) |>
-    filter(scoreCount > 0) |> select(-scoreCount) |>
+    # removes scores with count of zero across ability groups
+    group_by(iNum, Category) |>
+    mutate(scoreCount = sum(Count)) |>
+    filter(scoreCount > 0) |>
+    select(-scoreCount) |>
     ########################
-  group_by(iNum, Ability, group) |>
+    group_by(iNum, Ability, group) |>
     mutate(prop = Count/sum(Count)) |>
     ungroup() |>
     arrange(iNum, group, Category)
@@ -437,19 +450,24 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
   }
 
   dfObs_opt <- ccDat_df |>
-    mutate(respCat=toupper(respCat),
-         respCat=ifelse(score==1, str_c(respCat, '*'), respCat),
-         group = as.factor(group),
-         score = as.factor(score)) |>
+    mutate(
+      respCat=toupper(respCat),
+      respCat=ifelse(score==1, str_c(respCat, '*'), respCat),
+      group = as.factor(group),
+      score = as.factor(score)
+    ) |>
     group_by(iNum, group, Ability = abilityGrp, Option = respCat) |>
-    dplyr::summarise(Count = n()) |> ungroup() |>
+    dplyr::summarise(Count = n()) |>
+    ungroup() |>
     complete(Option, nesting(iNum, group, Ability), fill = list(Count = 0)) |>
     ########################
-  # removes scores with count of zero across ability groups
-  group_by(iNum, Option) |> mutate(scoreCount = sum(Count)) |>
-    filter(scoreCount > 0) |> select(-scoreCount) |>
+    # removes scores with count of zero across ability groups
+    group_by(iNum, Option) |>
+    mutate(scoreCount = sum(Count)) |>
+    filter(scoreCount > 0) |>
+    select(-scoreCount) |>
     ########################
-  group_by(iNum, Ability, group) |>
+    group_by(iNum, Ability, group) |>
     mutate(prop = Count/sum(Count)) |>
     ungroup() |>
     arrange(iNum, group)
@@ -468,7 +486,9 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
       iNum,
       Option=resp, Score=score, Count=count,
       `% Total`=percentTotal,
-      `Pt Bis`=ptbis, PV1Avg=mean, PV1SD=sd
+      `Pt Bis`=ptbis,
+      PV1Avg=mean,
+      PV1SD=sd
     )
 
   plot_ls <- list()

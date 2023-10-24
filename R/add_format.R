@@ -44,9 +44,12 @@ add_format <- function(){
 
     # add hyperlink
     for (k in 2:n_case){
-      writeFormula(wb, sheet,
-                   startRow = k, startCol = 3,
-                   x = ls_save[[i]]$ICC[k-1]
+      writeFormula(
+        wb,
+        sheet,
+        startRow = k,
+        startCol = 3,
+        x = ls_save[[i]]$ICC[k-1]
       )
     }
 
@@ -78,9 +81,7 @@ add_format <- function(){
 
   addBodyStyle <- function(wb, halign, n_case, cols, sheet, size=8){
     bodyStyle <- createStyle(
-      fontSize = size,
       halign = halign,
-      fontName='Arial',
       border = "TopBottomLeftRight",
       wrapText = TRUE
     )
@@ -92,6 +93,40 @@ add_format <- function(){
       cols = cols,
       gridExpand = TRUE
     )
+    setRowHeights(wb, sheet, rows = 2:n_case, heights = 10)
+    modifyBaseFont(wb, fontSize = size, fontColour = "black", fontName = "Calibri")
+    return(wb)
+  }
+
+  roundBody <- function(wb, sheet, n_case, col2, col3){
+    if (!is.null(col2)) {
+      addStyle(
+        wb,
+        sheet = sheet,
+        createStyle(
+          numFmt = "0.00",
+          border = "TopBottomLeftRight"
+        ),
+        rows = 2:n_case,
+        cols = col2,
+        gridExpand = TRUE
+      )
+    }
+
+    if (!is.null(col3)) {
+      addStyle(
+        wb,
+        sheet = sheet,
+        createStyle(
+          numFmt = "0.000",
+          border = "TopBottomLeftRight"
+        ),
+        rows = 2:n_case,
+        cols = col3,
+        gridExpand = TRUE
+      )
+    }
+
     return(wb)
   }
 
@@ -165,8 +200,22 @@ add_format <- function(){
     # add note sheet
     wb <- createWorkbook()
     for (i in 1:2) {
+      sheet <- names(ls_save)[[i]]
+      n_case <- nrow(ls_save[[i]])+1
+      n_col <- ncol(ls_save[[i]])
       addWorksheet(wb, names(ls_save)[[i]])
       writeData(wb, sheet = names(ls_save)[[i]], x = ls_save[[i]])
+
+      # header, body style
+      if (i==1) {
+        wb <- addHeaderStyle(wb, n_col, sheet) |>
+          addBodyStyle('center', n_case, 1:n_col, sheet) |>
+          roundBody(sheet, n_case, NULL, 1:n_col)
+      } else {
+        wb <- addHeaderStyle(wb, n_col, sheet) |>
+          addBodyStyle('left', n_case, 1:n_col, sheet)
+        setColWidths(wb, sheet, cols = 2, widths = 200)
+      }
     }
 
     # add flagged and test sheets
@@ -181,7 +230,8 @@ add_format <- function(){
       wb <- addHeaderStyle(wb, n_col, sheet) |>
         addBodyStyle('left', n_case, c(4, 20), sheet) |>
         addBodyStyle('right', n_case, 7:8, sheet) |>
-        addBodyStyle('center', n_case, setdiff(1:20, c(4, 20, 7:8)), sheet)
+        addBodyStyle('center', n_case, setdiff(1:20, c(4, 20, 7:8)), sheet) |>
+        roundBody(sheet, n_case, 10:17, 7:9)
 
       # add flag color and link
       wb <- colorFlags_link(wb, i, ls_save)
@@ -287,13 +337,26 @@ add_format <- function(){
         insertImage(
           wb, sheet,
           file.path(folder, paste0(sheet, '_facilDiscrFitw.png')),
-          startRow = 1, startCol = n_col+10,
+          startRow = 1, startCol = n_col+11,
           width = 5.5, height = 10
         )
       }
 
       setColWidths(wb, sheet, cols = n_col+1, widths = 10)
       setColWidths(wb, sheet, cols = n_col+2, widths = 10)
+
+      addStyle(
+        wb,
+        sheet = sheet,
+        createStyle(
+          numFmt = "0.000",
+          border = "TopBottomLeftRight"
+        ),
+        rows = 2:n_case,
+        # skip 'N ' variables in dataframe
+        cols = setdiff(2:(n_col-1), which(grepl('N ', names(ls_save[[i]])))),
+        gridExpand = TRUE
+      )
 
       # pageBreak(wb, sheet, i = 30, type = "row")
     }
@@ -327,7 +390,7 @@ add_format <- function(){
           x = ls_save[[i]] |>
             dplyr::mutate(
               `Files`=c(
-                file.path(folder, paste0(sheet, '_process.xlsx')),
+                file.path(gsub('DIF/', '', folder), paste0(sheet, '_process.xlsx')),
                 rep(NA, n_case-1-1)
               )
             )
@@ -375,6 +438,19 @@ add_format <- function(){
         setColWidths(wb, sheet, cols = n_col+1, widths = 10)
         setColWidths(wb, sheet, cols = n_col+2, widths = 10)
       }
+
+      addStyle(
+        wb,
+        sheet = sheet,
+        createStyle(
+          numFmt = "0.000",
+          border = "TopBottomLeftRight"
+        ),
+        rows = 2:n_case,
+        # skip 'sig '/'avored' variables in dataframe
+        cols = setdiff(3:(n_col-1), which(grepl('(sig )|(avored)', names(ls_save[[i]])))),
+        gridExpand = TRUE
+      )
 
     }
     saveWorkbook(wb, file, overwrite = TRUE)
@@ -457,6 +533,18 @@ add_format <- function(){
           }
         }
       }
+
+      addStyle(
+        wb,
+        sheet = sheet,
+        createStyle(
+          numFmt = "0.000",
+          border = "TopBottomLeftRight"
+        ),
+        rows = 2:n_case,
+        cols = 4:9,
+        gridExpand = TRUE
+      )
     }
     saveWorkbook(wb, file, overwrite = TRUE)
   }

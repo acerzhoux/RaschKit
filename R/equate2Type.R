@@ -4,14 +4,14 @@
 #' is saved in 'equating' folder, each sheet of which is for two
 #' adjacent grades Also saved are scatterplots named 'Vrt_xxx.pdf'.
 #'
-#' @param type Type of equating. One of c('Hrz', 'Vrt').
+#' @param linkTypeLst Length-one list such as list(Hrz=list(grades=c(2:10),
+#' forms=c('A', 'B', 'C'))) or list(Vrt=c(2:10)). Name is Hrz or Vrt.
+#' Element is list of grades and test forms or vector of grades.
 #' @param test Name of test.
-#' @param grdIntVec Vector of all grades Default is c(2:10).
-#' @param forms Forms used in a test. Default is c('A','B')
 #' @param p_cut p value of chi-square test. Default is 0.05.
 #' @param DIF_cut Threshold of an item's delta estimate difference between two
 #' tests. Default is 0.5.
-#' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference
+#' @param DIF_std_cut Threshold of an item's standardized delta estimate difference
 #' between two tests. Default is 4.
 #' @param step TRUE if DIF analysis is performed on step parameters.
 #' Default is FALSE.
@@ -21,13 +21,33 @@
 #' equate2Type('Hrz', 'bang', 3)
 #' @export
 
-equate2Type <- function(type=c('Hrz', 'Vrt'), test, grdIntVec=c(2:10),
-                        forms=c('A','B'), p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4,
-                        step=FALSE, iter=TRUE){
+equate2Type <- function(linkTypeLst, test, p_cut=0.05,
+                        DIF_cut=0.5, DIF_std_cut=4, step=FALSE, iter=TRUE){
   # check inputs
-  if (length(type)!=1 || !(type %in% c('Hrz', 'Vrt'))) {
-    stop('Please set \'type\' as one of \'Hrz\' or \'Vrt\'.')
+  if (!is.list(linkTypeLst) || length(linkTypeLst)!=1 || !(names(linkTypeLst) %in% c('Hrz', 'Vrt'))) {
+    stop('linkTypeLst should be a length-one list such as
+        list(Hrz=list(grades=c(2:10), forms=c(\'A\', \'B\', \'C\'))) or
+        list(Vrt=c(2:10)).
+    Name is Hrz or Vrt.
+    Element is list of grades and test forms or vector of grades.')
   }
+
+  type <- names(linkTypeLst)
+  if (type == 'Hrz') {
+    if (!all(c('grades', 'forms') %in% names(linkTypeLst[[type]]))) {
+      stop('linkTypeLst\'s element should be a list with names grades and forms! ')
+    }
+  }
+
+  # specify variables used later
+
+  if (type == 'Hrz') {
+    grdIntVec <- linkTypeLst[[type]][['grades']]
+    forms <- linkTypeLst[[type]][['forms']]
+  } else {
+    grdIntVec <- linkTypeLst[[type]]
+  }
+
   var_name <- ifelse(type=='Hrz', '', 'L')
 
   folder <- paste0('equating/', type, '_', if(step) 'step_', test)
@@ -49,12 +69,12 @@ equate2Type <- function(type=c('Hrz', 'Vrt'), test, grdIntVec=c(2:10),
 
   equat_ls <- list()
   for (i in seq_along(grps)){
-    test_2 <- grps[[i]]
-    prefix <- paste0(folder, '/', paste0(test_2, collapse='_'))
+    vars <- grps[[i]]
+    prefix <- paste0(folder, '/', paste0(vars, collapse='_'))
 
     # extract facility and discrimination from its.xls file
-    t1 <- paste0(test, '_', test_2[[1]])
-    t2 <- paste0(test, '_', test_2[[2]])
+    t1 <- paste0(test, '_', vars[[1]])
+    t2 <- paste0(test, '_', vars[[2]])
 
     if (!step) {
       facilDiscrFitw <- df_its('output', t1) |>
@@ -67,19 +87,19 @@ equate2Type <- function(type=c('Hrz', 'Vrt'), test, grdIntVec=c(2:10),
         modify_at(c(3, 7), ~round(.x, 3))
       names(facilDiscrFitw) <- gsub(
           "\\.x",
-          paste0(ifelse(type=='Hrz', ' ', ' L'), test_2[[1]]),
+          paste0(ifelse(type=='Hrz', ' ', ' L'), vars[[1]]),
           names(facilDiscrFitw)
         )
       names(facilDiscrFitw) <- gsub(
           "\\.y",
-          paste0(ifelse(type=='Hrz', ' ', ' L'), test_2[[2]]),
+          paste0(ifelse(type=='Hrz', ' ', ' L'), vars[[2]]),
           names(facilDiscrFitw)
         )
     }
 
     # save scatterplots of delta and indice
-    statsEqu <- Equate_shw(test, test_2, var_name, p_cut, DIF_cut,
-                           DIF_adj_cut, FALSE, step, iter)
+    statsEqu <- Equate_shw(test, vars, var_name, p_cut, DIF_cut,
+                           DIF_std_cut, FALSE, step, iter)
     ggsave(
       paste0(prefix, '_delta.png'),
       statsEqu[['plot_DIF']],
@@ -89,7 +109,7 @@ equate2Type <- function(type=c('Hrz', 'Vrt'), test, grdIntVec=c(2:10),
     if (!step) {
       ggsave(
         paste0(prefix, '_facilDiscrFitw.png'),
-        plot_facilDiscrFitw(facilDiscrFitw, paste0(var_name, test_2), c(3, 7), 3),
+        plot_facilDiscrFitw(facilDiscrFitw, paste0(var_name, vars), c(3, 7), 3),
         width=17, height=30, units="cm"
       )
 
@@ -119,7 +139,7 @@ equate2Type <- function(type=c('Hrz', 'Vrt'), test, grdIntVec=c(2:10),
       paste0(prefix, '_process.xlsx')
     )
 
-    equat_ls[[paste0(test_2, collapse='_')]] <- statsEqu
+    equat_ls[[paste0(vars, collapse='_')]] <- statsEqu
   }
 
   summary <- map(equat_ls, 'shift') |>
@@ -144,7 +164,7 @@ equate2Type <- function(type=c('Hrz', 'Vrt'), test, grdIntVec=c(2:10),
     ls_save,
     folder,
     file,
-    c(DIF_cut, DIF_adj_cut)
+    c(DIF_cut, DIF_std_cut)
   )
 
 }

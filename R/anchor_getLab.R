@@ -8,6 +8,11 @@
 #' @export
 
 anchor_getLab <- function(folder, test) {
+
+  if (!(is.atomic(test) & length(test) == 1L & is.character(test))) {
+    stop('ancTest2Read should be a character scalar!')
+  }
+
   iN <- N_item('output', test)
   dfRead <- readr::read_fwf(
       paste0(folder, '/', test, '_anc.txt'),

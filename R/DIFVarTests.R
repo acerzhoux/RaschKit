@@ -18,7 +18,7 @@
 #' @param p_cut p value of chi-square test. Default is 0.05.
 #' @param DIF_cut Threshold of an item's delta estimate difference between two
 #' testVec. Default is 0.5.
-#' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference
+#' @param DIF_std_cut Threshold of an item's standardized delta estimate difference
 #' between two testVec. Default is 4.
 #' @param design_effect Value to adjust errors. Default is 1.
 #' @param resltReady TRUE if results are ready. Default is FALSE.
@@ -30,7 +30,7 @@
 #' @export
 
 DIFVarTests <- function(testVec=NULL, respDfLst=NULL, difVarLst=NULL, n_cov=NULL, pid=NULL,
-                        keyDfLst=NULL, p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4,
+                        keyDfLst=NULL, p_cut=0.05, DIF_cut=0.5, DIF_std_cut=4,
                         design_effect=1, resltReady=FALSE,
                         iter=TRUE, test3term=NULL){
   # ########## check input
@@ -103,13 +103,13 @@ DIFVarTests <- function(testVec=NULL, respDfLst=NULL, difVarLst=NULL, n_cov=NULL
         if (is.null(vars)) {
           DIF_poly_shw(DIFVar, test, NULL, p_cut, FALSE, NULL)
         } else {
-          DIF_dich_its_shw(DIFVar, test, vars, p_cut, DIF_cut, DIF_adj_cut,
+          DIF_dich_its_shw(DIFVar, test, vars, p_cut, DIF_cut, DIF_std_cut,
                            design_effect, FALSE, TRUE, iter, TRUE)
         }
         if (!is.null(test3term) && !is.null(vars)){
           if (test %in% test3term){
             cat('\n\t>>>>>', DIFVar, '* step', '<<<<<\n\n')
-            DIF_dich_its_shw(DIFVar, test, vars, p_cut, DIF_cut, DIF_adj_cut,
+            DIF_dich_its_shw(DIFVar, test, vars, p_cut, DIF_cut, DIF_std_cut,
                              design_effect, TRUE, TRUE, iter, TRUE)
           }
         }
@@ -132,13 +132,13 @@ DIFVarTests <- function(testVec=NULL, respDfLst=NULL, difVarLst=NULL, n_cov=NULL
         method <- ifelse(is.null(vars), 'Bonferroni', 'chi_square')
         DIFDimOne(method, test, pid, n_cov, DIFVar, respDf, 'sav', keyDf, vars,
                     FALSE, NULL, NULL, TRUE, NULL, FALSE, TRUE, p_cut, DIF_cut,
-                    DIF_adj_cut, iter, FALSE, design_effect, NULL)
+                    DIF_std_cut, iter, FALSE, design_effect, NULL)
         if (!is.null(test3term) && !is.null(vars)){
           if (test %in% test3term){
             cat('\n\t>>>>>', DIFVar, '* step', '<<<<<\n\n')
             DIFDimOne(method, test, pid, n_cov, DIFVar, respDf, 'sav', keyDf, vars,
                         FALSE, NULL, NULL, TRUE, NULL, FALSE, TRUE, p_cut, DIF_cut,
-                        DIF_adj_cut, iter, TRUE, design_effect, NULL)
+                        DIF_std_cut, iter, TRUE, design_effect, NULL)
           }
         }
       }
@@ -272,7 +272,7 @@ DIFVarTests <- function(testVec=NULL, respDfLst=NULL, difVarLst=NULL, n_cov=NULL
         ls_save,
         folder,
         file,
-        c(DIF_cut, DIF_adj_cut)
+        c(DIF_cut, DIF_std_cut)
       )
       cat('\n', DIFVar, 'DIF analysis summary file is at:\n\t', file)
     }

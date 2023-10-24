@@ -48,7 +48,8 @@ calibrate(
 responses. Default is NULL where Excel file with name 'test' in 'data'
 folder is used.}
 
-\item{keyDf}{Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).}
+\item{keyDf}{Dataframe of 'Item', 'Key', 'Max_score', 'Key2' (if 2 keys),
+'Key3' (if 3 keys) ...}
 
 \item{pid}{Name of candidates' ID variable.}
 

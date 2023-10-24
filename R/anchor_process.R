@@ -13,10 +13,15 @@
 #' @param nDimVec Vector of numbers of responses the dimensions have. Default is NULL.
 #' Define this vector if multi-dimensional model is to be run, e.g., c(30, 45).
 #' Also should define this if there are variables after response columns, e.g., 30.
-#' @param ancDf Dataframe of 'Item' and 'Delta' for anchors.
+#' @param ancDf Dataframe of 'Item', 'Delta' (and 'Step') for anchors.
 #' @export
 
 anchor_process <- function(test, respDf, keyDf, n_cov, nDimVec, ancDf){
+
+  if (!(is.data.frame(ancDf) & ncol(ancDf) >= 2L & all(c('Item', 'Delta') %in% names(ancDf)))) {
+    stop('ancDf should be a dataframe with variables Item, Delta (and Step if needed)!')
+  }
+
   # id of removed item
   id_x <- which(keyDf$Key %in% c('x', 'X'))
   # id of item with one score category

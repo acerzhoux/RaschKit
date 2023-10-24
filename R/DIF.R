@@ -36,7 +36,7 @@
 #' @param p_cut p value of chi-square test. Default is 0.05.
 #' @param DIF_cut Threshold of an item's delta estimate difference between two
 #' tests. Default is 0.5.
-#' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference
+#' @param DIF_std_cut Threshold of an item's standardized delta estimate difference
 #' between two tests. Default is 4.
 #' @param design_effect Value to adjust errors. Default is 1.
 #' @param domain Name of the domain in the test, e.g., 'Literacy'. Default is NULL.
@@ -67,7 +67,7 @@ DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'), test, keyDf, ####
                 section_extr=NULL, poly_key=FALSE, quick=TRUE, step=FALSE,
                 DIFVar=NULL, DIFVar_cols=NULL, poly_catgrs=NULL, ##### DIF part #####
                 poly_facet=FALSE, poly_group=FALSE, vars=NULL, p_cut=0.05,
-                DIF_cut=0.5, DIF_adj_cut=4, design_effect=1, domain=NULL,
+                DIF_cut=0.5, DIF_std_cut=4, design_effect=1, domain=NULL,
                 save_xlsx=TRUE, iter=TRUE, pweight=NULL, pw_cols=NULL){
   # check inputs
   if (length(method)!=1 || !(method %in% c('chi_square', 'Bonferroni', 'Facet'))) {
@@ -98,7 +98,7 @@ DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'), test, keyDf, ####
         arg_DIF,
         list(
           vars=vars,
-          DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut,
+          DIF_cut=DIF_cut, DIF_std_cut=DIF_std_cut,
           design_effect=design_effect, save_xlsx=save_xlsx,
           iter=iter, quick=quick
         )

@@ -35,7 +35,7 @@
 #' @param p_cut p value of chi-square test. Default is 0.05.
 #' @param DIF_cut Threshold of an item's delta estimate difference between
 #' two tests. Default is 0.5.
-#' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference
+#' @param DIF_std_cut Threshold of an item's standardized delta estimate difference
 #' between two tests. Default is 4.
 #' @param design_effect Value to adjust errors. Default is 1.
 #' @param iter TRUE to iteratively remove DIF items. Default is FALSE
@@ -48,7 +48,7 @@ DIFDimOne <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
                         test, pid, n_cov, DIFVar, respDf=NULL, filetype='sav', keyDf,
                         vars=NULL, poly_facet=FALSE, n_resp=NULL, regrNmVec=NULL,
                         quick=TRUE, section_extr=NULL, prep_process=FALSE, save_xlsx=TRUE,
-                        p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4, iter=FALSE,
+                        p_cut=0.05, DIF_cut=0.5, DIF_std_cut=4, iter=FALSE,
                         step=FALSE, design_effect=1, pweight=NULL){
   # ####### check inputs
   cat('Checking inputs...\n')
@@ -123,7 +123,7 @@ DIFDimOne <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
   arg_DIF <- list(method=method, anchor=FALSE, domain=NULL,
           section_extr=prep$section_extr, poly_key=poly_key,
           quick=quick, step=step, keyDf=keyDf,
-          p_cut=p_cut, DIF_cut=DIF_cut, DIF_adj_cut=DIF_adj_cut,
+          p_cut=p_cut, DIF_cut=DIF_cut, DIF_std_cut=DIF_std_cut,
           design_effect=design_effect,
           test=test, DIFVar=DIFVar,
           vars=vars, poly_facet=poly_facet, poly_group=FALSE,

@@ -4,11 +4,9 @@
 \alias{QA2Df}
 \title{QA2Df}
 \usage{
-QA2Df(aspect, id, charVarVec = NULL, numVarVec = NULL, selfDf, otherDf)
+QA2Df(id, charVarVec = NULL, numVarVec = NULL, selfDf, otherDf)
 }
 \arguments{
-\item{aspect}{Name of content to be compared about, e.g., 'option frequency'.}
-
 \item{id}{Unique ID column in both dataframes. This should be all same across
 the two dataframes.}
 

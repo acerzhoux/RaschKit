@@ -15,7 +15,7 @@
 #' two categories in data.
 #' @examples
 #' # Not run
-#' # read2one('DIF', 'Writing', difVarVec=c('gender', 'LBOTE', 'VCEVCAL'))
+#' # read2one('results', c('AACA'), 'itn')
 #' @export
 
 read2one <- function (folder = c('results', 'DIF', 'equating'), tests,
@@ -64,11 +64,8 @@ read2one <- function (folder = c('results', 'DIF', 'equating'), tests,
         reduce(bind_rows) |>
         select(-ncol(itnSums[[1]]))
 
-      # move combined files into a folder named prefix before saving
-      move_into_folder(folder, prefix)
-
       ls_save <- list(
-          Reliabilities=getReliability(tests),
+          TestStats=getTest(tests, ex_ls),
           Note=itn_comment(),
           Flagged=Flagged |>
             mutate(ICC=paste0('=HYPERLINK(', Test, '!U$2, "ICC")'))
@@ -77,7 +74,11 @@ read2one <- function (folder = c('results', 'DIF', 'equating'), tests,
           map(ex_ls, ~mutate(.x, ICC='=HYPERLINK(U$2, "ICC")'))
         )
 
+      # move combined files into a folder named prefix before saving
+      move_into_folder(folder, prefix)
+
       add_format()[['itn']](ls_save, file, folder, prefix) # hyperlink, color, format
+
     } else if (prefix=='eqv') {
       move_into_folder(folder, prefix)
       list(

@@ -1,12 +1,16 @@
-#' getReliability
+#' getTest
 #'
 #' This function extracts reliabilities from xxx_shw.xls files and puts them into
 #' a dataframe.
 #'
 #' @param tests Vector of test names.
+#' @param intLst List of item analysis dataframe for each test.
+#' @examples
+#' # Not run
+#' # getTest(tests=c('V', 'Q'))
 #' @export
 
-getReliability <- function(tests){
+getTest <- function(tests, intLst){
   getAlpha <- function(test){
     strs <- readxl::read_xls(
       paste0('output/', test, '_its.xls'),
@@ -21,7 +25,7 @@ getReliability <- function(tests){
     )
   }
 
-  Reliabilities <- map(
+  testStats <- map(
     tests,
     ~readxl::read_xls(
       paste0('output/', .x, '_shw.xls'),
@@ -41,11 +45,23 @@ getReliability <- function(tests){
       map(tests, getAlpha) |>
         reduce(bind_rows)
     ) |>
-    mutate(val=as.numeric(val)) |>
-    pivot_wider(names_from = 'type', values_from = 'val') |>
-    modify_if(is.numeric, ~round(.x, 3))
+    mutate(val=as.numeric(val))  |>
+      pivot_wider(names_from = 'type', values_from = 'val') |>
+      modify_if(is.numeric, ~round(.x, 3)) |>
+    left_join(
+      map(
+        intLst,
+        ~summarise(
+          .x,
+          `Average Facility`=mean(Facility, na.rm=TRUE),
+          `Average Item-Rest Corr.`=mean(`Item-Rest Corr.`, na.rm=TRUE)
+        )
+      ) |>
+      imap_dfr(~mutate(.x, Test=.y)),
+      by='Test'
+    )
 
-  names(Reliabilities) <- gsub("\\:", '', names(Reliabilities))
+  names(testStats) <- gsub("\\:", '', names(testStats))
 
-  Reliabilities
+  testStats
 }

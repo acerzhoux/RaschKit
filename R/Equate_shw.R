@@ -14,7 +14,7 @@
 #' @param p_cut p value of chi-square test. Default is 0.05.
 #' @param DIF_cut Threshold of an item's delta estimate difference between two
 #' tests. Default is 0.5.
-#' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference
+#' @param DIF_std_cut Threshold of an item's standardized delta estimate difference
 #' between two tests. Default is 10.
 #' @param sav_results TRUE if an Excel file with chi-square test results and
 #' a plot are desired. Default is TRUE.
@@ -27,7 +27,7 @@
 #' @export
 
 Equate_shw <- function(test, vars, var_name=NULL, p_cut=0.05,
-                       DIF_cut=0.5, DIF_adj_cut=4,
+                       DIF_cut=0.5, DIF_std_cut=4,
                        sav_results=TRUE, step=FALSE, iter=FALSE){
   if (!dir.exists('equating')) dir.create('equating')
 
@@ -53,6 +53,6 @@ Equate_shw <- function(test, vars, var_name=NULL, p_cut=0.05,
     na.omit()
   }
 
-  Equate(deltaDf, test, vars, p_cut, DIF_cut, DIF_adj_cut,
+  Equate(deltaDf, test, vars, p_cut, DIF_cut, DIF_std_cut,
          sav_results, 1, step, NULL, iter)
 }

@@ -18,7 +18,8 @@
 #' response columns, e.g., 30.
 #' @param dimNmVec Vector of the dimensions' names. Default is NULL.
 #' Define this vector if multi-dimensional model is to be run.
-#' @param keyDf Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).
+#' @param keyDf Dataframe of 'Item', 'Key', 'Max_score', 'Key2' (if 2 keys),
+#' 'Key3' (if 3 keys) ...
 #' @param quick TRUE if empirical error is not needed. Default is TRUE.
 #' @param trial TRUE when trial item diagnostics is needed after anchoring is done.
 #' Default is FALSE.
@@ -105,8 +106,9 @@ calibrate <- function(test, respDf=NULL, keyDf, pid, n_cov, regrNmVec=NULL,
       stop('ancDf should have names as \'Item\' and \'Delta\'!')
     }
   }
-  if (!all(names(keyDf) %in% c('Item', 'Key', 'Max_score', 'Key2'))){
-    stop('keyDf should have names as \'Item\', \'Key\', \'Max_score\', \'Key2 (if double key)\'!')
+  if (!all(c('Item', 'Key', 'Max_score') %in% names(keyDf))){
+    stop('keyDf should have \'Item\', \'Key\', \'Max_score\',
+         \'Key2\' (if 2 keys), \'Key3\' (if 3 keys)...!')
   }
   if (any(na.omit(str_extract(keyDf$Item, ' ') == ' '))) {
     stop('Column \'Item\' of keyDf should contain no space!')
@@ -239,6 +241,11 @@ calibrate <- function(test, respDf=NULL, keyDf, pid, n_cov, regrNmVec=NULL,
   # ####### process anchor file
   if (anchor) {
     cat('Processing/Reading anchor file...\n')
+
+    if (!(is.logical(ancRead))) {
+      stop('ancRead should be TRUE or FALSE!')
+    }
+
     if (!is.null(ancShift)){
       anchor_shift(test, ancShift)
     } else if (!is.null(ancTest2Read)) {

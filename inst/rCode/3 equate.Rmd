@@ -47,7 +47,8 @@ for (i in 1:2) {
 }  
 
 equateLst( # include format, hyperlink, flag color
-  deltaDfLst=lst[[1]] |> `names<-`(tests),
+  deltaDfLst=lst[[1]] |> 
+    `names<-`(tests),
   vars,
   p_cut = 0.05,
   DIF_cut = c(0.3, 0.3, 0.5), # vector of cuts if tests vary in cut
@@ -59,24 +60,31 @@ equateLst( # include format, hyperlink, flag color
 )
 ```
 
-Use of functions below assumes that xxx_shw.xls and other files with names associated 
-with test form or grade are in 'output' folder in working directory.
+Ensure that folders below contain certain file types.
+ - 'output': xxx_its.xls, xxx_shw.txt, xxx_shw.xls.
+ - 'data': xxx_Labels.txt.
+Those files have names associated with test form or grade. 
 
+For horizontal equating (Hrz), files names in 'output' folder should cover 
+all combinations of 'linkTypeLst'. For example, if linkTypeLst is 
+list(Hrz=list(grades=c(2:3), forms=c('A','B'))), shw.xls-type files should 
+include 'xxx_2A_shw.xls', 'xxx_2B_shw.xls', 'xxx_3A_shw.xls', 'xxx_3B_shw.xls'.
+ 
 ## equate2Type() does horizontal and vertical equating
 
 ```{r}
 equate2Type( # include format, hyperlink, flag color
-  type = c("Hrz", "Vrt"),
+  linkTypeLst=list(
+    Hrz=list(
+      grades=c(2:10),
+      forms=c('A', 'B')
+    )
+  ), # Vrt: list(Vrt=c(2:10))
   test,
-  grdIntVec = c(2:10),
-  forms = c("A", "B"),
   p_cut = 0.05,
   DIF_cut = 0.5,
-  DIF_adj_cut = 4,
+  DIF_std_cut = 4,
   step = FALSE,
   iter = TRUE
 )
-# files names in 'output' folder should cover all combinations of args
- # - 'grades' and 'forms', e.g., 'R_2A_shw.xls' (horizontal)
- # - 'grades', e.g., 'R_2_shw.xls' (vertical)
 ```

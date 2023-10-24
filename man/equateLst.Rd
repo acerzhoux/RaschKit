@@ -29,7 +29,7 @@ to two tests associated with .x and .y.}
 \item{DIF_cut}{Threshold of an item's delta estimate difference between
 two tests. Default is 0.5. Give vector of cuts if tests vary in cut.}
 
-\item{DIF_std_cut}{Threshold of an item's adjusted delta estimate difference
+\item{DIF_std_cut}{Threshold of an item's standardized delta estimate difference
 between two tests. Default is 4. Give vector of cuts if tests vary in cut.}
 
 \item{design_effect}{Value to adjust errors. Default is 1.}

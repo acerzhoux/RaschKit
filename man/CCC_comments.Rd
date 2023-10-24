@@ -9,10 +9,10 @@ CCC_comments(test, dFallThr = 0.5, dRiseThr = 0.1, ccc_data, iType)
 \arguments{
 \item{test}{Name of test.}
 
-\item{dFallThr}{Ability on last bin above which falling distractor is flagged.
+\item{dFallThr}{Proportion on last bin above which falling distractor can be flagged.
 Default is 0.5.}
 
-\item{dRiseThr}{Ability on last bin below which rising distractor is unflagged.
+\item{dRiseThr}{Proportion on last bin below which rising distractor is unflagged.
 Default is 0.1.}
 
 \item{ccc_data}{Data to draw CCC. One element of list output from Function 'CCC_Vernon'.}

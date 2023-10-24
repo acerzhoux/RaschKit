@@ -4,14 +4,12 @@
 \alias{delta_DIF_dich_step}
 \title{delta_DIF_dich_step}
 \usage{
-delta_DIF_dich_step(test, DIFVar, quick = TRUE)
+delta_DIF_dich_step(test, DIFVar)
 }
 \arguments{
 \item{test}{Name of test.}
 
 \item{DIFVar}{Name of dichotomous DIF variable, e.g., 'gender'.}
-
-\item{quick}{Whether quick error is needed. Default is TRUE for DIF analysis.}
 }
 \value{
 Dataframe of variables of 'delta.x', 'delta.y'.

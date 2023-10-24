@@ -11,7 +11,7 @@
 #' @param p_cut p value of chi-square test. Default is 0.05.
 #' @param DIF_cut Threshold of an item's delta estimate difference between two
 #' tests. Default is 0.5.
-#' @param DIF_adj_cut Threshold of an item's adjusted delta estimate difference
+#' @param DIF_std_cut Threshold of an item's standardized delta estimate difference
 #' between two tests. Default is 4.
 #' @param step TRUE if DIF analysis is performed on step parameters. Default is FALSE.
 #' @param DIFVar Name of dichotomous DIF variable, e.g., 'gender'. Default is NULL.
@@ -23,7 +23,7 @@
 #' @return Plot of DIF analysis.
 #' @export
 
-plot_DIF <- function(df, wh, vars, p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4,
+plot_DIF <- function(df, wh, vars, p_cut=0.05, DIF_cut=0.5, DIF_std_cut=4,
                      step=FALSE, DIFVar=NULL, cor, shift, sdr, axRange, quick=TRUE) {
   DIF <- ifelse(!is.null(DIFVar), TRUE, FALSE)
   if (step){
@@ -43,8 +43,8 @@ plot_DIF <- function(df, wh, vars, p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4,
     label=paste0(
       'Easier for ', vars[1], '\n',
       'y=', round(coef(fit)[1], 2), '+', round(coef(fit)[2], 2), 'x', ', ',
-      'r^2', '=', round(summary(fit)$r.squared, 2), ', ',
-      'RMSE', '=', round(sqrt(mean(resid(fit)^2)), 2)
+      'r^2 = ', round(summary(fit)$r.squared, 2), ', ',
+      'RMSE =', round(sqrt(mean(resid(fit)^2)), 2)
     )
   )
   txt2 <- tibble(
@@ -92,7 +92,7 @@ plot_DIF <- function(df, wh, vars, p_cut=0.05, DIF_cut=0.5, DIF_adj_cut=4,
       labs(
         caption=paste0(
           'DIF: abs(delta dif.) > ', DIF_cut,
-          ', abs(delta dif. std.) > ', DIF_adj_cut,
+          ', abs(delta dif. std.) > ', DIF_std_cut,
           ', p < ', p_cut
         )
       )

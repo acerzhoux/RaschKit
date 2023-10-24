@@ -9,6 +9,11 @@
 #' @export
 
 anchor_shift <- function(test, shift){
+
+  if (!(is.atomic(shift) & length(shift) == 1L & is.numeric(shift))) {
+    stop('ancShift should be a numeric scalar!')
+  }
+
   iN <- N_item('output', test)
 
   readr::read_fwf(

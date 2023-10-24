@@ -34,6 +34,7 @@ DIF_poly <- function(df_ls, DIFVar, cats, labels, test, domain=NULL,
   delta_cat_item <- map(df_ls, ~dplyr::select(.x, item, delta)) |>
     reduce(function(x, y) inner_join(x, y, by='item')) |>
     `colnames<-`(c('item', str_c('delta_', cats))) |>
+    mutate(item=as.character(item)) |>
     inner_join(labels, by='item') |>
     dplyr::select(-item) |>
     dplyr::rename(item=label)
@@ -45,6 +46,7 @@ DIF_poly <- function(df_ls, DIFVar, cats, labels, test, domain=NULL,
   # error
   error_cat_item <- map(df_ls, ~dplyr::select(.x, item, error)) |>
     reduce(function(x, y) inner_join(x, y, by='item')) |>
+    mutate(item=as.character(item)) |>
     inner_join(labels, by='item') |>
     dplyr::select(-item) |>
     dplyr::rename(item=label) |>

@@ -4,7 +4,7 @@
 \alias{calibrateLst}
 \title{calibrateLst}
 \usage{
-calibrateLst(respDfLst = NULL, keyDfLst, pid, n_cov, run)
+calibrateLst(respDfLst = NULL, keyDfLst, pid, n_cov, run, useR = FALSE)
 }
 \arguments{
 \item{respDfLst}{List of response dataframe. Default is NULL (reruns after review).
@@ -18,6 +18,8 @@ If NULL and items need collapsing, put processed data with test name in
 \item{n_cov}{Number of covariates before responses.}
 
 \item{run}{Integer that indicates round of run.}
+
+\item{useR}{TRUE when code 'R' is used for scoring. Default is FALSE.}
 }
 \description{
 This function calibrates a list of tests and put results into a summary file

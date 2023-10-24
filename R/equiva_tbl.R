@@ -16,8 +16,8 @@
 #' equiva_tbl(test='Writing')
 #' @export
 
-equiva_tbl <- function(test, est_type='wle', slope=NULL,
-             intercept=NULL, extrapolation=FALSE){
+equiva_tbl <- function(test, est_type='wle', slope=NULL, intercept=NULL,
+                       extrapolation=FALSE){
   equiva_path <- paste0('output/', test, '_eqv.txt')
   cn <- c(
     'reset;',

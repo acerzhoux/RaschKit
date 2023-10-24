@@ -117,13 +117,13 @@ CCC_plot <- function(easy=90, hard=10, iRst=.11, fit_w=1.1, fit_uw=1.2){
     tblStats <- tblStats |>
       dplyr::mutate(
         flagScore = ifelse((`% Total`<10 & Score>0) | (`% Total`<10 & Code==0),1, 0),
-        flagPtBis = ifelse(`Pt Bis`-lag(`Pt Bis`)<0 & Score>0, 1, 0),
+        # flagPtBis = ifelse(`Pt Bis`-lag(`Pt Bis`)<0 & Score>0, 1, 0),
         flagPv1 =  ifelse(PV1Avg-lag(PV1Avg)<0 & Score>0, 1, 0)
       )
 
     row_key <- with(tblStats, str_detect(Code, "\\*"))
     row_ScoreFlag <- with(tblStats, flagScore == 1)
-    row_ptbisFlag <- with(tblStats, flagPtBis == 1)
+    # row_ptbisFlag <- with(tblStats, flagPtBis == 1)
     row_abilFlag <- with(tblStats, flagPv1 == 1)
 
     tblStatsFlex <- tblStats |>
@@ -131,10 +131,10 @@ CCC_plot <- function(easy=90, hard=10, iRst=.11, fit_w=1.1, fit_uw=1.2){
       flextable::flextable() |>
       flextable::bg(i = row_key, bg = "yellow", part = "body") |>
       flextable::color(i = row_ScoreFlag, j = "% Total", color = "red") |>
-      flextable::color(i = row_ptbisFlag, j = "Pt Bis", color = "red") |>
+      # flextable::color(i = row_ptbisFlag, j = "Pt Bis", color = "red") |>
       flextable::color(i = row_abilFlag, j = "PV1Avg", color = "red") |>
       flextable::bold(i = row_ScoreFlag, j = "% Total", bold = T) |>
-      flextable::bold(i = row_ptbisFlag, j = "Pt Bis", bold = T) |>
+      # flextable::bold(i = row_ptbisFlag, j = "Pt Bis", bold = T) |>
       flextable::bold(i = row_abilFlag, j = "PV1Avg", bold = T) |>
       flextable::as_raster()
 

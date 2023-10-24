@@ -16,10 +16,10 @@ DIF_steps_dich_step <- function(iterative=FALSE){
     Details = c('Multiply each step estimate\'s error in both groups by sqrt(desig_effect).',
       'Adjust each step estimate by subtracting from it the group mean of step estimates.',
       'Calculate step difference by subtracting each adjusted step of Group 2 (Step 2) from that of Group 1 (Step 2).',
-      'Divide each step difference (Step 3) by adjusted error, i.e., sqrt(error.x^2 + error.y^2) (Step 1).',
-      'Perform two-side df-1 chi-squared test on each squared standardised step difference (Step 4).',
+      'Divide each step difference (Step 3) by pooled standard error, i.e., sqrt(error.x^2 + error.y^2) (Step 1).',
+      'Perform two-tailed df-1 Chi-squared test on each squared standardized step difference (Step 4).',
       if (iterative){
-          'Iteratively perform Step 5 and each time remove the step of largest chi-squared value until steps all satisfy thresholds of p value, absolute step difference, and absolute standardised step difference.'
+        'Iteratively perform Step 5 and each time remove the step of largest Chi-square until steps all satisfy thresholds of p value, absolute step difference, and absolute standardized step difference.'
       }),
     Steps = 1:length(Details)) %>%
         select(Steps, Details)

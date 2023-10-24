@@ -4,7 +4,7 @@
 \alias{DIF_items}
 \title{DIF_items}
 \usage{
-DIF_items(df, p_cut, DIF_cut, DIF_adj_cut)
+DIF_items(df, p_cut, DIF_cut, DIF_std_cut)
 }
 \arguments{
 \item{df}{Dataframe with results of chi-square tests on items that
@@ -15,7 +15,7 @@ appeared in two tests.}
 \item{DIF_cut}{Threshold of an item's delta estimate difference between
 two tests.}
 
-\item{DIF_adj_cut}{Threshold of an item's adjusted delta estimate difference
+\item{DIF_std_cut}{Threshold of an item's standardized delta estimate difference
 between two tests.}
 }
 \value{
