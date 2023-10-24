@@ -17,29 +17,29 @@
     )
 3.	Software compatibility.
     - ACER ConQuest: 5.33.5\
-      conquestr: 1.0.8\
-      Raschkit: 1.0.6
+      conquestr: 1.1.0\
+      Raschkit: 1.0.7
     - Install ACER ConQuest 5.33.5.
         - From left bottom corner of Windows, 
             - Type in 'software centre' and click.
             - click 'Applications'.
             - click 'ACER ConQuest v5.33.5' and install.
-    - Install 'conquestr' 1.0.8 (packageVersion('conquestr')).
+    - Install 'conquestr' 1.1.0 (packageVersion('conquestr')).
         - From bottom right pane of 'xxx.Rproj' (Step 1).    
             - click 'Packages' (3rd button after 'Files', 'Plots').
             - click 'Install'. From 'Install from', select 'Package Archive File...'.
             - Click 'Browse'. Enter into 'File name' file path (if Windows)\
                 P:\ACER ConQuest\Admin\InHouse - ConQuest Latest versions\conquestr
-            - Select 'conquestr_1.0.8.zip'. 
+            - Select 'conquestr_1.1.0.zip'. 
             - Click 'Open'. 
             - Click 'Install'.
-    - Install 'RaschKit' 1.0.6 (packageVersion('RaschKit')).
+    - Install 'RaschKit' 1.0.7 (packageVersion('RaschKit')).
         - From bottom right pane of 'xxx.Rproj' (Step 1).    
             - click 'Packages' (3rd button after 'Files', 'Plots').
             - click 'Install'. From 'Install from', select 'Package Archive File...'.
             - Click 'Browse'. Enter into 'File name' file path\
                 T:\Xiaoliang Zhou
-            - Select 'RaschKit_1.0.6.tar.gz'. 
+            - Select 'RaschKit_1.0.7.tar.gz'. 
             - Click 'Open'. 
             - Click 'Install'.
 4.  In 'xxx.Rproj', run code below and explore .Rmd files in ‘rCode’ folder for 
@@ -48,6 +48,24 @@
     - install_packages_ls()
     - create_folders()
     
+===== v1.0.7 Updates =====
+1. Beautified formats (rounding, font, etc.) of ouput files such as int analysis.
+2. Put item removal and multiple keys at one place (keyDf).
+3. equateLst() uses list of cutoff points to accepts different thresholds.
+4. Updated procedures for item step DIF analysis.
+5. Kept at most one level up for path hyperlink so it will work on other machines.
+6. Added argument 'useR' to calibrateLst() to determine whether 'R' is included.
+7. On TestStats sheet of itn summary file, added average facility, 
+   averagecorrelation, and cronbach. Multiple keys were sorted and added.
+8. Updated procedures to flag distractors for CCC comments. Each key of multiple 
+   keys was checked.
+9. In CCC appendix, PVAvg1 was adjusted by delta mean to be consistent with CCC.
+10. For anchoring methods, type and dim of arguments such as ancShift were checked.
+11. Argument 'DIF_adj_cut' was changed to 'DIF_std_cut' in DIF-related functions 
+    such as DIFVarTests(). 
+12. equate2Type() has new argument 'linkTypeLst' to replace 'type', 'grdIntVec', 
+    and 'forms' and added argument checks.
+
 ===== v1.0.6 Updates =====
 1. Debugged Equate() where iDIF should have been used to iteratively select 
    DIF item each step.
