@@ -13,7 +13,7 @@ install_packages_ls <- function(packages=c('plyr', 'conquestr', 'rlang', 'bookdo
                                            'gdata', 'janitor', 'knitr',
                                            'RColorBrewer', 'fs', 'lazyeval',
                                            'writexl', 'ggpubr', 'qpdf', 'tidyverse',
-                                           'openxlsx')){
+                                           'openxlsx','flextable')){
     lapply(packages, function(x){
         if (!require(x, character.only=TRUE)){
             install.packages(x)
