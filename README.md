@@ -16,14 +16,14 @@
              library(x, character.only=TRUE)}}\
     )
 3.	Software compatibility.
-    - ACER ConQuest: 5.33.5\
+    - ACER ConQuest: 5.34.3\
       conquestr: 1.1.0\
-      Raschkit: 1.0.7
-    - Install ACER ConQuest 5.33.5.
+      Raschkit: 1.0.8
+    - Install ACER ConQuest 5.34.3.
         - From left bottom corner of Windows, 
             - Type in 'software centre' and click.
             - click 'Applications'.
-            - click 'ACER ConQuest v5.33.5' and install.
+            - click 'ACER ConQuest v5.34.3' and install.
     - Install 'conquestr' 1.1.0 (packageVersion('conquestr')).
         - From bottom right pane of 'xxx.Rproj' (Step 1).    
             - click 'Packages' (3rd button after 'Files', 'Plots').
@@ -33,13 +33,13 @@
             - Select 'conquestr_1.1.0.zip'. 
             - Click 'Open'. 
             - Click 'Install'.
-    - Install 'RaschKit' 1.0.7 (packageVersion('RaschKit')).
+    - Install 'RaschKit' 1.0.8 (packageVersion('RaschKit')).
         - From bottom right pane of 'xxx.Rproj' (Step 1).    
             - click 'Packages' (3rd button after 'Files', 'Plots').
             - click 'Install'. From 'Install from', select 'Package Archive File...'.
             - Click 'Browse'. Enter into 'File name' file path\
                 T:\Xiaoliang Zhou
-            - Select 'RaschKit_1.0.7.tar.gz'. 
+            - Select 'RaschKit_1.0.8.tar.gz'. 
             - Click 'Open'. 
             - Click 'Install'.
 4.  In 'xxx.Rproj', run code below and explore .Rmd files in ‘rCode’ folder for 
@@ -48,6 +48,11 @@
     - install_packages_ls()
     - create_folders()
     
+===== v1.0.8 Updates =====
+1. Debugged a line in DIF_poly_shw().
+2. Allowed for saving of .CQS files for DIF analyses.
+3. Tested to work with ACER ConQuest 5.34.3.
+
 ===== v1.0.7 Updates =====
 1. Beautified formats (rounding, font, etc.) of ouput files such as int analysis.
 2. Put item removal and multiple keys at one place (keyDf).

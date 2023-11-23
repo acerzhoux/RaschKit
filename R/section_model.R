@@ -41,7 +41,7 @@ section_model <- function(run_ls, run, regr_ls, codes, poly_key,
       paste0(
         'model item',
         if (!is.null(DIFVar) & !poly_group) {
-          paste0('+', DIFVar, '+item*', DIFVar)
+          paste0('-', DIFVar, '+item*', DIFVar)
         },
         '+item*step*', DIFVar, ';\n'
       )
@@ -49,7 +49,7 @@ section_model <- function(run_ls, run, regr_ls, codes, poly_key,
       paste0(
         'model item',
         if (!is.null(DIFVar) & !poly_group) {
-           paste0('+', DIFVar, '+item*', DIFVar)
+           paste0('-', DIFVar, '+item*', DIFVar)
         },
         '+item*step;\n'
       )
@@ -58,7 +58,7 @@ section_model <- function(run_ls, run, regr_ls, codes, poly_key,
     paste0(
       'model item',
       if (!is.null(DIFVar) & !poly_group) {
-        paste0('+', DIFVar, '+item*', DIFVar)
+        paste0('-', DIFVar, '+item*', DIFVar)
       },
       ';\n'
     )

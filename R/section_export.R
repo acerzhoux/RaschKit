@@ -55,8 +55,8 @@ section_export <- function(poly_key, step, DIFVar, poly_catgrs, poly_facet, poly
       paste0('put                                                            >> ', p, '_compressed.CQS;')
     },
     'itanal ! matrixout=i;\n',
-    if (is.null(DIFVar) | (!is.null(DIFVar) & is_true(poly_group))) {
+    # if (is.null(DIFVar) | (!is.null(DIFVar) & is_true(poly_group))) {
       paste0('put ! compress=no                                              >> ', p, '.CQS;\n')
-    }
+    # }
   )
 }

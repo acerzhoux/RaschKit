@@ -29,7 +29,7 @@ DIF_poly_shw <- function(DIFVar, test, domain=NULL, p_cut=0.05, step=FALSE, labe
     labels <- read.table(paste0('data/', test, '_Labels.txt')) |>
       rownames_to_column() |>
       `colnames<-`(c('item', 'label')) |>
-      mutate(item=as.integer(item))
+      mutate(item=as.character(item))
   }
 
   folder <- paste0('DIF/', DIFVar)
