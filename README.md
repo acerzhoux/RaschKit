@@ -52,6 +52,9 @@
 1. Debugged a line in DIF_poly_shw().
 2. Allowed for saving of .CQS files for DIF analyses.
 3. Tested to work with ACER ConQuest 5.34.3.
+4. Updated item summary note for Priority 4 flagging criteria so polytomous items 
+   were included.
+5. Debugged read2one() so 'Key' variables of different types can merge.
 
 ===== v1.0.7 Updates =====
 1. Beautified formats (rounding, font, etc.) of ouput files such as int analysis.
