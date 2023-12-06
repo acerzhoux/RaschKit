@@ -61,6 +61,7 @@ read2one <- function (folder = c('results', 'DIF', 'equating'), tests,
       # add summary and flag sheets
       itnSums <- map(ex_ls, ~dplyr::filter(.x, Priority %in% 1:4))
       Flagged <- itnSums[lengths(itnSums) > 0L] |>
+        map(~mutate(.x, Key=as.character(Key))) |>
         reduce(bind_rows) |>
         select(-ncol(itnSums[[1]]))
 
