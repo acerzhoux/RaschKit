@@ -76,14 +76,14 @@ DIFVarTests <- function(testVec=NULL, respDfLst=NULL, difVarLst=NULL, n_cov=NULL
     for (i in seq_along(respDfLst)) {
       if (!identical(varDich, character(0))) {
         for (v in varDich) {
-          if (length(table(respDfLst[[i]][[v]])) != 2) {
+          if (length(setdiff(respDfLst[[i]][[v]], c(NA, ''))) != 2) {
             stop(paste0('respDfLst\'s dataframe ', i, ' should have two categories for ', v, '!'))
           }
         }
       }
       if (!identical(varPoly, character(0))) {
         for (v in varPoly) {
-          if (any(is.na(as.numeric(names(table(respDfLst[[i]][[v]])))))) {
+          if (any(is.na(as.numeric(names(table(setdiff(respDfLst[[i]][[v]], c(NA, '')))))))) {
             stop(paste0('respDfLst\'s dataframe ', i, ' should use only integers to represent categories for ', v, '!'))
           }
         }
@@ -131,14 +131,14 @@ DIFVarTests <- function(testVec=NULL, respDfLst=NULL, difVarLst=NULL, n_cov=NULL
         vars <- difVarLst[[i]]
         method <- ifelse(is.null(vars), 'Bonferroni', 'chi_square')
         DIFDimOne(method, test, pid, n_cov, DIFVar, respDf, 'sav', keyDf, vars,
-                    FALSE, NULL, NULL, TRUE, NULL, FALSE, TRUE, p_cut, DIF_cut,
-                    DIF_std_cut, iter, FALSE, design_effect, NULL)
+                  FALSE, NULL, NULL, TRUE, NULL, FALSE, TRUE, p_cut, DIF_cut,
+                  DIF_std_cut, iter, FALSE, design_effect, NULL)
         if (!is.null(test3term) && !is.null(vars)){
           if (test %in% test3term){
             cat('\n\t>>>>>', DIFVar, '* step', '<<<<<\n\n')
             DIFDimOne(method, test, pid, n_cov, DIFVar, respDf, 'sav', keyDf, vars,
-                        FALSE, NULL, NULL, TRUE, NULL, FALSE, TRUE, p_cut, DIF_cut,
-                        DIF_std_cut, iter, TRUE, design_effect, NULL)
+                      FALSE, NULL, NULL, TRUE, NULL, FALSE, TRUE, p_cut, DIF_cut,
+                      DIF_std_cut, iter, TRUE, design_effect, NULL)
           }
         }
       }
@@ -161,7 +161,7 @@ DIFVarTests <- function(testVec=NULL, respDfLst=NULL, difVarLst=NULL, n_cov=NULL
         ex_ls,
         ~mutate(.x, flag=apply(.x, 1, function(x) any(x %in% '*'))) |>
           filter(flag) |> select(-flag)
-        ) |>
+      ) |>
         reduce(bind_rows) |>
         arrange(Test, items)
 
@@ -172,19 +172,19 @@ DIFVarTests <- function(testVec=NULL, respDfLst=NULL, difVarLst=NULL, n_cov=NULL
       for (j in 0:(nCat-1)){
         nCol <- 2*j+3
         for (i in 1:nrow(summary)){
-        if (!is.na(summary[i, nCol+1])){
-          if (summary[i, nCol] > 0) {
-            summary[i, 'Disfavored'] <- paste(
-              na.omit(c(summary[[i, 'Disfavored']], catVec[j+1])),
-              collapse = ', '
-            )
-          } else {
-            summary[i, 'Favored'] <- paste(
-              na.omit(c(summary[[i, 'Favored']], catVec[j+1])),
-              collapse = ', '
-            )
+          if (!is.na(summary[i, nCol+1])){
+            if (summary[i, nCol] > 0) {
+              summary[i, 'Disfavored'] <- paste(
+                na.omit(c(summary[[i, 'Disfavored']], catVec[j+1])),
+                collapse = ', '
+              )
+            } else {
+              summary[i, 'Favored'] <- paste(
+                na.omit(c(summary[[i, 'Favored']], catVec[j+1])),
+                collapse = ', '
+              )
+            }
           }
-        }
         }
       }
 
@@ -235,11 +235,11 @@ DIFVarTests <- function(testVec=NULL, respDfLst=NULL, difVarLst=NULL, n_cov=NULL
           imap(~.x |> mutate(Test=.y)) |>
           map(
             ~.x |>
-            mutate(
-              Favored=as.character(
-                ifelse(DIF<0, difVarLst[[i]][[1]], difVarLst[[i]][[2]])
+              mutate(
+                Favored=as.character(
+                  ifelse(DIF<0, difVarLst[[i]][[1]], difVarLst[[i]][[2]])
+                )
               )
-            )
           ) |>
           reduce(bind_rows) |>
           select(Test, Favored, everything(), chisq, p) |>

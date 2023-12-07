@@ -55,6 +55,8 @@
 4. Updated item summary note for Priority 4 flagging criteria so polytomous items 
    were included.
 5. Debugged read2one() so 'Key' variables of different types can merge.
+6. Debugged DIFVarTests() so that checking of DIF variable categories takes into 
+   account empty string ''.
 
 ===== v1.0.7 Updates =====
 1. Beautified formats (rounding, font, etc.) of ouput files such as int analysis.
