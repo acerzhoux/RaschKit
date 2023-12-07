@@ -57,6 +57,8 @@
 5. Debugged read2one() so 'Key' variables of different types can merge.
 6. Debugged DIFVarTests() so that checking of DIF variable categories takes into 
    account empty string ''.
+7. Debugged 'flagVec' in add_format() to make flag color appear for some columns 
+   of DIF analysis results.
 
 ===== v1.0.7 Updates =====
 1. Beautified formats (rounding, font, etc.) of ouput files such as int analysis.
