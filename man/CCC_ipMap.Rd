@@ -36,5 +36,5 @@ Plots will be saved in 'output' folder.
 }
 \examples{
 plot_data <- CCC_ipMap(test, cqs)
-plot_data <- CCC_ipMap(test='WA', abilEst2use='wle')
+plot_data <- CCC_ipMap(test='FPA', cqs=cqs, abilEst2use='wle', quick=F)
 }

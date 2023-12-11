@@ -59,6 +59,8 @@
    account empty string ''.
 7. Debugged 'flagVec' in add_format() to make flag color appear for some columns 
    of DIF analysis results.
+8. Debugged CCC_ipMap() so that row number of fit index dataframe works whether  
+   quick is used or not.
 
 ===== v1.0.7 Updates =====
 1. Beautified formats (rounding, font, etc.) of ouput files such as int analysis.

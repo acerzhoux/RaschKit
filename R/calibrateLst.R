@@ -13,9 +13,11 @@
 #' @param n_cov Number of covariates before responses.
 #' @param run Integer that indicates round of run.
 #' @param useR TRUE when code 'R' is used for scoring. Default is FALSE.
+#' @param quick TRUE if empirical error is not needed. Default is TRUE.
+#'
 #' @export
 
-calibrateLst <- function(respDfLst=NULL, keyDfLst, pid, n_cov, run, useR=FALSE){
+calibrateLst <- function(respDfLst=NULL, keyDfLst, pid, n_cov, run, useR=FALSE, quick=TRUE){
   testVec <- names(keyDfLst)
   for (i in seq_along(testVec)){
     test <- testVec[[i]]
@@ -24,7 +26,7 @@ calibrateLst <- function(respDfLst=NULL, keyDfLst, pid, n_cov, run, useR=FALSE){
     } else {
       respDf <- respDfLst[[i]]
     }
-    calibrate(test, respDf, keyDfLst[[test]], pid, n_cov, useR=useR)
+    calibrate(test, respDf, keyDfLst[[test]], pid, n_cov, useR=useR, quick=quick)
   }
 
   read2one('results', testVec, 'itn', paste0('Run_', run))

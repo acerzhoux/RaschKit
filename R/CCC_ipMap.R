@@ -13,7 +13,7 @@
 #' @return Plots of CCC by category and score.
 #' @examples
 #' plot_data <- CCC_ipMap(test, cqs)
-#' plot_data <- CCC_ipMap(test='WA', abilEst2use='wle')
+#' plot_data <- CCC_ipMap(test='FPA', cqs=cqs, abilEst2use='wle', quick=F)
 #' @export
 
 CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
@@ -220,6 +220,8 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
     gather(Statistic, Value)
 
   # Item Fit stats ----------------------------------------------------------
+  fitEnd <- nrow(filter(iEstTemp, modelTerm == 1))
+  if (!quick) fitEnd <- fitEnd + 1
   iFitStats <- iStepsCounts |>
     filter(iStepsCount > 0) |>
     filter(!is.na(iType)) |>
@@ -238,7 +240,7 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
           WeightedDenominator = map_dbl(cqs$gFitStatistics$Value, "WeightedDenominator"),
           UnWeightedSE = map_dbl(cqs$gFitStatistics$Value, "UnWeightedSE"),
           WeightedSE = map_dbl(cqs$gFitStatistics$Value, "WeightedSE")
-        )[1:nrow(filter(iEstTemp, modelTerm == 1)), ] # polytomous
+        )[1:fitEnd, ] # polytomous
       ),
       by='iNum'
     )
