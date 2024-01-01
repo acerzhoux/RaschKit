@@ -308,13 +308,20 @@ add_format <- function(){
       wb <- colorFlags(
           wb,
           colsFlag,
-          c(paste0('>', flagVec[[1]]), paste0('>', flagVec[[2]]), '<.05', '=1'),
+          c(
+            paste0('>', ifelse(is.list(flagVec), flagVec[[1]][[i-1]], flagVec[[1]])),
+            paste0('>', ifelse(is.list(flagVec), flagVec[[2]][[i-1]], flagVec[[2]])),
+            '<.05', '=1'
+          ),
           sheet,
           n_case
         ) |>
         colorFlags(
           colsFlag[1:2],
-          c(paste0('<-', flagVec[[1]]), paste0('<-', flagVec[[2]])),
+          c(
+            paste0('<-', ifelse(is.list(flagVec), flagVec[[1]][[i-1]], flagVec[[1]])),
+            paste0('<-', ifelse(is.list(flagVec), flagVec[[2]][[i-1]], flagVec[[2]]))
+          ),
           sheet,
           n_case
         )

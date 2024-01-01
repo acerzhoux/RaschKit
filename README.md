@@ -18,7 +18,7 @@
 3.	Software compatibility.
     - ACER ConQuest: 5.34.3\
       conquestr: 1.1.0\
-      Raschkit: 1.0.8
+      Raschkit: 1.0.9
     - Install ACER ConQuest 5.34.3.
         - From left bottom corner of Windows, 
             - Type in 'software centre' and click.
@@ -33,13 +33,13 @@
             - Select 'conquestr_1.1.0.zip'. 
             - Click 'Open'. 
             - Click 'Install'.
-    - Install 'RaschKit' 1.0.8 (packageVersion('RaschKit')).
+    - Install 'RaschKit' 1.0.9 (packageVersion('RaschKit')).
         - From bottom right pane of 'xxx.Rproj' (Step 1).    
             - click 'Packages' (3rd button after 'Files', 'Plots').
             - click 'Install'. From 'Install from', select 'Package Archive File...'.
             - Click 'Browse'. Enter into 'File name' file path\
                 T:\Xiaoliang Zhou
-            - Select 'RaschKit_1.0.8.tar.gz'. 
+            - Select 'RaschKit_1.0.9.tar.gz'. 
             - Click 'Open'. 
             - Click 'Install'.
 4.  In 'xxx.Rproj', run code below and explore .Rmd files in ‘rCode’ folder for 
@@ -48,6 +48,9 @@
     - install_packages_ls()
     - create_folders()
     
+===== v1.0.9 Updates =====
+1. Debugged add_format() so both list and vector of flags work.
+
 ===== v1.0.8 Updates =====
 1. Debugged a line in DIF_poly_shw().
 2. Allowed for saving of .CQS files for DIF analyses.
