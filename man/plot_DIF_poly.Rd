@@ -4,7 +4,15 @@
 \alias{plot_DIF_poly}
 \title{plot_DIF_poly}
 \usage{
-plot_DIF_poly(DIFVar, subgrp, cats, error_cat_item, delta_cat, Flag_dif)
+plot_DIF_poly(
+  DIFVar,
+  subgrp,
+  cats,
+  error_cat_item,
+  delta_cat,
+  Flag_dif,
+  error_cat
+)
 }
 \arguments{
 \item{DIFVar}{Name of polytomous DIF variable.}
@@ -21,6 +29,8 @@ last but one columns) and average estimates (last column).}
 
 \item{Flag_dif}{Dataframe with both adjusted delta estimates (one column)
 and significant symbols (one column) for each subgroup.}
+
+\item{error_cat}{Dataframe with one error column for each category.}
 }
 \value{
 Plot of DIF analysis of test items (that had estimates for all

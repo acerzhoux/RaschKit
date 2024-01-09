@@ -45,10 +45,10 @@ DIFVarTests( # include format, hyperlink, flag color
 ```
 
 For tests that have polytomous items, 
-  - test3term=NULL: only ConQuest model 'item+DIFVar+item*DIFVar+item*step;' is run.
+  - test3term=NULL: only ConQuest model 'item-DIFVar+item*DIFVar+item*step;' is run.
     Model results are used for item delta DIF analysis.
   - stest3term=c('xxx', 'xxx'): for tests in 'stest3term', both above model and model with 
-    'item+DIFVar+item*DIFVar+item*step*DIFVar;' are run. Results of 1st model 
+    'item-DIFVar+item*DIFVar+item*step*DIFVar;' are run. Results of 1st model 
     are used for item delta DIF analysis, and those of 2nd model for step DIF analysis.
 
 ## DIFDimOne() performs significance tests on facet modeling results
@@ -80,7 +80,7 @@ DIFDimOne( # include format, hyperlink, flag color
   DIF_std_cut = 4,
   iter = FALSE,
   step = FALSE,
-  desig_effect = 1,
+  design_effect = 1,
   pweight = NULL
 )
 ```
@@ -108,7 +108,7 @@ DIFDimMulti(
   p_cut = 0.05,
   DIF_cut = 0.5,
   DIF_std_cut = 4,
-  desig_effect = 1,
+  design_effect = 1,
   scores = NULL,
   prep_process = FALSE,
   pweight = NULL

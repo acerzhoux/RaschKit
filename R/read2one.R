@@ -82,6 +82,13 @@ read2one <- function (folder = c('results', 'DIF', 'equating'), tests,
 
     } else if (prefix=='eqv') {
       move_into_folder(folder, prefix)
+
+      if (ncol(ex_ls[[1]])==3) {
+        cls <- c('Est_', 'SE_')
+      } else {
+        cls <- c('Est_', 'SE_', 'Scale_')
+      }
+
       list(
         allLong=ex_ls |>
           imap(~mutate(.x, Test=.y)) |>
@@ -91,7 +98,7 @@ read2one <- function (folder = c('results', 'DIF', 'equating'), tests,
           reduce(full_join, by='Score_raw') |>
           arrange(Score_raw) |>
           modify_if(is.numeric, ~round(.x, 3)) |>
-          `names<-`(c('Score_raw', map(tests, ~paste0(c('Est_', 'SE_', 'Scale_'), .x)) |> unlist()))
+          `names<-`(c('Score_raw', map(tests, ~paste0(cls, .x)) |> unlist()))
       ) |>
       append(ex_ls) |>
       writexl::write_xlsx(file)

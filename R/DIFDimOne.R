@@ -55,9 +55,6 @@ DIFDimOne <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
   if (length(method)!=1 || !(method %in% c('chi_square', 'Bonferroni', 'Facet'))) {
     stop('Please set \'method\' as one of \'chi_square\', \'Bonferroni\', or \'Facet\'.')
   }
-  if (!all(c(pid, regrNmVec) %in% names(respDf))) {
-    stop('Pid or regressor is not in data column names!')
-  }
 
   # read data
   if (is.null(respDf)) {
@@ -74,6 +71,10 @@ DIFDimOne <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
     } else {
       stop('respDf must use sav or csv.')
     }
+  }
+
+  if (!all(c(pid, regrNmVec) %in% names(respDf))) {
+    stop('Pid or regressor is not in data column names!')
   }
 
   poly_key <- ifelse(any(keyDf$Max_score > 1), TRUE, FALSE)

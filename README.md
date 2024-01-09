@@ -50,6 +50,11 @@
     
 ===== v1.0.9 Updates =====
 1. Debugged add_format() so both list and vector of flags work.
+2. Debugged read2one() so equating without scaled scores also work.
+3. Debugged DIFDimOne() so that variable checks occur after data are read.
+4. Corrected misspelt Argument 'design_effect' in '2 DIF.Rmd'.
+5. Updated column names to 'Delta adj ...' in polytomous DIF results.
+6. Updated average error calculation within plot_DIF_poly().
 
 ===== v1.0.8 Updates =====
 1. Debugged a line in DIF_poly_shw().

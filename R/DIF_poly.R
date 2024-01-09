@@ -62,7 +62,7 @@ DIF_poly <- function(df_ls, DIFVar, cats, labels, test, domain=NULL,
   Flag_dif_all <- map2(t, delta_cat_dif, ~DIF_symbol_poly(threshold, .x, .y))
   Flag_dif <- Flag_dif_all |>
     map(~dplyr::select(., '...1', '...2')) |>
-    map2(cats, ~`colnames<-`(.x, c(paste0('DIF_adj_', .y), paste0('sig_', .y)))) |>
+    map2(cats, ~`colnames<-`(.x, c(paste0('Delta_adj_', .y), paste0('sig_', .y)))) |>
     reduce(bind_cols)
   delta_cat$delta_Ave <- round(rowMeans(delta_cat[]), 3)
 
@@ -70,7 +70,7 @@ DIF_poly <- function(df_ls, DIFVar, cats, labels, test, domain=NULL,
   plist <- map(
       1:length(cats),
       ~plot_DIF_poly(
-        DIFVar, ., cats, error_cat_item, delta_cat, Flag_dif
+        DIFVar, ., cats, error_cat_item, delta_cat, Flag_dif, error_cat
       )
     )
   p_save <- patchwork::wrap_plots(plist, ncol=floor(sqrt(length(plist)))) +

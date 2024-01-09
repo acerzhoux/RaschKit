@@ -13,13 +13,14 @@
 #' last but one columns) and average estimates (last column).
 #' @param Flag_dif Dataframe with both adjusted delta estimates (one column)
 #' and significant symbols (one column) for each subgroup.
+#' @param error_cat Dataframe with one error column for each category.
 #' @return Plot of DIF analysis of test items (that had estimates for all
 #' subgroups) on one subgroup.
 #' @examples
 #' plot_DIF_poly()
 #' @export
 
-plot_DIF_poly <- function(DIFVar, subgrp, cats, error_cat_item, delta_cat, Flag_dif) {
+plot_DIF_poly <- function(DIFVar, subgrp, cats, error_cat_item, delta_cat, Flag_dif, error_cat) {
   item <- error_cat_item$item
   df <- data.frame(
     item=item,
@@ -49,7 +50,7 @@ plot_DIF_poly <- function(DIFVar, subgrp, cats, error_cat_item, delta_cat, Flag_
   )
 
   # error line: Both sides
-  error <- mean(sqrt(2*error_cat_item[[subgrp]]^2))
+  error <- mean(sqrt(error_cat_item[[subgrp]]^2 + rowMeans(error_cat)^2))
 
   flags <- item[which(Flag_dif[[subgrp*2]] == '*')]
   DIF_txt <- dplyr::filter(df, item %in% flags)
