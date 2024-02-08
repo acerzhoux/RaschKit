@@ -37,7 +37,7 @@ df_shw_Term3 <- function(DIFVar, test){
     ) |>
     select(
       item,
-      Category=3,
+      Category=4,
       Estimate=ESTIMATE,
       Error=`ERROR^`,
       Outfit=`MNSQ...7`,

@@ -55,6 +55,7 @@
 4. Corrected misspelt Argument 'design_effect' in '2 DIF.Rmd'.
 5. Updated column names to 'Delta adj ...' in polytomous DIF results.
 6. Updated average error calculation within plot_DIF_poly().
+7. Updated df_shw_Term3() to read the 4th column for category number of DIFVar.
 
 ===== v1.0.8 Updates =====
 1. Debugged a line in DIF_poly_shw().
