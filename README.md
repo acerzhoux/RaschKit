@@ -38,7 +38,7 @@
             - click 'Packages' (3rd button after 'Files', 'Plots').
             - click 'Install'. From 'Install from', select 'Package Archive File...'.
             - Click 'Browse'. Enter into 'File name' file path\
-                T:\Xiaoliang Zhou
+                (Ask Xiaoliang where it is).
             - Select 'RaschKit_1.0.9.tar.gz'. 
             - Click 'Open'. 
             - Click 'Install'.
