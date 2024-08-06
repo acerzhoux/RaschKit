@@ -26,17 +26,20 @@ getTest <- function(tests, intLst){
   }
 
   testStats <- map(
-    tests,
-    ~readxl::read_xls(
-      paste0('output/', .x, '_shw.xls'),
-      'Reliabilities',
-      .name_repair = "unique_quiet"
-    ) |>
+      tests,
+      ~readxl::read_xls(
+        paste0('output/', .x, '_shw.xls'),
+        'Reliabilities',
+        .name_repair = "unique_quiet"
+      ) |>
       dplyr::mutate(
         type=str_squish(str_sub(`...1`, 1, 34)),
         val=str_squish(str_sub(`...1`, 36, 50))
       ) |>
-      dplyr::filter(!(val %in% c('', 'Unavailable')))
+      dplyr::filter(
+        !(str_detect(`...1`, 'Note')),
+        !(val %in% c('', 'Unavailable', NA))
+      )
     ) |>
     map2(tests, ~dplyr::mutate(.x, Test=.y) |> dplyr::select(-`...1`)) |>
     reduce(bind_rows) |>

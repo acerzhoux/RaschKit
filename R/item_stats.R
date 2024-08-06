@@ -11,11 +11,20 @@
 #' a <- item_stats(test='math_35')
 #' @export
 
-item_stats <- function(folder='outoput', test){
+item_stats <- function(folder='output', test){
   labs <- read.table(paste0('data/', test, '_Labels.txt')) |>
     rowid_to_column('seqNo') |>
     dplyr::rename(`Item Title`=V1) |>
     mutate(seqNo=as.integer(seqNo))
+
+  skip <- which(
+    is.na(
+      select(
+        readxl::read_xls(paste0(folder,'/',test,'_shw.xls'),'ResponseModel',.name_repair="unique_quiet"),
+        1
+      )
+    )
+  )[[1]] - 1
 
   # stats from shw file
   iShw <- labs |>
@@ -23,9 +32,10 @@ item_stats <- function(folder='outoput', test){
       readxl::read_xls(
         paste0(folder, '/', test, '_shw.xls'),
         sheet='ResponseModel',
-        skip=5,
+        skip=skip,
         n_max=N_item('output', test)+1,
-        .name_repair = "unique_quiet"      ) |>
+        .name_repair = "unique_quiet"
+      ) |>
       select(1, 3:5, 9:12) |>
       `names<-`(c('seqNo', 'Estimate', 'Item Error', 'Outfit', 'Infit',
                   'C.I. (L)', 'C.I. (H)', 'T')) |>

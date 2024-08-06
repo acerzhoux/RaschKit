@@ -9,37 +9,37 @@
           'RColorBrewer', 'fs', 'lazyeval', 'writexl',\
           'ggpubr', 'qpdf', 'tidyverse', 'openxlsx',\
           'kableExtra', 'magrittr', 'Rcpp', 'tidyselect',\
-          'grid', 'flextable'),\
+          'grid', 'flextable', 'magick'),\
         function(x){\
           if (!require(x, character.only=TRUE)){\
              install.packages(x)\
              library(x, character.only=TRUE)}}\
     )
 3.	Software compatibility.
-    - ACER ConQuest: 5.34.3\
-      conquestr: 1.1.0\
-      Raschkit: 1.0.9
-    - Install ACER ConQuest 5.34.3.
+    - ACER ConQuest: 5.40.0\
+      conquestr: 1.3.4\
+      Raschkit: 1.1.0
+    - Install ACER ConQuest 5.40.0.
         - From left bottom corner of Windows, 
             - Type in 'software centre' and click.
             - click 'Applications'.
-            - click 'ACER ConQuest v5.34.3' and install.
-    - Install 'conquestr' 1.1.0 (packageVersion('conquestr')).
+            - click 'ACER ConQuest v5.40.0' and install.
+    - Install 'conquestr' 1.3.4 (packageVersion('conquestr')).
         - From bottom right pane of 'xxx.Rproj' (Step 1).    
             - click 'Packages' (3rd button after 'Files', 'Plots').
             - click 'Install'. From 'Install from', select 'Package Archive File...'.
             - Click 'Browse'. Enter into 'File name' file path (if Windows)\
                 P:\ACER ConQuest\Admin\InHouse - ConQuest Latest versions\conquestr
-            - Select 'conquestr_1.1.0.zip'. 
+            - Select 'conquestr_1.3.4.zip'. 
             - Click 'Open'. 
             - Click 'Install'.
-    - Install 'RaschKit' 1.0.9 (packageVersion('RaschKit')).
+    - Install 'RaschKit' 1.1.0 (packageVersion('RaschKit')).
         - From bottom right pane of 'xxx.Rproj' (Step 1).    
             - click 'Packages' (3rd button after 'Files', 'Plots').
             - click 'Install'. From 'Install from', select 'Package Archive File...'.
             - Click 'Browse'. Enter into 'File name' file path\
                 (Ask Xiaoliang where it is).
-            - Select 'RaschKit_1.0.9.tar.gz'. 
+            - Select 'RaschKit_1.1.0.tar.gz'. 
             - Click 'Open'. 
             - Click 'Install'.
 4.  In 'xxx.Rproj', run code below and explore .Rmd files in ‘rCode’ folder for 
@@ -47,6 +47,11 @@
     - library(RaschKit)
     - install_packages_ls()
     - create_folders()
+    
+===== v1.1.0 Updates =====
+1. Revised functions to make them compatible with CQ 3.40.0. Examples are 
+   getTest() and item_stats(). With those revisions, earlier versions of 
+   CQ should still work.
     
 ===== v1.0.9 Updates =====
 1. Debugged add_format() so both list and vector of flags work.
