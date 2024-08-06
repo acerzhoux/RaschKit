@@ -4,7 +4,7 @@
 \alias{item_stats}
 \title{item_stats}
 \usage{
-item_stats(folder = "outoput", test)
+item_stats(folder = "output", test)
 }
 \arguments{
 \item{folder}{Folder where ConQuest output files are located.}

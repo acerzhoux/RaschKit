@@ -23,7 +23,7 @@ Encoding: UTF-8
 Imports: plyr, conquestr, rlang, bookdown, ggthemes, ggrepel, gdata,
         patchwork, rmarkdown, janitor, lazyeval, knitr, RColorBrewer,
         fs, writexl, ggpubr, qpdf, tidyverse, openxlsx, grid, flextable
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 NeedsCompilation: no
 Packaged: 2023-08-06 23:34:20 UTC; acerZhouX
 Author: Zhou Xiaoliang [aut, cre],
