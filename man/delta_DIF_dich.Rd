@@ -21,5 +21,5 @@ This function extracts delta and indice statistics for two categories of
 dichotomous DIF variable.
 }
 \examples{
-delta_DIF_dich(test='Writing', DIFVar='gender')
+delta_DIF_dich(test='R', DIFVar='ATSI', quick = T)
 }

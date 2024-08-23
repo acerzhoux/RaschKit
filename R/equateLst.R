@@ -22,12 +22,16 @@
 #' variable should be in the order above and can be incomplete. The names of
 #' the elements are test names and should be in same order as deltaDfLst. Default
 #' is NULL when no index is available.
+#' @param sigmaLgt Indicator vector of how 'delta.y' is scaled. If TRUE, it is scaled
+#' to have same mean and sd as 'delta.x'. If FALSE, it has same mean as 'delta.x'.
+#' Give vector of TRUE/FALSE if tests vary in scaling method.
 #' @return Summary file of chi-square test results on tests in list with plots,
 #' hyperlinks, flag color, and format.
 #' @export
 
 equateLst <- function(deltaDfLst, vars, p_cut=0.05, DIF_cut=0.5, DIF_std_cut=4,
-                       design_effect=1, step=FALSE, iter=TRUE, indDfLst=NULL){
+                      design_effect=1, step=FALSE, iter=TRUE, indDfLst=NULL,
+                      sigmaLgt=FALSE){
   # check input
   tests <- names(deltaDfLst)
   if (is.null(tests)) {
@@ -42,14 +46,17 @@ equateLst <- function(deltaDfLst, vars, p_cut=0.05, DIF_cut=0.5, DIF_std_cut=4,
   if (length(DIF_cut)!=1 & length(DIF_cut)!=length(tests)) {
     stop('Number of DIF_cut should equal number of tests!')
   }
-
   if (length(DIF_std_cut)!=1 & length(DIF_std_cut)!=length(tests)) {
       stop('Number of DIF_std_cut should equal number of tests!')
+  }
+  if (length(sigmaLgt)!=1 & length(sigmaLgt)!=length(tests)) {
+    stop('Number of sigmaLgt should equal number of tests!')
   }
 
   # check DIF_cut, DIF_std_cut
   if (length(DIF_cut)==1) DIF_cut <- rep(DIF_cut, length(tests))
   if (length(DIF_std_cut)==1) DIF_std_cut <- rep(DIF_std_cut, length(tests))
+  if (length(sigmaLgt)==1) sigmaLgt <- rep(sigmaLgt, length(tests))
 
   # folders, file names
   subfolder <- ifelse(
@@ -64,12 +71,12 @@ equateLst <- function(deltaDfLst, vars, p_cut=0.05, DIF_cut=0.5, DIF_std_cut=4,
   if (is.null(indDfLst)) {
     for (i in seq_along(tests)){
       Equate(deltaDfLst[[i]], tests[[i]], vars, p_cut, DIF_cut[[i]], DIF_std_cut[[i]], TRUE,
-           design_effect, step, NULL, iter)
+           design_effect, step, NULL, iter, sigma=sigmaLgt[[i]])
     }
   } else {
     for (i in seq_along(tests)){
       Equate(deltaDfLst[[i]], tests[[i]], vars, p_cut, DIF_cut[[i]], DIF_std_cut[[i]], TRUE,
-             design_effect, step, NULL, iter, indDfLst[[i]])
+             design_effect, step, NULL, iter, indDfLst[[i]], sigma=sigmaLgt[[i]])
     }
   }
 

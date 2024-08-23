@@ -13,7 +13,8 @@ equateLst(
   design_effect = 1,
   step = FALSE,
   iter = TRUE,
-  indDfLst = NULL
+  indDfLst = NULL,
+  sigmaLgt = FALSE
 )
 }
 \arguments{
@@ -44,6 +45,10 @@ Default is FALSE.}
 variable should be in the order above and can be incomplete. The names of
 the elements are test names and should be in same order as deltaDfLst. Default
 is NULL when no index is available.}
+
+\item{sigmaLgt}{Indicator vector of how 'delta.y' is scaled. If TRUE, it is scaled
+to have same mean and sd as 'delta.x'. If FALSE, it has same mean as 'delta.x'.
+Give vector of TRUE/FALSE if tests vary in scaling method.}
 }
 \value{
 Summary file of chi-square test results on tests in list with plots,

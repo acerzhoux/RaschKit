@@ -17,22 +17,22 @@ chisqTStep <- function(df, desig_effect=1){
   }
 
   modify_at(
-      df,
-      c('delta.x', 'delta.y', 'error.x', 'error.y'),
-      as.numeric
-    ) |>
-    mutate(
-      error.x=sqrt(desig_effect)*error.x,
-      error.y=sqrt(desig_effect)*error.y,
-      error=sqrt(error.x^2 + error.y^2),
-      delta.x_dev=delta.x - mean(delta.x),
-      delta.y_dev=delta.y - mean(delta.y),
-      LI=(delta.x_dev + delta.y_dev)/2 - error,
-      UI=(delta.x_dev + delta.y_dev)/2 + error,
-      DIF=delta.x_dev - delta.y_dev,
-      DIF_std=DIF / error,
-      chisq=DIF_std^2,
-      p=pchisq(chisq, df=1, lower.tail=FALSE)) |>
-      modify_if(is.numeric, ~round(.x, 3)
-   )
+    df,
+    c('delta.x', 'delta.y', 'error.x', 'error.y'),
+    as.numeric
+  ) |>
+  mutate(
+    error.x=sqrt(desig_effect)*error.x,
+    error.y=sqrt(desig_effect)*error.y,
+    error=sqrt(error.x^2 + error.y^2),
+    delta.x_dev=delta.x - mean(delta.x),
+    delta.y_dev=delta.y - mean(delta.y),
+    LI=(delta.x_dev + delta.y_dev)/2 - error,
+    UI=(delta.x_dev + delta.y_dev)/2 + error,
+    DIF=delta.x_dev - delta.y_dev,
+    DIF_std=DIF / error,
+    chisq=DIF_std^2,
+    p=pchisq(chisq, df=1, lower.tail=FALSE)) |>
+    modify_if(is.numeric, ~round(.x, 3)
+ )
 }

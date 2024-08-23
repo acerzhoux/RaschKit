@@ -4,11 +4,15 @@
 \alias{chisqT}
 \title{chisqT}
 \usage{
-chisqT(df)
+chisqT(df, sigma = FALSE)
 }
 \arguments{
 \item{df}{Datarame of anchors' delta and error estimates in two tests
 (.x, .y), with variable names of 'delta.x', 'delta.y', 'error.x', and 'error.y'.}
+
+\item{sigma}{Indicator of how 'delta.y' is scaled. If TRUE, it is scaled
+to have same mean and sd as 'delta.x'. If FALSE, it has same mean as 'delta.x'.
+Default is FALSE.}
 }
 \value{
 Dataframe of chi-square test results.
@@ -18,5 +22,5 @@ This function does chi-square test on two groups of delta estimates.
 This is used for equating between anchors of two tests.
 }
 \examples{
-chisqT()
+chisqT(df, T)
 }

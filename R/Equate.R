@@ -28,6 +28,9 @@
 #' none of those indice is available.
 #' @param pointer Whether to print locations of output files. Default is FALSE.
 #' @param report Whether to generate a html report. Default is FALSE.
+#' @param sigma Indicator of how 'delta.y' is scaled. If TRUE, it is scaled
+#' to have same mean and sd as 'delta.x'. If FALSE, it has same mean as 'delta.x'.
+#' Default is FALSE.
 #' @return Dataframe of chi-square test results for anchors between two tests.
 #' @examples
 #' Equate(deltaDf=data[, c('item', 'delta.x', 'error.x', 'delta.y', 'error.y')],
@@ -36,7 +39,7 @@
 
 Equate <- function(deltaDf, test, vars, p_cut=0.05, DIF_cut=0.5, DIF_std_cut=4,
                    sav_results=TRUE, design_effect=1, step=FALSE, DIFVar=NULL,
-                   iter=FALSE, indDf=NULL, pointer=FALSE, report=FALSE){
+                   iter=FALSE, indDf=NULL, pointer=FALSE, report=FALSE, sigma=FALSE){
   # check
   if (!is.null(indDf)){
     if (nrow(deltaDf) != nrow(indDf)) {
@@ -90,7 +93,7 @@ Equate <- function(deltaDf, test, vars, p_cut=0.05, DIF_cut=0.5, DIF_std_cut=4,
   if (step){
     results <- chisqTStep(deltaDf, design_effect)
   } else {
-    results <- chisqT(deltaDf)
+    results <- chisqT(deltaDf, sigma)
   }
 
   iDIF <- DIF_items(results, p_cut, DIF_cut, DIF_std_cut)
@@ -144,15 +147,15 @@ Equate <- function(deltaDf, test, vars, p_cut=0.05, DIF_cut=0.5, DIF_std_cut=4,
         indDf,
         flag,
         by='item'
-      ) |>
-      arrange(desc(chisq))
+      )
+      # arrange(desc(chisq))
 
     final <- left_join(
         indDf,
         final,
         by='item'
-      ) |>
-      arrange(desc(chisq))
+      )
+      # arrange(desc(chisq))
   }
 
   # plot final: Before removal

@@ -4,12 +4,10 @@
 \alias{deltaStepTransform}
 \title{deltaStepTransform}
 \usage{
-deltaStepTransform(test, quick = TRUE)
+deltaStepTransform(test)
 }
 \arguments{
 \item{test}{Name of test.}
-
-\item{quick}{Whether quick error is needed. Default is TRUE.}
 }
 \value{
 Dataframe of variables 'item', 'delta', 'error'.

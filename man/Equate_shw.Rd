@@ -13,7 +13,8 @@ Equate_shw(
   DIF_std_cut = 4,
   sav_results = TRUE,
   step = FALSE,
-  iter = FALSE
+  iter = FALSE,
+  sigma = FALSE
 )
 }
 \arguments{
@@ -40,6 +41,10 @@ a plot are desired. Default is TRUE.}
 Default is FALSE.}
 
 \item{iter}{TRUE to iteratively remove DIF items. Default is FALSE.}
+
+\item{sigma}{Indicator of how 'delta.y' is scaled. If TRUE, it is scaled
+to have same mean and sd as 'delta.x'. If FALSE, it has same mean as 'delta.x'.
+Default is FALSE.}
 }
 \value{
 Dataframe of chi-square test results for anchors between two tests.

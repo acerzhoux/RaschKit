@@ -59,5 +59,5 @@ subfolder 'plot' inside 'DIF' folder.
 }
 \examples{
 # Not run
-# DIF_dich_its_shw(DIFVar='gender', test='ELNA', vars=c('Male', 'Female'))
+# DIF_dich_its_shw(DIFVar='ATSI', test='WA_step', vars=c('ATSI_No','ATSI_Yes'))
 }

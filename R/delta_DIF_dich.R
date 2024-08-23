@@ -8,7 +8,7 @@
 #' @param quick Whether quick error is needed. Default is TRUE for DIF analysis.
 #' @return List of delta and indice dataframes.
 #' @examples
-#' delta_DIF_dich(test='Writing', DIFVar='gender')
+#' delta_DIF_dich(test='R', DIFVar='ATSI', quick = T)
 #' @export
 
 delta_DIF_dich <- function (test, DIFVar, quick = TRUE){
@@ -49,10 +49,18 @@ delta_DIF_dich <- function (test, DIFVar, quick = TRUE){
     select(-iNum) |>
     na.omit()
 
+  shw.col.1 <- readxl::read_xls(
+      paste0(folder, '/', test, '_shw.xls'),
+      sheet='ResponseModel',
+      .name_repair="unique_quiet"
+    ) |>
+    select(a=1)
+  row.item <- which(shw.col.1$a=='item')
+
   dfErrorLong <- readxl::read_xls(
       paste0(folder, '/', test, '_shw.xls'),
       sheet='ResponseModel',
-      skip=7+n_item+20,
+      skip=row.item[[2]],
       n_max=n_item*2+1,
       .name_repair="unique_quiet",
       col_types='numeric'

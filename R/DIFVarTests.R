@@ -162,8 +162,8 @@ DIFVarTests <- function(testVec=NULL, respDfLst=NULL, difVarLst=NULL, n_cov=NULL
         ~mutate(.x, flag=apply(.x, 1, function(x) any(x %in% '*'))) |>
           filter(flag) |> select(-flag)
       ) |>
-        reduce(bind_rows) |>
-        arrange(Test, items)
+        reduce(bind_rows)
+        # arrange(Test, items)
 
       # add favor, disfavor flags
       nCat <- (ncol(summary)-2)/2
@@ -227,8 +227,8 @@ DIFVarTests <- function(testVec=NULL, respDfLst=NULL, difVarLst=NULL, n_cov=NULL
           )
         ) |>
         reduce(bind_rows) |>
-        select(Test, Favored, everything(), chisq, p) |>
-        arrange(Test, Favored, item)
+        select(Test, Favored, everything(), chisq, p)
+        # arrange(Test, Favored, item)
 
       if (!is.null(test3term)){
         summaryStep <- map(ex_ls[(n-nStep+1):n], ~.x |> filter(flag==1)) |>
@@ -242,8 +242,8 @@ DIFVarTests <- function(testVec=NULL, respDfLst=NULL, difVarLst=NULL, n_cov=NULL
               )
           ) |>
           reduce(bind_rows) |>
-          select(Test, Favored, everything(), chisq, p) |>
-          arrange(Test, Favored, item)
+          select(Test, Favored, everything(), chisq, p)
+          # arrange(Test, Favored, item)
 
         n1 <- nrow(summary)
         n2 <- nrow(summaryStep)

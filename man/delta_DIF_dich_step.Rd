@@ -19,5 +19,5 @@ This function extracts delta statistics for two categories of dichotomous
 DIF variable.
 }
 \examples{
-delta_DIF_dich_step(test='Writing', DIFVar='gender')
+delta_DIF_dich_step(test='WA', DIFVar='ATSI')
 }

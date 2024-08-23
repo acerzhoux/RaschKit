@@ -16,13 +16,16 @@
 #' @param step TRUE if DIF analysis is performed on step parameters.
 #' Default is FALSE.
 #' @param iter TRUE to iteratively remove DIF items. Default is TRUE
+#' @param sigma Indicator of how 'delta.y' is scaled. If TRUE, it is scaled
+#' to have same mean and sd as 'delta.x'. If FALSE, it has same mean as 'delta.x'.
+#' Default is FALSE.
 #' @return List of chi-square test results for anchors between two adjacent grades.
 #' @examples
 #' equate2Type('Hrz', 'bang', 3)
 #' @export
 
-equate2Type <- function(linkTypeLst, test, p_cut=0.05,
-                        DIF_cut=0.5, DIF_std_cut=4, step=FALSE, iter=TRUE){
+equate2Type <- function(linkTypeLst, test, p_cut=0.05, DIF_cut=0.5, DIF_std_cut=4,
+                        step=FALSE, iter=TRUE, sigma=FALSE){
   # check inputs
   if (!is.list(linkTypeLst) || length(linkTypeLst)!=1 || !(names(linkTypeLst) %in% c('Hrz', 'Vrt'))) {
     stop('linkTypeLst should be a length-one list such as
@@ -99,7 +102,7 @@ equate2Type <- function(linkTypeLst, test, p_cut=0.05,
 
     # save scatterplots of delta and indice
     statsEqu <- Equate_shw(test, vars, var_name, p_cut, DIF_cut,
-                           DIF_std_cut, FALSE, step, iter)
+                           DIF_std_cut, FALSE, step, iter, sigma)
     ggsave(
       paste0(prefix, '_delta.png'),
       statsEqu[['plot_DIF']],

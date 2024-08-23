@@ -56,7 +56,8 @@ equateLst( # include format, hyperlink, flag color
   design_effect = 1,
   step = FALSE,
   iter = FALSE,
-  indDfLst = lst[[2]] # NULL if no stats on facility, discrimination, infit
+  indDfLst = lst[[2]], # NULL if no stats on facility, discrimination, infit 
+  sigma=FALSE
 )
 ```
 
@@ -85,6 +86,7 @@ equate2Type( # include format, hyperlink, flag color
   DIF_cut = 0.5,
   DIF_std_cut = 4,
   step = FALSE,
-  iter = TRUE
+  iter = TRUE, 
+  sigma=FALSE
 )
 ```

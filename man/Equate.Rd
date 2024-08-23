@@ -18,7 +18,8 @@ Equate(
   iter = FALSE,
   indDf = NULL,
   pointer = FALSE,
-  report = FALSE
+  report = FALSE,
+  sigma = FALSE
 )
 }
 \arguments{
@@ -58,6 +59,10 @@ none of those indice is available.}
 \item{pointer}{Whether to print locations of output files. Default is FALSE.}
 
 \item{report}{Whether to generate a html report. Default is FALSE.}
+
+\item{sigma}{Indicator of how 'delta.y' is scaled. If TRUE, it is scaled
+to have same mean and sd as 'delta.x'. If FALSE, it has same mean as 'delta.x'.
+Default is FALSE.}
 }
 \value{
 Dataframe of chi-square test results for anchors between two tests.

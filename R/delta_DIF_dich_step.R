@@ -7,7 +7,7 @@
 #' @param DIFVar Name of dichotomous DIF variable, e.g., 'gender'.
 #' @return Dataframe of variables of 'delta.x', 'delta.y'.
 #' @examples
-#' delta_DIF_dich_step(test='Writing', DIFVar='gender')
+#' delta_DIF_dich_step(test='WA', DIFVar='ATSI')
 #' @export
 
 delta_DIF_dich_step <- function(test, DIFVar){
@@ -20,10 +20,17 @@ delta_DIF_dich_step <- function(test, DIFVar){
   test <- str_c(test, '_', 'step')
   n_item <- N_item(folder, test)
 
-  # delta
+  ######## delta
+
   x <- str_file(folder, test, 'itn')
   ind <- grep('Item Delta\\(s\\)', x)
-  x <- map(x[ind], ~str_sub(.x, 15, -1) |> str_squish() |> str_split(' ')) |>
+  x <- map(
+      x[ind],
+      ~str_sub(.x, 15, -1) |>
+        str_replace_all('-', ' -') |>
+        str_squish() |>
+        str_split(' ')
+    ) |>
     map(1) |>
     map(as.numeric)
 
@@ -49,16 +56,26 @@ delta_DIF_dich_step <- function(test, DIFVar){
     ) |>
     reduce(inner_join, by='item')
 
-  # error
+  ######## error
+
   file_shw <- Path(folder, test, 'shw')
   y <- readLines(file_shw)
   ind1 <- grep('TERM 4\\: item\\*step\\*', y)[[1]]+5
   ind2 <- grep('An asterisk next to', y)[[4]]-2
 
+  # locate skip rows
+  shw.1 <- readxl::read_xls(
+    paste0(folder, '/', test, '_shw.xls'),
+    sheet='ResponseModel',
+    .name_repair="unique_quiet"
+  ) |>
+  select(a=1)
+  skips <- which(shw.1$a=='item')
+
   dfError <- readxl::read_xls(
       paste0(folder, '/', test, '_shw.xls'),
       sheet='ResponseModel',
-      skip=7+n_item+22+n_item*2+8,
+      skip=skips[[3]],
       n_max=ind2-ind1+1,
       .name_repair="unique_quiet",
       col_types='numeric'

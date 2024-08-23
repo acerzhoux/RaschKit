@@ -5,12 +5,15 @@
 #'
 #' @param df Datarame of anchors' delta and error estimates in two tests
 #' (.x, .y), with variable names of 'delta.x', 'delta.y', 'error.x', and 'error.y'.
+#' @param sigma Indicator of how 'delta.y' is scaled. If TRUE, it is scaled
+#' to have same mean and sd as 'delta.x'. If FALSE, it has same mean as 'delta.x'.
+#' Default is FALSE.
 #' @return Dataframe of chi-square test results.
 #' @examples
-#' chisqT()
+#' chisqT(df, T)
 #' @export
 
-chisqT <- function(df){
+chisqT <- function(df, sigma=FALSE){
   df <- df |>
     modify_at(c('delta.x', 'delta.y', 'error.x', 'error.y'), as.numeric)
 
@@ -18,11 +21,27 @@ chisqT <- function(df){
     stop('Missing in data! Remove and retry?')
   }
 
-  shift <- mean(df$delta.x) - mean(df$delta.y)
+  m.x <- mean(df$delta.x)
+  m.y <- mean(df$delta.y)
+  shift <- m.x - m.y
+
+  if (sigma){
+    sd.x <- sd(df$delta.x)
+    sd.y <- sd(df$delta.y)
+
+    df <- mutate(
+      df,
+      delta.y_adj=(delta.y-m.y)/(sd.y/sd.x) + m.x
+    )
+  } else {
+    df <- mutate(
+      df,
+      delta.y_adj=delta.y + shift
+    )
+  }
 
   mutate(
     df,
-    delta.y_adj=delta.y + shift,
     delta_ave=(delta.x + delta.y_adj)/2,
     error=sqrt(error.x^2 + error.y^2),
     LI=delta_ave - error,

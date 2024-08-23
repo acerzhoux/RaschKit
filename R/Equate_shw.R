@@ -21,6 +21,9 @@
 #' @param step TRUE if DIF analysis is performed on step parameters.
 #' Default is FALSE.
 #' @param iter TRUE to iteratively remove DIF items. Default is FALSE.
+#' @param sigma Indicator of how 'delta.y' is scaled. If TRUE, it is scaled
+#' to have same mean and sd as 'delta.x'. If FALSE, it has same mean as 'delta.x'.
+#' Default is FALSE.
 #' @return Dataframe of chi-square test results for anchors between two tests.
 #' @examples
 #' Equate_shw(test='elana_math', vars=c('NSW', 'VIC'))
@@ -28,7 +31,7 @@
 
 Equate_shw <- function(test, vars, var_name=NULL, p_cut=0.05,
                        DIF_cut=0.5, DIF_std_cut=4,
-                       sav_results=TRUE, step=FALSE, iter=FALSE){
+                       sav_results=TRUE, step=FALSE, iter=FALSE, sigma=FALSE){
   if (!dir.exists('equating')) dir.create('equating')
 
   r1 <- vars[[1]]
@@ -54,5 +57,5 @@ Equate_shw <- function(test, vars, var_name=NULL, p_cut=0.05,
   }
 
   Equate(deltaDf, test, vars, p_cut, DIF_cut, DIF_std_cut,
-         sav_results, 1, step, NULL, iter)
+         sav_results, 1, step, NULL, iter, sigma=sigma)
 }

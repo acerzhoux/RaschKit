@@ -11,7 +11,8 @@ equate2Type(
   DIF_cut = 0.5,
   DIF_std_cut = 4,
   step = FALSE,
-  iter = TRUE
+  iter = TRUE,
+  sigma = FALSE
 )
 }
 \arguments{
@@ -33,6 +34,10 @@ between two tests. Default is 4.}
 Default is FALSE.}
 
 \item{iter}{TRUE to iteratively remove DIF items. Default is TRUE}
+
+\item{sigma}{Indicator of how 'delta.y' is scaled. If TRUE, it is scaled
+to have same mean and sd as 'delta.x'. If FALSE, it has same mean as 'delta.x'.
+Default is FALSE.}
 }
 \value{
 List of chi-square test results for anchors between two adjacent grades.
