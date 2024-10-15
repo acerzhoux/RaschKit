@@ -56,6 +56,7 @@
    list and solved column type merge issue.
 3. Added sigma method to several equating functions such as equateLst().
 4. Read deltas from itn.xls file for deltaStepTransform().
+5. Updated fre_resps_cat() by keeping the frequency when proportion is TRUE.
     
 ===== v1.0.9 Updates =====
 1. Debugged add_format() so both list and vector of flags work.
