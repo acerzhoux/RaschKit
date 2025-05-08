@@ -13,6 +13,8 @@
 #' @export
 
 section_keys <- function(keyDf){
+  keyDf <- keyDf |>
+    mutate(Max_score=as.numeric(Max_score))
   if (('Key2' %in% names(keyDf)) && any(!is.na(keyDf$Key2))) {
     multiKeyLgt <- TRUE
     ks <- names(select(keyDf, contains('Key')))[-1]
