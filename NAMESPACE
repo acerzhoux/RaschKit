@@ -2,7 +2,6 @@
 
 export(CCC_comments)
 export(CCC_fine_flag4)
-export(CCC_ipMap)
 export(CCC_plot)
 export(DIF)
 export(DIFDimMulti)

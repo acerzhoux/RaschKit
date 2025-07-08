@@ -18,7 +18,7 @@
 3.	Software compatibility.
     - ACER ConQuest: 5.40.0\
       conquestr: 1.3.4\
-      Raschkit: 1.1.1
+      Raschkit: 1.1.2
     - Install ACER ConQuest 5.40.0.
         - From left bottom corner of Windows, 
             - Type in 'software centre' and click.
@@ -33,13 +33,13 @@
             - Select 'conquestr_1.3.4.zip'. 
             - Click 'Open'. 
             - Click 'Install'.
-    - Install 'RaschKit' 1.1.1 (packageVersion('RaschKit')).
+    - Install 'RaschKit' 1.1.2 (packageVersion('RaschKit')).
         - From bottom right pane of 'xxx.Rproj' (Step 1).    
             - click 'Packages' (3rd button after 'Files', 'Plots').
             - click 'Install'. From 'Install from', select 'Package Archive File...'.
             - Click 'Browse'. Enter into 'File name' file path\
                 (Ask Xiaoliang where it is).
-            - Select 'RaschKit_1.1.1.tar.gz'. 
+            - Select 'RaschKit_1.1.2.tar.gz'. 
             - Click 'Open'. 
             - Click 'Install'.
 4.  In 'xxx.Rproj', run code below and explore .Rmd files in ‘rCode’ folder for 
@@ -48,6 +48,12 @@
     - install_packages_ls()
     - create_folders()
     
+===== v1.1.2 Updates =====
+1. CCC_ipMap(): ensure iLab of thr insdie is character; ensure first words of
+   labels that include apostrophes are correctly extracted; add step numbers
+   to iNum and labels so the former is drawn (when condition satisfied) in ipmap 
+   and the latter are correctly mnerged.
+
 ===== v1.1.1 Updates =====
 1. section_keys(): ensure 'Max_score' of argument 'keyDf' is numeric inside 
    this function's environment to make subtraction work.

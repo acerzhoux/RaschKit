@@ -13,12 +13,12 @@
 #' @return Plots of CCC by category and score.
 #' @examples
 #' plot_data <- CCC_ipMap(test, cqs)
-#' plot_data <- CCC_ipMap(test='FPA', cqs=cqs, abilEst2use='wle', quick=F)
-#' @export
+#' plot_data <- CCC_ipMap(test='DIP', cqs=cqs, poly_key=TRUE)#' @export
 
 CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
             poly_key=FALSE, quick=TRUE){
-  thr <- df_thr('output', test)
+  thr <- df_thr('output', test) |>
+    mutate(iLab=as.character(iLab))
 
   # check names
   if (!('i_pvmeansd' %in% names(cqs$gMatrixList))){
@@ -106,12 +106,13 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
         paramLab = cqs$gXsiParameterLabels |> unlist()
       ) |>
         rowid_to_column(),
-      by = "rowid") |>
+      by = "rowid"
+    ) |>
     mutate(
       paramLab = str_trim(paramLab, "both"),
       paramLab = str_squish(paramLab),
       paramLab = str_remove(paramLab, "item "),
-      iLab = str_extract(paramLab, "^[\\w-]+"), # extract the first word
+      iLab = sub("^([[:alnum:]_'`]+).*", "\\1",paramLab), # extract the first word
       category = str_remove(paramLab, iLab),
       category = str_sub(category, -1, -1),
       category = as.numeric(category)
@@ -222,26 +223,25 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
   # Item Fit stats ----------------------------------------------------------
   fitEnd <- nrow(filter(iEstTemp, modelTerm == 1))
   if (!quick) fitEnd <- fitEnd + 1
+
+  fit.tbl <- tibble(
+    UnWeightedMNSQ = map_dbl(cqs$gFitStatistics$Value, "UnWeightedMNSQ"),
+    UnWeightedtfit = map_dbl(cqs$gFitStatistics$Value, "UnWeightedtfit"),
+    WeightedCW2 = map_dbl(cqs$gFitStatistics$Value, "WeightedCW2"),
+    WeightedMNSQ = map_dbl(cqs$gFitStatistics$Value, "WeightedMNSQ"),
+    Weightedtfit = map_dbl(cqs$gFitStatistics$Value, "Weightedtfit"),
+    WeightedNumerator = map_dbl(cqs$gFitStatistics$Value, "WeightedNumerator"),
+    WeightedDenominator = map_dbl(cqs$gFitStatistics$Value, "WeightedDenominator"),
+    UnWeightedSE = map_dbl(cqs$gFitStatistics$Value, "UnWeightedSE"),
+    WeightedSE = map_dbl(cqs$gFitStatistics$Value, "WeightedSE")
+  )[1:fitEnd, ] # polytomous
+  fit.tbl$iNum <- 1:nrow(fit.tbl)
+
   iFitStats <- iStepsCounts |>
     filter(iStepsCount > 0) |>
     filter(!is.na(iType)) |>
     left_join(
-      cbind(
-        iNum=filter(deltas, !is.na(iLogit)) |> #remove all-correct items
-          pull(iNum) |>
-          unique(), # polytomous
-        tibble(
-          UnWeightedMNSQ = map_dbl(cqs$gFitStatistics$Value, "UnWeightedMNSQ"),
-          UnWeightedtfit = map_dbl(cqs$gFitStatistics$Value, "UnWeightedtfit"),
-          WeightedCW2 = map_dbl(cqs$gFitStatistics$Value, "WeightedCW2"),
-          WeightedMNSQ = map_dbl(cqs$gFitStatistics$Value, "WeightedMNSQ"),
-          Weightedtfit = map_dbl(cqs$gFitStatistics$Value, "Weightedtfit"),
-          WeightedNumerator = map_dbl(cqs$gFitStatistics$Value, "WeightedNumerator"),
-          WeightedDenominator = map_dbl(cqs$gFitStatistics$Value, "WeightedDenominator"),
-          UnWeightedSE = map_dbl(cqs$gFitStatistics$Value, "UnWeightedSE"),
-          WeightedSE = map_dbl(cqs$gFitStatistics$Value, "WeightedSE")
-        )[1:fitEnd, ] # polytomous
-      ),
+      fit.tbl,
       by='iNum'
     )
 
@@ -316,7 +316,9 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
     ) |>
     left_join(
       thr |>
-        mutate(category = paste0("thrCat", category)) |>
+        mutate(
+          category = paste0("thrCat", category)
+        ) |>
         spread(category, threshold, fill = NA),
       by = c("iNum", "iLab")
     ) |>
@@ -356,7 +358,10 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
       rowid_to_column('iNum') |>
       # mutate(iNum=1:nrow(.)) |>
       select(iLab, iNum) |>
-      right_join(iEstimates, by = "iLab") |>
+      right_join(
+        iEstimates,
+        by = "iLab", relationship = "many-to-many"
+      ) |>
       filter(!is.na(category)) |>
       mutate(item=str_c(iLab,'.',category)) |>
       select(item, deltaCat1=Xsi) |>
@@ -365,9 +370,21 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
       mutate(deltaRank = rank(deltaCat1, ties.method = "first"))
   }
 
+  # add step indexes for steps to merge to estimates below
+  step.index <- deltas |>
+    select(iNum, item=iLab) |>
+    group_by(iNum) |>
+    mutate(
+      step=1:n(),
+      iNum=paste0(iNum, '.', step),
+      item=paste0(item, '.', step)
+    ) |>
+    select(-step) |>
+    ungroup()
+
   iPlotDat <- iPlotDat |>
-    left_join(deltas |> select(iNum, item=iLab), by = "item")
-  if (ni>100 || np-ni>100){
+    left_join(step.index, by = "item")
+  if (ni>150 || np-ni>100){
     iPlot <- ggplot(iPlotDat, aes(x = deltaRank, y = delta2, label = iNum))
   } else {
     iPlot <- ggplot(iPlotDat, aes(x = deltaRank, y = delta2, label = item))
