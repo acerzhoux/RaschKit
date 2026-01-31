@@ -4,9 +4,11 @@
 \alias{getTest}
 \title{getTest}
 \usage{
-getTest(tests, intLst)
+getTest(run, tests, intLst)
 }
 \arguments{
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
+
 \item{tests}{Vector of test names.}
 
 \item{intLst}{List of item analysis dataframe for each test.}

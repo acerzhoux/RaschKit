@@ -4,9 +4,11 @@
 \alias{opt_stats}
 \title{opt_stats}
 \usage{
-opt_stats(test)
+opt_stats(run, test)
 }
 \arguments{
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
+
 \item{test}{Name of test.}
 }
 \value{

@@ -4,12 +4,12 @@
 \alias{df_its}
 \title{df_its}
 \usage{
-df_its(folder = "output", test)
+df_its(test, run)
 }
 \arguments{
-\item{folder}{Folder where ConQuest output files are located.}
-
 \item{test}{Name of test.}
+
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
 }
 \value{
 Dataframe of item statistics such as N, facility, and discrimination.

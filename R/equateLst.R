@@ -81,7 +81,7 @@ equateLst <- function(deltaDfLst, vars, p_cut=0.05, DIF_cut=0.5, DIF_std_cut=4,
   }
 
   # extract stats
-  file_ls <- map(tests, ~list.files(folder, pattern=.x, full.names=TRUE))
+  file_ls <- map(tests, ~list.files(folder, pattern=paste0(.x, '_'), full.names=TRUE))
   files <- file_ls |>
     map(~str_subset(.x, '.xlsx')) |>
     unlist()

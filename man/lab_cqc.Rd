@@ -7,8 +7,7 @@
 lab_cqc(
   test,
   keyDf,
-  run = NULL,
-  run_ls = NULL,
+  run,
   codes,
   pid_cols = NULL,
   resps_cols,
@@ -33,12 +32,7 @@ lab_cqc(
 
 \item{keyDf}{Dataframe of 'Item', 'Key', and 'Max_score'.}
 
-\item{run}{Vector of specific categories of variables to select from
-'test_Data.txt' in 'data' folder, e.g., c('English2', 3, 1). This corresponds
-to the previous argument `run_ls`. Default is NULL.}
-
-\item{run_ls}{List of data filters. Element is column number in data.
-Element name is filter variable's name. Default is NULL.}
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
 
 \item{codes}{Vector of valid codes for item responses,
 e.g., c(1, 2, 3, 4, 5, 6, 7, 8, 9).}

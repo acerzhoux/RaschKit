@@ -5,6 +5,7 @@
 \title{itn_summary}
 \usage{
 itn_summary(
+  run,
   test,
   easy = 90,
   hard = 10,
@@ -15,10 +16,13 @@ itn_summary(
   dRiseThr = 0.1,
   ccc_data,
   iType,
-  keyDf
+  keyDf,
+  anchor
 )
 }
 \arguments{
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
+
 \item{test}{Name of test.}
 
 \item{easy}{Threshold to flag easy items. Default is 90 (percent correct).}
@@ -46,6 +50,8 @@ Default is 0.1.}
 output from Function 'CCC_Vernon'.}
 
 \item{keyDf}{Dataframe of 'Item', 'Key', and 'Max_score' (add Key2 if double key).}
+
+\item{anchor}{TRUE if anchoring is being done.}
 }
 \value{
 Dataframe of item statistics with flags.

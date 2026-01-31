@@ -3,14 +3,17 @@
 #' This function extracts step parameter estimates from .shw file. This is
 #' associated with test named 'test'.
 #'
-#' @param folder Folder where xxx_shw.txt file is located.
+#' @param run String that indicates run such as 'pre_review' and 'post_review'.
 #' @param test Name of test.
 #' @examples
 #' df_shw_Step(test='ELNA')
 #' @export
 
-df_shw_Step <- function(folder='output', test){
-  labs <- read.table(paste0('data/', test, '_Labels.txt')) |>
+df_shw_Step <- function(run, test){
+
+  folder <- file.path('calibration', run)
+
+  labs <- read.table(paste0('data/', run, '/', test, '_Labels.txt')) |>
     rowid_to_column('item') |>
     dplyr::rename(Label = V1)
 

@@ -5,62 +5,75 @@
 #' and merge them into one dataframe. This is associated
 #' with test named 'test'.
 #'
-#' @param folder Folder where ConQuest output files are located.
-#' @param test Name of test. Default is 'output'.
+#' @param run String that indicates run such as 'pre_review' and 'post_review'.
+#' @param test Name of test.
 #' @examples
-#' a <- item_stats(test='math_35')
+#' a <- item_stats(folder='output', test='Hum', anchor=F)
 #' @export
 
-item_stats <- function(folder='output', test){
-  labs <- read.table(paste0('data/', test, '_Labels.txt')) |>
+item_stats <- function(run, test){
+
+  folder <- file.path('calibration', run)
+
+  labs <- read.table(paste0('data/', run, '/', test, '_Labels.txt')) |>
     rowid_to_column('seqNo') |>
     dplyr::rename(`Item Title`=V1) |>
     mutate(seqNo=as.integer(seqNo))
 
-  skip <- which(
-    is.na(
-      select(
-        readxl::read_xls(paste0(folder,'/',test,'_shw.xls'),'ResponseModel',.name_repair="unique_quiet"),
-        1
-      )
-    )
-  )[[1]] - 1
+  strings <- readxl::read_xls(
+    paste0(folder,'/',test,'_shw.xls'),
+    'ResponseModel',
+    .name_repair="unique_quiet"
+  ) |>
+    select(1) |>
+    unlist()
+
+  skip <- grep("VARIABLES", strings) + 1
 
   # stats from shw file
+  iShw0 <- readxl::read_xls(
+    paste0(folder, '/', test, '_shw.xls'),
+    sheet='ResponseModel',
+    skip=skip,
+    n_max=N_item(file.path('calibration', run), test)+1,
+    .name_repair = "unique_quiet"
+  ) |>
+    dplyr::filter(!is.na(ESTIMATE))
+
+  var.exc.1 <- which(str_detect(names(iShw0), '^C'))[[1]]
+  var.exc.2 <- var.exc.1 + 2
+
   iShw <- labs |>
     left_join(
-      readxl::read_xls(
-        paste0(folder, '/', test, '_shw.xls'),
-        sheet='ResponseModel',
-        skip=skip,
-        n_max=N_item('output', test)+1,
-        .name_repair = "unique_quiet"
-      ) |>
-      select(1, 3:5, 9:12) |>
-      `names<-`(c('seqNo', 'Estimate', 'Item Error', 'Outfit', 'Infit',
-                  'C.I. (L)', 'C.I. (H)', 'T')) |>
-      dplyr::filter(!is.na(Estimate)) |>
-      dplyr::mutate(seqNo=as.integer(seqNo)),
+      iShw0 |>
+        select(-c(var.exc.1:var.exc.2), -contains('...2')) |>
+        `names<-`(c('seqNo', 'Estimate', 'Item Error', 'Outfit', 'Infit',
+                    'C.I. (L)', 'C.I. (H)', 'T')) |>
+        dplyr::filter(!is.na(Estimate)) |>
+        dplyr::mutate(
+          seqNo=sub(" .*", "", seqNo) |> as.integer(),
+          `Item Error`=as.numeric(`Item Error`)
+        ),
       by='seqNo'
     ) |>
     as_tibble() |>
     mutate(Estimate=as.numeric(Estimate))
 
   mDelta <- mean(iShw$Estimate, na.rm=TRUE)
-  if (abs(mDelta) > 0.001){
+  if (abs(mDelta) > 0.001){ # anchor; case-centered estimates
     iShw <- iShw |>
       mutate(`Item Estimate (item centred)`=round(Estimate-mDelta, 3)) |>
-      rename(`Item Estimate (case centred)`=Estimate)
+      dplyr::rename(`Item Estimate (case centred)`=Estimate)
   } else {
     iShw <- iShw |>
-      rename(`Item Estimate (item centred)`=Estimate)
+      dplyr::rename(`Item Estimate (item centred)`=Estimate)
   }
 
   # stats from its file
   iIts <- readxl::read_xls(
       paste0(folder, '/', test, '_its.xls'),
       skip=5,
-      n_max=N_item2('output', test),
+      n_max=N_item2(run, test),
       .name_repair="unique_quiet",
       col_types='numeric'
     ) |>

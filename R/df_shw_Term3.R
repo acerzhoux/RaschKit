@@ -13,45 +13,53 @@ df_shw_Term3 <- function(DIFVar, test){
   folder <- paste0('DIF/', DIFVar)
   labs <- read.table(paste0('data/', test, '_Labels.txt')) |>
     rowid_to_column('item') |>
-    dplyr::rename(`Item Title` = V1)
+    dplyr::rename(`Item Title` = V1) |>
+    mutate(item=as.character(item))
   test <- paste0(test, '_facet')
 
   # #### solve line difference issue arising from CQ versions
   n_item <- N_item(folder, test)
   lnT2 <- Lines(folder, test, 'shw', 'TERM 2: ')
   lnT3 <- Lines(folder, test, 'shw', 'TERM 3: item*')
-  lessNum <- ifelse(length(lnT2)==1, 14, 13)
+  lessNum <- ifelse(length(lnT2)==1, 13, 13) # CQ 5.47.5
   n_cat <- lnT3[[length(lnT3)]] - lnT2[[length(lnT2)]] - lessNum
-  nSkip <- ifelse(length(lnT2)==1, 7+n_item+10+n_cat+8, 8+n_item+11+n_cat+9)
+  nSkip <- ifelse(
+    length(lnT2)==1, 8+n_item+10+n_cat+10, # CQ 5.47.5
+    8+n_item+11+n_cat+9
+  )
   # #### End
 
   n_max <- {Lines(folder, test, 'shw', 'An asterisk ')[3] - 2} -
-      {lnT3[[length(lnT3)]] + 6} + 1
+    {lnT3[[length(lnT3)]] + 6} # CQ 5.47.5
 
   term3 <- readxl::read_xls(
-      paste0(folder, '/', test, '_shw.xls'),
-      sheet='ResponseModel',
-      skip=nSkip,
-      n_max=n_max+1,
-      .name_repair = "unique_quiet"
-    ) |>
-    select(
+    paste0(folder, '/', test, '_shw.xls'),
+    sheet='ResponseModel',
+    skip=nSkip,
+    n_max=n_max+1,
+    .name_repair = "unique_quiet"
+  ) |>
+    select( # CQ 5.47.5
       item,
-      Category=4,
+      Category=2,
       Estimate=ESTIMATE,
       Error=`ERROR^`,
-      Outfit=`MNSQ...7`,
-      `Outfit T`=`T...10`,
-      Infit=`MNSQ...11`,
-      `Infit T`=`T...14`
+      Outfit=`MNSQ...5`,
+      `Outfit T`=`T...8`,
+      Infit=`MNSQ...9`,
+      `Infit T`=`T...12`
     ) |>
     dplyr::filter(!is.na(item))
 
   smry <- term3 |>
     dplyr::select(item, !!sym(DIFVar) := Category, everything()) |>
-    left_join(
-      labs,
-      by='item'
+    # left_join(
+    #   labs,
+    #   by='item'
+    # ) |>
+    mutate( # CQ 5.47.5
+      `Item Title`=sub("^[^ ]+ ", "", item),
+      item=sub(" .*", "", item)
     ) |>
     arrange(item, !!sym(DIFVar)) |>
     mutate(

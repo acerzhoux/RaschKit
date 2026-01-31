@@ -15,13 +15,9 @@
 #'
 #' @param test Name of the test.
 #' @param keyDf Dataframe of 'Item', 'Key', and 'Max_score'.
-#' @param run Vector of specific categories of variables to select from
-#' 'test_Data.txt' in 'data' folder, e.g., c('English2', 3, 1). This corresponds
-#' to the previous argument `run_ls`. Default is NULL.
+#' @param run String that indicates run such as 'pre_review' and 'post_review'.
 #' @param resps_cols String of column numbers of responses, e.g., '20-30'.
 #' @param pid_cols String of column numbers of person ID. Default is NULL.
-#' @param run_ls List of data filters. Element is column number in data.
-#' Element name is filter variable's name. Default is NULL.
 #' @param regr_ls List of regressors. Element is column number in data.
 #' Element name is regressor's name. Default is NULL.
 #' @param codes Vector of valid codes for item responses,
@@ -48,49 +44,42 @@
 #' lab_cqc()
 #' @export
 
-lab_cqc <- function(test, keyDf, run=NULL, run_ls=NULL,
+lab_cqc <- function(test, keyDf, run,
                    codes, pid_cols=NULL, resps_cols, quick=FALSE,
                    poly_key=FALSE, anchor=FALSE, section_extr=NULL,
                    step=FALSE, regr_ls=NULL, DIFVar=NULL, DIFVar_cols=NULL, #dich & poly
                    poly_catgrs=NULL, #dich, poly
                    poly_facet=FALSE, poly_group=FALSE, #poly: facet
                    pweight=NULL, pw_cols=NULL, strRec=NULL){
-  # run_ls: list(domain='3-11', grade='12-13', flag='36')
-  #   for testform; keyDf, labels differ; put in 'Keepcases'
-  # run: c('English2', 3, 1); used with `run_ls`
-  # poly_catgrs: poly DIF; keyDf, labels same for 'Keepcases'
-  # DIFVar: Lowercase to run 'conquestr'
 
   # create folders
   create_folders(DIFVar=DIFVar)
 
   # create label file
-  create_lab(test=test) # Item label file
+  create_lab(test=test, run=run) # Item label file
 
   # ##### create control file # #####
 
   # specify paths
-  path_output <- if (is.null(DIFVar)) 'Output' else paste0('DIF/', DIFVar)
-  path_lab <- paste0('input/', test, '_lab.txt')
+  path_output <- if (is.null(DIFVar)) paste0('calibration/', run) else paste0('DIF/', DIFVar)
+  path_lab <- paste0('input/', run, '/', test, '_lab.txt')
 
   if (is.null(DIFVar)){
-    path_df <- paste0('data/',
-            if (is.null(run_ls)) paste0(test, '_Data.txt') else
-              paste0('Data.txt'))
+    path_df <- paste0('data/', run, '/', test, '_Data.txt')
   } else {
     path_df <- paste0('data/', test, '_', DIFVar, '.txt')
   }
 
   # compose CQC string
   cqc <- c(
-    section_intro(test, run_ls, path_output, DIFVar, poly_catgrs),
-    section_data(path_df, resps_cols, pid_cols, run_ls, regr_ls,
+    section_intro(test, path_output, DIFVar, poly_catgrs),
+    section_data(path_df, resps_cols, pid_cols, regr_ls,
                  path_lab, DIFVar, DIFVar_cols, poly_group, pweight, pw_cols),
     section_keys(keyDf),
-    section_specs(anchor, test, DIFVar, poly_catgrs, quick),
+    section_specs(anchor, test, DIFVar, poly_catgrs, quick, run),
     if (!is.null(section_extr)) section_extr,
     if (poly_key) strRec,
-    section_model(run_ls, run, regr_ls, codes, poly_key, DIFVar, step, poly_group),
+    section_model(regr_ls, codes, poly_key, DIFVar, step, poly_group),
     section_estimate(quick, poly_key),
     section_export(poly_key, step, DIFVar, poly_catgrs, poly_facet, poly_group),
     'reset;',
@@ -101,7 +90,7 @@ lab_cqc <- function(test, keyDf, run=NULL, run_ls=NULL,
 
   # write CQC into folder
   cqc_path <-  paste0(
-    'input/',
+    'input/', run, '/',
     if (is.null(DIFVar)) paste0(test, '.cqc')
     else if (poly_facet) paste0(DIFVar, '_', test, '_facet.cqc')
     else if (poly_group) paste0(DIFVar, '_', test, '_group.cqc')

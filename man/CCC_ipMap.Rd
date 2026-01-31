@@ -5,15 +5,20 @@
 \title{CCC_ipMap}
 \usage{
 CCC_ipMap(
+  run,
   test,
   cqs,
   abilEst2use = "pv1",
   numAbilGrps = NULL,
   poly_key = FALSE,
-  quick = TRUE
+  anchor = FALSE,
+  savePlots = TRUE,
+  plotItemi = NULL
 )
 }
 \arguments{
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
+
 \item{test}{Name of the test.}
 
 \item{cqs}{CQS output file from ConQuest.}
@@ -25,7 +30,11 @@ Use 'wle' for smaller samples.}
 
 \item{poly_key}{TRUE if the key of any item has polytomous scoring. Default is FALSE.}
 
-\item{quick}{TRUE if empirical error is not needed. Default is TRUE}
+\item{anchor}{TRUE if anchoring is being done. Default is FALSE.}
+
+\item{savePlots}{TRUE to save both plots to calibration/'run' folder. Default is TRUE}
+
+\item{plotItemi}{Integer to indicate item order in test. NULL to plot all items.}
 }
 \value{
 Plots of CCC by category and score.
@@ -36,5 +45,5 @@ Plots will be saved in 'output' folder.
 }
 \examples{
 plot_data <- CCC_ipMap(test, cqs)
-plot_data <- CCC_ipMap(test='DIP', cqs=cqs, poly_key=TRUE)#' @export
+plot_data <- CCC_ipMap(test='DIP', cqs=cqs, poly_key=TRUE)
 }

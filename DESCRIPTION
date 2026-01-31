@@ -1,7 +1,7 @@
 Package: RaschKit
 Type: Package
 Title: Perform Psychometric Analyses under Rasch Models
-Version: 1.1.2
+Version: 1.1.3
 Authors@R: 
     c(person("Zhou", 
              "Xiaoliang", 
@@ -20,10 +20,10 @@ Description: Provides tools for item calibration, horizontal and vertical equati
     with ACER ConQuest.
 License: MIT + file LICENSE
 Encoding: UTF-8
-Imports: plyr, conquestr, rlang, bookdown, ggthemes, ggrepel, gdata,
+Imports: conquestr, rlang, bookdown, ggthemes, ggrepel, gdata,
         patchwork, rmarkdown, janitor, lazyeval, knitr, RColorBrewer,
         fs, writexl, ggpubr, qpdf, tidyverse, openxlsx, grid, flextable
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 NeedsCompilation: no
 Packaged: 2023-08-06 23:34:20 UTC; acerZhouX
 Author: Zhou Xiaoliang [aut, cre],

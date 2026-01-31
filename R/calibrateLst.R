@@ -11,23 +11,34 @@
 #' @param keyDfLst List of key dataframes. Element names are test names.
 #' @param pid Name of candidates' ID variable.
 #' @param n_cov Number of covariates before responses.
-#' @param run Integer that indicates round of run.
+#' @param run String that indicates run such as 'pre_review' and 'post_review'.
 #' @param useR TRUE when code 'R' is used for scoring. Default is FALSE.
 #' @param quick TRUE if empirical error is not needed. Default is TRUE.
 #'
 #' @export
 
 calibrateLst <- function(respDfLst=NULL, keyDfLst, pid, n_cov, run, useR=FALSE, quick=TRUE){
-  testVec <- names(keyDfLst)
-  for (i in seq_along(testVec)){
-    test <- testVec[[i]]
+
+  sink_start()
+
+  map(
+    paste0(c('data', 'input', 'calibration'), '/', run),
+    dir.create
+  )
+
+  tests <- names(keyDfLst)
+  for (i in seq_along(tests)){
+    test <- tests[[i]]
     if (is.null(respDfLst)) {
       respDf <- NULL
     } else {
       respDf <- respDfLst[[i]]
     }
-    calibrate(test, respDf, keyDfLst[[test]], pid, n_cov, useR=useR, quick=quick)
+    calibrate(test, respDf, keyDfLst[[test]], pid, n_cov, useR=useR, quick=quick, run=run)
   }
 
-  read2one('results', testVec, 'itn', paste0('Run_', run))
+  read2one(file.path('calibration', run), tests, 'itn', paste0('Run_', run))
+
+  # Stop sinking
+  sink_stop()
 }

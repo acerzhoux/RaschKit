@@ -4,10 +4,10 @@
 \alias{df_shw}
 \title{df_shw}
 \usage{
-df_shw(folder = "output", test)
+df_shw(run, test)
 }
 \arguments{
-\item{folder}{Folder where ConQuest output files are located.}
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
 
 \item{test}{Name of test.}
 }

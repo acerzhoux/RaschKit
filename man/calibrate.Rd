@@ -13,7 +13,7 @@ calibrate(
   regrNmVec = NULL,
   nDimVec = NULL,
   dimNmVec = NULL,
-  quick = TRUE,
+  quick = FALSE,
   trial = FALSE,
   section_extr = NULL,
   easy = 90,
@@ -38,7 +38,9 @@ calibrate(
   ancTest2Read = NULL,
   ancDf = NULL,
   ancRead = FALSE,
-  useR = FALSE
+  useR = FALSE,
+  run,
+  useDummyData = FALSE
 )
 }
 \arguments{
@@ -65,7 +67,7 @@ response columns, e.g., 30.}
 \item{dimNmVec}{Vector of the dimensions' names. Default is NULL.
 Define this vector if multi-dimensional model is to be run.}
 
-\item{quick}{TRUE if empirical error is not needed. Default is TRUE.}
+\item{quick}{TRUE if empirical error is not needed. Default is FALSE.}
 
 \item{trial}{TRUE when trial item diagnostics is needed after anchoring is done.
 Default is FALSE.}
@@ -126,10 +128,10 @@ is FALSE.}
 be specified if weight is used for modeling. Default is NULL.}
 
 \item{ancShift}{Shift of mean anchor delta from previous cycle obtained from
-equating analysis. It will be added to each item delta of 'test' in 'output'
+equating analysis. It will be added to each item delta of 'test' in 'calibration'
 folder and put in 'input' folder as anchor file for 'test'. Default is NULL.}
 
-\item{ancTest2Read}{Name of test in 'output' folder to read delta from. This
+\item{ancTest2Read}{Name of test in 'calibration' folder to read delta from. This
 is usually concurrent calibration results such as all grades and/or all test
 forms. Only delta's (and step estimates) in 'tests' are extracted and put in
 'input' folder as anchor file. Default is NULL.}
@@ -143,6 +145,10 @@ with step parameters.}
 file there. Default is FALSE.}
 
 \item{useR}{TRUE when code 'R' is used for scoring. Default is FALSE.}
+
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
+
+\item{useDummyData}{Whether dummy data is used. Default is FALSE.}
 }
 \description{
 This function calibrates items in a test and adds comments and flags of

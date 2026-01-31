@@ -15,7 +15,8 @@ df_key_lab_args(
   section_extr = NULL,
   labels = NULL,
   useR = FALSE,
-  pweight = NULL
+  pweight = NULL,
+  run
 )
 }
 \arguments{
@@ -41,6 +42,8 @@ df_key_lab_args(
 
 \item{pweight}{Variable name of person weights in response dataframe. Should
 be specified if weight is used for modeling. Default is NULL.}
+
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
 }
 \value{
 A list of arguments with calculated elements.

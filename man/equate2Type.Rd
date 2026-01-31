@@ -12,7 +12,8 @@ equate2Type(
   DIF_std_cut = 4,
   step = FALSE,
   iter = TRUE,
-  sigma = FALSE
+  sigma = FALSE,
+  run
 )
 }
 \arguments{
@@ -38,6 +39,8 @@ Default is FALSE.}
 \item{sigma}{Indicator of how 'delta.y' is scaled. If TRUE, it is scaled
 to have same mean and sd as 'delta.x'. If FALSE, it has same mean as 'delta.x'.
 Default is FALSE.}
+
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
 }
 \value{
 List of chi-square test results for anchors between two adjacent grades.
@@ -48,5 +51,5 @@ is saved in 'equating' folder, each sheet of which is for two
 adjacent grades Also saved are scatterplots named 'Vrt_xxx.pdf'.
 }
 \examples{
-equate2Type('Hrz', 'bang', 3)
+equate2Type(list(Hrz=list(grades=NULL, forms=c('B', 'C', 'D'))), 'OPRA')
 }

@@ -4,7 +4,7 @@
 \alias{anchor_process}
 \title{anchor_process}
 \usage{
-anchor_process(test, respDf, keyDf, n_cov, nDimVec, ancDf)
+anchor_process(test, respDf, keyDf, n_cov, nDimVec, ancDf, run)
 }
 \arguments{
 \item{test}{Name of test.}
@@ -16,11 +16,13 @@ Default is NULL where Excel file with name 'test' in 'data' folder is used.}
 
 \item{n_cov}{Number of covariates before responses.}
 
-\item{nDimVec}{Vector of numbers of responses the dimensions have. Default is NULL.
-Define this vector if multi-dimensional model is to be run, e.g., c(30, 45).
-Also should define this if there are variables after response columns, e.g., 30.}
+\item{nDimVec}{Vector of numbers of responses the dimensions have. Default is NULL.}
 
 \item{ancDf}{Dataframe of 'Item', 'Delta' (and 'Step') for anchors.}
+
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.
+Define this vector if multi-dimensional model is to be run, e.g., c(30, 45).
+Also should define this if there are variables after response columns, e.g., 30.}
 }
 \description{
 This function removes deleted or no-data items, reorders items,

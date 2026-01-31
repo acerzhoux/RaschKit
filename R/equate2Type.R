@@ -19,13 +19,14 @@
 #' @param sigma Indicator of how 'delta.y' is scaled. If TRUE, it is scaled
 #' to have same mean and sd as 'delta.x'. If FALSE, it has same mean as 'delta.x'.
 #' Default is FALSE.
+#' @param run String that indicates run such as 'pre_review' and 'post_review'.
 #' @return List of chi-square test results for anchors between two adjacent grades.
 #' @examples
-#' equate2Type('Hrz', 'bang', 3)
+#' equate2Type(list(Hrz=list(grades=NULL, forms=c('B', 'C', 'D'))), 'OPRA')
 #' @export
 
 equate2Type <- function(linkTypeLst, test, p_cut=0.05, DIF_cut=0.5, DIF_std_cut=4,
-                        step=FALSE, iter=TRUE, sigma=FALSE){
+                        step=FALSE, iter=TRUE, sigma=FALSE, run){
   # check inputs
   if (!is.list(linkTypeLst) || length(linkTypeLst)!=1 || !(names(linkTypeLst) %in% c('Hrz', 'Vrt'))) {
     stop('linkTypeLst should be a length-one list such as
@@ -58,10 +59,14 @@ equate2Type <- function(linkTypeLst, test, p_cut=0.05, DIF_cut=0.5, DIF_std_cut=
 
   grps <- list()
   if (type=='Hrz') {
-    for (i in seq_along(grdIntVec)){
-      for (j in 1:(length(forms)-1)){
-        nm <- paste0(grdIntVec[[i]], '_', paste0(forms[[j]], forms[[j+1]], collapse = ''))
-        grps[[nm]] <- str_c(grdIntVec[[i]], c(forms[[j]], forms[[j+1]]))
+    if (is.null(grdIntVec)){
+      grps <- combn(forms, 2, simplify = FALSE)
+    } else {
+      for (i in seq_along(grdIntVec)){
+        for (j in 1:(length(forms)-1)){
+          nm <- paste0(grdIntVec[[i]], '_', paste0(forms[[j]], forms[[j+1]], collapse = ''))
+          grps[[nm]] <- str_c(grdIntVec[[i]], c(forms[[j]], forms[[j+1]]))
+        }
       }
     }
   } else {
@@ -80,29 +85,29 @@ equate2Type <- function(linkTypeLst, test, p_cut=0.05, DIF_cut=0.5, DIF_std_cut=
     t2 <- paste0(test, '_', vars[[2]])
 
     if (!step) {
-      facilDiscrFitw <- df_its('output', t1) |>
+      facilDiscrFitw <- df_its(t1, run) |>
         inner_join(
-          df_its('output', t2),
+          df_its(t2, run),
           by = 'Label'
         ) |>
         dplyr::select(-contains('iNum.')) |>
         na.omit() |>
         modify_at(c(3, 7), ~round(.x, 3))
       names(facilDiscrFitw) <- gsub(
-          "\\.x",
-          paste0(ifelse(type=='Hrz', ' ', ' L'), vars[[1]]),
-          names(facilDiscrFitw)
-        )
+        "\\.x",
+        paste0(ifelse(type=='Hrz', ' ', ' L'), vars[[1]]),
+        names(facilDiscrFitw)
+      )
       names(facilDiscrFitw) <- gsub(
-          "\\.y",
-          paste0(ifelse(type=='Hrz', ' ', ' L'), vars[[2]]),
-          names(facilDiscrFitw)
-        )
+        "\\.y",
+        paste0(ifelse(type=='Hrz', ' ', ' L'), vars[[2]]),
+        names(facilDiscrFitw)
+      )
     }
 
     # save scatterplots of delta and indice
     statsEqu <- Equate_shw(test, vars, var_name, p_cut, DIF_cut,
-                           DIF_std_cut, FALSE, step, iter, sigma)
+                           DIF_std_cut, FALSE, step, iter, sigma, run)
     ggsave(
       paste0(prefix, '_delta.png'),
       statsEqu[['plot_DIF']],
@@ -117,18 +122,18 @@ equate2Type <- function(linkTypeLst, test, p_cut=0.05, DIF_cut=0.5, DIF_std_cut=
       )
 
       statsEqu[['flag']] <- left_join(
-          statsEqu[['flag']],
-          facilDiscrFitw,
-          by = c('item' = 'Label')
-        ) |>
+        statsEqu[['flag']],
+        facilDiscrFitw,
+        by = c('item' = 'Label')
+      ) |>
         dplyr::select(item, contains('N'), contains('Facil'),
-         contains('Discr'), contains('Fitw'), everything())
+                      contains('Discr'), contains('Fitw'), everything())
 
       statsEqu[['final']] <- left_join(
-          statsEqu[['final']],
-          facilDiscrFitw,
-          by = c('item' = 'Label')
-        ) |>
+        statsEqu[['final']],
+        facilDiscrFitw,
+        by = c('item' = 'Label')
+      ) |>
         dplyr::select(
           item, contains('N'), contains('Facil'),
           contains('Discr'), contains('Fitw'),
@@ -148,12 +153,12 @@ equate2Type <- function(linkTypeLst, test, p_cut=0.05, DIF_cut=0.5, DIF_std_cut=
   summary <- map(equat_ls, 'shift') |>
     imap(~mutate(.x, Grade=.y)) |>
     map2(map(equat_ls, 'final'),
-      ~mutate(
-      .x,
-      Links_bfr=nrow(.y),
-      Links_afr=nrow(filter(.y, flag==0)),
-      Links_retained_perc=str_c(round(Links_afr/Links_bfr*100), '%')
-      )
+         ~mutate(
+           .x,
+           Links_bfr=nrow(.y),
+           Links_afr=nrow(filter(.y, flag==0)),
+           Links_retained_perc=str_c(round(Links_afr/Links_bfr*100), '%')
+         )
     ) |>
     reduce(bind_rows) |>
     select(Grade, everything())
@@ -169,5 +174,4 @@ equate2Type <- function(linkTypeLst, test, p_cut=0.05, DIF_cut=0.5, DIF_std_cut=
     file,
     c(DIF_cut, DIF_std_cut)
   )
-
 }

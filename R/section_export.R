@@ -38,7 +38,9 @@ section_export <- function(poly_key, step, DIFVar, poly_catgrs, poly_facet, poly
     paste0('itanal !estimates=wle,format=summary                           >> ', p, '_its.txt;'),
     paste0('itanal !estimates=wle,format=summary,filetype=excel            >> ', p, '_its.xls;'),
     paste0('itanal !estimates=latent                                       >> ', p, '_itn.txt;'),
-    paste0('itanal !estimates=latent,filetype=excel                        >> ', p, '_itn.xls;'),
+    if (is.null(DIFVar)){
+      paste0('itanal !estimates=latent,filetype=excel                        >> ', p, '_itn.xls;')
+    },
     paste0('itanal !estimates=latent,format=export                         >> ', p, '_opt.txt;'),
     paste0('itanal !estimates=latent,format=export,filetype=excel          >> ', p, '_opt.xls;'),
     paste0('show !estimates=wle,Expanded=no,itemlabels=yes                 >> ', p, '_shw.txt;'),

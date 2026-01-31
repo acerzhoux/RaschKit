@@ -11,12 +11,13 @@
 #' @param keyDf Vector of keys in the test. Default is NULL.
 #' @param n_cov Number of covariates before responses.
 #' @param nDimVec Vector of numbers of responses the dimensions have. Default is NULL.
+#' @param run String that indicates run such as 'pre_review' and 'post_review'.
 #' Define this vector if multi-dimensional model is to be run, e.g., c(30, 45).
 #' Also should define this if there are variables after response columns, e.g., 30.
 #' @param ancDf Dataframe of 'Item', 'Delta' (and 'Step') for anchors.
 #' @export
 
-anchor_process <- function(test, respDf, keyDf, n_cov, nDimVec, ancDf){
+anchor_process <- function(test, respDf, keyDf, n_cov, nDimVec, ancDf, run){
 
   if (!(is.data.frame(ancDf) & ncol(ancDf) >= 2L & all(c('Item', 'Delta') %in% names(ancDf)))) {
     stop('ancDf should be a dataframe with variables Item, Delta (and Step if needed)!')
@@ -47,6 +48,7 @@ anchor_process <- function(test, respDf, keyDf, n_cov, nDimVec, ancDf){
     keyDf <- keyDf[-id, ]
   }
 
+  folder <- paste0('input/', run, '/', test, '_anc.txt')
   if ('Step' %in% names(ancDf)) {
     keys1 <- keyDf |>
       select(Item) |>
@@ -79,7 +81,7 @@ anchor_process <- function(test, respDf, keyDf, n_cov, nDimVec, ancDf){
         Delta=round(as.numeric(Delta), 3)
       ) |>
       dplyr::select(iNumNew, Delta, Item) |>
-      write_fwf(paste0('input/', test, '_anc.txt'))
+      write_fwf(folder)
   } else {
     keyDf |>
       select(Item) |>
@@ -92,6 +94,6 @@ anchor_process <- function(test, respDf, keyDf, n_cov, nDimVec, ancDf){
         Delta=round(as.numeric(Delta), 3)
       ) |>
       dplyr::select(iNumNew, Delta, Item) |>
-      write_fwf(paste0('input/', test, '_anc.txt'))
+      write_fwf(folder)
   }
 }

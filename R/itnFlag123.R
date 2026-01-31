@@ -3,6 +3,7 @@
 #' This function adds three priorities of flag to items in a test based on item
 #' statistics. This is associated with test named 'test'.
 #'
+#' @param run String that indicates run such as 'pre_review' and 'post_review'.
 #' @param test Name of test.
 #' @param easy Threshold to flag easy items. Default is 90 (percent correct).
 #' @param hard Threshold to flag hard items. Default is 10 (percent correct).
@@ -14,9 +15,9 @@
 #' a <- itnFlag123(test='math_35')
 #' @export
 
-itnFlag123 <- function(test, easy = 90, hard = 10, iRst = .11,
+itnFlag123 <- function(run, test, easy = 90, hard = 10, iRst = .11,
                        fit_w = 1.1, fit_uw = 1.2){
-  flag3 <- opt_stats(test) |>
+  flag3 <- opt_stats(run, test) |>
     dplyr::filter(
       iScore==0,
       ptBis>0,
@@ -27,7 +28,7 @@ itnFlag123 <- function(test, easy = 90, hard = 10, iRst = .11,
     unique() |>
     mutate(Flag=1)
 
-  item_stats('output', test) |>
+  item_stats(run, test) |>
     left_join(flag3, by='seqNo') |>
     mutate(
       Priority = case_when(

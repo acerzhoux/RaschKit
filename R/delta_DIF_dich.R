@@ -8,33 +8,34 @@
 #' @param quick Whether quick error is needed. Default is TRUE for DIF analysis.
 #' @return List of delta and indice dataframes.
 #' @examples
-#' delta_DIF_dich(test='R', DIFVar='ATSI', quick = T)
+#' delta_DIF_dich(test, DIFVar, quick)
 #' @export
 
 delta_DIF_dich <- function (test, DIFVar, quick = TRUE){
   labs <- read.table(paste0('data/', test, '_Labels.txt')) |>
     rowid_to_column('iNum') |>
-    dplyr::rename(item=V1)
+    dplyr::rename(item=V1) |>
+    as_tibble()
 
   folder <- paste0('DIF/', DIFVar)
-  n_item <- N_item2(folder, test)
+  n_item <- N_item2(NULL, test)
 
   dfDIF <- readxl::read_xls(
       paste0(folder, '/', test, '_its.xls'),
       skip=5,
       n_max=n_item*2,
       .name_repair="unique_quiet",
-      col_types='numeric'
+      col_types='text'
     ) |>
     select(
       N, Facil=Facility,
       Discr=`Item-Rest Cor`,
-      # Infit=`Wghtd MNSQ`,
       delta=`Avg Delta`
     ) |>
     mutate(Category=rep(c('x', 'y'), n_item)) |>
-    pivot_wider(names_from = Category, values_from = N:delta) |>
+    pivot_wider(names_from = Category, values_from = N:delta, values_fn = list) |>
     map_dfr(unlist) |>
+    modify_if(is.character, as.numeric) |>
     rowid_to_column('iNum')
 
   names(dfDIF) <- gsub("\\_x", "\\.x", names(dfDIF))
@@ -47,7 +48,8 @@ delta_DIF_dich <- function (test, DIFVar, quick = TRUE){
       by='iNum'
     ) |>
     select(-iNum) |>
-    na.omit()
+    na.omit() |>
+    as_tibble()
 
   shw.col.1 <- readxl::read_xls(
       paste0(folder, '/', test, '_shw.xls'),
@@ -63,9 +65,13 @@ delta_DIF_dich <- function (test, DIFVar, quick = TRUE){
       skip=row.item[[2]],
       n_max=n_item*2+1,
       .name_repair="unique_quiet",
-      col_types='numeric'
+      col_types='text'
     ) |>
     select(item, error=`ERROR^`) |>
+    mutate(
+      item=sub("^[^ ]+ ", "", item),
+      error=as.numeric(error)
+    ) |>
     na.omit()
   n_item1 <- round(nrow(dfErrorLong)/2)
   dfError <- dfErrorLong |>
@@ -74,7 +80,10 @@ delta_DIF_dich <- function (test, DIFVar, quick = TRUE){
       names_from = 'Category',
       values_from = 'error'
     ) |>
-    map_dfr(unlist)
+    map_dfr(unlist) |>
+    rowid_to_column('iNum') |>
+    dplyr::select(-item) |>
+    as_tibble()
 
   dfDelta <- left_join(
     labs,
@@ -82,7 +91,7 @@ delta_DIF_dich <- function (test, DIFVar, quick = TRUE){
       dfDIF |>
         select(iNum, delta.x, delta.y),
       dfError,
-      by=c('iNum'='item')
+      by='iNum'
     ),
     by='iNum'
   ) |>

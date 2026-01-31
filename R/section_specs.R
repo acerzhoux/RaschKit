@@ -14,14 +14,15 @@
 #' @param DIFVar Name of the DIF variable.
 #' @param poly_catgrs Vector of categories of the polytomous DIF variable 'DIFVar'.
 #' @param quick TRUE when testing.
+#' @param run String that indicates run such as 'pre_review' and 'post_review'.
 #' @return String of characters used in estimation section of 'test.cqc'
 #' file in 'input' folder.
 #' @examples
 #' section_specs()
 #' @export
 
-section_specs <- function(anchor, test, DIFVar, poly_catgrs, quick){
-  if (anchor) anc_path <- paste0('input/', test, '_anc.txt')
+section_specs <- function(anchor, test, DIFVar, poly_catgrs, quick, run){
+  if (anchor) anc_path <- paste0('input/', run, '/', test, '_anc.txt')
 
   c(
     paste0(

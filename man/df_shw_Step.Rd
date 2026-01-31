@@ -4,10 +4,10 @@
 \alias{df_shw_Step}
 \title{df_shw_Step}
 \usage{
-df_shw_Step(folder = "output", test)
+df_shw_Step(run, test)
 }
 \arguments{
-\item{folder}{Folder where xxx_shw.txt file is located.}
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
 
 \item{test}{Name of test.}
 }

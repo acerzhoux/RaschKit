@@ -4,7 +4,16 @@
 \alias{freq_resps_cat}
 \title{freq_resps_cat}
 \usage{
-freq_resps_cat(resp, wide = FALSE, prop = FALSE)
+freq_resps_cat(
+  resp,
+  wide = FALSE,
+  prop = FALSE,
+  sort_cats = TRUE,
+  na_label = "(NA)",
+  digits = 2,
+  freq_suffix = "_freq",
+  prop_suffix = "_prop"
+)
 }
 \arguments{
 \item{resp}{Dataframe of responses where each column is a vector of responses
@@ -15,6 +24,16 @@ the output has long format same as frequency table in .txt file output
 from ConQuest.}
 
 \item{prop}{TRUE if proportion is desired. Default is FALSE.}
+
+\item{sort_cats}{sort category columns in wide output.}
+
+\item{na_label}{label to use for NA category in outputs.}
+
+\item{digits}{rounding digits for proportions.}
+
+\item{freq_suffix}{suffix for frequency columns in wide output.}
+
+\item{prop_suffix}{suffix for proportion columns in wide output.}
 }
 \value{
 Table of each item's category frequencies.

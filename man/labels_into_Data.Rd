@@ -4,12 +4,14 @@
 \alias{labels_into_Data}
 \title{labels_into_Data}
 \usage{
-labels_into_Data(test, labels)
+labels_into_Data(test, labels, run)
 }
 \arguments{
 \item{test}{Name of test.}
 
-\item{labels}{Vector of item labels in the test, e.g.,
+\item{labels}{Vector of item labels in the test, e.g.,}
+
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.
 c('iTrack3984232', 'iTrack4890298')}
 }
 \description{

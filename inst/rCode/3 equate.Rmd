@@ -87,6 +87,7 @@ equate2Type( # include format, hyperlink, flag color
   DIF_std_cut = 4,
   step = FALSE,
   iter = TRUE, 
-  sigma=FALSE
+  sigma=FALSE, 
+  run='free_separate'
 )
 ```

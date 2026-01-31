@@ -4,12 +4,14 @@
 \alias{check_convergence}
 \title{check_convergence}
 \usage{
-check_convergence(cqs, test)
+check_convergence(cqs, test, run)
 }
 \arguments{
 \item{cqs}{CQS output file from ConQuest.}
 
 \item{test}{Test name.}
+
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
 }
 \description{
 This function checks convergence of the model by checking model deviance

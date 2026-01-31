@@ -24,14 +24,14 @@
 #' @param sigma Indicator of how 'delta.y' is scaled. If TRUE, it is scaled
 #' to have same mean and sd as 'delta.x'. If FALSE, it has same mean as 'delta.x'.
 #' Default is FALSE.
+#' @param run String that indicates run such as 'pre_review' and 'post_review'.
 #' @return Dataframe of chi-square test results for anchors between two tests.
 #' @examples
 #' Equate_shw(test='elana_math', vars=c('NSW', 'VIC'))
 #' @export
 
-Equate_shw <- function(test, vars, var_name=NULL, p_cut=0.05,
-                       DIF_cut=0.5, DIF_std_cut=4,
-                       sav_results=TRUE, step=FALSE, iter=FALSE, sigma=FALSE){
+Equate_shw <- function(test, vars, var_name=NULL, p_cut=0.05, DIF_cut=0.5, DIF_std_cut=4,
+                       sav_results=TRUE, step=FALSE, iter=FALSE, sigma=FALSE, run){
   if (!dir.exists('equating')) dir.create('equating')
 
   r1 <- vars[[1]]
@@ -41,16 +41,16 @@ Equate_shw <- function(test, vars, var_name=NULL, p_cut=0.05,
   # merge data
   if (step){
     deltaDf <- inner_join(
-      df_del_shw_Step('output', paste0(test, '_', r1)),
-      df_del_shw_Step('output', paste0(test, '_', r2)),
+      df_del_shw_Step(run, paste0(test, '_', r1)),
+      df_del_shw_Step(run, paste0(test, '_', r2)),
       by="item"
     ) |>
     na.omit()
     # testStep <- paste0('step_', test)
   } else {
     deltaDf <- inner_join(
-      df_shw('output', paste0(test, '_', r1)),
-      df_shw('output', paste0(test, '_', r2)),
+      df_shw(run, paste0(test, '_', r1)),
+      df_shw(run, paste0(test, '_', r2)),
       by='item'
     ) |>
     na.omit()

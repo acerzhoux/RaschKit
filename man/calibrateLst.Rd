@@ -25,7 +25,7 @@ If NULL and items need collapsing, put processed data with test name in
 
 \item{n_cov}{Number of covariates before responses.}
 
-\item{run}{Integer that indicates round of run.}
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
 
 \item{useR}{TRUE when code 'R' is used for scoring. Default is FALSE.}
 

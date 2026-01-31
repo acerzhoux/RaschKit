@@ -4,10 +4,10 @@
 \alias{N_item2}
 \title{N_item2}
 \usage{
-N_item2(folder, test)
+N_item2(run, test)
 }
 \arguments{
-\item{folder}{Folder where ConQuest output files are located.}
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
 
 \item{test}{Name of test.}
 }
@@ -16,5 +16,5 @@ This function calculates number of items in a test based on 'test.its' file.
  This is associated with test named 'test'.
 }
 \examples{
-N_item2(test='FPA')
+N_item2(run, test='AACA')
 }

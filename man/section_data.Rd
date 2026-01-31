@@ -8,7 +8,6 @@ section_data(
   path_df,
   resps_cols,
   pid_cols,
-  run_ls,
   regr_ls,
   path_lab,
   DIFVar,
@@ -24,9 +23,6 @@ section_data(
 \item{resps_cols}{Column numbers of responses.}
 
 \item{pid_cols}{Column numbers of person ID.}
-
-\item{run_ls}{List of data filters. Element is column number in data.
-Element name is filter variable's name.}
 
 \item{regr_ls}{List of regressors. Element is column number in data.
 Element name is regressor name.}

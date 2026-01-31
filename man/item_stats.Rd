@@ -4,12 +4,12 @@
 \alias{item_stats}
 \title{item_stats}
 \usage{
-item_stats(folder = "output", test)
+item_stats(run, test)
 }
 \arguments{
-\item{folder}{Folder where ConQuest output files are located.}
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
 
-\item{test}{Name of test. Default is 'output'.}
+\item{test}{Name of test.}
 }
 \description{
 This function extracts item statistics such as item-rest correlation,
@@ -18,5 +18,5 @@ and merge them into one dataframe. This is associated
 with test named 'test'.
 }
 \examples{
-a <- item_stats(test='math_35')
+a <- item_stats(folder='output', test='Hum', anchor=F)
 }

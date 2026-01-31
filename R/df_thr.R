@@ -3,6 +3,7 @@
 #' This function extracts step parameter estimates from xxx_thr.txt file. This is
 #' associated with test named 'test'.
 #'
+#' @param run String that indicates run such as 'pre_review' and 'post_review'.
 #' @param folder Folder where ConQuest output files are located.
 #' @param test Name of test.
 #' @return Dataframe of step parameter estimates.
@@ -11,7 +12,7 @@
 #' df_thr(test='FPA', long_label=TRUE)
 #' @export
 
-df_thr <- function(folder='output', test){
+df_thr <- function(run, folder, test){
   items_thr <- str_file(folder, test, 'thr') |>
     as_tibble() |>
     mutate(tabbed = str_detect(value, '\\t')) |>
@@ -30,7 +31,7 @@ df_thr <- function(folder='output', test){
     ) |>
     mutate_at(c("iNum", "category", "threshold"), as.numeric)
 
-  labs <- read.table(paste0('data/', test, '_Labels.txt')) |>
+  labs <- read.table(paste0('data/', run, '/', test, '_Labels.txt')) |>
     rowid_to_column('iNum') |>
     dplyr::rename(Label = V1)
 

@@ -4,15 +4,12 @@
 \alias{df_del_shw_Step}
 \title{df_del_shw_Step}
 \usage{
-df_del_shw_Step(folder = "output", test)
+df_del_shw_Step(run, test)
 }
 \arguments{
-\item{folder}{Folder where xxx_shw.txt file is located. Default is 'output' folder.}
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
 
 \item{test}{Name of test.}
-
-\item{long_label}{Whether item labels are longer than 15 characters' fixed
-width. Default is FALSE.}
 }
 \value{
 Dataframe of item name_step, delta, and error.

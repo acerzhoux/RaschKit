@@ -5,9 +5,9 @@
 \title{install_packages_ls}
 \usage{
 install_packages_ls(
-  packages = c("plyr", "conquestr", "rlang", "bookdown", "ggthemes", "ggrepel",
-    "patchwork", "rmarkdown", "gdata", "janitor", "knitr", "RColorBrewer", "fs",
-    "lazyeval", "writexl", "ggpubr", "qpdf", "tidyverse", "openxlsx", "flextable")
+  packages = c("conquestr", "rlang", "bookdown", "ggthemes", "ggrepel", "patchwork",
+    "rmarkdown", "gdata", "janitor", "knitr", "RColorBrewer", "fs", "lazyeval",
+    "writexl", "ggpubr", "qpdf", "tidyverse", "openxlsx", "flextable")
 )
 }
 \arguments{

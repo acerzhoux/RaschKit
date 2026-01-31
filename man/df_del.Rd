@@ -4,10 +4,10 @@
 \alias{df_del}
 \title{df_del}
 \usage{
-df_del(folder = "output", test)
+df_del(run, test)
 }
 \arguments{
-\item{folder}{Folder where ConQuest output files are located.}
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
 
 \item{test}{Name of test.}
 }

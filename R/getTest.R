@@ -3,6 +3,7 @@
 #' This function extracts reliabilities from xxx_shw.xls files and puts them into
 #' a dataframe.
 #'
+#' @param run String that indicates run such as 'pre_review' and 'post_review'.
 #' @param tests Vector of test names.
 #' @param intLst List of item analysis dataframe for each test.
 #' @examples
@@ -10,10 +11,10 @@
 #' # getTest(tests=c('V', 'Q'))
 #' @export
 
-getTest <- function(tests, intLst){
+getTest <- function(run, tests, intLst){
   getAlpha <- function(test){
     strs <- readxl::read_xls(
-      paste0('output/', test, '_its.xls'),
+      file.path('calibration', run, paste0(test, '_its.xls')),
       .name_repair = "unique_quiet"
     )[[1]] |>
     na.omit()
@@ -28,7 +29,7 @@ getTest <- function(tests, intLst){
   testStats <- map(
       tests,
       ~readxl::read_xls(
-        paste0('output/', .x, '_shw.xls'),
+        file.path('calibration', run, paste0(.x, '_shw.xls')),
         'Reliabilities',
         .name_repair = "unique_quiet"
       ) |>

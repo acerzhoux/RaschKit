@@ -119,7 +119,7 @@ DIFDimOne <- function(method=c('chi_square', 'Bonferroni', 'Facet'),
   # ####### prepare arguments
   cat('Preparing ConQuest control file...\n')
   prep <- df_key_lab_args(test, respDf, pid, n_cov, n_resp, DIFVar,
-                          regrNmVec, section_extr, labels, FALSE, pweight)
+                          regrNmVec, section_extr, labels, FALSE, pweight, NULL)
 
   arg_DIF <- list(method=method, anchor=FALSE, domain=NULL,
           section_extr=prep$section_extr, poly_key=poly_key,

@@ -4,13 +4,10 @@
 \alias{section_intro}
 \title{section_intro}
 \usage{
-section_intro(test, run_ls, path_output, DIFVar, poly_catgrs)
+section_intro(test, path_output, DIFVar, poly_catgrs)
 }
 \arguments{
 \item{test}{Name of test.}
-
-\item{run_ls}{List of data filters. Element is column number in data.
-Element name is filter variable's name.}
 
 \item{path_output}{Route of folder to put export files.}
 

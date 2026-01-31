@@ -11,8 +11,6 @@
 #' @param path_df Path of data to import in 'data' folder.
 #' @param resps_cols Column numbers of responses.
 #' @param pid_cols Column numbers of person ID.
-#' @param run_ls List of data filters. Element is column number in data.
-#' Element name is filter variable's name.
 #' @param regr_ls List of regressors. Element is column number in data.
 #' Element name is regressor name.
 #' @param path_lab Route of label file in 'input' folder.
@@ -28,7 +26,7 @@
 #' section_data()
 #' @export
 
-section_data <- function(path_df, resps_cols, pid_cols, run_ls, regr_ls,
+section_data <- function(path_df, resps_cols, pid_cols, regr_ls,
              path_lab, DIFVar, DIFVar_cols, poly_group,
              pweight, pw_cols){
   c(
@@ -38,7 +36,6 @@ section_data <- function(path_df, resps_cols, pid_cols, run_ls, regr_ls,
       if (!is.null(pid_cols)) paste('pid', pid_cols),
       if (!is.null(pweight)) paste(pweight, pw_cols),
       if (!is.null(DIFVar)) paste(DIFVar, DIFVar_cols),
-      if (!is.null(run_ls)) paste(paste(names(run_ls), run_ls), collapse=' '),
       if (!is.null(regr_ls)) paste(paste(names(regr_ls), regr_ls), collapse=' '),
       ';\n'
     ),

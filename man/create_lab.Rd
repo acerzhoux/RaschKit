@@ -4,10 +4,12 @@
 \alias{create_lab}
 \title{create_lab}
 \usage{
-create_lab(test)
+create_lab(test, run)
 }
 \arguments{
 \item{test}{Name of the test.}
+
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
 }
 \description{
 This function reads in 'test_Labels.txt' from 'data' folder and creates

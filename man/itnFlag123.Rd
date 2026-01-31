@@ -4,9 +4,19 @@
 \alias{itnFlag123}
 \title{itnFlag123}
 \usage{
-itnFlag123(test, easy = 90, hard = 10, iRst = 0.11, fit_w = 1.1, fit_uw = 1.2)
+itnFlag123(
+  run,
+  test,
+  easy = 90,
+  hard = 10,
+  iRst = 0.11,
+  fit_w = 1.1,
+  fit_uw = 1.2
+)
 }
 \arguments{
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
+
 \item{test}{Name of test.}
 
 \item{easy}{Threshold to flag easy items. Default is 90 (percent correct).}

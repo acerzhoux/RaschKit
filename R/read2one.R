@@ -3,8 +3,8 @@
 #' This function reads from 'folder' files associated with 'tests'
 #' and puts them into one file.
 #'
-#' @param folder Folder where to-be-read files are located. Must be one of
-#' c('results', 'DIF', 'equating').
+#' @param folder Folder where to-be-read files are located, e.g.,
+#' 'DIF', 'equating'.
 #' @param tests Vector of test names after '_'.
 #' @param prefix Common prefix in file names before first '_'. Default is NULL.
 #' @param file_name Name given to new file, each sheet of which is one test's result.
@@ -13,13 +13,14 @@
 #' named as elements in the vector.
 #' Its order corresponds to the alphabetic/numeric order of DIF variables'
 #' two categories in data.
+#' @param run String that indicates run such as 'pre_review' and 'post_review'.
 #' @examples
 #' # Not run
 #' # read2one('results', c('AACA'), 'itn')
 #' @export
 
-read2one <- function (folder = c('results', 'DIF', 'equating'), tests,
-                      prefix=NULL, file_name = NULL, difVarVec=NULL) {
+read2one <- function (folder = c('DIF', 'equating'), tests,
+                      prefix=NULL, file_name = NULL, difVarVec=NULL, run) {
   # Excel names to read files from
   if (folder=='DIF') {
     files <- file.path('DIF', difVarVec, paste0(tests, '_process.xlsx'))
@@ -67,17 +68,17 @@ read2one <- function (folder = c('results', 'DIF', 'equating'), tests,
         select(-ncol(itnSums[[1]]))
 
       ls_save <- list(
-          TestStats=getTest(tests, ex_ls),
+          TestStats=getTest(run, tests, ex_ls),
           Note=itn_comment(),
           Flagged=Flagged |>
-            mutate(ICC=paste0('=HYPERLINK(', Test, '!U$2, "ICC")'))
+            mutate(ICC=paste0('=HYPERLINK(', Test, '!T$2, "ICC")'))
         ) |>
         append(
-          map(ex_ls, ~mutate(.x, ICC='=HYPERLINK(U$2, "ICC")'))
+          map(ex_ls, ~mutate(.x, ICC='=HYPERLINK(T$2, "ICC")'))
         )
 
-      # move combined files into a folder named prefix before saving
-      move_into_folder(folder, prefix)
+      # # move combined files into a folder named prefix before saving
+      # move_into_folder(folder, prefix)
 
       add_format()[['itn']](ls_save, file, folder, prefix) # hyperlink, color, format
 

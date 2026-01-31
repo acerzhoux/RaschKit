@@ -4,7 +4,7 @@
 \alias{section_specs}
 \title{section_specs}
 \usage{
-section_specs(anchor, test, DIFVar, poly_catgrs, quick)
+section_specs(anchor, test, DIFVar, poly_catgrs, quick, run)
 }
 \arguments{
 \item{anchor}{TRUE when anchor is to be done.}
@@ -16,6 +16,8 @@ section_specs(anchor, test, DIFVar, poly_catgrs, quick)
 \item{poly_catgrs}{Vector of categories of the polytomous DIF variable 'DIFVar'.}
 
 \item{quick}{TRUE when testing.}
+
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
 }
 \value{
 String of characters used in estimation section of 'test.cqc'

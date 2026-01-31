@@ -16,6 +16,7 @@
 #' @param useR TRUE when code 'R' is used for scoring. Default is FALSE.
 #' @param pweight Variable name of person weights in response dataframe. Should
 #' be specified if weight is used for modeling. Default is NULL.
+#' @param run String that indicates run such as 'pre_review' and 'post_review'.
 #' @return A list of arguments with calculated elements.
 #' @examples
 #' # not run
@@ -27,7 +28,7 @@
 df_key_lab_args <- function(test, data, pid, n_cov, n_resp,
                             DIFVar=NULL, regr_vec_char=NULL,
                             section_extr=NULL, labels=NULL, useR=FALSE,
-                            pweight=NULL){
+                            pweight=NULL, run){
     create_folders(DIFVar=DIFVar)
     if (!is.null(regr_vec_char)){
         section_extr <- map(regr_vec_char, ~data[[.]] %>%
@@ -43,8 +44,8 @@ df_key_lab_args <- function(test, data, pid, n_cov, n_resp,
         modify_at(1:(n_cov+n_resp), ~as.character(.))
 
     # save data, label
-    data_into_Data(test=test, data=data, DIFVar=DIFVar)
-    labels_into_Data(test=test, labels=labels)
+    data_into_Data(test=test, data=data, DIFVar=DIFVar, run=run)
+    labels_into_Data(test=test, labels=labels, run=run)
 
     # prepare arguments
     prr <- pid_resp_regrs_cols(df=data, pid=pid, n_cov=n_cov,

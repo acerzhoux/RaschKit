@@ -43,7 +43,7 @@ Equate <- function(deltaDf, test, vars, p_cut=0.05, DIF_cut=0.5, DIF_std_cut=4,
   # check
   if (!is.null(indDf)){
     if (nrow(deltaDf) != nrow(indDf)) {
-      stop('deltaDf and indDf should have same number of rows!')
+      cat('\ndeltaDf and indDf have different numbers of rows!\n')
     }
     if (!('item' %in% names(indDf))) {
       stop('indDf should have variable \'item\' as item labels!')
@@ -113,10 +113,14 @@ Equate <- function(deltaDf, test, vars, p_cut=0.05, DIF_cut=0.5, DIF_std_cut=4,
         )
       iItem <- filter(iDIF, chisq==max(chisq)) |>
         pull(item)
+
+      dat <- updated |>
+        filter(!item %in% iItem)
+
       if (step){
-        updated <- chisqTStep(filter(updated, item!=iItem), design_effect)
+        updated <- chisqTStep(dat, design_effect)
       } else {
-        updated <- chisqT(filter(updated, item!=iItem))
+        updated <- chisqT(dat)
       }
       iDIF <- DIF_items(updated, p_cut, DIF_cut, DIF_std_cut)
     }
@@ -143,14 +147,14 @@ Equate <- function(deltaDf, test, vars, p_cut=0.05, DIF_cut=0.5, DIF_std_cut=4,
     )
   }
   if (!is.null(indDf)){
-    flag <- left_join(
+    flag <- right_join(
         indDf,
         flag,
         by='item'
       )
       # arrange(desc(chisq))
 
-    final <- left_join(
+    final <- right_join(
         indDf,
         final,
         by='item'

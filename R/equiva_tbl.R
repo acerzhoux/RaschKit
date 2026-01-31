@@ -11,22 +11,25 @@
 #' @param intercept Value/intercept to add to ability estimates. Default is NULL.
 #' @param extrapolation Whether to extrapolate the minimum and maximum estimates.
 #' Default is FALSE.
+#' @param run String that indicates run such as 'pre_review' and 'post_review'.
 #' @return Dataframe of scaled ability estimates.
 #' @examples
 #' equiva_tbl(test='Writing')
 #' @export
 
 equiva_tbl <- function(test, est_type='wle', slope=NULL, intercept=NULL,
-                       extrapolation=FALSE){
-  equiva_path <- paste0('output/', test, '_eqv.txt')
+                       extrapolation=FALSE, run){
+  path.out <- file.path('calibration', run, sprintf('%s_eqv.txt', test))
+  path.in <- file.path('calibration', run, sprintf('%s_compressed.CQS', test))
+
   cn <- c(
     'reset;',
-    paste0('get << ', 'output/', test, '_compressed.CQS;'),
-    paste0('equivalence ', est_type, ' >> ', equiva_path, ';'),
+    sprintf('get << %s;', path.in),
+    paste0('equivalence ', est_type, ' >> ', path.out, ';'),
     'reset all;',
     'quit;'
   )
-  cqc_path <-  paste0('input/', test, '_eqv.cqc')
+  cqc_path <- file.path('input', run, sprintf('%s_eqv.cqc', test))
   writeLines(cn, cqc_path)
 
   # call CQ and generate equiv table
@@ -37,7 +40,7 @@ equiva_tbl <- function(test, est_type='wle', slope=NULL, intercept=NULL,
   )
 
   # read equiv tbl
-  lines <- readLines(equiva_path)
+  lines <- readLines(path.out)
   ind2 <- grep('=====', lines)[[2]]-1
   eqv_tbl <- read.table(text=str_replace_all(lines[11:ind2], '_BIG_', ' NA')) |>
     as_tibble() |>
@@ -64,7 +67,8 @@ equiva_tbl <- function(test, est_type='wle', slope=NULL, intercept=NULL,
       mutate(Score_scale=round(slope*EST + intercept, digits=0))
   }
   # save results
+  path.out <- file.path('calibration', run, sprintf('eqv_%s.xlsx', test))
   eqv_tbl |>
     mutate(Score_raw=round(Score_raw)) |>
-    writexl::write_xlsx(paste0('results/', 'eqv_', test, '.xlsx'))
+    writexl::write_xlsx(path.out)
 }

@@ -14,6 +14,9 @@
 #' @export
 
 CCC_plot <- function(easy=90, hard=10, iRst=.11, fit_w=1.1, fit_uw=1.2){
+
+  flextable::set_flextable_defaults(font.family = "sans")
+
   testStatPlot <- function(i, iStats, poly=FALSE) {
     if (poly) {
       i_df <- iStats |>
@@ -57,12 +60,12 @@ CCC_plot <- function(easy=90, hard=10, iRst=.11, fit_w=1.1, fit_uw=1.2){
       flextable::bold(i = row_iRestFlag, j = 'iRestCor', bold = T) |>
       flextable::bold(i = row_infitFlag, j = 'Infit', bold = T) |>
       flextable::bold(i = row_outfitFlag, j = 'Outfit', bold = T) |>
-      flextable::as_raster()
+      flextable::gen_grob()
 
     ggplot() +
       ggthemes::theme_tufte() +
       annotation_custom(
-        grid::rasterGrob(testFex),
+        testFex,
         xmin = -Inf, xmax = Inf,
         ymin = -Inf, ymax = Inf
       )
@@ -95,12 +98,12 @@ CCC_plot <- function(easy=90, hard=10, iRst=.11, fit_w=1.1, fit_uw=1.2){
       flextable::color(i = row_abilFlag, j = "PV1Avg", color = "red") |>
       flextable::bold(i = row_ptbisFlag, j = "Pt Bis", bold = T) |>
       flextable::bold(i = row_abilFlag, j = "PV1Avg", bold = T) |>
-      flextable::as_raster()
+      flextable::gen_grob()
 
-    ggTbl <- ggplot() +
+    ggplot() +
       ggthemes::theme_tufte() +
       annotation_custom(
-        grid::rasterGrob(tblStatsFlex),
+        tblStatsFlex,
         xmin = -Inf, xmax = Inf,
         ymin = -Inf, ymax = Inf
       )
@@ -136,12 +139,12 @@ CCC_plot <- function(easy=90, hard=10, iRst=.11, fit_w=1.1, fit_uw=1.2){
       flextable::bold(i = row_ScoreFlag, j = "% Total", bold = T) |>
       # flextable::bold(i = row_ptbisFlag, j = "Pt Bis", bold = T) |>
       flextable::bold(i = row_abilFlag, j = "PV1Avg", bold = T) |>
-      flextable::as_raster()
+      flextable::gen_grob()
 
-    ggTbl <- ggplot() +
+    ggplot() +
       ggthemes::theme_tufte() +
       annotation_custom(
-        grid::rasterGrob(tblStatsFlex),
+        tblStatsFlex,
         xmin = -Inf, xmax = Inf,
         ymin = -Inf, ymax = Inf
       )
@@ -192,13 +195,13 @@ CCC_plot <- function(easy=90, hard=10, iRst=.11, fit_w=1.1, fit_uw=1.2){
       geom_line(
         data = o_df,
         mapping = aes(x = Ability, y = prop, colour = Option),
-        size = 1,
+        linewidth = 1,
         alpha = .5
       ) +
       geom_line(
         data = m_df,
         mapping = aes(x = pLoc, y = pSuccess, colour = lineLab),
-        size = 1.5,
+        linewidth = 1.5,
         alpha = .5
       ) +
       scale_shape_discrete(name = "Ability\nGroup") +
@@ -277,7 +280,7 @@ CCC_plot <- function(easy=90, hard=10, iRst=.11, fit_w=1.1, fit_uw=1.2){
       geom_line(
         o_df,
         mapping = aes(x = Ability, y = prop, colour = Category, linetype = lineLab),
-        size = 1,
+        linewidth = 1,
         alpha = .8
       ) +
       geom_line(
@@ -323,13 +326,13 @@ CCC_plot <- function(easy=90, hard=10, iRst=.11, fit_w=1.1, fit_uw=1.2){
       geom_line(
         data = o_df,
         mapping = aes(x = Ability, y = prop, colour = Category),
-        size = 1,
+        linewidth = 1,
         alpha = .5
       ) +
       geom_line(
         data = m_df,
         mapping = aes(x = pLoc, y = pSuccess, colour = lineLab),
-        size = 1.5,
+        linewidth = 1.5,
         alpha = .5
       ) +
       scale_shape_discrete(name = "Ability\nGroup") +

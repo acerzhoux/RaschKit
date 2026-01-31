@@ -3,21 +3,36 @@
 #' This function draws for each item CCC of both category and score.
 #' Plots will be saved in 'output' folder.
 #'
+#' @param run String that indicates run such as 'pre_review' and 'post_review'.
 #' @param test Name of the test.
 #' @param cqs CQS output file from ConQuest.
 #' @param abilEst2use Ability type used for curve data. Default is 'pv1'.
 #' Use 'wle' for smaller samples.
 #' @param numAbilGrps Number of ability groups. Default is NULL.
 #' @param poly_key TRUE if the key of any item has polytomous scoring. Default is FALSE.
-#' @param quick TRUE if empirical error is not needed. Default is TRUE
+#' @param anchor TRUE if anchoring is being done. Default is FALSE.
+#' @param savePlots TRUE to save both plots to calibration/'run' folder. Default is TRUE
+#' @param plotItemi Integer to indicate item order in test. NULL to plot all items.
+#  Default is NULL.
 #' @return Plots of CCC by category and score.
 #' @examples
 #' plot_data <- CCC_ipMap(test, cqs)
-#' plot_data <- CCC_ipMap(test='DIP', cqs=cqs, poly_key=TRUE)#' @export
+#' plot_data <- CCC_ipMap(test='DIP', cqs=cqs, poly_key=TRUE)
+#' @export
 
-CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
-            poly_key=FALSE, quick=TRUE){
-  thr <- df_thr('output', test) |>
+CCC_ipMap <- function(run, test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
+            poly_key=FALSE, anchor=FALSE, savePlots=TRUE, plotItemi=NULL){
+
+  # Base-R helper: round to a multiple of `accuracy` using a rounding function `fun`
+  # Copilot
+  round_to <- function(x, accuracy, fun = round) {
+    if (length(accuracy) != 1L || !is.finite(accuracy) || accuracy <= 0) {
+      stop("`accuracy` must be a single positive finite number.")
+    }
+    fun(x / accuracy) * accuracy
+  }
+
+  thr <- df_thr(run, paste0('calibration/', run), test) |>
     mutate(iLab=as.character(iLab))
 
   # check names
@@ -96,9 +111,13 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
     unlist()
     # an alternative to check if this yields the same items
 
+  Xsi <- cqs$gXsi |> as.vector()
+  error <- c(sqrt(cqs$gQuickErrorsXsi))
+  if (length(Xsi)!=length(error)) error <- NA
+
   iEstTemp <- tibble(
-      Xsi = cqs$gXsi |> as.vector(),
-      error = c(sqrt(cqs$gQuickErrorsXsi))
+      Xsi = Xsi,
+      error = error
     ) |>
     rowid_to_column() |>
     left_join(
@@ -122,18 +141,13 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
     mutate(modelTerm = ifelse(is.na(category), 1, 2)) # 'item'; 'step'
 
   # tackle constraint terms
-  # n_should <- nrow(filter(iStepsCounts, !is.na(iType)))
-  if(!quick){
-    constrained1 <- iStepsCounts |>
-      filter(iNum == max(iStepsCounts$iNum)) |>
-      select(iLab) |>
-      bind_cols(
-        iEstTemp |>
-          filter(modelTerm == 1) |>
-          group_by(modelTerm) |>
-          summarise(Xsi = sum(Xsi)*-1, error = mean(error))
-      )
+  N_est <- iEstTemp |>
+    filter(modelTerm == 1) |>
+    nrow()
+  N_item <- N_item2(run, test)
+  nDif <- N_item - N_est
 
+  if(nDif >= 1){
     constrained1 <- iEstTemp |>
       filter(modelTerm == 1) |>
       group_by(modelTerm) |>
@@ -187,12 +201,14 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
     filter(!is.na(iType))
 
   # if quick error is used: Adjust delta shift to delta and abilities
-  delta_shift <- mean(deltas$delta, na.rm=TRUE)
-  if (abs(delta_shift) > 0.001) {
-    deltas$iLogit <- deltas$iLogit - delta_shift
-    deltas$delta <- deltas$delta - delta_shift
-    pStats$wle <- pStats$wle - delta_shift
-    pStats <- modify_at(pStats, c('pv1','pv2','pv3','pv4','pv5'), ~{.x-delta_shift})
+  if (!anchor){
+    delta_shift <- mean(deltas$delta, na.rm=TRUE)
+    if (abs(delta_shift) > 0.001) {
+      deltas$iLogit <- deltas$iLogit - delta_shift
+      deltas$delta <- deltas$delta - delta_shift
+      pStats$wle <- pStats$wle - delta_shift
+      pStats <- modify_at(pStats, c('pv1','pv2','pv3','pv4','pv5'), ~{.x-delta_shift})
+    }
   }
 
   # Response Data -----------------------------------------------------------
@@ -222,7 +238,7 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
 
   # Item Fit stats ----------------------------------------------------------
   fitEnd <- nrow(filter(iEstTemp, modelTerm == 1))
-  if (!quick) fitEnd <- fitEnd + 1
+  if (nDif >= 1) fitEnd <- fitEnd + 1
 
   fit.tbl <- tibble(
     UnWeightedMNSQ = map_dbl(cqs$gFitStatistics$Value, "UnWeightedMNSQ"),
@@ -285,8 +301,14 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
       keyPtbisNeg = ifelse(score == 1 & ptbis < 0, 1, 0),
       keyPtbisLow = ifelse(score == 1 & ptbis < .1, 1, 0)
     ) |>
-    filter(!is.na(iType)) |>
-    mutate(mean=mean-delta_shift) |> #adjust pv's by delta shift
+    filter(!is.na(iType))
+
+  if (!anchor){
+    catStats <- catStats |>
+      mutate(mean=mean-delta_shift) #adjust pv's by delta shift
+  }
+
+  catStats <- catStats |>
     modify_if(is.numeric, ~round(.x, 2))
 
   # Item Stats --------------------------------------------------------------
@@ -298,7 +320,7 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
     left_join(
       cqs$gMatrixList$i_itemtotrestcor |>
         as_tibble() |>
-        dplyr::rename(
+        dplyr::select(
           `Item-Rest` = `item-rest`,
           `Item-Total` = `item-total`
         ) |>
@@ -349,7 +371,7 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
     iPlotDat <- iStats |>
       # mutate(item = unique(iEstimates$iLab)) |>
       select(item=iLab, deltaCat1 ) |>
-      mutate(delta2 = plyr::round_any(deltaCat1, .15, round)) |>
+      mutate(delta2 = round_to(deltaCat1, .15, round)) |>
       group_by(delta2) |>
       mutate(deltaRank = rank(deltaCat1, ties.method = "first"))
   } else {
@@ -365,22 +387,26 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
       filter(!is.na(category)) |>
       mutate(item=str_c(iLab,'.',category)) |>
       select(item, deltaCat1=Xsi) |>
-      mutate(delta2 = plyr::round_any(deltaCat1, .15, round)) |>
+      mutate(delta2 = round_to(deltaCat1, .15, round)) |>
       group_by(delta2) |>
       mutate(deltaRank = rank(deltaCat1, ties.method = "first"))
   }
 
   # add step indexes for steps to merge to estimates below
   step.index <- deltas |>
-    select(iNum, item=iLab) |>
-    group_by(iNum) |>
-    mutate(
-      step=1:n(),
-      iNum=paste0(iNum, '.', step),
-      item=paste0(item, '.', step)
-    ) |>
-    select(-step) |>
-    ungroup()
+    select(iNum, item=iLab)
+
+  if (poly_key){
+    step.index <- step.index |>
+      group_by(iNum) |>
+      mutate(
+        step=1:n(),
+        iNum=paste0(iNum, '.', step),
+        item=paste0(item, '.', step)
+      ) |>
+      select(-step) |>
+      ungroup()
+  }
 
   iPlotDat <- iPlotDat |>
     left_join(step.index, by = "item")
@@ -405,11 +431,6 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
 
   ipMap <- ggpubr::ggarrange(pPlot, iPlot, ncol = 2, nrow = 1,
                  widths = c(1, 4))
-
-  # save item-person map
-  pdf(file = paste0('output/', test, "_ipMap.pdf"), width = 7, height = 7)
-  print(ipMap)
-  dev.off()
 
   # Characteristic Curves ----------------------------------------------
   ccDat <- pStats |>
@@ -510,12 +531,17 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
       PV1SD=sd
     )
 
+  # plot item CCC's
+  if (is.null(plotItemi)) {
+    plotItems <- seq_along(iStats$iNum)
+  } else {
+    plotItems <- plotItemi
+  }
+
   plot_ls <- list()
   ccc_data_ls <- list()
-  for(i in seq_along(iStats$iNum)){
-    # for(i in 5){
+  for(i in plotItems){
     j <- iStats$iNum[[i]]
-    # print(i)
     if (itype_condition$itype[[i]] %in% c('allwrong', 'dich')){
       plot_ls[[i]] <- CCC_plot()[['ccc_dich']](iStats, dfObs_opt, j, tblInt)
       ccc_data_ls[[i]] <- dfObs_opt |> filter(iNum == j)
@@ -528,7 +554,7 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
         dplyr::rename(Option=Category)
     }
   }
-
+#
   # tackle all-polytomous-item case
   if (all(itype_condition$itype=='poly')){
     ccc_data <- tibble(iNum=1:length(plot_ls), group=NA)
@@ -536,15 +562,27 @@ CCC_ipMap <- function(test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
     ccc_data <- reduce(ccc_data_ls, bind_rows)
   }
 
-  # ####### generate ICCs by Score
-  pdf(file = paste0('output/', test, "_CCC.pdf"), width = 7, height = 9)
-  map(plot_ls, ~print(.x))
-  dev.off()
+  if (savePlots){
+    # save item-person map
+    pdf(file = paste0('calibration/', run, '/', test, "_ipMap.pdf"), width = 7, height = 7)
+    print(ipMap)
+    dev.off()
 
-  list(
-    itype=itype_condition,
-    ccc_data=ccc_data,
-    plots=plot_ls,
-    ipMap=ipMap
+    # ####### generate ICCs by Score
+    pdf(file = paste0('calibration/', run, '/', test, "_CCC.pdf"), width = 7, height = 9)
+    map(plot_ls, ~print(.x))
+    dev.off()
+  }
+
+  return(
+    list(
+      itype=itype_condition,
+      ccc_data=ccc_data,
+      iStats=iStats,
+      optStats=tblInt,
+      pStats=pStats |> select(-pvs),
+      plots=plot_ls,
+      ipMap=ipMap
+    )
   )
 }

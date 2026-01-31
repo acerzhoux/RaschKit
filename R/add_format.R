@@ -8,8 +8,8 @@
 add_format <- function(){
   # functions to add formats, hyperlink
   colorFlags_link <- function(wb, i, ls_save){
-    cols <- c(10, 11, 13, 14)
-    colWide <- ifelse(i==2, 20, 21)
+    cols <- c(9, 10, 12, 13)
+    colWide <- ifelse(i==3, 19, 20)
     rules <- c('<10', '<.11', '>1.2', '>1.1')
     sheet <- names(ls_save)[[i]]
     n_case <- nrow(ls_save[[i]])+1
@@ -34,10 +34,10 @@ add_format <- function(){
     setColWidths(wb, sheet, cols = 2:3, widths = 8)
     setColWidths(wb, sheet, cols = 4, widths = 15)
     setColWidths(wb, sheet, cols = 5:6, widths = 6)
-    setColWidths(wb, sheet, cols = 7:19, widths = 8)
-    setColWidths(wb, sheet, cols = 20, widths = 90)
+    setColWidths(wb, sheet, cols = 7:18, widths = 8)
+    setColWidths(wb, sheet, cols = 19, widths = 90)
 
-    if (colWide==21) {
+    if (colWide==20) {
       setColWidths(wb, sheet, cols = colWide, widths = 10)
       setColWidths(wb, sheet, cols = colWide+1, widths = 10)
     }
@@ -228,10 +228,10 @@ add_format <- function(){
 
       # header, body style
       wb <- addHeaderStyle(wb, n_col, sheet) |>
-        addBodyStyle('left', n_case, c(4, 20), sheet) |>
+        addBodyStyle('left', n_case, c(4, 19), sheet) |>
         addBodyStyle('right', n_case, 7:8, sheet) |>
-        addBodyStyle('center', n_case, setdiff(1:20, c(4, 20, 7:8)), sheet) |>
-        roundBody(sheet, n_case, 10:17, 7:9)
+        addBodyStyle('center', n_case, setdiff(1:19, c(4, 19, 7:8)), sheet) |>
+        roundBody(sheet, n_case, 9:16, 7:8)
 
       # add flag color and link
       wb <- colorFlags_link(wb, i, ls_save)

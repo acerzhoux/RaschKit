@@ -7,14 +7,15 @@
 #' @param test Name of test. Default is NULL.
 #' @param data Dataframe where responses are put together.
 #' @param DIFVar Name of DIF variable. Should be lowercase for ConQuest to run.
+#' @param run String that indicates run such as 'pre_review' and 'post_review'.
 #' Default is NULL.
 #' @examples
 #' data_into_Data()
 #' @export
 
-data_into_Data <- function(test=NULL, data, DIFVar=NULL){
+data_into_Data <- function(test=NULL, data, DIFVar=NULL, run){
     if (is.null(DIFVar)){
-        file_path <- paste0('data/', if(!is.null(test)) paste0(test, '_'), 'Data.txt')
+        file_path <- paste0('data/', run, '/', test, '_', 'Data.txt')
     } else {
         file_path <- paste0('data/', test, '_', DIFVar, '.txt')
     }

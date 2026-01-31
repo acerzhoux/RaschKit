@@ -8,71 +8,101 @@
 #' the output has long format same as frequency table in .txt file output
 #' from ConQuest.
 #' @param prop TRUE if proportion is desired. Default is FALSE.
+#' @param sort_cats sort category columns in wide output.
+#' @param na_label label to use for NA category in outputs.
+#' @param digits rounding digits for proportions.
+#' @param freq_suffix suffix for frequency columns in wide output.
+#' @param prop_suffix suffix for proportion columns in wide output.
 #' @return Table of each item's category frequencies.
 #' @examples
 #' freq_resps_cat(resp, TRUE, TRUE)
 #' @export
 
-freq_resps_cat <- function(resp, wide = FALSE, prop = FALSE) {
-  item_lookup <- tibble(Item = names(resp), qOrder = 1:ncol(resp))
-  frequencies <- left_join(
-    dplyr::select(
-      dplyr::rename(
-        reduce(
-          imap(
-            map(map(resp, ~table(.x, useNA = "always")), ~as.data.frame(.)),
-            ~mutate(.x, Item = .y)
-          ),
-          bind_rows
-        ), Cat = .x
-      ),
-      Item,
-      everything()
-    ),
-    item_lookup,
-    by = "Item"
+freq_resps_cat <- function( # ChatGPT revision
+    resp,
+    wide       = FALSE,
+    prop       = FALSE,
+    sort_cats  = TRUE,
+    na_label   = "(NA)",
+    digits     = 2,
+    freq_suffix = "_freq",
+    prop_suffix = "_prop"
+) {
+  stopifnot(is.data.frame(resp))
+
+  resp <- tibble::as_tibble(resp)
+
+  # Column order lookup
+  item_lookup <- tibble::tibble(
+    Item   = names(resp),
+    qOrder = seq_along(resp)
   )
 
-  if (wide) {
-    frequencies <- pivot_wider(frequencies, names_from = "Cat", values_from = "Freq")
-    cats <- setdiff(names(frequencies), c("Item", "qOrder"))
-    if (any(c("A", "B", "C", "D") %in% cats)) {
-      cats <- sort(cats)
-    } else {
-      idNA <- which(is.na(as.numeric(cats)))
-      if (identical(idNA, integer(0))) {
-        cats <- as.character(sort(as.numeric(cats)))
-      } else {
-        cats <- c(sort(as.numeric(cats[setdiff(1:length(cats), idNA)])), cats[idNA])
-      }
-    }
-    frequencies <- dplyr::select(frequencies, qOrder, Item, all_of(cats))
-    N <- rowSums(frequencies[-c(1, 2)], na.rm = TRUE)
-    frequencies <- cbind(frequencies, N)
-    if (prop) {
-      frequencies <- frequencies |>
-        left_join(
-          mutate(frequencies, across(-c("qOrder", "Item", "N"), ~round(.x/N * 100, 2))),
-          by=c('qOrder', 'Item', 'N')
-        ) |>
-        select(qOrder, Item, N, everything())
+  # Long counts (keeps NA by design; we relabel NA for wide safety)
+  long <- resp |>
+    tidyr::pivot_longer(
+      cols = tidyr::everything(),
+      names_to  = "Item",
+      values_to = "Cat"
+    ) |>
+    dplyr::mutate(Cat = dplyr::if_else(is.na(.data$Cat), na_label, as.character(.data$Cat))) |>
+    dplyr::count(.data$Item, .data$Cat, name = "Freq") |>
+    dplyr::left_join(item_lookup, by = "Item") |>
+    dplyr::relocate(qOrder, .before = Item)
 
-      # change .x, .y in names
-      names(frequencies) <- gsub("\\.x", '_freq', names(frequencies))
-      names(frequencies) <- gsub("\\.y", '_prop', names(frequencies))
-    }
-
-    frequencies
-  } else {
+  # --- Long format output ---
+  if (!wide) {
     if (prop) {
-      frequencies <- frequencies |>
-        group_by(qOrder) |>
-        mutate(
-          Proportion=round(Freq/sum(Freq) * 100, 2)
-        ) |>
-        ungroup() |>
-        select(qOrder,Item,Cat,everything())
+      long <- long |>
+        dplyr::group_by(qOrder) |>
+        dplyr::mutate(Proportion = round(.data$Freq / sum(.data$Freq) * 100, digits)) |>
+        dplyr::ungroup() |>
+        dplyr::select(qOrder, Item, Cat, Freq, Proportion)
     }
-    frequencies
+    return(long)
   }
+
+  # --- Wide format output ---
+  wide_df <- long |>
+    tidyr::pivot_wider(names_from = "Cat", values_from = "Freq")
+
+  # Identify category columns (everything except qOrder/Item)
+  cats <- setdiff(names(wide_df), c("qOrder", "Item"))
+
+  # Sort categories: numeric cats first ascending, then non-numeric alphabetic
+  if (sort_cats && length(cats)) {
+    suppressWarnings(nums <- as.numeric(cats))
+    is_non_num <- is.na(nums)
+    cats <- c(cats[order(nums, na.last = NA)], sort(cats[is_non_num]))
+  }
+
+  # Reorder and add N (total responses per item)
+  wide_df <- wide_df |>
+    dplyr::select(qOrder, Item, dplyr::all_of(cats)) |>
+    dplyr::mutate(N = rowSums(dplyr::select(dplyr::across(dplyr::all_of(cats)), tidyselect::everything()), na.rm = TRUE))
+
+  # If only frequencies requested
+  if (!prop) {
+    return(wide_df)
+  }
+
+  # Build proportion columns (percent) alongside frequency columns
+  prop_cols <- wide_df |>
+    dplyr::transmute(
+      dplyr::across(
+        dplyr::all_of(cats),
+        ~ round(.x / N * 100, digits),
+        .names = paste0("{.col}", prop_suffix)
+      )
+    )
+
+  # Suffix frequency columns
+  wide_df <- wide_df |>
+    dplyr::rename_with(~ paste0(.x, freq_suffix), dplyr::all_of(cats))
+
+  # Bind frequency + proportion, order columns nicely
+  out <- dplyr::bind_cols(wide_df, prop_cols) |>
+    dplyr::select(qOrder, Item, N, tidyselect::everything())
+
+  return(out)
 }

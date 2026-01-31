@@ -5,7 +5,7 @@
 #' characters' fixed width, use long_label=TRUE to read complete labels from
 #' 'test_Labels.txt' file in 'data' folder.
 #'
-#' @param folder Folder where ConQuest output files are located.
+#' @param run String that indicates run such as 'pre_review' and 'post_review'.
 #' @param test Name of test.
 #' @return Dataframe of item name, delta, and error.
 #' @examples
@@ -13,8 +13,8 @@
 #' df_shw(test)
 #' @export
 
-df_shw <- function(folder='output', test){
-  dfShw <- item_stats(folder, test)
+df_shw <- function(run, test){
+  dfShw <- item_stats(run, test)
   dplyr::select(
     dfShw,
     item="Item Title" ,

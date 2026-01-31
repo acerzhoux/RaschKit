@@ -4,18 +4,9 @@
 \alias{section_model}
 \title{section_model}
 \usage{
-section_model(run_ls, run, regr_ls, codes, poly_key, DIFVar, step, poly_group)
+section_model(regr_ls, codes, poly_key, DIFVar, step, poly_group)
 }
 \arguments{
-\item{run_ls}{List to filter data, e.g., list(domain='3-11', grade='12-13', flag='36').
-Name of list element is variable name in 'test_Data.txt' in 'data' folder.
-List element (string of numbers, e.g., '3-11') is the column number of that
-variable in the data.}
-
-\item{run}{Vector of specific categories of variables to select from
-test_Data.txt' in 'data' folder, e.g., c('English2', 3, 1). This corresponds
-to the previous argument `run_ls`.}
-
 \item{regr_ls}{List of regressors with reference group excluded,
 e.g., list('G4'='110', 'G5'='111', 'G6'='112').}
 

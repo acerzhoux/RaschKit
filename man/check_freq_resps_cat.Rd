@@ -4,9 +4,11 @@
 \alias{check_freq_resps_cat}
 \title{check_freq_resps_cat}
 \usage{
-check_freq_resps_cat(test, resp)
+check_freq_resps_cat(run, test, resp)
 }
 \arguments{
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
+
 \item{test}{Name of the test.}
 
 \item{resp}{Responses to items in the test.}

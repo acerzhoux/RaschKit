@@ -4,14 +4,16 @@
 \alias{data_into_Data}
 \title{data_into_Data}
 \usage{
-data_into_Data(test = NULL, data, DIFVar = NULL)
+data_into_Data(test = NULL, data, DIFVar = NULL, run)
 }
 \arguments{
 \item{test}{Name of test. Default is NULL.}
 
 \item{data}{Dataframe where responses are put together.}
 
-\item{DIFVar}{Name of DIF variable. Should be lowercase for ConQuest to run.
+\item{DIFVar}{Name of DIF variable. Should be lowercase for ConQuest to run.}
+
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.
 Default is NULL.}
 }
 \description{

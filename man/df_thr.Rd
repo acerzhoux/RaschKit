@@ -4,9 +4,11 @@
 \alias{df_thr}
 \title{df_thr}
 \usage{
-df_thr(folder = "output", test)
+df_thr(run, folder, test)
 }
 \arguments{
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
+
 \item{folder}{Folder where ConQuest output files are located.}
 
 \item{test}{Name of test.}

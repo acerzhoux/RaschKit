@@ -9,7 +9,8 @@ equiva_tbl(
   est_type = "wle",
   slope = NULL,
   intercept = NULL,
-  extrapolation = FALSE
+  extrapolation = FALSE,
+  run
 )
 }
 \arguments{
@@ -24,6 +25,8 @@ equiva_tbl(
 
 \item{extrapolation}{Whether to extrapolate the minimum and maximum estimates.
 Default is FALSE.}
+
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
 }
 \value{
 Dataframe of scaled ability estimates.

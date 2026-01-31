@@ -14,7 +14,8 @@ Equate_shw(
   sav_results = TRUE,
   step = FALSE,
   iter = FALSE,
-  sigma = FALSE
+  sigma = FALSE,
+  run
 )
 }
 \arguments{
@@ -45,6 +46,8 @@ Default is FALSE.}
 \item{sigma}{Indicator of how 'delta.y' is scaled. If TRUE, it is scaled
 to have same mean and sd as 'delta.x'. If FALSE, it has same mean as 'delta.x'.
 Default is FALSE.}
+
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
 }
 \value{
 Dataframe of chi-square test results for anchors between two tests.

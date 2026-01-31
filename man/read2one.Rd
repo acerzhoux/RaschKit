@@ -5,16 +5,17 @@
 \title{read2one}
 \usage{
 read2one(
-  folder = c("results", "DIF", "equating"),
+  folder = c("DIF", "equating"),
   tests,
   prefix = NULL,
   file_name = NULL,
-  difVarVec = NULL
+  difVarVec = NULL,
+  run
 )
 }
 \arguments{
-\item{folder}{Folder where to-be-read files are located. Must be one of
-c('results', 'DIF', 'equating').}
+\item{folder}{Folder where to-be-read files are located, e.g.,
+'DIF', 'equating'.}
 
 \item{tests}{Vector of test names after '_'.}
 
@@ -27,6 +28,8 @@ Default is NULL.}
 named as elements in the vector.
 Its order corresponds to the alphabetic/numeric order of DIF variables'
 two categories in data.}
+
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
 }
 \description{
 This function reads from 'folder' files associated with 'tests'

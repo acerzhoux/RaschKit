@@ -74,7 +74,7 @@ DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'), test, keyDf, ####
     stop('Please set \'method\' as one of \'chi_square\', \'Bonferroni\', or \'Facet\'.')
   }
 
-  arg_cqc <- list(test=test, run=NULL, run_ls=NULL, keyDf=keyDf, ####CQC
+  arg_cqc <- list(test=test, run=NULL, keyDf=keyDf, ####CQC
     codes=codes, pid_cols=pid_cols, resps_cols=resps_cols,
     quick=quick, poly_key=poly_key,
     anchor=anchor, step=step, regr_ls=regr_ls, section_extr=section_extr,
@@ -134,8 +134,8 @@ DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'), test, keyDf, ####
 
     # summarise and plot results
     cat('Summarising results from facet model...\n')
-    results <- df_shw_Term3(DIFVar, test) |>
-      mutate(!!sym(DIFVar) := as.integer(!!sym(DIFVar)))
+    results <- df_shw_Term3(DIFVar, test)
+      # mutate(!!sym(DIFVar) := as.integer(!!sym(DIFVar)))
 
     ls_save <- list(
       filter(results[1:13], Flag==1),

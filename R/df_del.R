@@ -3,7 +3,7 @@
 #' This function extracts step parameter estimates from .del file. This is
 #' associated with test named 'test'.
 #'
-#' @param folder Folder where ConQuest output files are located.
+#' @param run String that indicates run such as 'pre_review' and 'post_review'.
 #' @param test Name of test.
 #' @return Dataframe of item name_step and delta.
 #' @examples
@@ -11,7 +11,10 @@
 #' df_del(test='elana_math_NSW', long_label=TRUE)
 #' @export
 
-df_del <- function(folder='output', test){
+df_del <- function(run, test){
+
+  folder <- file.path('calibration', run)
+
   items_del <- str_file(folder, test, 'del') |>
     as_tibble() |>
     mutate(tabbed = str_detect(value, '\\t')) |>

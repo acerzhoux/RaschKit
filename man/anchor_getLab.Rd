@@ -4,12 +4,14 @@
 \alias{anchor_getLab}
 \title{anchor_getLab}
 \usage{
-anchor_getLab(folder, test)
+anchor_getLab(folder, test, run)
 }
 \arguments{
-\item{folder}{Folder to extract anchor dataframe, either 'input' or 'output'.}
+\item{folder}{Folder to extract anchor dataframe, either 'input' or 'calibration'.}
 
-\item{test}{Name of test in 'output' folder.}
+\item{test}{Name of test in 'calibration' folder.}
+
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
 }
 \description{
 This function puts dataframe read from anchor file to dataframe of columns of item

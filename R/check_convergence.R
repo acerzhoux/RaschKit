@@ -7,11 +7,12 @@
 #'
 #' @param cqs CQS output file from ConQuest.
 #' @param test Test name.
+#' @param run String that indicates run such as 'pre_review' and 'post_review'.
 #' @examples
 #' check_convergence(test='AHU', cqs=cqs)
 #' @export
 
-check_convergence <- function(cqs, test){
+check_convergence <- function(cqs, test, run){
   # lookup tbl: Item
   lookup <- tibble(
     Parameters=cqs$gXsiParameterLabels |>
@@ -97,7 +98,7 @@ check_convergence <- function(cqs, test){
     patchwork::wrap_plots(plotOthers, ncol=floor(sqrt(length(plotOthers))))
   )
 
-  pdf(file=paste0('output/', test, "_Convergence_check.pdf"), width = 12, height = 6)
+  pdf(file=paste0('calibration/', run, '/', test, "_Convergence_check.pdf"), width = 12, height = 6)
   map(plot_ls, ~print(.x))
   dev.off()
 }
