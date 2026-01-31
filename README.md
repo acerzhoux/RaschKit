@@ -2,10 +2,10 @@
 
 1. Run code below to install packages.  
    lapply(  
-      c('rlang','bookdown', 'ggthemes', 'ggrepel', 'patchwork','rmarkdown',\  
-         'gdata', 'janitor', 'data.table','knitr', 'RColorBrewer', 'fs',\ 
-         'lazyeval', 'writexl', 'ggpubr', 'qpdf', 'tidyverse', 'openxlsx',\  
-         'kableExtra', 'magrittr', 'Rcpp', 'tidyselect', 'grid', 'flextable',\ 
+      c('rlang','bookdown', 'ggthemes', 'ggrepel', 'patchwork','rmarkdown',\
+         'gdata', 'janitor', 'data.table','knitr', 'RColorBrewer', 'fs',\
+         'lazyeval', 'writexl', 'ggpubr', 'qpdf', 'tidyverse', 'openxlsx',\
+         'kableExtra', 'magrittr', 'Rcpp', 'tidyselect', 'grid', 'flextable',\
          'magick'
       ),  
       function(x){  
@@ -16,25 +16,25 @@
       }  
    )
 2. Software compatibility.\
-   ConQuest v5.47.5\ 
-   conquestr v1.5.5\  
-   Raschkit v1.1.3\
+   ConQuest v5.47.5\
+   conquestr v1.5.5\
+   Raschkit v1.1.3
 
    ConQuest v5.33.5\
    conquestr v1.1.0\
-   Raschkit v1.0.7\
+   Raschkit v1.0.7
 
    ConQuest v5.33.5\
    conquestr v1.0.8\
-   Raschkit v1.0.6\
+   Raschkit v1.0.6
 
    ConQuest v5.27.0\
    conquestr v1.0.1\
-   Raschkit v1.0.1\
+   Raschkit v1.0.1
 
    ConQuest v5.23.4\
    conquestr v0.9.995\
-   Raschkit v1.0.0\
+   Raschkit v1.0.0
 
 4. Run code below and explore .Rmd files in ‘rCode’ folder for data exploration, 
    calibration, equating, and DIF.
