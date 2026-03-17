@@ -1,0 +1,32 @@
+Package: RaschKit
+Type: Package
+Title: Perform Psychometric Analyses under Rasch Models
+Version: 1.1.4
+Authors@R: 
+    c(person("Zhou", 
+             "Xiaoliang", 
+             email = "Xiaoliang.Zhou@acer.org", 
+             role = c("aut", "cre")),
+    person("Mogol", 
+             "Vernon", 
+             email = "mogol.vernon@acer.org", 
+             role = c("aut")),
+    person("Zoanetti", 
+             "Nathan", 
+             email = "Nathan.Zoanetti@acer.org", 
+             role = c("ctb")))
+Description: Provides tools for item calibration, horizontal and vertical equating, 
+    DIF analyses, data missing coding. Makes it easy to perform psychometric analyses
+    with ACER ConQuest.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Imports: conquestr, rlang, bookdown, ggthemes, ggrepel, gdata,
+        patchwork, rmarkdown, janitor, lazyeval, knitr, RColorBrewer,
+        fs, writexl, ggpubr, qpdf, tidyverse, openxlsx, grid, flextable
+RoxygenNote: 7.3.3
+NeedsCompilation: no
+Packaged: 2023-08-06 23:34:20 UTC; acerZhouX
+Author: Zhou Xiaoliang [aut, cre],
+  Mogol Vernon [aut],
+  Zoanetti Nathan [ctb]
+Maintainer: Zhou Xiaoliang <Xiaoliang.Zhou@acer.org>
