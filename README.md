@@ -30,9 +30,6 @@ lapply(
 |-----------------|-------------------|------------------|
 <<<<<<< HEAD
 | v5.47.5 | v1.5.5 | v1.1.4 |
-=======
-| v5.47.5 | v1.5.5 | v1.1.3 |
->>>>>>> 200a4cdb5116cf069a4061c06c737fe9e45a4f72
 | v5.33.5 | v1.1.0 | v1.0.7 |
 | v5.33.5 | v1.0.8 | v1.0.6 |
 | v5.27.0 | v1.0.1 | v1.0.1 |
@@ -84,17 +81,12 @@ Explore `.Rmd` files in the `rCode` folder for examples of:
 
 ## Version History
 
-<<<<<<< HEAD
-
 ### v1.1.4 (Latest)
 
 **Bug Fixes:**
 - Fixed missing 'run' parameter in `read2one()` within `calibrateLst()`
 
-### v1.1.3
-=======
 ### v1.1.3 (Latest)
->>>>>>> 200a4cdb5116cf069a4061c06c737fe9e45a4f72
 
 **Major Changes:**
 - Reorganized folder structure: changed 'output' to 'calibration' with run-specific subfolders
