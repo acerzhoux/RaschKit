@@ -19,6 +19,11 @@
 
 calibrateLst <- function(respDfLst=NULL, keyDfLst, pid, n_cov, run, useR=FALSE, quick=TRUE){
 
+<<<<<<< HEAD
+=======
+  sink_start()
+
+>>>>>>> 200a4cdb5116cf069a4061c06c737fe9e45a4f72
   map(
     paste0(c('data', 'input', 'calibration'), '/', run),
     dir.create
@@ -35,5 +40,12 @@ calibrateLst <- function(respDfLst=NULL, keyDfLst, pid, n_cov, run, useR=FALSE, 
     calibrate(test, respDf, keyDfLst[[test]], pid, n_cov, useR=useR, quick=quick, run=run)
   }
 
+<<<<<<< HEAD
   read2one(file.path('calibration', run), tests, 'itn', paste0('summary_', run), run=run)
+=======
+  read2one(file.path('calibration', run), tests, 'itn', paste0('Run_', run))
+
+  # Stop sinking
+  sink_stop()
+>>>>>>> 200a4cdb5116cf069a4061c06c737fe9e45a4f72
 }

@@ -1,0 +1,93 @@
+---
+title: "equate"
+author: "Xiaoliang Zhou"
+date: `r format(Sys.time(), "%d %B, %Y")`
+output: html_document
+---
+
+```{r}
+library(RaschKit)
+install_packages_ls()
+```
+
+# Explore functions
+
+Open this .Rmd file via 'xxx.Rproj' in working directory.
+Select function below for different cases. Functions would output instructions 
+on where to find report and/or result files.
+
+## equateLst() performs DIF analysis on a list of delta dataframes (one test needs be put in list)
+
+If indDfLst is available, its stats and plots are added to summary file.
+
+```{r}
+tests <- c('N', 'R', 'WA')
+vars <- c('trial', 'live')
+stats <- c('delta', 'ind')
+
+lst <- list()
+for (i in 1:2) {
+ lst[[i]] <- map2(
+    map(
+      tests, 
+      ~readxl::read_xlsx(
+        'equating/stats.xlsx', 
+        paste0(.x, '.', stats[[i]], '.', vars[[1]]) #e.g., N.delta.trial
+      )
+    ),
+    map(
+      tests,
+      ~readxl::read_xlsx(
+        'equating/stats.xlsx',
+        paste0(.x, '.', stats[[i]], '.', vars[[2]]) #e.g., R.ind.live
+      )
+    ),
+    ~inner_join(.x, .y, by='item')
+  )  
+}  
+
+equateLst( # include format, hyperlink, flag color
+  deltaDfLst=lst[[1]] |> 
+    `names<-`(tests),
+  vars,
+  p_cut = 0.05,
+  DIF_cut = c(0.3, 0.3, 0.5), # vector of cuts if tests vary in cut
+  DIF_std_cut = c(3.5, 3.5, 40), # vector of cuts if tests vary in cut
+  design_effect = 1,
+  step = FALSE,
+  iter = FALSE,
+  indDfLst = lst[[2]], # NULL if no stats on facility, discrimination, infit 
+  sigma=FALSE
+)
+```
+
+Ensure that folders below contain certain file types.
+ - 'output': xxx_its.xls, xxx_shw.txt, xxx_shw.xls.
+ - 'data': xxx_Labels.txt.
+Those files have names associated with test form or grade. 
+
+For horizontal equating (Hrz), files names in 'output' folder should cover 
+all combinations of 'linkTypeLst'. For example, if linkTypeLst is 
+list(Hrz=list(grades=c(2:3), forms=c('A','B'))), shw.xls-type files should 
+include 'xxx_2A_shw.xls', 'xxx_2B_shw.xls', 'xxx_3A_shw.xls', 'xxx_3B_shw.xls'.
+ 
+## equate2Type() does horizontal and vertical equating
+
+```{r}
+equate2Type( # include format, hyperlink, flag color
+  linkTypeLst=list(
+    Hrz=list(
+      grades=c(2:10),
+      forms=c('A', 'B')
+    )
+  ), # Vrt: list(Vrt=c(2:10))
+  test,
+  p_cut = 0.05,
+  DIF_cut = 0.5,
+  DIF_std_cut = 4,
+  step = FALSE,
+  iter = TRUE, 
+  sigma=FALSE, 
+  run='free_separate'
+)
+```

@@ -1,0 +1,42 @@
+---
+output: 
+  bookdown::word_document2:
+    toc: true
+    toc_float: 
+      collapsed: true
+    toc_depth: 3
+    number_sections: true
+    theme: paper
+
+params:
+    test: 'test'
+    plot_data: plot_data
+title: CCC and Item-person Map of `r test`
+---
+
+```{r setup, include=FALSE}
+library(RaschKit)
+library(tidyverse)
+library(knitr)
+library(bookdown)
+
+knitr::opts_chunk$set(echo=FALSE, results = "asis", webshot = "webshot")
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+options("scipen" = 999)
+```
+
+\newpage
+
+```{r, fig.width=7, fig.height=7}
+for (i in seq_along(plot_data[['plots']])){
+    print(plot_data[['plots']][[i]])
+    cat("\n\n")
+}
+```
+
+\newpage
+
+```{r, fig.width=7, fig.height=10}
+plot_data[['ipMap']]
+```
+
