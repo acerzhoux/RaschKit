@@ -28,7 +28,6 @@ lapply(
 
 | ConQuest Version | conquestr Version | RaschKit Version |
 |-----------------|-------------------|------------------|
-<<<<<<< HEAD
 | v5.47.5 | v1.5.5 | v1.1.4 |
 | v5.33.5 | v1.1.0 | v1.0.7 |
 | v5.33.5 | v1.0.8 | v1.0.6 |
@@ -86,7 +85,7 @@ Explore `.Rmd` files in the `rCode` folder for examples of:
 **Bug Fixes:**
 - Fixed missing 'run' parameter in `read2one()` within `calibrateLst()`
 
-### v1.1.3 (Latest)
+### v1.1.3
 
 **Major Changes:**
 - Reorganized folder structure: changed 'output' to 'calibration' with run-specific subfolders
