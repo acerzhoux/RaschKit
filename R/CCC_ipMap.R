@@ -237,9 +237,10 @@ CCC_ipMap <- function(run, test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
     gather(Statistic, Value)
 
   # Item Fit stats ----------------------------------------------------------
-  fitEnd <- nrow(filter(iEstTemp, modelTerm == 1))
-  if (nDif >= 1) fitEnd <- fitEnd + 1
+  # fitEnd <- nrow(filter(iEstTemp, modelTerm == 1))
+  # if (nDif >= 1) fitEnd <- fitEnd + 1
 
+  iNums <- deltas |> filter(!is.na(iLogit)) |> pull(iNum) |> unique() |> sort()
   fit.tbl <- tibble(
     UnWeightedMNSQ = map_dbl(cqs$gFitStatistics$Value, "UnWeightedMNSQ"),
     UnWeightedtfit = map_dbl(cqs$gFitStatistics$Value, "UnWeightedtfit"),
@@ -250,8 +251,9 @@ CCC_ipMap <- function(run, test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
     WeightedDenominator = map_dbl(cqs$gFitStatistics$Value, "WeightedDenominator"),
     UnWeightedSE = map_dbl(cqs$gFitStatistics$Value, "UnWeightedSE"),
     WeightedSE = map_dbl(cqs$gFitStatistics$Value, "WeightedSE")
-  )[1:fitEnd, ] # polytomous
-  fit.tbl$iNum <- 1:nrow(fit.tbl)
+  ) |> 
+    head(length(iNums)) # polytomous
+  fit.tbl$iNum <- iNums
 
   iFitStats <- iStepsCounts |>
     filter(iStepsCount > 0) |>
