@@ -80,7 +80,12 @@ Explore `.Rmd` files in the `rCode` folder for examples of:
 
 ## Version History
 
-### v1.1.4 (Latest)
+### v1.1.5 (Latest)
+
+**Bug Fixes:**
+- Fixed item order in `CCC_ipMap()` when any item has no fit estimate.
+
+### v1.1.4 
 
 **Bug Fixes:**
 - Fixed missing 'run' parameter in `read2one()` within `calibrateLst()`
