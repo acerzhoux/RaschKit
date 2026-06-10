@@ -14,7 +14,7 @@ lapply(
     'gdata', 'janitor', 'data.table', 'knitr', 'RColorBrewer', 'fs',
     'lazyeval', 'writexl', 'ggpubr', 'qpdf', 'tidyverse', 'openxlsx',
     'kableExtra', 'magrittr', 'Rcpp', 'tidyselect', 'grid', 'flextable',
-    'magick'),
+    'magick', 'conquestr'),
   function(x) {
     if (!require(x, character.only = TRUE)) {
       install.packages(x)
