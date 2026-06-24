@@ -84,6 +84,7 @@ Explore `.Rmd` files in the `rCode` folder for examples of:
 
 **Bug Fixes:**
 - Fixed item order in `CCC_ipMap()` when any item has no fit estimate.
+- Fixed item order in `CCC_ipMap()` when any item has 100% correctness.
 
 ### v1.1.4 
 

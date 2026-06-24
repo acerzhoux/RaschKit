@@ -159,6 +159,7 @@ CCC_ipMap <- function(run, test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
   } else {
     constrained1 <- tibble()
   }
+  if (constrained1$iLab %in% iEstTemp$iLab) constrained1 <- tibble()
 
   if(2 %in% unique(iEstTemp$modelTerm)){
     constrained2 <- iEstTemp |>
@@ -251,7 +252,7 @@ CCC_ipMap <- function(run, test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
     WeightedDenominator = map_dbl(cqs$gFitStatistics$Value, "WeightedDenominator"),
     UnWeightedSE = map_dbl(cqs$gFitStatistics$Value, "UnWeightedSE"),
     WeightedSE = map_dbl(cqs$gFitStatistics$Value, "WeightedSE")
-  ) |> 
+  ) |>
     head(length(iNums)) # polytomous
   fit.tbl$iNum <- iNums
 
