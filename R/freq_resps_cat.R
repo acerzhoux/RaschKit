@@ -18,75 +18,75 @@
 #' freq_resps_cat(resp, TRUE, TRUE)
 #' @export
 
-freq_resps_cat <- function( # ChatGPT revision
-    resp,
-    wide       = FALSE,
-    prop       = FALSE,
-    sort_cats  = TRUE,
-    na_label   = "(NA)",
-    digits     = 2,
-    freq_suffix = "_freq",
-    prop_suffix = "_prop"
+freq_resps_cat <- function(
+    resp, wide = FALSE, prop = FALSE, sort_cats = TRUE,
+    na_label = "(NA)", digits = 2,
+    freq_suffix = "_freq", prop_suffix = "_prop"
 ) {
   stopifnot(is.data.frame(resp))
-
   resp <- tibble::as_tibble(resp)
 
-  # Column order lookup
   item_lookup <- tibble::tibble(
-    Item   = names(resp),
+    Item = names(resp),
     qOrder = seq_along(resp)
   )
 
-  # Long counts (keeps NA by design; we relabel NA for wide safety)
   long <- resp |>
     tidyr::pivot_longer(
       cols = tidyr::everything(),
-      names_to  = "Item",
+      names_to = "Item",
       values_to = "Cat"
     ) |>
-    dplyr::mutate(Cat = dplyr::if_else(is.na(.data$Cat), na_label, as.character(.data$Cat))) |>
+    dplyr::mutate(
+      Cat = trimws(as.character(.data$Cat)),   # clean first
+      Cat = dplyr::case_when(
+        is.na(Cat) ~ na_label,
+        Cat == ""  ~ "(blank)",
+        TRUE       ~ Cat
+      )
+    ) |>
     dplyr::count(.data$Item, .data$Cat, name = "Freq") |>
     dplyr::left_join(item_lookup, by = "Item") |>
     dplyr::relocate(qOrder, .before = Item)
 
-  # --- Long format output ---
+  # ---- long output ----
   if (!wide) {
     if (prop) {
       long <- long |>
         dplyr::group_by(qOrder) |>
-        dplyr::mutate(Proportion = round(.data$Freq / sum(.data$Freq) * 100, digits)) |>
+        dplyr::mutate(
+          Proportion = round(.data$Freq / sum(.data$Freq) * 100, digits)
+        ) |>
         dplyr::ungroup() |>
         dplyr::select(qOrder, Item, Cat, Freq, Proportion)
     }
     return(long)
   }
 
-  # --- Wide format output ---
-  wide_df <- long |>
-    tidyr::pivot_wider(names_from = "Cat", values_from = "Freq")
+  # ---- wide output ----
+  wide_df <- tidyr::pivot_wider(
+    long,
+    names_from = "Cat",
+    values_from = "Freq",
+    values_fill = NA
+  )
 
-  # Identify category columns (everything except qOrder/Item)
   cats <- setdiff(names(wide_df), c("qOrder", "Item"))
 
-  # Sort categories: numeric cats first ascending, then non-numeric alphabetic
   if (sort_cats && length(cats)) {
     suppressWarnings(nums <- as.numeric(cats))
     is_non_num <- is.na(nums)
     cats <- c(cats[order(nums, na.last = NA)], sort(cats[is_non_num]))
   }
 
-  # Reorder and add N (total responses per item)
   wide_df <- wide_df |>
     dplyr::select(qOrder, Item, dplyr::all_of(cats)) |>
-    dplyr::mutate(N = rowSums(dplyr::select(dplyr::across(dplyr::all_of(cats)), tidyselect::everything()), na.rm = TRUE))
+    dplyr::mutate(
+      N = rowSums(dplyr::across(dplyr::all_of(cats)), na.rm = TRUE)
+    )
 
-  # If only frequencies requested
-  if (!prop) {
-    return(wide_df)
-  }
+  if (!prop) return(wide_df)
 
-  # Build proportion columns (percent) alongside frequency columns
   prop_cols <- wide_df |>
     dplyr::transmute(
       dplyr::across(
@@ -96,13 +96,12 @@ freq_resps_cat <- function( # ChatGPT revision
       )
     )
 
-  # Suffix frequency columns
   wide_df <- wide_df |>
-    dplyr::rename_with(~ paste0(.x, freq_suffix), dplyr::all_of(cats))
+    dplyr::rename_with(
+      ~ paste0(.x, freq_suffix),
+      dplyr::all_of(cats)
+    )
 
-  # Bind frequency + proportion, order columns nicely
-  out <- dplyr::bind_cols(wide_df, prop_cols) |>
+  dplyr::bind_cols(wide_df, prop_cols) |>
     dplyr::select(qOrder, Item, N, tidyselect::everything())
-
-  return(out)
 }

@@ -80,7 +80,14 @@ Explore `.Rmd` files in the `rCode` folder for examples of:
 
 ## Version History
 
-### v1.1.5 (Latest)
+### v1.1.6 (Latest)
+
+**Improvements:**
+- Added output commands from colleague requests.
+- Improved frequency summary table function `freq_resps_cat()`.
+- Added 'purrr' to 'keep' inside read2one() to solve package conflict.
+
+### v1.1.5
 
 **Bug Fixes:**
 - Fixed item order in `CCC_ipMap()` when any item has no fit estimate.

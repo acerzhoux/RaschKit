@@ -58,6 +58,15 @@ lab_cqc <- function(test, keyDf, run,
   # create label file
   create_lab(test=test, run=run) # Item label file
 
+
+  if(!is.null(poly_catgrs)) p <- paste0('%path%\\%test%_%', DIFVar, '%')
+  else if (poly_facet) p <- '%path%\\%name%_facet'
+  else if (poly_group) p <- '%path%\\%name%_group'
+  else p <- '%path%\\%name%'
+
+  if (poly_key & step) p <- paste0(p, '_step')
+
+
   # ##### create control file # #####
 
   # specify paths
@@ -73,6 +82,7 @@ lab_cqc <- function(test, keyDf, run,
   # compose CQC string
   cqc <- c(
     section_intro(test, path_output, DIFVar, poly_catgrs),
+    paste0('export logfile                                                 >> ', p, '_log.txt;'),
     section_data(path_df, resps_cols, pid_cols, regr_ls,
                  path_lab, DIFVar, DIFVar_cols, poly_group, pweight, pw_cols),
     section_keys(keyDf),

@@ -61,7 +61,7 @@ read2one <- function (folder = c('DIF', 'equating'), tests,
     if (prefix=='itn'){
       # add summary and flag sheets
       itnSums <- map(ex_ls, ~dplyr::filter(.x, Priority %in% 1:4)) |>
-        keep(~ nrow(.x) != 0)
+        purrr::keep(~ nrow(.x) != 0)
       Flagged <- itnSums[lengths(itnSums) > 0L] |>
         map(~mutate(.x, Key=as.character(Key))) |>
         reduce(bind_rows) |>

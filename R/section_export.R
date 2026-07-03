@@ -31,28 +31,42 @@ section_export <- function(poly_key, step, DIFVar, poly_catgrs, poly_facet, poly
   if (poly_key & step) p <- paste0(p, '_step')
 
   c(
-    paste0('export logfile                                                 >> ', p, '_log.txt;'),
+    # paste0('export logfile                                                 >> ', p, '_log.txt;'),
     paste0('export parameters                                              >> ', p, '_anc.txt;'),
     paste0('export reg_coefficients                                        >> ', p, '_reg.txt;'),
     paste0('export covariance                                              >> ', p, '_cov.txt;'),
     paste0('itanal !estimates=wle,format=summary                           >> ', p, '_its.txt;'),
-    paste0('itanal !estimates=wle,format=summary,filetype=excel            >> ', p, '_its.xls;'),
+    paste0('itanal !estimates=latent,format=summary,filetype=excel            >> ', p, '_its.xls;'),
+    paste0('itanal !estimates=wle,format=summary,filetype=xlsx            >> ', p, '_its.xlsx;'), #RN
+
     paste0('itanal !estimates=latent                                       >> ', p, '_itn.txt;'),
     if (is.null(DIFVar)){
       paste0('itanal !estimates=latent,filetype=excel                        >> ', p, '_itn.xls;')
     },
+    paste0('itanal !estimates=latent,filetype=xlsx,matrixout=i            >> ', p, '_itn.xlsx;'), #RN
+
     paste0('itanal !estimates=latent,format=export                         >> ', p, '_opt.txt;'),
     paste0('itanal !estimates=latent,format=export,filetype=excel          >> ', p, '_opt.xls;'),
     paste0('show !estimates=wle,Expanded=no,itemlabels=yes                 >> ', p, '_shw.txt;'),
     paste0('show !estimates=wle,Expanded=no,itemlabels=yes,filetype=excel  >> ', p, '_shw.xls;'),
+    paste0('show !estimates=wle,filetype=xlsx                              >> ', p, '_wle_shw.xlsx;'), #RN
+    paste0('show !estimates=latent,tables=1:2:3:4:5,filetype =xlsx         >> ', p, '_latent_shw.xlsx;'), #RN
+
     if (poly_key & !step){
       c(paste0('show parameters !table=8                                       >> ', p, '_del.txt;'),
       paste0('show parameters !table=8,filetype=excel                        >> ', p, '_del.xls;'))
     },
     paste0('show parameters !table=7                                       >> ', p, '_thr.txt;'),
     paste0('show parameters !table=7,filetype=excel                        >> ', p, '_thr.xls;'),
+
+    paste0('show parameters !table=7,filetype=xlsx                        >> ', p, '_thr.xlsx;'), #RN
+    paste0('show parameters !table=8                                       >> ', p, '_dlt.txt;'), #RN
+    paste0('export parameters!filetype=xlsx                               >> ', p, '_par.xlsx;'), #RN
+
     paste0('fit                                                            >> ', p, '_res.txt;'),
     paste0('show cases !estimates=wle,filetype=excel                       >> ', p, '_cas.xls;'),
+    paste0('show cases !estimates=wle,filetype=xlsx                       >> ', p, '_wle.xlsx;'), #RN
+
     if (is.null(DIFVar)) {
       paste0('put                                                            >> ', p, '_compressed.CQS;')
     },

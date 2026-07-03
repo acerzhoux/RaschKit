@@ -63,11 +63,11 @@ df_key_lab_args <- function(test, data, pid, n_cov, n_resp,
 
     if (useR){
         codes <- codes %>%
-            .[!(. %in% c(NA, 'X', 'x', '', ' '))] %>%
+            .[!(. %in% c(NA, 'n', 'X', 'x', '', ' '))] %>%
             sort()
     } else {
         codes <- codes %>%
-            .[!(. %in% c(NA, 'r', 'R', 'X', 'x', '', ' '))] %>%
+            .[!(. %in% c(NA, '7', 'n', 'r', 'R', 'X', 'x', '', ' '))] %>%
             sort()
     }
 
