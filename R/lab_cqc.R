@@ -39,6 +39,8 @@
 #' be specified if weight is used for modeling. Default is NULL.
 #' @param pw_cols String of column numbers of case weight, e.g., '5-15'.
 #' @param strRec String of recoding for ConQuest control file. Default is NULL.
+#' @param group Either NULL or variable name in data, for group plotting.
+#' @param grp_cols String of column numbers of group, e.g., '5-15'.
 #' @return 'test.cqc' file in 'input' folder.
 #' @examples
 #' lab_cqc()
@@ -50,7 +52,8 @@ lab_cqc <- function(test, keyDf, run,
                    step=FALSE, regr_ls=NULL, DIFVar=NULL, DIFVar_cols=NULL, #dich & poly
                    poly_catgrs=NULL, #dich, poly
                    poly_facet=FALSE, poly_group=FALSE, #poly: facet
-                   pweight=NULL, pw_cols=NULL, strRec=NULL){
+                   pweight=NULL, pw_cols=NULL, strRec=NULL,
+                   group, grp_cols){
 
   # create folders
   create_folders(DIFVar=DIFVar)
@@ -84,7 +87,8 @@ lab_cqc <- function(test, keyDf, run,
     section_intro(test, path_output, DIFVar, poly_catgrs),
     paste0('export logfile                                                 >> ', p, '_log.txt;'),
     section_data(path_df, resps_cols, pid_cols, regr_ls,
-                 path_lab, DIFVar, DIFVar_cols, poly_group, pweight, pw_cols),
+                 path_lab, DIFVar, DIFVar_cols, poly_group,
+                 pweight, pw_cols, group, grp_cols),
     section_keys(keyDf),
     section_specs(anchor, test, DIFVar, poly_catgrs, quick, run),
     if (!is.null(section_extr)) section_extr,

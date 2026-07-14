@@ -40,7 +40,8 @@ calibrate(
   ancRead = FALSE,
   useR = FALSE,
   run,
-  useDummyData = FALSE
+  useDummyData = FALSE,
+  group = NULL
 )
 }
 \arguments{
@@ -149,6 +150,8 @@ file there. Default is FALSE.}
 \item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
 
 \item{useDummyData}{Whether dummy data is used. Default is FALSE.}
+
+\item{group}{Either NULL or variable name in data, for group plotting.}
 }
 \description{
 This function calibrates items in a test and adds comments and flags of

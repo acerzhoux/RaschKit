@@ -24,7 +24,9 @@ lab_cqc(
   poly_group = FALSE,
   pweight = NULL,
   pw_cols = NULL,
-  strRec = NULL
+  strRec = NULL,
+  group,
+  grp_cols
 )
 }
 \arguments{
@@ -73,6 +75,10 @@ be specified if weight is used for modeling. Default is NULL.}
 \item{pw_cols}{String of column numbers of case weight, e.g., '5-15'.}
 
 \item{strRec}{String of recoding for ConQuest control file. Default is NULL.}
+
+\item{group}{Either NULL or variable name in data, for group plotting.}
+
+\item{grp_cols}{String of column numbers of group, e.g., '5-15'.}
 }
 \value{
 'test.cqc' file in 'input' folder.

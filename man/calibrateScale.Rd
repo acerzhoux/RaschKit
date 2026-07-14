@@ -5,6 +5,7 @@
 \title{calibrateScale}
 \usage{
 calibrateScale(
+  respDfLst = NULL,
   keyDfLst,
   pid,
   n_cov,
@@ -17,10 +18,15 @@ calibrateScale(
   useR = FALSE,
   slope = NULL,
   intercept = NULL,
-  extrapolation = FALSE
+  extrapolation = FALSE,
+  run
 )
 }
 \arguments{
+\item{respDfLst}{List of response dataframe. Default is NULL (reruns after review).
+If NULL and items need collapsing, put processed data with test name in
+'data' folder before running.}
+
 \item{keyDfLst}{List of key dataframes. Element names are test names.}
 
 \item{pid}{Name of candidates' ID variable.}
@@ -56,7 +62,9 @@ file there. Default is FALSE.}
 
 \item{intercept}{Value/intercept to add to ability estimates. Default is NULL.}
 
-\item{extrapolation}{Whether to extrapolate the minimum and maximum estimates.
+\item{extrapolation}{Whether to extrapolate the minimum and maximum estimates.}
+
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.
 Default is FALSE.}
 }
 \description{

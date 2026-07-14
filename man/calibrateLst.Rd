@@ -11,7 +11,8 @@ calibrateLst(
   n_cov,
   run,
   useR = FALSE,
-  quick = TRUE
+  quick = TRUE,
+  group = NULL
 )
 }
 \arguments{
@@ -30,6 +31,8 @@ If NULL and items need collapsing, put processed data with test name in
 \item{useR}{TRUE when code 'R' is used for scoring. Default is FALSE.}
 
 \item{quick}{TRUE if empirical error is not needed. Default is TRUE.}
+
+\item{group}{Either NULL or variable name in data, for group plotting.}
 }
 \description{
 This function calibrates a list of tests and put results into a summary file

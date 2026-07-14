@@ -4,7 +4,15 @@
 \alias{pid_resp_regrs_cols}
 \title{pid_resp_regrs_cols}
 \usage{
-pid_resp_regrs_cols(df, pid, n_cov, n_resp, regr_vec = NULL, pweight = NULL)
+pid_resp_regrs_cols(
+  df,
+  pid,
+  n_cov,
+  n_resp,
+  regr_vec = NULL,
+  pweight = NULL,
+  group = NULL
+)
 }
 \arguments{
 \item{df}{Dataframe with ID, covariates and responses.}
@@ -16,6 +24,8 @@ pid_resp_regrs_cols(df, pid, n_cov, n_resp, regr_vec = NULL, pweight = NULL)
 \item{n_resp}{Number of responses.}
 
 \item{regr_vec}{String vector of regressors' names. Default is NULL.}
+
+\item{group}{Either NULL or variable name in data, for group plotting.}
 }
 \value{
 e.g., list(pid_cols='14-30', resps_cols='35-308', regr_ls=list(...))

@@ -157,10 +157,12 @@ CCC_ipMap <- function(run, test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
       ) |>
       mutate(iLab = iStepsCounts[iStepsCounts$iNum == max(iStepsCounts$iNum),]$iLab)
   } else {
+    constrained1 <- iEstTemp[0, ]
+  }
+  if (nrow(constrained1) > 0 && constrained1$iLab %in% iEstTemp$iLab) {
     constrained1 <- tibble()
   }
-  if (constrained1$iLab %in% iEstTemp$iLab) constrained1 <- tibble()
-
+  
   if(2 %in% unique(iEstTemp$modelTerm)){
     constrained2 <- iEstTemp |>
       filter(modelTerm > 1) |>

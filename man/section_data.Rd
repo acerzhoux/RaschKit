@@ -14,7 +14,9 @@ section_data(
   DIFVar_cols,
   poly_group,
   pweight,
-  pw_cols
+  pw_cols,
+  group = NULL,
+  grp_cols
 )
 }
 \arguments{
@@ -39,6 +41,10 @@ Element name is regressor name.}
 be specified if weight is used for modeling.}
 
 \item{pw_cols}{String of column numbers of case weight, e.g., '5-15'.}
+
+\item{group}{Either NULL or variable name in data, for group plotting.}
+
+\item{grp_cols}{String of column numbers of group, e.g., '5-15'.}
 }
 \value{
 String of characters used in export section of 'test.cqc' file in

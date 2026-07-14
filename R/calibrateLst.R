@@ -14,10 +14,12 @@
 #' @param run String that indicates run such as 'pre_review' and 'post_review'.
 #' @param useR TRUE when code 'R' is used for scoring. Default is FALSE.
 #' @param quick TRUE if empirical error is not needed. Default is TRUE.
+#' @param group Either NULL or variable name in data, for group plotting.
 #'
 #' @export
 
-calibrateLst <- function(respDfLst=NULL, keyDfLst, pid, n_cov, run, useR=FALSE, quick=TRUE){
+calibrateLst <- function(respDfLst=NULL, keyDfLst, pid, n_cov,
+                         run, useR=FALSE, quick=TRUE, group=NULL){
 
   map(
     paste0(c('data', 'input', 'calibration'), '/', run),
@@ -32,7 +34,8 @@ calibrateLst <- function(respDfLst=NULL, keyDfLst, pid, n_cov, run, useR=FALSE, 
     } else {
       respDf <- respDfLst[[i]]
     }
-    calibrate(test, respDf, keyDfLst[[test]], pid, n_cov, useR=useR, quick=quick, run=run)
+    calibrate(test, respDf, keyDfLst[[test]], pid, n_cov, useR=useR,
+              quick=quick, run=run, group=group)
   }
 
   read2one(file.path('calibration', run), tests, 'itn', paste0('summary_', run), run=run)

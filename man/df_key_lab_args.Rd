@@ -16,7 +16,8 @@ df_key_lab_args(
   labels = NULL,
   useR = FALSE,
   pweight = NULL,
-  run
+  run,
+  group = group
 )
 }
 \arguments{
@@ -44,6 +45,8 @@ df_key_lab_args(
 be specified if weight is used for modeling. Default is NULL.}
 
 \item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
+
+\item{group}{Either NULL or variable name in data, for group plotting.}
 }
 \value{
 A list of arguments with calculated elements.

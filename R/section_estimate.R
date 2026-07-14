@@ -14,8 +14,8 @@
 
 section_estimate <- function(quick, poly_key=FALSE){
     paste0('estimate ! convergence=0.0001, iter=7500, stderr=',
-           # if (quick) 'quick, ' else 'empirical, ',
-           'empirical, ',
+           if (quick) 'quick, ' else 'empirical, ',
+           # 'empirical, ',
            'fit=yes, deviancechange=0.000000001, matrixout=e, nodes=',
            if (poly_key) 50 else 15, ';\n')
 }

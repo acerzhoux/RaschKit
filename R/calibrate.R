@@ -75,6 +75,7 @@
 #' @param useR TRUE when code 'R' is used for scoring. Default is FALSE.
 #' @param run String that indicates run such as 'pre_review' and 'post_review'.
 #' @param useDummyData Whether dummy data is used. Default is FALSE.
+#' @param group Either NULL or variable name in data, for group plotting.
 #' @examples
 #' # Not run
 #' # calibrate(respDf=racp, test='RACP', pid="V1", n_cov=1, keyDf=cd)
@@ -89,7 +90,7 @@ calibrate <- function(test, respDf=NULL, keyDf, pid, n_cov, regrNmVec=NULL,
                       extrapolation=FALSE, save_xlsx=TRUE, est_type=NULL,
                       sparse_check=FALSE, CCCip2Wd=FALSE, pweight=NULL,
                       ancShift=NULL, ancTest2Read=NULL, ancDf=NULL, ancRead=FALSE,
-                      useR=FALSE, run, useDummyData=FALSE){
+                      useR=FALSE, run, useDummyData=FALSE, group=NULL){
   options(warn=-1)
 
   if (!is.null(ancShift) || !is.null(ancTest2Read) || !is.null(ancDf) || ancRead) {
@@ -232,7 +233,8 @@ calibrate <- function(test, respDf=NULL, keyDf, pid, n_cov, regrNmVec=NULL,
   # prepare arguments
   cat('\nPreparing ConQuest control file...\n')
   prep <- df_key_lab_args(test, respDf, pid, n_cov, sum(nDimVec), NULL,
-                          regrNmVec, section_extr, labels, useR, pweight, run=run)
+                          regrNmVec, section_extr, labels, useR,
+                          pweight, run=run, group=group)
   if (length(nDimVec) > 1){
     if(is.null(dimNmVec)) stop('\nPlease set dimension names \'dimNmVec\'!')
     if (poly_key) scrs <- 0:max(keyDf$Max_score) else scrs <- 0:1
@@ -278,7 +280,8 @@ calibrate <- function(test, respDf=NULL, keyDf, pid, n_cov, regrNmVec=NULL,
       section_extr=prep$section_extr,
       DIFVar=NULL, DIFVar_cols=prep$DIFVar_cols, poly_catgrs=NULL,
       poly_facet=FALSE, poly_group=FALSE,
-      pweight=pweight, pw_cols=prep$pw_cols, strRec=strRec)
+      pweight=pweight, pw_cols=prep$pw_cols, strRec=strRec,
+      group=group, grp_cols=prep$grp_cols)
 
   # ####### read CQS output for summary
   cat('\nReading CQS file...\n')

@@ -26,7 +26,7 @@ section_specs <- function(anchor, test, DIFVar, poly_catgrs, quick, run){
 
   c(
     paste0(
-      'set addextension=no, keeplastest=yes, iterlimit=1000, ',
+      'set addextension=no, keeplastest=yes, iterlimit=1000, memorymodel=3, uniquepid=yes, ',
       if(anchor) {
         paste0('constraints=none;\n\nimport anchor_parameters                                       <<', anc_path, ';\n')
       } else {

@@ -17,6 +17,7 @@
 #' @param pweight Variable name of person weights in response dataframe. Should
 #' be specified if weight is used for modeling. Default is NULL.
 #' @param run String that indicates run such as 'pre_review' and 'post_review'.
+#' @param group Either NULL or variable name in data, for group plotting.
 #' @return A list of arguments with calculated elements.
 #' @examples
 #' # not run
@@ -28,7 +29,7 @@
 df_key_lab_args <- function(test, data, pid, n_cov, n_resp,
                             DIFVar=NULL, regr_vec_char=NULL,
                             section_extr=NULL, labels=NULL, useR=FALSE,
-                            pweight=NULL, run){
+                            pweight=NULL, run, group=group){
     create_folders(DIFVar=DIFVar)
     if (!is.null(regr_vec_char)){
         section_extr <- map(regr_vec_char, ~data[[.]] %>%
@@ -50,7 +51,7 @@ df_key_lab_args <- function(test, data, pid, n_cov, n_resp,
     # prepare arguments
     prr <- pid_resp_regrs_cols(df=data, pid=pid, n_cov=n_cov,
                                n_resp=n_resp, regr_vec=regr_vec_char,
-                               pweight=pweight)
+                               pweight=pweight, group=group)
     if (!is.null(DIFVar)) {
         DIFVar_cols <- var_cols(df=data, var_name=DIFVar)[[DIFVar]]
     } else {
@@ -63,7 +64,7 @@ df_key_lab_args <- function(test, data, pid, n_cov, n_resp,
 
     if (useR){
         codes <- codes %>%
-            .[!(. %in% c(NA, 'n', 'X', 'x', '', ' '))] %>%
+            .[!(. %in% c(NA, '7', 'n', 'X', 'x', '', ' '))] %>%
             sort()
     } else {
         codes <- codes %>%
@@ -77,6 +78,7 @@ df_key_lab_args <- function(test, data, pid, n_cov, n_resp,
         pw_cols=prr$pw_cols,
         resps_cols=prr$resps_cols,
         regr_ls=prr$regr_ls,
+        grp_cols=prr$grp_cols,
         DIFVar_cols=DIFVar_cols,
         section_extr=section_extr
     )

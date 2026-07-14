@@ -86,6 +86,10 @@ Explore `.Rmd` files in the `rCode` folder for examples of:
 - Added output commands from colleague requests.
 - Improved frequency summary table function `freq_resps_cat()`.
 - Added 'purrr' to 'keep' inside read2one() to solve package conflict.
+- Added 'group' to calibrateLst() for group plotting.
+- Added 'memorymodel=3, uniquepid=yes' to 'set' command to boost speed.
+- Improved calibrateScale() adding 'run' and 'respDfLst'.
+- Debugged a condition check of 'constrained1' in CCC_ipMap().
 
 ### v1.1.5
 

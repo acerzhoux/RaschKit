@@ -80,7 +80,7 @@ DIF <- function(method=c('chi_square', 'Bonferroni', 'Facet'), test, keyDf, ####
     anchor=anchor, step=step, regr_ls=regr_ls, section_extr=section_extr,
     DIFVar=DIFVar, DIFVar_cols=DIFVar_cols, poly_catgrs=poly_catgrs,
     poly_facet=poly_facet, poly_group=poly_group,
-    pweight=pweight, pw_cols=pw_cols)
+    pweight=pweight, pw_cols=pw_cols, group=NULL, grp_cols=NULL)
   arg_DIF <- list(DIFVar=DIFVar, test=test, p_cut=p_cut, step=step)
 
   if (method=='chi_square'){

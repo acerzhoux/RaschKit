@@ -4,6 +4,10 @@
 #' ancShiftLst (if not NULL), and ancDfLst (if not NULL) in same order
 #' correspond to one test. Also, keyDfLst should have test name for each element.
 #'
+#' @param respDfLst List of response dataframe. Default is NULL (reruns after review).
+#' If NULL and items need collapsing, put processed data with test name in
+#' 'data' folder before running.
+#' @param keyDfLst List of key data
 #' @param keyDfLst List of key dataframes. Element names are test names.
 #' @param pid Name of candidates' ID variable.
 #' @param n_cov Number of covariates before responses.
@@ -28,14 +32,20 @@
 #' @param slope Slope to multiply ability estimates. Default is NULL
 #' @param intercept Value/intercept to add to ability estimates. Default is NULL.
 #' @param extrapolation Whether to extrapolate the minimum and maximum estimates.
+#' @param run String that indicates run such as 'pre_review' and 'post_review'.
 #' Default is FALSE.
 #' @export
 
-calibrateScale <- function(keyDfLst, pid, n_cov, est_type='wle', trial=FALSE,
-                           ancShiftLst=NULL, ancTest2ReadLst=NULL, ancDfLst=NULL,
-                           ancRead=FALSE, useR=FALSE, slope=NULL,
-                           intercept=NULL, extrapolation=FALSE){
+calibrateScale <- function(respDfLst=NULL, keyDfLst, pid, n_cov, est_type='wle',
+                           trial=FALSE, ancShiftLst=NULL, ancTest2ReadLst=NULL,
+                           ancDfLst=NULL, ancRead=FALSE, useR=FALSE, slope=NULL,
+                           intercept=NULL, extrapolation=FALSE, run){
   testVec <- names(keyDfLst)
+
+  map(
+    paste0(c('data', 'input', 'calibration'), '/', run),
+    dir.create
+  )
 
   # process arguments
   n <- length(keyDfLst)
@@ -49,10 +59,11 @@ calibrateScale <- function(keyDfLst, pid, n_cov, est_type='wle', trial=FALSE,
 
   # anchor tests in testVec
   for (i in seq_along(keyDfLst)){
-    calibrate(testVec[[i]], NULL, keyDfLst[[i]], pid, n_cov, trial=trial,
+    calibrate(testVec[[i]], respDfLst[[i]], keyDfLst[[i]], pid, n_cov, trial=trial,
               ancShift=ancShiftLst[[i]], ancTest2Read=ancTest2ReadLst[[i]],
               ancDf=ancDfLst[[i]], ancRead=ancRead, useR=useR, est_type=est_type,
-              slope=slope, intercept=intercept, extrapolation=extrapolation)
+              slope=slope, intercept=intercept, extrapolation=extrapolation,
+              run=run, quick=F)
   }
 
   # read into one file

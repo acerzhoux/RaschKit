@@ -20,6 +20,8 @@
 #' @param pweight Variable name of person weights in response dataframe. Should
 #' be specified if weight is used for modeling.
 #' @param pw_cols String of column numbers of case weight, e.g., '5-15'.
+#' @param group Either NULL or variable name in data, for group plotting.
+#' @param grp_cols String of column numbers of group, e.g., '5-15'.
 #' @return String of characters used in export section of 'test.cqc' file in
 #' 'input' folder.
 #' @examples
@@ -28,7 +30,7 @@
 
 section_data <- function(path_df, resps_cols, pid_cols, regr_ls,
              path_lab, DIFVar, DIFVar_cols, poly_group,
-             pweight, pw_cols){
+             pweight, pw_cols, group=NULL, grp_cols){
   c(
     paste0('data ', path_df, ';\n'),
     paste(
@@ -37,9 +39,11 @@ section_data <- function(path_df, resps_cols, pid_cols, regr_ls,
       if (!is.null(pweight)) paste(pweight, pw_cols),
       if (!is.null(DIFVar)) paste(DIFVar, DIFVar_cols),
       if (!is.null(regr_ls)) paste(paste(names(regr_ls), regr_ls), collapse=' '),
+      if (!is.null(group)) paste(group, grp_cols),
       ';\n'
     ),
     if (poly_group) paste0('group ', DIFVar, ';\n'),
+    if (!is.null(group)) paste0('group ', group, ';\n'),
     paste0('labels                                     << ', path_lab, ';\n'),
     if (!is.null(pweight)) paste0('caseweight ', pweight, ';\n')
   )
