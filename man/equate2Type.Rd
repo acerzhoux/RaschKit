@@ -17,20 +17,21 @@ equate2Type(
 )
 }
 \arguments{
-\item{linkTypeLst}{A length-one list specifying the equating design.
-  Supported formats are:
-  \describe{
-    \item{\code{list(Hrz = list(grades = c(2:10),
-      forms = c("A", "B", "C")))}}
-    {Horizontal equating for all pairwise form combinations within each
-     specified grade.}
+\item{linkTypeLst}{A length-one list defining the equating design.
+  Supported formats include:
+  \itemize{
+    \item \code{list(Hrz = list(grades = 2:10,
+      forms = c("A", "B", "C")))}
+      for horizontal equating across all pairwise form combinations within
+      each specified grade.
 
-    \item{\code{list(Hrz = list(grades = NULL,
-      forms = c("A", "B", "C")))}}
-    {Horizontal equating across forms without grade prefixes.}
+    \item \code{list(Hrz = list(grades = NULL,
+      forms = c("A", "B", "C")))}
+      for horizontal equating across forms without grade prefixes.
 
-    \item{\code{list(Vrt = c(2:10))}}
-    {Vertical equating between adjacent grades (e.g., 2-3, 3-4, ..., 9-10).}
+    \item \code{list(Vrt = 2:10)}
+      for vertical equating between adjacent grades (e.g., 2-3, 3-4,
+      ..., 9-10).
   }}
 
 \item{test}{Character string specifying the test name.}
