@@ -83,13 +83,14 @@ Explore `.Rmd` files in the `rCode` folder for examples of:
 ### v1.1.6 (Latest)
 
 **Improvements:**
-- Added output commands from colleague requests.
-- Improved frequency summary table function `freq_resps_cat()`.
-- Added 'purrr' to 'keep' inside read2one() to solve package conflict.
-- Added 'group' to calibrateLst() for group plotting.
-- Added 'memorymodel=3, uniquepid=yes' to 'set' command to boost speed.
-- Improved calibrateScale() adding 'run' and 'respDfLst'.
-- Debugged a condition check of 'constrained1' in CCC_ipMap().
+- Added output commands requested by colleagues.
+- Enhanced the freq_resps_cat() function for frequency summary tables.
+- Added "purrr" to the keep argument in read2one() to resolve package conflicts.
+- Added a group argument to calibrateLst() to support group-based plotting.
+- Added memorymodel=3 and uniquepid=yes to the set command to improve processing speed.
+- Enhanced calibrateScale() by adding support for run and respDfLst.
+- Fixed a condition check involving constrained1 in CCC_ipMap().
+- Updated equate2Type() to generate all possible two-form combinations for test form equating.
 
 ### v1.1.5
 

@@ -83,7 +83,7 @@ read2one <- function (folder = c('DIF', 'equating'), tests,
       add_format()[['itn']](ls_save, file, folder, prefix) # hyperlink, color, format
 
     } else if (prefix=='eqv') {
-      move_into_folder(folder, prefix)
+      # move_into_folder(folder, prefix)
 
       if (ncol(ex_ls[[1]])==3) {
         cls <- c('Est_', 'SE_')
@@ -106,7 +106,7 @@ read2one <- function (folder = c('DIF', 'equating'), tests,
       writexl::write_xlsx(file)
 
     } else {
-      move_into_folder(folder, prefix)
+      # move_into_folder(folder, prefix)
       ex_ls |>
         writexl::write_xlsx(file)
     }

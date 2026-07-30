@@ -4,7 +4,7 @@
 \alias{CCC_comments}
 \title{CCC_comments}
 \usage{
-CCC_comments(test, dFallThr = 0.5, dRiseThr = 0.1, ccc_data, iType)
+CCC_comments(test, dFallThr = 0.5, dRiseThr = 0.1, ccc_data, iType, run)
 }
 \arguments{
 \item{test}{Name of test.}
@@ -19,6 +19,8 @@ Default is 0.1.}
 
 \item{iType}{Dataframe with columns of iNum and itype. One element of list
 output from Function 'CCC_Vernon'.}
+
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
 }
 \value{
 Vector of comments based solely on CCC.

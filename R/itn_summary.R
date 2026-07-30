@@ -41,7 +41,7 @@ itn_summary <- function(run, test, easy=90, hard=10, iRst=.11, fit_w=1.1, fit_uw
       keyDf,
       CCC_fine_flag4(
         itnFlag123(run, test, easy, hard, iRst, fit_w, fit_uw),
-        CCC_comments(test, dFallThr, dRiseThr, ccc_data, iType)
+        CCC_comments(test, dFallThr, dRiseThr, ccc_data, iType, run)
       ) |>
         mutate(`Item Title`=as.character(`Item Title`)),
       by=c('Item'='Item Title')

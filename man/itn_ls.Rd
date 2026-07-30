@@ -4,9 +4,11 @@
 \alias{itn_ls}
 \title{itn_ls}
 \usage{
-itn_ls(test)
+itn_ls(run, test)
 }
 \arguments{
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
+
 \item{test}{Name of test.}
 }
 \description{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/equate2Type.R
 \name{equate2Type}
 \alias{equate2Type}
-\title{equate2Type}
+\title{Perform Horizontal or Vertical Equating}
 \usage{
 equate2Type(
   linkTypeLst,
@@ -17,39 +17,76 @@ equate2Type(
 )
 }
 \arguments{
-\item{linkTypeLst}{Length-one list such as list(Hrz=list(grades=c(2:10),
-forms=c('A', 'B', 'C'))) or list(Vrt=c(2:10)). Name is Hrz or Vrt.
-Element is list of grades and test forms or vector of grades.}
+\item{linkTypeLst}{A length-one list specifying the equating design.
+  Supported formats are:
+  \describe{
+    \item{\code{list(Hrz = list(grades = c(2:10),
+      forms = c("A", "B", "C")))}}
+    {Horizontal equating for all pairwise form combinations within each
+     specified grade.}
 
-\item{test}{Name of test.}
+    \item{\code{list(Hrz = list(grades = NULL,
+      forms = c("A", "B", "C")))}}
+    {Horizontal equating across forms without grade prefixes.}
 
-\item{p_cut}{p value of chi-square test. Default is 0.05.}
+    \item{\code{list(Vrt = c(2:10))}}
+    {Vertical equating between adjacent grades (e.g., 2-3, 3-4, ..., 9-10).}
+  }}
 
-\item{DIF_cut}{Threshold of an item's delta estimate difference between two
-tests. Default is 0.5.}
+\item{test}{Character string specifying the test name.}
 
-\item{DIF_std_cut}{Threshold of an item's standardized delta estimate difference
-between two tests. Default is 4.}
+\item{p_cut}{Significance level for the chi-square anchor-item screening
+procedure. Default is \code{0.05}.}
 
-\item{step}{TRUE if DIF analysis is performed on step parameters.
-Default is FALSE.}
+\item{DIF_cut}{Absolute delta difference threshold used to flag potential
+DIF items. Default is \code{0.5}.}
 
-\item{iter}{TRUE to iteratively remove DIF items. Default is TRUE}
+\item{DIF_std_cut}{Standardized delta difference threshold used to flag
+potential DIF items. Default is \code{4}.}
 
-\item{sigma}{Indicator of how 'delta.y' is scaled. If TRUE, it is scaled
-to have same mean and sd as 'delta.x'. If FALSE, it has same mean as 'delta.x'.
-Default is FALSE.}
+\item{step}{Logical. If \code{TRUE}, DIF analysis is performed on step
+parameters rather than item locations. Default is \code{FALSE}.}
 
-\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
+\item{iter}{Logical. If \code{TRUE}, DIF items are iteratively removed and
+the analysis is repeated. Default is \code{TRUE}.}
+
+\item{sigma}{Logical. If \code{TRUE}, \code{delta.y} is linearly transformed
+to match both the mean and standard deviation of \code{delta.x}. If
+\code{FALSE}, only the mean is matched. Default is \code{FALSE}.}
+
+\item{run}{Character string identifying the analysis run (e.g.,
+\code{"pre_review"}, \code{"post_review"}).}
 }
 \value{
-List of chi-square test results for anchors between two adjacent grades.
+A named list containing equating results for each comparison,
+  including DIF statistics, anchor information, transformation coefficients,
+  and summary tables.
 }
 \description{
-This function performs vertical equating. An Excel file named 'Vrt_xxx.xlsx'
-is saved in 'equating' folder, each sheet of which is for two
-adjacent grades Also saved are scatterplots named 'Vrt_xxx.pdf'.
+Conducts DIF-based equating between pairs of test administrations.
+The function supports both:
+\itemize{
+  \item \strong{Horizontal equating (Hrz)}: comparisons among forms within
+  the same grade.
+  \item \strong{Vertical equating (Vrt)}: comparisons between adjacent grades.
+}
+}
+\details{
+For each comparison, the function performs anchor analysis, generates DIF
+statistics and diagnostic plots, and saves the results to Excel workbooks
+and image files in the \code{equating} folder.
 }
 \examples{
-equate2Type(list(Hrz=list(grades=NULL, forms=c('B', 'C', 'D'))), 'OPRA')
+# Horizontal equating across all pairwise form combinations
+equate2Type(
+  list(Hrz = list(grades = NULL, forms = c("B", "C", "D"))),
+  test = "OPRA"
+)
+
+# Vertical equating between adjacent grades
+equate2Type(
+  list(Vrt = 2:10),
+  test = "OPRA"
+)
+
 }

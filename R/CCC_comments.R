@@ -13,17 +13,18 @@
 #' @param ccc_data Data to draw CCC. One element of list output from Function 'CCC_Vernon'.
 #' @param iType Dataframe with columns of iNum and itype. One element of list
 #' output from Function 'CCC_Vernon'.
+#' @param run String that indicates run such as 'pre_review' and 'post_review'.
 #' @return Vector of comments based solely on CCC.
 #' @examples
 #' comments <- CCC_comments(test='racp', ccc_data=ccc_data, iType=iType)
 #' @export
 
-CCC_comments <- function(test, dFallThr=.5, dRiseThr=.1, ccc_data, iType){
+CCC_comments <- function(test, dFallThr=.5, dRiseThr=.1, ccc_data, iType, run){
   iType <- iType %>% mutate(Comment='')
 
   # If there is any poly item, get comments
   if ('poly' %in% iType$itype) {
-    comment_poly <- itn_poly_comment(test)
+    comment_poly <- itn_poly_comment(run, test)
   }
 
   for(i in 1:nrow(iType)){

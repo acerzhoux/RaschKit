@@ -3,13 +3,14 @@
 #' This function checks whether polytomous items' neighbor categories' ability
 #' estimates are too small. This is associated with test named 'test'.
 #'
+#' @param run String that indicates run such as 'pre_review' and 'post_review'.
 #' @param test Name of test.
 #' @examples
-#' itn_poly_comment('math_35')
+#' itn_poly_comment(run, test)
 #' @export
 
-itn_poly_comment <- function(test){
-  itn_items <- itn_ls(test=test)
+itn_poly_comment <- function(run, test){
+  itn_items <- itn_ls(run, test=test)
   iCat <- iCat_new <- map(itn_items, 'Label')
 
   # check ability estimate difference of neighbor categories

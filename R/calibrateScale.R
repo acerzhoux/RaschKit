@@ -68,9 +68,8 @@ calibrateScale <- function(respDfLst=NULL, keyDfLst, pid, n_cov, est_type='wle',
 
   # read into one file
   if (!is.null(est_type)) {
-    read2one('results', testVec, 'eqv')
+    read2one(file.path('calibration', run), testVec, 'eqv')
   }
-  if (trial) {
-    read2one('results', testVec, 'itn', 'trial')
-  }
+
+  read2one(file.path('calibration', run), testVec, 'itn', paste0('summary_', run), run=run)
 }

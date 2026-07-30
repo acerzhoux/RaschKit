@@ -28,7 +28,7 @@ item_stats <- function(run, test){
     select(1) |>
     unlist()
 
-  skip <- grep("VARIABLES", strings) + 1
+  skip <- grep("VARIABLES", strings)[[1]] + 1
 
   # stats from shw file
   iShw0 <- readxl::read_xls(

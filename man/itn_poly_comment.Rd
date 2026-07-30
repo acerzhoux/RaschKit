@@ -4,9 +4,11 @@
 \alias{itn_poly_comment}
 \title{itn_poly_comment}
 \usage{
-itn_poly_comment(test)
+itn_poly_comment(run, test)
 }
 \arguments{
+\item{run}{String that indicates run such as 'pre_review' and 'post_review'.}
+
 \item{test}{Name of test.}
 }
 \description{
@@ -14,5 +16,5 @@ This function checks whether polytomous items' neighbor categories' ability
 estimates are too small. This is associated with test named 'test'.
 }
 \examples{
-itn_poly_comment('math_35')
+itn_poly_comment(run, test)
 }

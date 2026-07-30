@@ -159,7 +159,9 @@ CCC_ipMap <- function(run, test, cqs, abilEst2use='pv1', numAbilGrps=NULL,
   } else {
     constrained1 <- iEstTemp[0, ]
   }
-  if (nrow(constrained1) > 0 && constrained1$iLab %in% iEstTemp$iLab) {
+  if (nrow(constrained1) > 0 && 
+      constrained1$iLab %in% filter(iEstTemp, is.na(category))$iLab
+  ) {
     constrained1 <- tibble()
   }
   
